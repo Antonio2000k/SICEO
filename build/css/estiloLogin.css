@@ -1,0 +1,10 @@
+
+.cuadro{
+    border: 2px solid rgba(42, 69, 79, 0.357);
+    width: 400px;
+    height: 400px;
+    -moz-border-radius: 10px 200px 200px 10px;
+    position: relative; z-index: 10;
+    background-color: rgba(32, 103, 209, 0.371); position:absolute;
+    padding: 50px;
+}

@@ -1,3 +1,10 @@
+<?php session_start();
+
+if ($_SESSION['autenticado'] != "yeah") {
+    header("Location:../index.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,6 +21,7 @@
     ?>
     <script type="text/javascript">
       function verificar(){
+        //alert('Entre a jS');
           if(document.getElementById('nombre').value=="" || 
             document.getElementById('apellido').value=="" || 
             document.getElementById('telefono').value=="" || 
@@ -22,13 +30,11 @@
             document.getElementById('celular').value=="" ||
             document.getElementById('direccion').value=="" ||
             (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
-              
+              alert('Complete los campos');
               document.getElementById('bandera').value="";
               }else{
                 document.getElementById('bandera').value="add";
-                
-                document.frmclinica.submit();
-                
+                document.formEmpleado.submit();
                 }
       }
     </script>
@@ -105,13 +111,13 @@
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres *</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Nombres" required="required" >
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" >
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
 
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos *</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Apellidos" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos">
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -138,7 +144,7 @@
                                            <div class="control-group">
                                               <div class="controls">
                                                  <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                                    <input type="text" class="form-control has-feedback-left" id="fecha" placeholder="fechan" aria-describedby="inputSuccess2Status4">
+                                                    <input type="date" class="form-control has-feedback-left" id="fecha" name="fecha"placeholder="fechan" aria-describedby="inputSuccess2Status4">
                                                     <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                     <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                                                  </div>
@@ -151,7 +157,7 @@
                                    <div class="col-sm-4">
                                           <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI *</label>
                                     <div class="col-md-10 col-sm-10 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="DUI" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="dui" placeholder="DUI">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
@@ -166,19 +172,19 @@
                                   <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono *</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" required="required" >
+                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono">
                                       <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Celular *</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" required="required" >
+                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular">
                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Direccion *</label>
                                     <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="tel" class="form-control has-feedback-left"  id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" required="required" >
+                                       <input type="tel" class="form-control has-feedback-left"  id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion"  >
                                        <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                   </div>
@@ -190,7 +196,7 @@
                                   <div class="item form-group">
                                     <center>
                                        <div class="col-md-12 col-sm-6 col-xs-12 ">
-                                          <button class="btn btn-success btn-icon left-icon;" > <i  class="fa fa-save" onClick="verificar()" name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
+                                          <button class="btn btn-success btn-icon left-icon;" onClick="verificar();"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
                                            <button class="btn btn-danger  btn-icon left-icon" > <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                       </div>
                                     </center>
@@ -222,29 +228,24 @@
                                       <th>Acciones</th>
                                     </tr>
                                   </thead>
-
-
                                   <tbody>
+                                    <?php
+                                          include("../../Config/conexion.php");
+                                          $query_s= pg_query($conexion, "select * from empleados order by cnombre");
+                                          while($fila=pg_fetch_array($query_s)){
+                                      ?>
                                     <tr>
-                                      <td>1</td>
-                                      <td>Alexander Enmanuel</td>
-                                      <td>Orellana Corvera</td>
-                                      <td>2345 - 8965</td>
-                                      <td> M </td>
+                                      <td><?php echo $fila[0]; ?></td>
+                                      <td><?php echo $fila[1]; ?></td>
+                                      <td><?php echo $fila[2]; ?></td>
+                                      <td><?php echo $fila[3]; ?></td>
+                                      <td> <?php echo $fila[6]; ?> </td>
                                       <td><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
                                       <td class="text-center"><button class="btn btn-info btn-icon left-icon"> <i class="fa fa-edit"></i> <span>Modificar</span></button></td>
                                     </tr>
-                                    <tr>
-                                      <td>2</td>
-                                      <td>Miguel Angel </td>
-                                      <td>Rivas Handal</td>
-                                      <td>2345 - 8965</td>
-                                      <td> M </td>
-                                      <td><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"> <i class="fa fa-edit"></i> <span>Modificar</span></button></td>
-
-                                    </tr>
-                                    
+                                    <?php
+                                      }
+                                        ?>
                                     
                                   </tbody>
                                 </table>
@@ -283,21 +284,19 @@
 <?php
 if(isset($_REQUEST["bandera"])){
 $bandera=$_REQUEST["bandera"];
-$nombre=strtoupper($_REQUEST["nombre"]);
-$apellido=strtoupper($_REQUEST["apellido"]);
-$telefono=strtoupper($_REQUEST["telefono"]);
-$celular=strtoupper($_REQUEST["celular"]);
-$fecha=strtoupper($_REQUEST["fecha"]);
-$dui=strtoupper($_REQUEST["dui"]);
-$direccion=strtoupper($_REQUEST["direccion"]);
+$nombre=($_REQUEST["nombre"]);
+$apellido=($_REQUEST["apellido"]);
+$telefono=($_REQUEST["telefono"]);
+$celular=($_REQUEST["celular"]);
+$fecha=$_REQUEST["fecha"];
+$dui=($_REQUEST["dui"]);
+$direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
-include("../config/conexion.php");
+include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-      $result=pg_query($conexion,"insert into empleados(cnombre, capellido, ctelfonof, ccelular, cdui, csexo, cdui,) values(trim('$nombre'),trim('$apellido')
-      ,trim('$especialidad'),'$sexo','$usuariox','$clavex',$rol)");
-      
+      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('no','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");      
       if(!$result){
         pg_query("rollback");
         echo "<script language='javascript'>";

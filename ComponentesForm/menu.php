@@ -1,7 +1,7 @@
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="production/images/SiceoL.png" ></p></a>
+              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../production/images/SiceoL.png" ></p></a>
             </div>
 </div>
             <!-- /menu profile quick info -->
@@ -18,13 +18,12 @@
                   <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="registrarEmpleado.php">Registrar</a></li>
-                      <li><a href="empleados.php">Listado de empleados</a></li>
+                      <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="clientes.php">Registrar</a></li>
+                      <li><a href="../../clientes.php">Registrar</a></li>
                       <li><a href="empleados.php">Listado de clientes</a></li>
                     </ul>
                   </li>

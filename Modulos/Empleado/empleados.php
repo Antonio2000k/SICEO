@@ -1,3 +1,10 @@
+<?php
+session_start();
+if ($_SESSION['autenticado'] != "yeah") {
+    header("Location:../index.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +17,7 @@
     <title>SICEO | </title>
 
     <?php
-      include "estilos.php";
+      include "../../ComponentesForm/estilos.php";
     ?>
   </head>
 
@@ -24,7 +31,7 @@
             <div class="clearfix"></div>
 
            <?php
-                include "menu.php";
+                include "../../ComponentesForm/menu.php";
            ?>
 
         <!-- page content -->
@@ -111,7 +118,7 @@
                     <div class="ln_solid"></div>
                     <div class="form-group">
                       <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button class="btn btn-success btn-icon left-icon" style="padding-left: 30px;"> <i class="fa fa-save"></i> <span>Guardar</span></button>
+                            <button class="btn btn-success btn-icon left-icon" style="padding-left: 30px;"> <i class="fa fa-save" onClick="verificar()"></i> <span>Guardar</span></button>
                             <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 30px;"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                       </div>
                     </div>
@@ -129,7 +136,7 @@
         <!-- footer content -->
         <footer>
           <?php
-            include "footer.php";
+            include "../../ComponentesForm/footer.php";
           ?>
         </footer>
         <!-- /footer content -->
@@ -137,7 +144,7 @@
     </div>
 
     <?php
-        include "scripts.php";
+        include "../../ComponentesForm/scripts.php";
     ?>
 	
   </body>

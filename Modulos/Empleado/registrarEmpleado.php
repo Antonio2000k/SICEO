@@ -10,8 +10,28 @@
     <title>SICEO | Empleado </title>
 
     <?php
-      include "ComponentesForm/estilos.php";
+      include "../../ComponentesForm/estilos.php";
     ?>
+    <script type="text/javascript">
+      function verificar(){
+          if(document.getElementById('nombre').value=="" || 
+            document.getElementById('apellido').value=="" || 
+            document.getElementById('telefono').value=="" || 
+            document.getElementById('fecha').value=="" || 
+            document.getElementById('dui').value=="" ||
+            document.getElementById('celular').value=="" ||
+            document.getElementById('direccion').value=="" ||
+            (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
+              
+              document.getElementById('bandera').value="";
+              }else{
+                document.getElementById('bandera').value="add";
+                
+                document.frmclinica.submit();
+                
+                }
+      }
+    </script>
   </head>
 
   <body class="nav-md">
@@ -25,7 +45,7 @@
                         </div>
 
                         <?php
-                        include "ComponentesForm/menu.php";
+                        include "../../ComponentesForm/menu.php";
                         ?>
                         
                     </div>
@@ -36,7 +56,7 @@
             <div class="col-md-12 col-xs-12">
               <div class="x_panel">
                  <div>
-                     <img align="left" src="production/images/emplea.png" width="120" height="120">
+                     <img align="left" src="../../production/images/emplea.png" width="120" height="120">
                         <h1 align="center">
                            Empleados
                         </h1>
@@ -75,7 +95,9 @@
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left">
+                           <form class="form-horizontal form-label-left" id="formEmpleado" name="formEmpleado">
+                            <input type="hidden" name="bandera" id="bandera"/>
+                            <input type="hidden" name="baccion" id="baccion"/>
                              <div class="row">
                                 <!--Codigos-->
                                   <div class="ln_solid"></div>
@@ -83,13 +105,13 @@
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres *</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="name" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Nombres" required="required" >
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Nombres" required="required" >
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
 
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos *</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Apellidos" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Apellidos" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -103,8 +125,8 @@
                                               
                                                 <p>
                                                   Masculino:
-                                                  <input type="radio" class="flat" name="gender" id="genderM" value="M" checked="" required />         Femenino:
-                                                  <input type="radio" class="flat" name="gender" id="genderF" value="F" />
+                                                  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" required />         Femenino:
+                                                  <input type="radio" class="flat" name="genero" id="generoF" value="F" />
                                                 </p>
                                   </div>
 
@@ -116,7 +138,7 @@
                                            <div class="control-group">
                                               <div class="controls">
                                                  <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                                    <input type="text" class="form-control has-feedback-left" id="single_cal4" placeholder="fechan" aria-describedby="inputSuccess2Status4">
+                                                    <input type="text" class="form-control has-feedback-left" id="fecha" placeholder="fechan" aria-describedby="inputSuccess2Status4">
                                                     <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                                                     <span id="inputSuccess2Status4" class="sr-only">(success)</span>
                                                  </div>
@@ -129,7 +151,7 @@
                                    <div class="col-sm-4">
                                           <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI *</label>
                                     <div class="col-md-10 col-sm-10 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="DUI" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="DUI" required="required" >
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
@@ -150,7 +172,7 @@
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Celular *</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="telc" class="form-control has-feedback-left"  id="telefonoc" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" required="required" >
+                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" required="required" >
                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
@@ -168,7 +190,7 @@
                                   <div class="item form-group">
                                     <center>
                                        <div class="col-md-12 col-sm-6 col-xs-12 ">
-                                          <button class="btn btn-success btn-icon left-icon;" > <i  class="fa fa-save"></i> <span >Guardar</span></button>
+                                          <button class="btn btn-success btn-icon left-icon;" > <i  class="fa fa-save" onClick="verificar()" name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
                                            <button class="btn btn-danger  btn-icon left-icon" > <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                       </div>
                                     </center>
@@ -245,7 +267,7 @@
 
         <footer>
             <?php
-              include "ComponentesForm/footer.php";
+              include "../../ComponentesForm/footer.php";
              ?>
         </footer>
       </div>
@@ -254,7 +276,38 @@
   </div>
 
         <?php
-          include "ComponentesForm/scripts.php";
+          include "../../ComponentesForm/scripts.php";
         ?>
     </body>
 </html>
+<?php
+if(isset($_REQUEST["bandera"])){
+$bandera=$_REQUEST["bandera"];
+$nombre=strtoupper($_REQUEST["nombre"]);
+$apellido=strtoupper($_REQUEST["apellido"]);
+$telefono=strtoupper($_REQUEST["telefono"]);
+$celular=strtoupper($_REQUEST["celular"]);
+$fecha=strtoupper($_REQUEST["fecha"]);
+$dui=strtoupper($_REQUEST["dui"]);
+$direccion=strtoupper($_REQUEST["direccion"]);
+$sexo=$_REQUEST["genero"];
+
+include("../config/conexion.php");
+if($bandera=="add"){
+    pg_query("BEGIN");
+      $result=pg_query($conexion,"insert into empleados(cnombre, capellido, ctelfonof, ccelular, cdui, csexo, cdui,) values(trim('$nombre'),trim('$apellido')
+      ,trim('$especialidad'),'$sexo','$usuariox','$clavex',$rol)");
+      
+      if(!$result){
+        pg_query("rollback");
+        echo "<script language='javascript'>";
+        echo "</script>";
+        }else{
+          pg_query("commit");
+          echo "<script language='javascript'>";
+        echo "</script>";
+          }
+          
+  }
+}
+?>

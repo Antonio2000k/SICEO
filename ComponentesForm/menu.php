@@ -89,7 +89,7 @@
                     <li><a href="javascript:;"> Perfil</a></li>
                     
                     <li><a href="javascript:;">Ayuda</a></li>
-                    <li><a href="login.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
+                    <li><a href="../../login.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 

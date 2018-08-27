@@ -23,7 +23,7 @@
 
     </style>
     <?php
-      include "estilos.php";
+      include "ComponentesForm/estilos.php";
     ?>
     <!--<link href="build/css/estiloLogin.css" rel="stylesheet"/>-->
   </head>

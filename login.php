@@ -23,7 +23,7 @@
 
     </style>
     <?php
-      include "estilos.php";
+      include "ComponentesForm/estilos.php";
     ?>
     <!--<link href="build/css/estiloLogin.css" rel="stylesheet"/>-->
   </head>
@@ -52,7 +52,7 @@
                             </label>
               </div>
                 <a style="color:#000000" class="btn btn-default submit" href="index.php">Iniciar</a>
-                <a style="color:#FFFFFF" class="reset_pass" href="#">Has perdido la contraseña?</a>
+                <a style="color:#FFFFFF" class="reset_pass" href="recuperar.php">Has perdido la contraseña?</a>
               </div>
 
               <div class="clearfix"></div>

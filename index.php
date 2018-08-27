@@ -10,7 +10,7 @@
     <title>SICEO | Encomiendas </title>
 
     <?php
-      include "estilos.php";
+      include "ComponentesForm/estilos.php";
     ?>
   </head>
 
@@ -24,7 +24,7 @@
             <div class="clearfix"></div>
 
            <?php
-                include "menu.php";
+                include "ComponentesForm/menu.php";
            ?>
 
         <!-- page content -->
@@ -92,7 +92,7 @@
         <!-- footer content -->
         <footer>
           <?php
-            include "footer.php";
+            include "ComponentesForm/footer.php";
           ?>
         </footer>
         <!-- /footer content -->
@@ -100,7 +100,7 @@
     </div>
 
     <?php
-        include "scripts.php";
+        include "ComponentesForm/scripts.php";
     ?>
 	
   </body>

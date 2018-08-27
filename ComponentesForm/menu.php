@@ -18,7 +18,7 @@
                   <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
+                      <li><a href="Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>

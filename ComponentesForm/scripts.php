@@ -40,6 +40,12 @@
     
     <!-- Custom Theme Scripts -->
     <script src="../../build/js/custom.min.js"></script>
+    
+    <!-- jquery.inputmask -->
+    <script src="../../vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="../../vendors/sweetalert2-7.26.12/dist/sweetalert2.min.js"></script>
 
 
     <!-- Datatables -->

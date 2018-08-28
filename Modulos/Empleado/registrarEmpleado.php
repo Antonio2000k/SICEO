@@ -63,12 +63,13 @@ if(isset($_REQUEST["id"])){
     function alertaSweet(titulo,texto,tipo){
 			swal(titulo,texto,tipo);
     }
-        
+       
         function llamarPagina(id){
 	window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
     </script>
   </head>
+    
   <body class="nav-md">
         <!--Aqui va inicio la barra arriba-->
         <div class="container body">
@@ -95,7 +96,7 @@ if(isset($_REQUEST["id"])){
                   </div>
                   <div align="center">
                       <p>
-                        Bienvenido en esta sección aquí puede registrar empleados en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente.En la pestaña de listado de empleados se mostraran todos los empleados registrados en el sistema.
+                        Bienvenido en esta sección puede registrar empleados en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente.En la pestaña de listado de empleados se mostraran todos los empleados registrados en el sistema.
                       </p>
                   </div>
               </div>

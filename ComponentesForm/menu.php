@@ -1,7 +1,11 @@
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
+<<<<<<< HEAD
               <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../images/SiceoL.png" ></p></a>
+=======
+              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../production/images/SiceoL.png" ></p></a>
+>>>>>>> 3dd5c795dad49575e0d592672adde8b3c4299d79
             </div>
 </div>
             <!-- /menu profile quick info -->
@@ -67,7 +71,7 @@
             </div>
             <!-- /sidebar menu -->
 
-            
+
           </div>
         </div>
 
@@ -87,13 +91,13 @@
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="javascript:;"> Perfil</a></li>
-                    
+
                     <li><a href="javascript:;">Ayuda</a></li>
                     <li><a href="../../login.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 
-               
+
               </ul>
             </nav>
           </div>

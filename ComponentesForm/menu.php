@@ -1,7 +1,7 @@
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="images/SiceoL.png" ></p></a>
+              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../images/SiceoL.png" ></p></a>
             </div>
 </div>
             <!-- /menu profile quick info -->

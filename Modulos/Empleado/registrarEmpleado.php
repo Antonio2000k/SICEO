@@ -191,7 +191,7 @@ if(isset($_REQUEST["id"])){
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Direccion*</label>
                                     <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="tel" class="form-control has-feedback-left"  id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" >
+                                       <input type="tel" class="form-control has-feedback-left"  id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>"  autocomplete="off">
                                        <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                   </div>
@@ -303,7 +303,12 @@ $sexo=$_REQUEST["genero"];
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");      
+    $r=pg_query($conexion,"select * from empleados");
+    $numero = pg_num_rows($r);
+    $codigo=generar();
+    echo $codigo;
+      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
+        
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -341,5 +346,19 @@ if($bandera=='modificar'){
         <?php
 				}
 }
+    
+    
 }
+
+function generar(){
+		$str=$nombre;
+		$cad="";
+		for($i=0; strlen($cad)<2; $i++){
+			$cad.=substr($str,rand(0,strlen($str)-1),1);
+		}
+        echo "<script language='javascript'>";
+				echo "alert('Error','$cad');";
+				echo "</script>";
+		return $cad;
+	}
 ?>

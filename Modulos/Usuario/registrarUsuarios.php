@@ -1,5 +1,3 @@
-<?php include("../../Config/conexion.php"); ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,19 +14,19 @@
     ?>
     <script type="text/javascript">
       function validar() {
-        if(document.getElementById('user').value=="" || document.getElementById('pass').value=="" || document.getElementById('repass').value==""
-        || document.getElementById('idempleado').value=="Seleccionar" || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
-        || document.getElementById('privilegio').value=="Seleccionar")
+        if(document.getElementById('user').value=="" || document.getElementById('pass').value==""
+          || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="0"
+          || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
+          || document.getElementById('privilegio').value=="0")
         {
-          alert("Debe completar todos los campos.");
+          alert("No sirve (rellene los campos)");
         }
         else {
+          document.getElementById('bandera').value="add";
+          document.frmUsuario.submit();
+
           alert("Sirve");
         }
-      }
-
-      function alertaSweet(titulo,texto,tipo){
-  			swal(titulo,texto,tipo);
       }
     </script>
 
@@ -64,7 +62,7 @@
                                 </div>
                                 <div align="center">
                                     <p>
-                                        Bienvenido en esta sección aquí puede registrar pacientes en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un paciente en el sistema.
+                                        Bienvenido en esta sección aquí puede registrar usuarios en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un usuario en el sistema.
                                     </p>
                                 </div>
                             </div>
@@ -95,10 +93,10 @@
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left" id="formUsuarios" name="formUsuarios">
+                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="post">
                              <div class="row">
                                 <!--Codigos-->
-
+                                <input type="hidden" name="bandera" id="bandera">
 
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Usuario</label>
@@ -125,9 +123,14 @@
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Privilegios</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="privilegio" name="privilegio">
-                                              <option>Seleccionar</option>
-                                              <option>Administrador</option>
-                                              <option>Empleado</option>
+                                            <?php 
+                                            include '../../Config/conexion.php';
+
+                                            //$array=
+                                            ?>
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">Administrador</option>
+                                              <option value="2">Empleado</option>
                                            </select>
                                         </div>
                                      </div>
@@ -137,9 +140,9 @@
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="idempleado" name="idempleado">
-                                              <option>Seleccionar</option>
-                                              <option>fulano de tal</option>
-                                              <option>mengana</option>
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">fulano de tal</option>
+                                              <option value="2">mengana</option>
                                            </select>
                                         </div>
                                      </div>
@@ -152,9 +155,9 @@
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Pregunta</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="pregunta" name="pregunta">
-                                              <option>Seleccionar</option>
-                                              <option>jakñdjaskñjdaksjdaslñk?</option>
-                                              <option>kljsdklaklvcnskldjaskjdakl?</option>
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">jakñdjaskñjdaksjdaslñk?</option>
+                                              <option value="2">kljsdklaklvcnskldjaskjdakl?</option>
                                            </select>
                                         </div>
                                      </div>
@@ -189,7 +192,7 @@
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
                                 <div class="x_title">
-                                  <h2>Usuarios </h2>
+                                  <h2>PACIENTES </h2>
 
                                 <div class="clearfix"></div>
                                 </div>
@@ -276,3 +279,35 @@
         ?>
     </body>
 </html>
+
+<?php 
+include "../config/conexion.php";
+
+$bandera = $_REQUEST['bandera'];
+$user = $_REQUEST['user'];
+$pass = $_REQUEST['pass'];
+$repass = $_REQUEST['repass'];
+$privilegio = $_REQUEST['privilegio'];
+$idempleado = $_REQUEST['idempleado'];
+
+
+if($bandera=="add") {
+    $existe = false;
+    $result = $conexion->query("INSERT INTO usuarios ('cusuarios','cpassword','cprivilegio','eid_pregunta','cid_empleado') VALUES (null,'$pass','$privilegio',$pregunta,'$idempleado')");
+
+    if($result) {
+        while ($fila = $result->fetch_object()) {
+            echo "<script type='text/javascript'>";
+            echo "mostrarMensaje('Datos correctos', 'success', 2500);";
+            echo "</script>";
+            $existe = true;
+        }
+
+        if(!$existe) {
+            echo "<script type='text/javascript'>";
+            echo "mostrarMensaje('Datos incorrectos, 'error', 2000);";
+            echo "</script>";
+        }
+    }
+}
+?>

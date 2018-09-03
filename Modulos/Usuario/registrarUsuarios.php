@@ -14,13 +14,17 @@
     ?>
     <script type="text/javascript">
       function validar() {
-        if(document.getElementById('user').value=="" || document.getElementById('pass').value=="" || document.getElementById('repass').value==""
-        || document.getElementById('idempleado').value=="Seleccionar" || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
-        || document.getElementById('privilegio').value=="Seleccionar")
+        if(document.getElementById('user').value=="" || document.getElementById('pass').value==""
+          || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="0"
+          || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
+          || document.getElementById('privilegio').value=="0")
         {
           alert("No sirve (rellene los campos)");
         }
         else {
+          document.getElementById('bandera').value="add";
+          document.frmUsuario.submit();
+
           alert("Sirve");
         }
       }
@@ -58,7 +62,7 @@
                                 </div>
                                 <div align="center">
                                     <p>
-                                        Bienvenido en esta sección aquí puede registrar pacientes en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un paciente en el sistema.
+                                        Bienvenido en esta sección aquí puede registrar usuarios en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un usuario en el sistema.
                                     </p>
                                 </div>
                             </div>
@@ -89,26 +93,26 @@
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left">
+                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="post">
                              <div class="row">
                                 <!--Codigos-->
-
+                                <input type="hidden" name="bandera" id="bandera">
 
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Usuario</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Usuario" required="required" >
+                                     <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" required="required" >
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
 
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Contraseña</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="pass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Contraseña" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="pass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Verificar Contraseña</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Ingrese de nuevo la contraseña" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Ingrese de nuevo la contraseña" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -118,10 +122,15 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Privilegios</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
-                                              <option>Seleccionar</option>
-                                              <option>Administrador</option>
-                                              <option>Empleado</option>
+                                           <select class="form-control" id="privilegio" name="privilegio">
+                                            <?php 
+                                            include '../../Config/conexion.php';
+
+                                            //$array=
+                                            ?>
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">Administrador</option>
+                                              <option value="2">Empleado</option>
                                            </select>
                                         </div>
                                      </div>
@@ -130,10 +139,10 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
-                                              <option>Seleccionar</option>
-                                              <option>fulano de tal</option>
-                                              <option>mengana</option>
+                                           <select class="form-control" id="idempleado" name="idempleado">
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">fulano de tal</option>
+                                              <option value="2">mengana</option>
                                            </select>
                                         </div>
                                      </div>
@@ -145,10 +154,10 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Pregunta</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
-                                              <option>Seleccionar</option>
-                                              <option>jakñdjaskñjdaksjdaslñk?</option>
-                                              <option>kljsdklaklvcnskldjaskjdakl?</option>
+                                           <select class="form-control" id="pregunta" name="pregunta">
+                                              <option value="0">Seleccionar</option>
+                                              <option value="1">jakñdjaskñjdaksjdaslñk?</option>
+                                              <option value="2">kljsdklaklvcnskldjaskjdakl?</option>
                                            </select>
                                         </div>
                                      </div>
@@ -156,7 +165,7 @@
 
                                        <label class="control-label col-md-1 col-sm-3 col-xs-12">Respuesta</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Respuesta" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                  </div>
@@ -270,3 +279,35 @@
         ?>
     </body>
 </html>
+
+<?php 
+include "../config/conexion.php";
+
+$bandera = $_REQUEST['bandera'];
+$user = $_REQUEST['user'];
+$pass = $_REQUEST['pass'];
+$repass = $_REQUEST['repass'];
+$privilegio = $_REQUEST['privilegio'];
+$idempleado = $_REQUEST['idempleado'];
+
+
+if($bandera=="add") {
+    $existe = false;
+    $result = $conexion->query("INSERT INTO usuarios ('cusuarios','cpassword','cprivilegio','eid_pregunta','cid_empleado') VALUES (null,'$pass','$privilegio',$pregunta,'$idempleado')");
+
+    if($result) {
+        while ($fila = $result->fetch_object()) {
+            echo "<script type='text/javascript'>";
+            echo "mostrarMensaje('Datos correctos', 'success', 2500);";
+            echo "</script>";
+            $existe = true;
+        }
+
+        if(!$existe) {
+            echo "<script type='text/javascript'>";
+            echo "mostrarMensaje('Datos incorrectos, 'error', 2000);";
+            echo "</script>";
+        }
+    }
+}
+?>

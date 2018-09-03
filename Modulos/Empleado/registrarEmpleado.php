@@ -39,34 +39,113 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script type="text/javascript">
+      function soloLetras(e) {
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toLowerCase();
+            letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+            especiales = [8, 37, 39, 46];
+
+            tecla_especial = false
+            for(var i in especiales) {
+                if(key == especiales[i]) {
+                    tecla_especial = true;
+                    break;
+                }
+            }
+
+            if(letras.indexOf(tecla) == -1 && !tecla_especial){
+                NotificacionSoloLetras();
+                return false;
+            }
+                
+        }
+
+        function limpia() {
+            var val = document.getElementById("miInput").value;
+            var tam = val.length;
+            for(i = 0; i < tam; i++) {
+                if(!isNaN(val[i]))
+                    document.getElementById("miInput").value = '';
+            }
+        }
         
       function verificar(opcion){
-                  if(document.getElementById('nombre').value=="" || 
-                    document.getElementById('apellido').value=="" || 
-                    document.getElementById('telefono').value=="" || 
-                    document.getElementById('single_cal1').value=="" || 
-                    document.getElementById('dui').value=="" ||
-                    document.getElementById('celular').value=="" ||
-                    document.getElementById('direccion').value=="" ||
-                    (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
-                      swal('Error!','Complete los campos!','error');
-                      opc=false;
-                      document.getElementById('bandera').value="";
-                      }else{
-                        opc=true;
-                          if(opcion==="guardar")
-                            document.getElementById('bandera').value="add";
-                          else
-                              document.getElementById('bandera').value="modificar";
-                        }
+          var opc=true;
+            if(document.getElementById('nombre').value=="" ||
+            document.getElementById('apellido').value=="" ||
+            document.getElementById('telefono').value=="" ||
+            document.getElementById('single_cal1').value=="" ||
+            document.getElementById('dui').value=="" ||
+            document.getElementById('celular').value=="" ||
+            document.getElementById('direccion').value=="" ||
+            (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
+                swal('Error!','Complete los campos!','error');
+                document.getElementById('bandera').value="";
+                opc=false;
+            }
+          if(!is_numeric(document.getElementById('nombre').value)){
+                alert('Solo numero');
+                opc=false;
+            }
+            else{
+                if(opcion==="guardar")
+                document.getElementById('bandera').value="add";
+                else
+                document.getElementById('bandera').value="modificar";
+                opc=true;
+            }
+          
+          $(document).ready(function(){
+          $("#formEmpleado").submit(function() {
+              if (opc!=true) {		
+                return false;
+              } else 
+                  return true;			
+            });
+        });
+          
+          
       }
+
+        
     function alertaSweet(titulo,texto,tipo){
 			swal(titulo,texto,tipo);
     }
+        
+    function DarBaja(id,opcion,mensaje,conf){
+        swal({
+          title: 'Confirmacion?',
+          text: mensaje,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText:'Cancelar',
+          confirmButtonText: conf
+        }).then((result) => {
+          if (result.value) {
+              if(opcion=='baja')
+                document.getElementById('bandera').value="Dbajar";
+              else
+                  document.getElementById('bandera').value="Dactivar";
+              document.getElementById('baccion').value=id;
+              document.formEmpleado.submit();
+            
+          }
+        })
+    }
        
-        function llamarPagina(id){
+    function llamarPagina(id){
+    //alert('Hola   '+id);
 	window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
+        
+    function NotificacionSoloLetras(){
+        var myNotification = notif({
+          'type': 'success',
+          'msg': 'Hello world! This is notifit 2!'
+        })
+    }
     </script>
   </head>
     
@@ -134,12 +213,12 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres*</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>">
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" onblur="limpia()">
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos*</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>">
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" onblur="limpia()">
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -235,7 +314,6 @@ if(isset($_REQUEST["id"])){
                                       <th>Apellidos</th>
                                       <th>Telefono</th>
                                       <th>Sexo</th>
-                                      <th>Expediente</th>
                                       <th>Acciones</th>
                                     </tr>
                                   </thead>
@@ -251,8 +329,13 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[3]; ?></td>
                                       <td> <?php echo $fila[6]; ?> </td>
-                                      <td><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button></td>
+                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                      <?php if($fila[9]=='t'){ ?>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al empleado '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
+                                      <?php }if($fila[9]=='f'){?>
+                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al empleado '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
+                                      <?php }?>
+                                      </td>
                                     </tr>
                                     <?php
                                       }
@@ -300,14 +383,15 @@ $fecha=$_REQUEST["fecha"];
 $dui=($_REQUEST["dui"]);
 $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
+$correo="Ella no te ama";
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
     $r=pg_query($conexion,"select * from empleados");
     $numero = pg_num_rows($r);
-    $codigo=generar();
+    $codigo=generar($nombre,$apellido).$numero;
     echo $codigo;
-      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
+      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
         
       if(!$result){
 				pg_query("rollback");
@@ -325,12 +409,11 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");      
+      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion', bestado='1',ccorreo='$correo' where cid_empleado='$baccion'");      
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
 				echo "alertaSweet('Error','Datos no almacenados', 'error');";
-                echo "document.getElementById('bandera').value='';";
 				echo "</script>";
 				}else{
 					pg_query("commit");
@@ -338,27 +421,40 @@ if($bandera=='modificar'){
 					<script language='javascript'>
                     setInterval(alertaSweet('Informacion','Datos Almacenados', 'success'),500000);
                     document.location.href='registrarEmpleado.php';
-                    window.onload=function(){
-                    var capa = document.getElementById("tab_content2");
-                    capa.click();
-}
                     </script>
         <?php
 				}
 }
-    
-    
+if($bandera=="Dbajar" || $bandera=='Dactivar'){
+    if($bandera=="Dbajar")
+        $estado=0;
+    else
+        $estado=1;
+     pg_query("BEGIN");
+      $result=pg_query($conexion,"update empleados set bestado='$estado' where cid_empleado='$baccion'");      
+      if(!$result){
+				pg_query("rollback");
+				echo "<script language='javascript'>";
+				echo "alertaSweet('Error','Datos no almacenados', 'error');";
+				echo "</script>";
+				}else{
+					pg_query("commit");
+          ?>
+					<script language='javascript'>
+                    alertaSweet('Informacion','Datos Almacenados', 'success');
+                    </script>
+        <?php
+				}
+}
+     
 }
 
-function generar(){
-		$str=$nombre;
+function generar($nombree,$apellidos){
+		$str=trim($nombree).trim($apellidos);
 		$cad="";
 		for($i=0; strlen($cad)<2; $i++){
 			$cad.=substr($str,rand(0,strlen($str)-1),1);
 		}
-        echo "<script language='javascript'>";
-				echo "alert('Error','$cad');";
-				echo "</script>";
-		return $cad;
+		return strtoupper($cad);
 	}
 ?>

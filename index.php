@@ -10,7 +10,7 @@
     <title>SICEO | Encomiendas </title>
 
     <?php
-      include "ComponentesForm/estilos.php";
+      include ".../ComponentesForm/estilos.php";
     ?>
   </head>
 
@@ -24,7 +24,7 @@
             <div class="clearfix"></div>
 
            <?php
-                include "ComponentesForm/menu.php";
+                include "../ComponentesForm/menu.php";
            ?>
 
         <!-- page content -->
@@ -91,9 +91,10 @@
         <!-- /page content -->
         <!-- footer content -->
         <footer>
-          <?php
-            include "ComponentesForm/footer.php";
-          ?>
+          <div class="pull-right">
+            SICEO. Derechos Reservados <a href="https://colorlib.com"></a>
+          </div>
+          <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
       </div>

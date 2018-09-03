@@ -39,7 +39,7 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script type="text/javascript">
-<<<<<<< HEAD
+
       function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -106,7 +106,7 @@ if(isset($_REQUEST["id"])){
         });
           
           
-=======
+
 
       function verificar(opcion){
                   if(document.getElementById('nombre').value=="" ||
@@ -127,14 +127,14 @@ if(isset($_REQUEST["id"])){
                           else
                               document.getElementById('bandera').value="modificar";
                         }
->>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
+
       }
 
         
     function alertaSweet(titulo,texto,tipo){
 			swal(titulo,texto,tipo);
     }
-<<<<<<< HEAD
+
         
     function DarBaja(id,opcion,mensaje,conf){
         swal({
@@ -161,10 +161,10 @@ if(isset($_REQUEST["id"])){
        
     function llamarPagina(id){
     //alert('Hola   '+id);
-=======
+
 
         function llamarPagina(id){
->>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
+
 	window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
         
@@ -415,16 +415,16 @@ $correo="Ella no te ama";
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-<<<<<<< HEAD
+
     $r=pg_query($conexion,"select * from empleados");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
     echo $codigo;
       $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
         
-=======
+
       $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
->>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
+
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -441,11 +441,10 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-<<<<<<< HEAD
+
       $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion', bestado='1',ccorreo='$correo' where cid_empleado='$baccion'");      
-=======
       $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");
->>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
+
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -484,7 +483,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
 }
      
 }
-<<<<<<< HEAD
+
 
 function generar($nombree,$apellidos){
 		$str=trim($nombree).trim($apellidos);
@@ -495,6 +494,6 @@ function generar($nombree,$apellidos){
 		return strtoupper($cad);
 	}
 ?>
-=======
+
 ?>
->>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
+

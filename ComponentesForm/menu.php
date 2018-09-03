@@ -1,11 +1,15 @@
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
+<<<<<<< HEAD
 
               <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../images/SiceoL.png" ></p></a>
 
               <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../production/images/SiceoL.png" ></p></a>
 
+=======
+              <a href="../../index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../images/SiceoL.png" ></p></a>
+>>>>>>> cc8dcc729e86350d7575da079d45ed3146cd794c
             </div>
 </div>
             <!-- /menu profile quick info -->
@@ -59,7 +63,7 @@
                   </li>
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="seguridad.php">Registrar usuario</a></li>
+                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
                       <li><a href="empleados.php">Listado de usuarios</a></li>
                       <li><a href="empleados.php">Generar respaldo</a></li>
                       <li><a href="empleados.php">Restablecer respaldo</a></li>

@@ -55,10 +55,8 @@ if(isset($_REQUEST["user"])){
                   if(document.getElementById('user').value=="" ){
                       alert('Campo vacio');
                       document.getElementById('bandera').value="";
-                      }else{
-                          
-                            alert('Continua', 'success', 1000);
-                            
+                      }else{  
+                        
                         }
       }
 
@@ -99,14 +97,16 @@ if(isset($_REQUEST["user"])){
               <div>
                 <input type="text" class="form-control" placeholder="Usuario"  id="user" name="user" value="<?php echo $iddatos; ?>" />
                 
-              <button  class="btn btn-info"  onClick="verificar();">Verificar
+              <button  class="btn btn-default submit"   onClick="verificar();"><a >Verificar</a>
+              </button>
+              <button   class="btn btn-default submit" ><a href="../../login.php">Cancelar</a>
               </button>
 
               </div>
             </br>
               
               <div>
-               <!-- <form class="cuadro" id="frmRes" method="post" name="frmRes" action="hola.php" > -->
+               
                 <?php
                   include("../../Config/conexion.php");
                   $usuario = $_REQUEST["user"];
@@ -149,7 +149,7 @@ if(isset($_REQUEST["user"])){
                       } 
                     }
                 ?>
-               <!-- </form>-->
+             
               </div>
             
               <div class="clearfix"></div>

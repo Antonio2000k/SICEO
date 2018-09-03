@@ -39,6 +39,7 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script type="text/javascript">
+<<<<<<< HEAD
       function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -105,12 +106,35 @@ if(isset($_REQUEST["id"])){
         });
           
           
+=======
+
+      function verificar(opcion){
+                  if(document.getElementById('nombre').value=="" ||
+                    document.getElementById('apellido').value=="" ||
+                    document.getElementById('telefono').value=="" ||
+                    document.getElementById('single_cal1').value=="" ||
+                    document.getElementById('dui').value=="" ||
+                    document.getElementById('celular').value=="" ||
+                    document.getElementById('direccion').value=="" ||
+                    (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
+                      swal('Error!','Complete los campos!','error');
+                      opc=false;
+                      document.getElementById('bandera').value="";
+                      }else{
+                        opc=true;
+                          if(opcion==="guardar")
+                            document.getElementById('bandera').value="add";
+                          else
+                              document.getElementById('bandera').value="modificar";
+                        }
+>>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
       }
 
         
     function alertaSweet(titulo,texto,tipo){
 			swal(titulo,texto,tipo);
     }
+<<<<<<< HEAD
         
     function DarBaja(id,opcion,mensaje,conf){
         swal({
@@ -137,6 +161,10 @@ if(isset($_REQUEST["id"])){
        
     function llamarPagina(id){
     //alert('Hola   '+id);
+=======
+
+        function llamarPagina(id){
+>>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
 	window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
         
@@ -148,7 +176,7 @@ if(isset($_REQUEST["id"])){
     }
     </script>
   </head>
-    
+
   <body class="nav-md">
         <!--Aqui va inicio la barra arriba-->
         <div class="container body">
@@ -225,14 +253,14 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-3 col-xs-12 form-group has-feedback" style="padding-left: 80px;">
                                        <div class="col-sm-2">
-                                           <label>Sexo*</label>  
+                                           <label>Sexo*</label>
                                        </div>
                                        <div class="col-sm-3">
                                           <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" <?php if ($Rsexo == "M") echo "checked"; ?>/>
                                        </div>
                                        <div class="col-sm-3">
                                            <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
-                                       </div>                                                                                                              
+                                       </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="form-group">
@@ -249,7 +277,7 @@ if(isset($_REQUEST["id"])){
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                  
+                                    </div>
                                  </div>
                                   <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI*</label>
@@ -257,7 +285,7 @@ if(isset($_REQUEST["id"])){
                                        <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
-                                   
+
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                       <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rtelefono; ?>">
@@ -346,11 +374,11 @@ if(isset($_REQUEST["id"])){
                                    </div>
                                  </div>
                                 </div>
-                              </div>  
+                              </div>
                             </div>
                           </div>
                            </div>
-                        </div>                
+                        </div>
                       </div>
                   </div>
                 </div>
@@ -387,12 +415,16 @@ $correo="Ella no te ama";
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
+<<<<<<< HEAD
     $r=pg_query($conexion,"select * from empleados");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
     echo $codigo;
       $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
         
+=======
+      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
+>>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -409,7 +441,11 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
+<<<<<<< HEAD
       $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion', bestado='1',ccorreo='$correo' where cid_empleado='$baccion'");      
+=======
+      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");
+>>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -448,6 +484,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
 }
      
 }
+<<<<<<< HEAD
 
 function generar($nombree,$apellidos){
 		$str=trim($nombree).trim($apellidos);
@@ -458,3 +495,6 @@ function generar($nombree,$apellidos){
 		return strtoupper($cad);
 	}
 ?>
+=======
+?>
+>>>>>>> 48d129d5e59f999aaf8cad426107c0a5566ee290

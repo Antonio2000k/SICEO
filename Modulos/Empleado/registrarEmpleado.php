@@ -39,12 +39,12 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script type="text/javascript">
-        
+
       function verificar(opcion){
-                  if(document.getElementById('nombre').value=="" || 
-                    document.getElementById('apellido').value=="" || 
-                    document.getElementById('telefono').value=="" || 
-                    document.getElementById('single_cal1').value=="" || 
+                  if(document.getElementById('nombre').value=="" ||
+                    document.getElementById('apellido').value=="" ||
+                    document.getElementById('telefono').value=="" ||
+                    document.getElementById('single_cal1').value=="" ||
                     document.getElementById('dui').value=="" ||
                     document.getElementById('celular').value=="" ||
                     document.getElementById('direccion').value=="" ||
@@ -63,13 +63,13 @@ if(isset($_REQUEST["id"])){
     function alertaSweet(titulo,texto,tipo){
 			swal(titulo,texto,tipo);
     }
-       
+
         function llamarPagina(id){
 	window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
     </script>
   </head>
-    
+
   <body class="nav-md">
         <!--Aqui va inicio la barra arriba-->
         <div class="container body">
@@ -146,14 +146,14 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-3 col-xs-12 form-group has-feedback" style="padding-left: 80px;">
                                        <div class="col-sm-2">
-                                           <label>Sexo*</label>  
+                                           <label>Sexo*</label>
                                        </div>
                                        <div class="col-sm-3">
                                           <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" <?php if ($Rsexo == "M") echo "checked"; ?>/>
                                        </div>
                                        <div class="col-sm-3">
                                            <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
-                                       </div>                                                                                                              
+                                       </div>
                                     </div>
                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="form-group">
@@ -170,7 +170,7 @@ if(isset($_REQUEST["id"])){
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>                                  
+                                    </div>
                                  </div>
                                   <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI*</label>
@@ -178,7 +178,7 @@ if(isset($_REQUEST["id"])){
                                        <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
-                                   
+
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                       <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rtelefono; ?>">
@@ -263,11 +263,11 @@ if(isset($_REQUEST["id"])){
                                    </div>
                                  </div>
                                 </div>
-                              </div>  
+                              </div>
                             </div>
                           </div>
                            </div>
-                        </div>                
+                        </div>
                       </div>
                   </div>
                 </div>
@@ -303,7 +303,7 @@ $sexo=$_REQUEST["genero"];
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");      
+      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -320,7 +320,7 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");      
+      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";

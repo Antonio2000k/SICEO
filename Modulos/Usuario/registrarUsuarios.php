@@ -1,3 +1,5 @@
+<?php include("../../Config/conexion.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,11 +20,15 @@
         || document.getElementById('idempleado').value=="Seleccionar" || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
         || document.getElementById('privilegio').value=="Seleccionar")
         {
-          alert("No sirve (rellene los campos)");
+          alert("Debe completar todos los campos.");
         }
         else {
           alert("Sirve");
         }
+      }
+
+      function alertaSweet(titulo,texto,tipo){
+  			swal(titulo,texto,tipo);
       }
     </script>
 
@@ -89,7 +95,7 @@
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left">
+                           <form class="form-horizontal form-label-left" id="formUsuarios" name="formUsuarios">
                              <div class="row">
                                 <!--Codigos-->
 
@@ -97,18 +103,18 @@
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Usuario</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Usuario" required="required" >
+                                     <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" required="required" >
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
 
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Contraseña</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="pass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Contraseña" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="pass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Verificar Contraseña</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Ingrese de nuevo la contraseña" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Ingrese de nuevo la contraseña" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -118,7 +124,7 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Privilegios</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
+                                           <select class="form-control" id="privilegio" name="privilegio">
                                               <option>Seleccionar</option>
                                               <option>Administrador</option>
                                               <option>Empleado</option>
@@ -130,7 +136,7 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
+                                           <select class="form-control" id="idempleado" name="idempleado">
                                               <option>Seleccionar</option>
                                               <option>fulano de tal</option>
                                               <option>mengana</option>
@@ -145,7 +151,7 @@
                                      <div class="form-group">
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Pregunta</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
-                                           <select class="form-control">
+                                           <select class="form-control" id="pregunta" name="pregunta">
                                               <option>Seleccionar</option>
                                               <option>jakñdjaskñjdaksjdaslñk?</option>
                                               <option>kljsdklaklvcnskldjaskjdakl?</option>
@@ -156,7 +162,7 @@
 
                                        <label class="control-label col-md-1 col-sm-3 col-xs-12">Respuesta</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Respuesta" required="required" >
+                                       <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" required="required" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                  </div>
@@ -183,7 +189,7 @@
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
                                 <div class="x_title">
-                                  <h2>PACIENTES </h2>
+                                  <h2>Usuarios </h2>
 
                                 <div class="clearfix"></div>
                                 </div>

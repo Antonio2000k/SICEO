@@ -6,7 +6,6 @@
     <link href="../../vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    
     <!-- bootstrap-progressbar -->
     <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
@@ -14,7 +13,7 @@
     <!-- bootstrap-daterangepicker -->
     <link href="../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-    
+
     <!-- Custom Theme Style -->
     <link href="../../build/css/custom.min.css" rel="stylesheet">
     <!-- Datatables -->
@@ -23,6 +22,9 @@
     <link href="../../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="../../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="../../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-    
+
    <!-- SwettAlert2-->
    <link rel="stylesheet" href="../../vendors/sweetalert2-7.26.12/dist/sweetalert2.min.css">
+   
+   <!-- -->
+   <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">

@@ -45,28 +45,25 @@ if(isset($_REQUEST["id"])){
             tecla = String.fromCharCode(key).toLowerCase();
             letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
             especiales = [8, 37, 39, 46];
-
-            tecla_especial = false
+            tecla_especial = false;
             for(var i in especiales) {
                 if(key == especiales[i]) {
                     tecla_especial = true;
                     break;
                 }
             }
-
             if(letras.indexOf(tecla) == -1 && !tecla_especial){
-                NotificacionSoloLetras();
+                NotificacionSoloLetras2();
                 return false;
-            }
-                
+            }       
         }
-
+        
         function limpia() {
-            var val = document.getElementById("miInput").value;
+            var val = document.getElementById("nombre").value;
             var tam = val.length;
             for(i = 0; i < tam; i++) {
                 if(!isNaN(val[i]))
-                    document.getElementById("miInput").value = '';
+                    document.getElementById("nombre").value = '';
             }
         }
         
@@ -83,12 +80,7 @@ if(isset($_REQUEST["id"])){
                 swal('Error!','Complete los campos!','error');
                 document.getElementById('bandera').value="";
                 opc=false;
-            }
-          if(!is_numeric(document.getElementById('nombre').value)){
-                alert('Solo numero');
-                opc=false;
-            }
-            else{
+            }else{
                 if(opcion==="guardar")
                 document.getElementById('bandera').value="add";
                 else
@@ -105,30 +97,8 @@ if(isset($_REQUEST["id"])){
             });
         });
           
-          
-
-
-      function verificar(opcion){
-                  if(document.getElementById('nombre').value=="" ||
-                    document.getElementById('apellido').value=="" ||
-                    document.getElementById('telefono').value=="" ||
-                    document.getElementById('single_cal1').value=="" ||
-                    document.getElementById('dui').value=="" ||
-                    document.getElementById('celular').value=="" ||
-                    document.getElementById('direccion').value=="" ||
-                    (!document.getElementById('generoF').checked && !document.getElementById('generoM').checked)){
-                      swal('Error!','Complete los campos!','error');
-                      opc=false;
-                      document.getElementById('bandera').value="";
-                      }else{
-                        opc=true;
-                          if(opcion==="guardar")
-                            document.getElementById('bandera').value="add";
-                          else
-                              document.getElementById('bandera').value="modificar";
-                        }
-
       }
+
 
         
     function alertaSweet(titulo,texto,tipo){
@@ -160,19 +130,19 @@ if(isset($_REQUEST["id"])){
     }
        
     function llamarPagina(id){
-    //alert('Hola   '+id);
-
-
-        function llamarPagina(id){
-
-	window.open("registrarEmpleado.php?id="+id, '_parent');
+	   window.open("registrarEmpleado.php?id="+id, '_parent');
 	}
         
-    function NotificacionSoloLetras(){
-        var myNotification = notif({
-          'type': 'success',
-          'msg': 'Hello world! This is notifit 2!'
-        })
+        
+    function NotificacionSoloLetras2(){
+        notif({
+            type:"error",
+          msg: "<b>Error: </b>Solo se permiten letras",
+          position: "center",
+          timeout: 3000,
+          clickable: true
+            
+        });
     }
     </script>
   </head>
@@ -241,12 +211,12 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres*</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" onblur="limpia()">
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" onblur="limpia()" autocomplete="off">
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos*</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" onblur="limpia()">
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" onblur="limpia()" autocomplete="off">
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -269,7 +239,7 @@ if(isset($_REQUEST["id"])){
                                                 <div class="control-group">
                                                     <div class="controls">
                                                         <div class="xdisplay_inputx form-group has-feedback">
-                                                            <input type="text" class="form-control has-feedback-left" id="single_cal1" name="fecha" aria-describedby="inputSuccess2Status" style="padding-left: 55px;" data-inputmask="'mask': '99/99/9999'" value="<?php $Rfecha ?>">
+                                                            <input type="text" class="form-control has-feedback-left" id="single_cal1" name="fecha" aria-describedby="inputSuccess2Status" style="padding-left: 55px;" data-inputmask="'mask': '99/99/9999'" value="<?php $Rfecha ?>" autocomplete="off">
                                                             <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true" style="padding-left:0px; margin-left: -10px;"></span>
                                                             <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                                         </div>
@@ -282,18 +252,18 @@ if(isset($_REQUEST["id"])){
                                   <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI*</label>
                                     <div class="col-md-3 col-sm-10 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>">
+                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>" autocomplete="off">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rtelefono; ?>">
+                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off">
                                       <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Celular*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>">
+                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>" autocomplete="off">
                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Direccion*</label>
@@ -422,9 +392,6 @@ if($bandera=="add"){
     echo $codigo;
       $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
         
-
-      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion) values('te','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion')");
-
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";
@@ -442,9 +409,7 @@ if($bandera=="add"){
 if($bandera=='modificar'){
     pg_query("BEGIN");
 
-      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion', bestado='1',ccorreo='$correo' where cid_empleado='$baccion'");      
-      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion' where cid_empleado='$baccion'");
-
+      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion', bestado='1',ccorreo='$correo' where cid_empleado='$baccion'");    
       if(!$result){
 				pg_query("rollback");
 				echo "<script language='javascript'>";

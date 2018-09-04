@@ -202,7 +202,7 @@ if(isset($_REQUEST["id"])){
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left" id="formEmpleado" name="formEmpleado">
+                           <form class="form-horizontal form-label-left" id="formEmpleado" name="formEmpleado" method="post">
                             <input type="hidden" name="bandera" id="bandera"/>
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidEmpleado;?>"/>
                              <div class="row">

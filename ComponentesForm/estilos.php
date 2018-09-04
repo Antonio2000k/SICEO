@@ -24,7 +24,7 @@
     <link href="../../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
    <!-- SwettAlert2-->
-   <link rel="stylesheet" href="../../vendors/sweetalert2-7.26.12/dist/sweetalert2.min.css">
+   <link rel="stylesheet" href="../../vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.css">
    
    <!-- -->
    <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">

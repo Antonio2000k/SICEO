@@ -45,7 +45,7 @@
     <script src="../../vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     
     <!-- SweetAlert2 -->
-    <script src="../../vendors/sweetalert2-7.26.12/dist/sweetalert2.min.js"></script>
+    <script src="../../vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.js"></script>
 
 
     <!-- Datatables -->

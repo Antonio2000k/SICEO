@@ -74,7 +74,7 @@
     $('#myDatepicker').datetimepicker();
     
     $('#myDatepicker2').datetimepicker({
-        format: 'MM.DD.YYYY'
+        format: 'DD.MM.YYYY'
     });
     
     $('#myDatepicker3').datetimepicker({

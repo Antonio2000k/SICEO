@@ -460,5 +460,5 @@ function generar($nombree,$apellidos){
 	}
 ?>
 
-?>
+
 

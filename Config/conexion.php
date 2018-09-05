@@ -11,6 +11,6 @@ if(!$conexion){
 	exit;
 	}
         else {
-   
+   //echo"conectado";
         }
 ?>

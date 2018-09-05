@@ -1,3 +1,31 @@
+<?php
+if(isset($_REQUEST["id"])){
+    include("../../Config/conexion.php");
+    $iddatos = $_REQUEST["id"];
+    $query_s = pg_query($conexion, "select *,TO_CHAR(empleados.ffecha_nac, 'dd/mm/yyyy') from empleados where cid_empleado='$iddatos'");
+    while ($fila = pg_fetch_array($query_s)) {
+        $RidEmpleado = $fila[0];
+        $Rnombre = $fila[1];
+        $Rapellido = $fila[2];
+        $Rtelefono = $fila[3];
+        $Rcelular = $fila[4];
+        $Rdui = $fila[5];
+        $Rsexo = $fila[6];
+        $Rfecha = $fila[9];
+        $Rdireccion = $fila[8];
+    }
+}else{
+        $RidEmpleado = null;
+        $Rnombre = null;
+        $Rapellido = null;
+        $Rtelefono = null;
+        $Rcelular = null;
+        $Rdui = null;
+        $Rsexo = null;
+        $Rfecha = date("d/m/Y");
+        $Rdireccion = null;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -140,9 +168,22 @@
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="idempleado" name="idempleado">
-                                              <option value="0">Seleccionar</option>
-                                              <option value="1">fulano de tal</option>
-                                              <option value="2">mengana</option>
+                                              <option value="">Seleccione Empleado</option>
+                                            <?php
+                                             include("../../Config/conexion.php");
+                                             $query_s=pg_query($conexion,"select * from empleados ");
+
+                                            while ($fila = pg_fetch_array($query_s)) {
+                                              ?>
+                                             <option value="<?php echo "$fila[0]"; ?>"><?php echo "$fila[1]" ;?></option>
+
+
+                                              <?php
+
+
+                                             } 
+                                              
+                                            ?>
                                            </select>
                                         </div>
                                      </div>
@@ -155,9 +196,23 @@
                                         <label class="control-label col-md-4 col-sm-3 col-xs-12">Pregunta</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="pregunta" name="pregunta">
-                                              <option value="0">Seleccionar</option>
-                                              <option value="1">jakñdjaskñjdaksjdaslñk?</option>
-                                              <option value="2">kljsdklaklvcnskldjaskjdakl?</option>
+                                            <option value="">Seleccione Pregunta</option>
+                                            <?php
+                                             include("../../Config/conexion.php");
+                                             $query_s=pg_query($conexion,"select * from pregunta ");
+
+                                            while ($fila = pg_fetch_array($query_s)) {
+                                              ?>
+                                             <option value="<?php echo "$fila[0]"; ?>"><?php echo "$fila[1]" ;?></option>
+
+
+                                              <?php
+
+
+                                             } 
+                                              
+                                            ?>
+                                              
                                            </select>
                                         </div>
                                      </div>
@@ -281,7 +336,7 @@
 </html>
 
 <?php 
-include "../config/conexion.php";
+include "../../Config/conexion.php";
 
 $bandera = $_REQUEST['bandera'];
 $user = $_REQUEST['user'];

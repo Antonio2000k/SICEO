@@ -3,7 +3,7 @@
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from usuarios WHERE cusuarios = '$iddatos'");
+    $query_s = pg_query($conexion, "select * from usuarios WHERE cusuario = '$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
        $RidUsuario = $fila[0];
        $RPass = $fila[2];
@@ -115,11 +115,13 @@ if(isset($_REQUEST["id"])){
     $pass = $_REQUEST["pass"];
     $cpass=$_REQUEST["cpass"];
 
+    $pas_en = password_hash($pass, PASSWORD_DEFAULT);
+
     include("../../Config/conexion.php");
     
     if($bandera=='modificar'){
         pg_query("BEGIN");
-        $result=pg_query($conexion,"update usuarios set cpassword ='$pass' where cusuarios ='$baccion'");      
+        $result=pg_query($conexion,"update usuarios set cpassword ='$pas_en' where cusuario ='$baccion'");      
         
         if(!$result){
           pg_query("rollback");
@@ -138,6 +140,7 @@ if(isset($_REQUEST["id"])){
           ?>
           <script language='javascript'>
               alert('Datos Cambiados');
+              alert('echo strlen($pass_em);');
               document.location.href='../../login.php';
           </script>
           <?php

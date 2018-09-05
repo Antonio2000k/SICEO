@@ -1,4 +1,26 @@
+<?php
+if(isset($_REQUEST["user"])){
+    include("../../Config/conexion.php");
+    $iddatos = $_REQUEST["user"];
+    $query_s = pg_query($conexion, "select
+                    pre.idusuario,
+                    pre.idpregunta,
+                    pre.respuesta,
+                    po.cpregunta
+                    from pre_us pre
+                    INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
+                    WHERE
+                    pre.idusuario = '$iddatos'");
+    while ($fila = pg_fetch_array($query_s)) {
+       $RidUsuario = $fila[0];
+       $RPass = $fila[2];
 
+    }
+}else{
+        $RidUsuario = null;
+        $RPass = null;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -29,24 +51,25 @@
     <!--<link href="build/css/estiloLogin.css" rel="stylesheet"/>-->
     <script type="text/javascript">
 
-      function verificar(){
-                  if(document.getElementById('user').value=="" ){
-                      swal('Error!','Complete los campos!','error');
+        
+
+    
+      function verificar2(){
+                  if(document.getElementById('respuestas').value==""){
+                      alert('Campo vacio');
                       document.getElementById('bandera').value="";
-                      }else{  
-                        document.getElementById('bandera').value="add";
-                        document.frmVerUser.submit();
-                        
+                      }else{
+                            document.getElementById('bandera').value="add";
+                            document.frmVerUser.submit();
+                            //alert("Entro4");
+                            llamarPagina(id);
                         }
       }
       
-      function llamarpreguntas(id){
-        window.open("recuperarP.php?id="+id, '_parent');
-      }
-         
-      function alertaSweet(titulo,texto,tipo){
-        swal(titulo,texto,tipo);
-      } 
+      function llamarPagina(id){
+  window.open("cambioPass.php?id="+id, '_parent');
+  }
+        
         
     </script>
   </head>
@@ -63,20 +86,52 @@
               <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidUsuario;?>"/>
 
               <h1 style="color:#FFFFFF">Recuperación</h1>
-              
-              <div>
-                <input type="text" class="form-control" placeholder="Usuario"  id="user" name="user"  autofocus autocomplete="off" />
-                
-              <button name="btnguardar" id="btnguardar"  class="btn btn-default submit"   onClick="verificar();"><a >Verificar</a>
-              </button>
-              <button   class="btn btn-default submit" ><a href="../../login.php">Cancelar</a>
-              </button>
 
-              </div>
-            </br>
-              
               <div>
                
+                <?php
+                  include("../../Config/conexion.php");
+                  $usuario = $_REQUEST["id"];
+                  $query_s = pg_query($conexion,"select
+                    pre.cid_usuario,
+                    pre.idpregunta,
+                    po.cpregunta
+                    from pre_us pre
+                    INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
+                    WHERE
+                    pre.cid_usuario = '$usuario'");
+                  $row = pg_num_rows($query_s);
+                  
+               if($row=!0){
+                      $query_s2 = pg_query($conexion,"select
+                    pre.cid_usuario,
+                    pre.idpregunta,
+                    po.cpregunta
+                    from pre_us pre
+                    INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
+                    WHERE
+                    pre.cid_usuario = '$usuario'");
+                    while ($fila = pg_fetch_array($query_s2)) {
+                      ?>
+                      <fieldset>
+                        
+                        <input type="text" class="form-control" placeholder="Pregunta de Seguridad" value="<?php echo $fila[2]; ?>" disabled />
+                      </fieldset>
+                      <div>
+                        <input type="text" class="form-control" placeholder="Respuesta" id="respuestas" name="respuestas"  />
+                      </div>
+
+                      <div>
+                        <button class="btn btn-default submit"  onClick="verificar2();" onClick="llamarPagina('<?php echo $fila[0]; ?>')"> </i>Confirmar </button>
+                        
+                        <button class="btn btn-default submit" > 
+                          <a style="color:#000000" name="btnVerificar2" href="login.php">Cancelar</a>
+                        </button>
+                      </div>
+                    <?php
+                      } 
+                    }
+                ?>
              
               </div>
             
@@ -95,61 +150,16 @@
         </div>
       </div>
       </div>
-
-      <?php
-          include "../../ComponentesForm/scripts.php";
-        ?>
   </body>
 </html>
 
+
 <?php
   if (isset($_REQUEST["bandera"])) {
-      $bandera = $_REQUEST["bandera"];
-      $baccion=$_REQUEST["baccion"];
-      $usuariO=$_REQUEST["user"];                  
-      $idusu;
-
-      include("../../Config/conexion.php");
-      if ($bandera == "add") {
-      pg_query("BEGIN");
-
-      include("../../Config/conexion.php");
-      $query_s=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario=trim('$usuariO')");
-      
-      while ($fila=pg_fetch_array($query_s)){          
-        $existe=$fila[1];
-        //echo "$existe";
-      }
-
-        if($existe==null){
-            echo "<script language='javascript'>";
-            echo "alert('$usuariO No existe');";
-            echo "</script>";
-        }else{
-            include("../../Config/conexion.php");
-            $query_s=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario=trim('$usuariO') ");
-              
-              while ($fila=pg_fetch_array($query_s)){      
-                  $idusu=$fila[0]; 
-                  echo "$idusu";         
-              }
-              ?>
-                <script language='javascript'>
-                    
-                    llamarpreguntas('<?php echo $idusu; ?>');
-                    
-                    </script><?php
-        }                 
-      }
-  }
-?>
-
-<?php
-  /*if (isset($_REQUEST["bandera"])) {
     $bandera = $_REQUEST["bandera"];
     $baccion=$_REQUEST["baccion"];
     $respuesta = $_REQUEST["respuestas"];
-    $usuariO=$_REQUEST["user"];
+    $usuariO=$_REQUEST["id"];
 
     include("../../Config/conexion.php");
     if ($bandera == "add") {
@@ -157,14 +167,14 @@
       pg_query("BEGIN");                          
       include("../../Config/conexion.php");
       $query_s = pg_query($conexion,"select
-                    pre.idusuario,
+                    pre.cid_usuario,
                     pre.idpregunta,
                     pre.respuesta,
                     po.cpregunta
                     from pre_us pre
                     INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
                     WHERE
-                    pre.idusuario = '$usuariO'");
+                    pre.cid_usuario = '$usuariO'");
 
           if(!$query_s)
           {
@@ -200,11 +210,9 @@
               echo "<script type=text/javascript'>";
               echo "alert('Hey...');";
               echo "</script>";
-           }
+           }*/
         
       }                       
     }
-  */
+  
 ?>
-
-

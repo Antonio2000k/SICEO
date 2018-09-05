@@ -1,3 +1,6 @@
+<?php session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -20,12 +23,22 @@
             height: 100vh;
 
         }
-
-}
-
-
-
     </style>
+     <script language="javascript">
+            function verificar(){
+              if(document.getElementById('usuariox').value=="" || document.getElementById('clavex').value==""){
+                alert('Campos vacios');
+                  
+                }else{
+                  document.getElementById('bandera').value="add";
+                      
+                      document.frmSesion.submit();
+                      alert('sigue');
+                  }
+                  
+                  
+            }
+        </script>
 
     <!-- Bootstrap -->
  <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -69,14 +82,16 @@
           <h1 class="text-center"><img width="319" height="120" src="production/images/SiceoL.png "></h1>
           <section class="login_content">
 
-            <form class="cuadro">
+            <form class="cuadro" id="frmSesion" id="frmSesion" method="post">
 
+              <input type="hidden" name="bandera" id="bandera"/>
+              <input type="hidden" name="baccion" id="baccion" />
               <h1 style="color:#FFFFFF">Inicio de Sesi&oacuten</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Usuario" required="" />
+                <input type="text" name="usuariox" id="usuariox" class="form-control" placeholder="Usuario"  autocomplete="off" />
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Clave" required="" />
+                <input type="password" name="clavex" id="clavex" class="form-control" placeholder="Clave" autocomplete="off"  />
               </div>
               <div>
               <div class="checkbox text-center">
@@ -84,7 +99,8 @@
                               <input style="color:#FFFFFF" type="checkbox" class="flat" checked="checked"> Recu&eacuterdame
                             </label>
               </div>
-                <a style="color:#000000" class="btn btn-default submit" href="index.php">Iniciar</a>
+              <button type="button" class="btn btn-default submit"  onClick="verificar();" >Iniciar</button>
+                
                 <a style="color:#FFFFFF" class="reset_pass" href="Modulos/Seguridad/recuperar.php">Has perdido la contraseña?</a>
               </div>
 
@@ -105,3 +121,64 @@
       </div>
   </body>
 </html>
+
+<?php
+
+if(isset($_REQUEST["bandera"])){
+  echo "<script language='javascript'>";
+    echo "alert('Error');";
+    echo "</script>";
+    $bandera=$_REQUEST["bandera"];
+  $usuariox=$_REQUEST["usuariox"];
+  $clavex=$_REQUEST["clavex"];
+  //$us_en = password_hash($usuariox, PASSWORD_DEFAULT);
+  $pas_en = password_hash($clavex, PASSWORD_DEFAULT);
+  
+  include("Config/conexion.php");
+  
+  if($bandera=="add"){
+  pg_query("BEGIN");
+  
+  
+   $query_s2= pg_query($conexion,"select * from usuarios where cusuarios=trim('$usuariox') and cpassword=trim('$pas_en') and cprivilegio=1 ");
+  
+  $rows = pg_num_rows($query_s2);
+  
+  
+  if($rows==0){
+  
+      $query_s= pg_query($conexion,"select * from usuarios where cusuarios=trim('$usuariox') and password=trim('$clavex')");
+    
+    while($fila= pg_fetch_array($query_s)){
+      
+      
+    
+      
+      $_SESSION["autenticado"]="yeah";
+      echo "<script language='javascript'>";
+      echo "location.href='docs/index.php';";
+      echo "</script>"; 
+      
+      
+            
+      }
+    
+echo "<script language='javascript'>";
+    echo "alert('Error');";
+    echo "</script>";
+    
+    
+  }else{
+    
+    echo "<script language='javascript'>";
+    echo "alert('Error2');";
+    echo "</script>";
+    
+  }
+  
+  }
+}
+?>
+
+
+

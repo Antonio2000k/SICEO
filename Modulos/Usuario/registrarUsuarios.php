@@ -41,20 +41,45 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script type="text/javascript">
-      function validar() {
+        function alertaSweet(titulo,texto,tipo){
+          swal(titulo,texto,tipo);
+        }
+
+      function validar(opcion) {
+        var opc=true;
+
         if(document.getElementById('user').value=="" || document.getElementById('pass').value==""
-          || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="0"
-          || document.getElementById('pregunta').value=="" || document.getElementById('respuesta').value==""
-          || document.getElementById('privilegio').value=="0")
+          || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="Seleccionar"
+          || document.getElementById('pregunta').value=="Seleccionar" || document.getElementById('respuesta').value==""
+          || document.getElementById('privilegio').value=="Seleccionar")
         {
-          alert("No sirve (rellene los campos)");
+          swal('Error','Complete los campos','error');
+          document.getElementById('bandera').value="";
+          opc=false;
         }
         else {
-          document.getElementById('bandera').value="add";
-          document.frmUsuario.submit();
+          if(document.getElementById('repass').value==document.getElementById('pass').value) {
+            if(opcion=="Guardar")
+              document.getElementById('bandera').value="add";
+            else
+              document.getElementById('bandera').value="modif";
 
-          alert("Sirve");
+            opc=true;
+          }
+          else {
+            swal('Error','Las contraseñas deben coincidir','error');
+            opc=false;
+          }
         }
+
+        $(document).ready(function(){
+          $("#frmUsuario").submit(function() {
+              if (opc!=true) {    
+                return false;
+              } else 
+                  return true;      
+            });
+        });
       }
     </script>
 
@@ -86,7 +111,6 @@ if(isset($_REQUEST["id"])){
                                         <h1 align="center">
                                            Usuarios
                                         </h1>
-                                    </img>
                                 </div>
                                 <div align="center">
                                     <p>
@@ -121,34 +145,41 @@ if(isset($_REQUEST["id"])){
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
-                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="post">
+                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="get">
                              <div class="row">
                                 <!--Codigos-->
                                 <input type="hidden" name="bandera" id="bandera">
 
                                 <div class="item form-group">
-                                   <label class="control-label col-md-1 col-sm-3 col-xs-12">Usuario</label>
-                                   <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" required="required" >
-                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                   <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback">
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Usuario (*)</label>
+                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                         <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" required="required" autocomplete="off" maxlength="15">
+                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                       </div>
                                    </div>
 
-                                   <label class="control-label col-md-1 col-sm-3 col-xs-12">Contraseña</label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="pass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" required="required" >
-                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
-                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Verificar Contraseña</label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Ingrese de nuevo la contraseña" required="required" >
-                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
+                                   <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña (*)</label>
+                                      <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                         <input type="password" class="form-control has-feedback-left"  id="pass" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" required="required" >
+                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                      </div>
+                                   </div>
+
+                                   <div class="col-md-5 col-sm-5 col-xs-12 form-group has-feedback">
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Verificar Contraseña (*)</label>
+                                      <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                                         <input type="password" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Repita la contraseña" required="required" autocomplete="off">
+                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                      </div>
+                                   </div>
                                 </div>
 
                                 <div class="item form-group">
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Privilegios</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Privilegios (*)</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="privilegio" name="privilegio">
                                             <?php 
@@ -156,7 +187,7 @@ if(isset($_REQUEST["id"])){
 
                                             //$array=
                                             ?>
-                                              <option value="0">Seleccionar</option>
+                                              <option value="Seleccionar">Seleccionar</option>
                                               <option value="1">Administrador</option>
                                               <option value="2">Empleado</option>
                                            </select>
@@ -165,9 +196,10 @@ if(isset($_REQUEST["id"])){
                                   </div>
                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado</label>
-                                        <div class="col-md-6 col-sm-9 col-xs-12">
+                                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Empleado (*)</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
                                            <select class="form-control" id="idempleado" name="idempleado">
+
                                               <option value="">Seleccione Empleado</option>
                                             <?php
                                              include("../../Config/conexion.php");
@@ -184,6 +216,11 @@ if(isset($_REQUEST["id"])){
                                              } 
                                               
                                             ?>
+
+                                              <option value="Seleccionar">Seleccionar</option>
+                                              <option value="ABC01">fulano de tal</option>
+                                              <option value="Emp 2">mengana</option>
+
                                            </select>
                                         </div>
                                      </div>
@@ -193,9 +230,10 @@ if(isset($_REQUEST["id"])){
                                  <div class="item form-group">
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-4 col-sm-3 col-xs-12">Pregunta</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Pregunta (*)</label>
                                         <div class="col-md-6 col-sm-9 col-xs-12">
                                            <select class="form-control" id="pregunta" name="pregunta">
+
                                             <option value="">Seleccione Pregunta</option>
                                             <?php
                                              include("../../Config/conexion.php");
@@ -213,16 +251,25 @@ if(isset($_REQUEST["id"])){
                                               
                                             ?>
                                               
+
+                                              <option value="Seleccionar">Seleccionar</option>
+                                              <option value="xdxdxd">jakñdjaskñjdaksjdaslñk?</option>
+                                              <option value="xfxgxg">kljsdklaklvcnskldjaskjdakl?</option>
+
                                            </select>
                                         </div>
                                      </div>
                                   </div>
 
-                                       <label class="control-label col-md-1 col-sm-3 col-xs-12">Respuesta</label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" required="required" >
-                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <div class="form-group">
+                                      <label class="control-label col-md-4 col-sm-3 col-xs-12">Respuesta (*)</label>
+                                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                         <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" required="required" >
+                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
+                                    </div>
+                                  </div>
                                  </div>
 
 
@@ -233,8 +280,11 @@ if(isset($_REQUEST["id"])){
                                   <div class="item form-group">
                                     <center>
                                        <div class="col-md-12 col-sm-6 col-xs-12 ">
-                                          <button class="btn btn-success btn-icon left-icon;" style="padding-left: 70px; padding-right: 70px " onclick="validar()"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
-                                           <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                          <div class="form-group">
+                                            <button class="btn btn-success btn-icon left-icon;" style="padding-left: 70px; padding-right: 70px " onClick="validar('guardar');"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
+
+                                            <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                          </div>
                                       </div>
                                     </center>
                                   </div>
@@ -247,7 +297,7 @@ if(isset($_REQUEST["id"])){
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
                                 <div class="x_title">
-                                  <h2>PACIENTES </h2>
+                                  <h2>USUARIOS </h2>
 
                                 <div class="clearfix"></div>
                                 </div>
@@ -274,7 +324,7 @@ if(isset($_REQUEST["id"])){
                                       <td class="text-center"><a href="expediente.php" class="btn btn-round btn-info"  >+</a></td>
                                     </tr>
                                     <tr>
-                                      <td>1</td>
+                                      <td>2</td>
                                       <td>uiuidss</td>
                                       <td>kjkdajk</td>
                                       <td>Empleado</td>
@@ -282,7 +332,7 @@ if(isset($_REQUEST["id"])){
                                       <td class="text-center"><a href="expediente.php" class="btn btn-round btn-info"  >+</a></td>
                                     </tr>
                                     <tr>
-                                      <td>1</td>
+                                      <td>3</td>
                                       <td>uiuidss</td>
                                       <td>kjkdajk</td>
                                       <td>Empleado</td>
@@ -290,7 +340,7 @@ if(isset($_REQUEST["id"])){
                                       <td class="text-center"><a href="expediente.php" class="btn btn-round btn-info"  >+</a></td>
                                     </tr>
                                     <tr>
-                                      <td>1</td>
+                                      <td>4</td>
                                       <td>uiuidss</td>
                                       <td>kjkdajk</td>
                                       <td>Empleado</td>
@@ -336,6 +386,7 @@ if(isset($_REQUEST["id"])){
 </html>
 
 <?php 
+
 include "../../Config/conexion.php";
 
 $bandera = $_REQUEST['bandera'];
@@ -356,13 +407,39 @@ if($bandera=="add") {
             echo "mostrarMensaje('Datos correctos', 'success', 2500);";
             echo "</script>";
             $existe = true;
-        }
 
-        if(!$existe) {
-            echo "<script type='text/javascript'>";
-            echo "mostrarMensaje('Datos incorrectos, 'error', 2000);";
-            echo "</script>";
+if(isset($_REQUEST["bandera"])) {
+  $user=$_REQUEST["user"];
+  $pass=$_REQUEST["pass"];
+  $repass=($_REQUEST["repass"]);
+  $privilegio=($_REQUEST["privilegio"]);
+  $idempleado=($_REQUEST["idempleado"]);
+  $pregunta=($_REQUEST["pregunta"]);
+  $respuesta=$_REQUEST["respuesta"];
+  include("../../Config/conexion.php");
+
+  if($bandera=="add") {
+      pg_query("BEGIN");
+
+      $r=pg_query($conexion,"select * from usuarios");
+
+        $result=pg_query($conexion,"insert into usuarios(cusuarios, cpassword, cid_empleado, eprivilegio) values('$user','$pass','$idempleado',$privilegio)");
+          
+        if(!$result){
+          pg_query("rollback");
+          echo "<script language='text/javascript'>";
+          echo "alertaSweet('Error','Datos no almacenados', 'error');";
+          echo "alert('No sirve');";
+                  echo "document.getElementById('bandera').value='';";
+          echo "</script>";
+          }else{
+            pg_query("commit");
+            echo "<script language='javascript'>";
+                      echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+                      echo "document.getElementById('bandera').value='';";
+                      echo "</script>";
+          }
+
         }
-    }
-}
+      }
 ?>

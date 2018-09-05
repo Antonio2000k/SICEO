@@ -16,7 +16,7 @@
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
+                  <li><a><i class="fa fa-home"></i> Inicio </a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
@@ -56,11 +56,7 @@
                   </li>
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="seguridad.php">Registrar usuario</a></li>
-                      <li><a href="empleados.php">Listado de usuarios</a></li>
-                      <li><a href="empleados.php">Generar respaldo</a></li>
-                      <li><a href="empleados.php">Restablecer respaldo</a></li>
-                      <li><a href="empleados.php">Bitacora</a></li>
+                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
                     </ul>
                   </li>
                 </ul>

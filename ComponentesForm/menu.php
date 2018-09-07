@@ -1,26 +1,3 @@
-<?php
-session_start();
-$t=$_SESSION["nivelUsuario"];
-$idus=$_SESSION["idUsuario"];
-$us =$_SESSION["nombrUsuario"]; 
-$nombreE =  $_SESSION["nombreEmpleado"];
-$apellidoE = $_SESSION["apellidoEmpleado"];
-$dui  =   $_SESSION["duiEmpleado"];
-$tel  =   $_SESSION["telEmpleado"];
-$cel  =   $_SESSION["celEmpleado"];
-$correo  =   $_SESSION["correoEmpleado"];
-$dir   =   $_SESSION["dirEmpleado"];
-$sex   =   $_SESSION["sexEmpleado"];
-if($_SESSION['autenticado']!="yeah" || $t!=1){
-  header("Location: ../../login.php");
-  exit();
-  }
-  ?>
-  <script type="text/javascript">
-      function llamarpreguntas(id){
-        window.open("../Seguridad/recuperarP.php?id="+id, '_parent');
-      }      
-  </script>
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
@@ -39,7 +16,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Inicio </a></li>
+                  <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
@@ -79,8 +56,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </li>
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
-                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
+                      <li><a href="seguridad.php">Registrar usuario</a></li>
+                      <li><a href="empleados.php">Listado de usuarios</a></li>
+                      <li><a href="empleados.php">Generar respaldo</a></li>
+                      <li><a href="empleados.php">Restablecer respaldo</a></li>
+                      <li><a href="empleados.php">Bitacora</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -103,19 +83,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../../production/images/user.png" alt=""><?php
-                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ; 
-                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]); 
-                   echo $nombre." ".$apellido;
-                   ?>
+                    <img src="production/images/user.png" alt="">John Doe
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-
-                    <li><a data-toggle="modal" href="#myModall" > Perfil</a></li>
+                    <li><a href="javascript:;"> Perfil</a></li>
 
                     <li><a href="javascript:;">Ayuda</a></li>
-                    <li><a href="../../ComponentesForm/fin.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
+                    <li><a href="../../login.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 
@@ -125,121 +100,3 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           </div>
         </div>
         <!-- /top navigation -->
-
-        <!-- Modal -->
-          <div class="modal fade" id="myModall" role="dialog">
-            <div class="modal-dialog">
-            
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <div>
-                     <p><img align="left" height="35" width="35" src="../../production/images/cliente.png" style="margin-right:20px"><h4 class="modal-title">Informacion Personal</h4></img></p>
-                  </div>
-                  
-                </div>
-                <div class="modal-body">
-                  
-                              </br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" value="<?php echo $nombreE; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Apellido</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" value="<?php echo $apellidoE; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">duiEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="dui" value="<?php echo $dui; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">telEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="telefono" value="<?php echo $tel; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">celEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="celular" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="celular" value="<?php echo $cel; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">correoEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="correo" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="correo" value="<?php echo $correo; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">dirEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="direccion" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="direccion" value="<?php echo $dir; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                   <div class="item form-group">
-                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">sexEmpleado</label>
-                          <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="pregunta_usuario" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pregunta_usuario" value="<?php echo $sex; ?>" autocomplete="off" maxlength="60" disabled><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <br>
-                  <br><br><br><br><br>
-                </div>
-                <div class="modal-footer">
-                  
-                  <button type="button" class="btn btn-info" data-dismiss="modal" onclick="this.disabled = true; llamarpreguntas('<?php echo $idus ?>')"  ><i class="fa fa-lock"></i> Cambiar Contraseña</button>
-                  <button type="button"  class="btn btn-info" data-dismiss="modal" ><i class="fa fa-plus"></i> Modificar </button>
-                    
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
-                </div>
-              </div>
-            </div>
-          </div>

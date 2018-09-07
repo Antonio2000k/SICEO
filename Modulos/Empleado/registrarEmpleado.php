@@ -1,4 +1,4 @@
-<?php
+<?php session_start(); 
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -106,12 +106,12 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres*</label>
                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" onblur="limpia()" autocomplete="off">
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos*</label>
                                     <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" onblur="limpia()" autocomplete="off">
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -147,29 +147,29 @@ if(isset($_REQUEST["id"])){
                                   <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI*</label>
                                     <div class="col-md-3 col-sm-10 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>" autocomplete="off">
+                                       <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>" autocomplete="off" onblur="vali('dui');">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off">
+                                      <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off" onblur="vali('telefono');">
                                       <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Celular*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>" autocomplete="off" onkeypress="return valiCelular(event)">
+                                       <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>" autocomplete="off" onblur="vali('celular');">
                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     
-                                       <label class="control-label col-md-1 col-sm-3 col-xs-12">Direccion*</label>
+                                       <label class="control-label col-md-1 col-sm-3 col-xs-12">Direcci&oacuten*</label>
                                             <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
                                                 <input type="tel" class="form-control has-feedback-left" id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" autocomplete="off">
                                                 <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                         <label class="control-label col-md-2 col-sm-3 col-xs-12">Correo Electronico*</label>
                                             <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                                <input type="telc" class="form-control has-feedback-left" id="correo" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="correo" placeholder="Correo Electronico" value="<?php echo $Rcorreo; ?>" autocomplete="off" onblur="validarEmail()">
+                                                <input type="telc" class="form-control has-feedback-left" id="correo" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="correo" placeholder="Correo Electronico" value="<?php echo $Rcorreo; ?>" autocomplete="off" onblur="validarEmail();">
                                                 <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                             
@@ -184,14 +184,15 @@ if(isset($_REQUEST["id"])){
                                                 if(!isset($iddatos)){
                                                     ?>
                                                     <button class="btn btn-success btn-icon left-icon;" onClick="verificar('guardar');"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
+                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiar');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                                     <?php
                                                 }else{
                                                     ?>
                                                     <button class="btn btn-info btn-icon left-icon;" onClick="verificar('modificar');"> <i  class="fa fa-save"  name="btnModificar" id="btnModificar"></i> <span >Modificar</span></button>
+                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiarM');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                                     <?php
                                                 }
                                            ?>
-                                           <button class="btn btn-danger  btn-icon left-icon"  id="limpiar"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                       </div>
                                     </center>
                                   </div>
@@ -215,7 +216,7 @@ if(isset($_REQUEST["id"])){
                                       <th>Nombres</th>
                                       <th>Apellidos</th>
                                       <th>Telefono</th>
-                                      <th>Sexo</th>
+                                      <th>Correo</th>
                                       <th>Acciones</th>
                                     </tr>
                                   </thead>
@@ -230,7 +231,7 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[1]; ?></td>
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[3]; ?></td>
-                                      <td> <?php echo $fila[6]; ?> </td>
+                                      <td> <?php echo $fila[10]; ?> </td>
                                       <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
                                       <?php if($fila[9]=='t'){ ?>
                                       <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al empleado '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
@@ -289,26 +290,32 @@ $correo=$_REQUEST["correo"];
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-
     $r=pg_query($conexion,"select * from empleados");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
-    echo $codigo;
-      $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
+    
+    if(validaCorreo($correo,$baccion,$dui)){
+        mensajeInformacion('Error','Correo o Dui ya se encuentra registrado','error');
+    }else{
         
-      if(!$result){
-				pg_query("rollback");
-				mensajeInformacion('Error','Datos no almacenados','error');
-				}else{
-					pg_query("commit");
-					mensajeInformacion('Informacion','Datos almacenados','info');
-				}
+          $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
+          if(!$result){
+                    pg_query("rollback");
+                    mensajeInformacion('Error','Datos no almacenados','error');
+                    }else{
+                        pg_query("commit");
+                        mensajeInformacion('Informacion','Datos almacenados','info');
+                        clearstatcache(); 
+                    }
+    }
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-
-      $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion',ccorreo='$correo' where cid_empleado='$baccion'");    
-      if(!$result){
+      if(validaCorreo($correo,$baccion,$dui)){
+          mensajeInformacion('Error','Correo o Dui ya se encuentra registrado','error');
+      }else{
+          $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion',ccorreo='$correo' where cid_empleado='$baccion'");    
+            if(!$result){
 				pg_query("rollback");
 				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
@@ -318,6 +325,12 @@ if($bandera=='modificar'){
                     echo "document.location.href='registrarEmpleado.php';";
                     echo "</script>";
 				}
+      }
+}
+if($bandera=="cancelar"){
+                    echo "<script type='text/javascript'>";
+                    echo "document.location.href='registrarEmpleado.php';";
+                    echo "</script>";
 }
 if($bandera=="Dbajar" || $bandera=='Dactivar'){
     if($bandera=="Dbajar")
@@ -347,18 +360,33 @@ function generar($nombree,$apellidos){
 		return strtoupper($cad);
 	}
 
-<<<<<<< HEAD
 
-=======
+function validaCorreo($correo,$baccion,$dui){
+    $valor=0;
+    include("../../Config/conexion.php");
+    $query_s= pg_query($conexion, "select * from empleados order by cnombre");
+        while($fila=pg_fetch_array($query_s)){
+            if(strcmp($fila[10],$correo)===0 || strcmp($fila[5],$dui)===0){
+                $valor=1;
+            }
+            if(strcmp($fila[0],$baccion)===0){
+                $valor=0;
+            }
+        }
+    return $valor;
+}
+
+
 function mensajeInformacion($titulo,$mensaje,$tipo){
             echo "<script language='javascript'>";
             echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
             echo "document.getElementById('bandera').value='';";
+            echo "document.getElementById('baccion').value='';";
             echo "ajax_act('');";
             echo "</script>";
     
 }
+
 ?>
->>>>>>> 7fa1e43e66a8ab7ba7382a8b9bff45548e111234
 
 

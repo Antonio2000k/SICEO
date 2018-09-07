@@ -1,3 +1,12 @@
+<?php
+ session_start();
+$t=$_SESSION["nivelUsuario"];
+//$iddatos=$_SESSION["idUsuario"];
+if($_SESSION['autenticado']!="yeah" || $t!=1 || $t!=2){
+  header("Location: login.php");
+  exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

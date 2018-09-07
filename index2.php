@@ -11,7 +11,7 @@ $cel  =   $_SESSION["celEmpleado"];
 $correo  =   $_SESSION["correoEmpleado"];
 $dir   =   $_SESSION["dirEmpleado"];
 $sex   =   $_SESSION["sexEmpleado"];
-if($_SESSION['autenticado']!="yeah" || $t!=1){
+if($_SESSION['autenticado']!="yeah" || $t!=2){
   header("Location: login.php");
   exit();
   }
@@ -27,7 +27,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <title>SICEO</title>
 
-     <!-- Bootstrap -->
+    <!-- Bootstrap -->
  <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -51,8 +51,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
    <link rel="stylesheet" href="vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.css">
    
    <!-- -->
-   <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">
-
+   <link rel="stylesheet" href="vendors/notifit-2-master/dist/notifit.min.css">
    <script type="text/javascript">
       function llamarpreguntas(id){
         window.open("Modulos/Seguridad/recuperarP.php?id="+id, '_parent');
@@ -72,7 +71,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
            <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="images/SiceoL.png" ></p></a>
+              <a href="index2.php" class="site_title"><p align="center"> <img  width="179" height="70" src="images/SiceoL.png" ></p></a>
             </div>
 </div>
             <!-- /menu profile quick info -->
@@ -86,12 +85,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
-                  <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
-                    </ul>
-                  </li>
+                  <li><a href="index2.php"><i class="fa fa-home"></i> Inicio </a></li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="clientes.php">Registrar</a></li>
@@ -100,7 +94,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="productos.php">Registar</a></li>
                       <li><a href="empleados.php">Listado de productos</a></li>
                     </ul>
                   </li>
@@ -112,24 +105,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       <li><a href="empleados.php">Control de garantias</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="proveedor.php">Proveedores</a></li>
-                      <li><a href="empleados.php">Compras</a></li>
-                    </ul>
-                  </li>
+                  
                   <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="registrarEncomienda.php">Registrar</a></li>
-                      <li><a href="empleados.php">Listado de encomiendas</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
-                      <li><a href="Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
-                    </ul>
-                  </li>
+                  
                 </ul>
               </div>
             </div>
@@ -140,6 +122,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         </div>
 
         <!-- top navigation -->
+        
+
         <div class="top_nav">
           <div class="nav_menu">
             <nav>
@@ -155,6 +139,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]); 
                    echo $nombre." ".$apellido;
                    ?>
+                   
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -193,16 +178,17 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 <div class="tile-stats">
                   <div class="icon"><i class="fa fa-user"></i></div>
                   <div class="count" style="font-size: 30px;">Clientes</div>
-                  <p>Mostrar el listado de clientes.</p>
+                  <p>Registrar clientes.</p>
                 </div>
               </div>
               <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-line-chart"></i></div>
-                  <div class="count" style="font-size: 30px;">Ingresos</div>
-                  <p>Grafica de ingresos mensuales.</p>
-                </div>
-              </div>
+                    <div class="tile-stats">
+                      <div class="icon"><i class="fa fa-file-excel-o"></i></div>
+                      <div class="count"  style="font-size: 30px;">Examenes</div>
+                      <p>Registrar examenes</p>
+                    </div>
+                  </div>
+              
             </div>
             <div class="row top_tiles">
                 <div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
@@ -215,12 +201,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     </div>
                   </div>
                   <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <div class="tile-stats">
-                      <div class="icon"><i class="fa fa-pie-chart"></i></div>
-                      <div class="count"  style="font-size: 30px;">Compras</div>
-                      <p>Grafica de compras mensuales</p>
-                    </div>
-                  </div>
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-database"></i></div>
+                  <div class="count" style="font-size: 30px;">Encomiendas</div>
+                  <p>Mostrar lista de encomiendas.</p>
+                </div>
+              </div>
+                  
                 </div>
                 <br>
                 <br>
@@ -235,6 +222,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         
         </div>
         <!-- /page content -->
+        <!-- footer content -->
         <!-- Modal -->
           <div class="modal fade" id="myModall" role="dialog">
             <div class="modal-dialog">
@@ -352,7 +340,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               </div>
             </div>
           </div>
-        <!-- footer content -->
+
         <footer>
           <div class="pull-right">
             SICEO. Derechos Reservados <a href="https://colorlib.com"></a>
@@ -361,7 +349,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         </footer>
         <!-- /footer content -->
       </div>
-    </div>
+   
 
     <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
@@ -461,6 +449,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
       });
     </script>
-	
+  
   </body>
 </html>

@@ -73,8 +73,11 @@
     <script>
     $('#myDatepicker').datetimepicker();
     
+    $('#myDatepicker0').datetimepicker({
+        format: 'DD.MM.YYYY'
+    });
     $('#myDatepicker2').datetimepicker({
-        format: 'MM.DD.YYYY'
+        format: 'DD.MM.YYYY'
     });
     
     $('#myDatepicker3').datetimepicker({

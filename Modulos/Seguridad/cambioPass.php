@@ -3,7 +3,7 @@
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from usuarios WHERE cusuarios = '$iddatos'");
+    $query_s = pg_query($conexion, "select * from usuarios WHERE cid_usuario = '$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
        $RidUsuario = $fila[0];
        $RPass = $fila[2];
@@ -30,10 +30,11 @@ if(isset($_REQUEST["id"])){
             padding: 0;
         }
         .main2 {
-            background-image: url("../../production/images/lentes1.png");
-            background-position: bottom;
-            overflow: hidden;
-            height: 100vh;
+            background: url("../../production/images/lentes1.png") no-repeat center center fixed;   
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
 
         }
 
@@ -43,16 +44,33 @@ if(isset($_REQUEST["id"])){
     ?>
     <!--<link href="build/css/estiloLogin.css" rel="stylesheet"/>-->
     <script type="text/javascript">
-
-        function verificar(){
-                  if(document.getElementById('pass').value=="" || document.getElementById('cpass').value==""){
-                      alert('Campos vacios');
+      function verificar(opcion){
+          var opc=true;
+          if(document.getElementById('pass').value=="" || document.getElementById('cpass').value==""){
+                      swal('Error!','Complete los campos!','error',1000);
                       document.getElementById('bandera').value="";
-                      }else{
-                            document.getElementById('bandera').value="modificar";
-                            document.frmCambio.submit();
-                        }
+                      opc = false;
+          }else{  
+              if(opcion==="guardar"){
+                    document.getElementById('bandera').value="modificar";
+                 
+                     } 
+          }
+
+          $(document).ready(function(){
+            $("#frmCambio").submit(function() {
+              if (opc!=true) {    
+                  return false;
+              } else 
+                return true;      
+            });
+          });
       }
+       
+
+      function alertaSweet(titulo,texto,tipo,timer){
+        swal(titulo,texto,tipo,timer);
+      } 
 
     </script>
   </head>
@@ -78,10 +96,10 @@ if(isset($_REQUEST["id"])){
                   
 
                   <div>
-                        <button class="btn btn-default submit" name="btnCambiar"  onClick="verificar();"> </i>Cambiar</button>
+                        <button class="btn btn-default submit" name="btnCambiar"  onClick="verificar('guardar');"> </i>Cambiar</button>
                         
-                        <button class="btn btn-default submit" type="reset" > 
-                          <a style="color:#000000" name="btnCancelar" >Cancelar</a>
+                        <button style="color:#000000" name="btnCancelar" class="btn btn-default submit" type="reset" onclick=" location.href='../../login.php'; "> 
+                          Cancelar
                         </button>
 
                   </div>
@@ -105,6 +123,10 @@ if(isset($_REQUEST["id"])){
         </div>
       </div>
       </div>
+
+      <?php
+          include "../../ComponentesForm/scripts.php";
+        ?>
   </body>
 </html>
 
@@ -114,30 +136,33 @@ if(isset($_REQUEST["id"])){
     $baccion=$_REQUEST["baccion"];
     $pass = $_REQUEST["pass"];
     $cpass=$_REQUEST["cpass"];
-
+    $pass=base64_encode($pass);
+    $cpass=base64_encode($cpass);
     include("../../Config/conexion.php");
     
     if($bandera=='modificar'){
         pg_query("BEGIN");
-        $result=pg_query($conexion,"update usuarios set cpassword ='$pass' where cusuarios ='$baccion'");      
+        $result=pg_query($conexion,"update usuarios set cpassword ='$pass' where cid_usuario ='$baccion'");      
         
         if(!$result){
           pg_query("rollback");
-          echo "<script language='javascript'>";
+          echo "<script type='text/javascript'>";
           echo "alert('Error');";
           echo "document.getElementById('bandera').value='';";
           echo "</script>";
         }else{
           if($pass!=$cpass){
-              echo "<script language='javascript'>";
-              echo "alert('Respuestas NO coinciden');";
+
+              echo "<script type='text/javascript'>";
+              echo "swal('Error!','Respuestas NO coinciden!','error');";
               echo "document.getElementById('bandera').value='';";
               echo "</script>";
           }else{
+
             pg_query("commit");
           ?>
-          <script language='javascript'>
-              alert('Datos Cambiados');
+          <script type='text/javascript'>
+              swal('Success!','Datos Cambiados!','success');
               document.location.href='../../login.php';
           </script>
           <?php

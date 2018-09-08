@@ -1,12 +1,3 @@
-<?php
-session_start();
-$t=$_SESSION["nivelUsuario"];
-
-if($_SESSION['autenticado']!="yeah" || $t!=1){
-  header("Location: ../../login.php");
-  exit();
-  }
-?>
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
@@ -25,7 +16,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Inicio </a></li>
+                  <li><a><i class="fa fa-home"></i> Inicio </span></a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
@@ -65,8 +56,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </li>
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
-                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
+                      <li><a href="seguridad.php">Registrar usuario</a></li>
+                      <li><a href="empleados.php">Listado de usuarios</a></li>
+                      <li><a href="empleados.php">Generar respaldo</a></li>
+                      <li><a href="empleados.php">Restablecer respaldo</a></li>
+                      <li><a href="empleados.php">Bitacora</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -89,19 +83,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../../production/images/user.png" alt=""><?php
-                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ; 
-                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]); 
-                   echo $nombre." ".$apellido;
-                   ?>
+                    <img src="production/images/user.png" alt="">John Doe
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-
-                    <li><a data-toggle="modal" href="#myModall" > Perfil</a></li>
+                    <li><a href="javascript:;"> Perfil</a></li>
 
                     <li><a href="javascript:;">Ayuda</a></li>
-                    <li><a href="../../ComponentesForm/fin.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
+                    <li><a href="../../login.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 

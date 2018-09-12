@@ -10,7 +10,7 @@
     <title>SICEO | Productos </title>
 
     <?php
-      include "estilos.php";
+      include "../../ComponentesForm/estilos.php";
     ?>
   </head>
 
@@ -25,7 +25,7 @@
                         </div>
 
                         <?php
-                        include "menu.php";
+                        include "../../ComponentesForm/menu.php";
                         ?>
                         
                     </div>
@@ -34,7 +34,7 @@
                         <div class="col-md-12 col-xs-12">
                             <div class="x_panel">
                                 <div>
-                                    <img align="left" width="120" height="120" src="production/images/compra.png">
+                                    <img align="left" width="120" height="120" src="../../production/images/compra.png">
                                         <h1 align="center">
                                             PRODUCTOS
                                         </h1>
@@ -239,7 +239,7 @@
 
                     <footer>
                         <?php
-      include "footer.php";
+      include "../../ComponentesForm/footer.php";
     ?>
                     </footer>
                 </div>
@@ -248,7 +248,7 @@
         </div>
 
         <?php
-          include "scripts.php";
+          include "../../ComponentesForm/scripts.php";
         ?>
     </body>
 </html>

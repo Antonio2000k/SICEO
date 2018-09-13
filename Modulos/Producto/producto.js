@@ -76,7 +76,7 @@
         
     function DarBaja(id,opcion,mensaje,conf){
         swal({
-          title: 'Confirmaci&oacute',
+          title: 'Confirmaci&oacuten',
           text: mensaje,
           type: 'warning',
           showCancelButton: true,
@@ -113,7 +113,7 @@
         });
     }
     
-    function ajax_act(str){
+    function ajax_act(str,opcion){
 			if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
           } else {
@@ -122,10 +122,10 @@
             xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-              document.getElementById("imprimir").innerHTML = xmlhttp.responseText;
+              document.getElementById("cargala").innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("post", "recargaTblEmpleados.php", true);
+    xmlhttp.open("post", "cargarModal.php?idd="+opcion, true);
     xmlhttp.send();
 			}
 
@@ -139,6 +139,10 @@
             NotificacionSoloLetras2('error',"<b>Error: </b>Correo incorrecto");
             document.getElementById('correo').value='';
         }
+    }
+
+    function cambioBaccion(id){
+        document.getElementById('baccionVer').value=id;
     }
 
 

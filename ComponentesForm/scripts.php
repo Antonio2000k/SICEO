@@ -68,6 +68,9 @@
     
     <!-- PNotify3 -->
     <script src="../../vendors/notifit-2-master/dist/notifit.min.js"></script>
+    
+    <!-- Select2 --->
+    <script src="../../vendors/select2/dist/js/select2.full.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>

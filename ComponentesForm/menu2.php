@@ -30,8 +30,7 @@
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="productos.php">Registar</a></li>
-                      <li><a href="empleados.php">Listado de productos</a></li>
+                      <li><a href="../../Modulos/Producto/producto.php">Registar</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-line-chart"></i> Servicios <span class="fa fa-chevron-down"></span></a>

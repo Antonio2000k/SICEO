@@ -28,3 +28,6 @@
    
    <!-- -->
    <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">
+   
+   <!-- Select2 -->
+   <link rel="stylesheet" href="../../vendors/select2/dist/css/select2.min.css">

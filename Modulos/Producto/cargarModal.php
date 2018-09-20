@@ -1,7 +1,6 @@
-    <?php                
+    <?php
                 include '../../Config/conexion.php';
-                
-    ?>
+   ?>
     <style>
         th{
             font-weight: normal;
@@ -13,7 +12,7 @@
     </style>
     <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_content">                    
+                  <div class="x_content">
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -34,22 +33,21 @@
                                     echo '<th><b>Representante: </b></th>';
                                     echo '<th><i>'.$fila[0].' '.$fila[1].'</i></th>';
                                     echo '</tr>';
-                            
+
                                     echo '<tr>';
                                     echo '<th><b>Empresa: </b></th>';
                                     echo '<th><i>'.$fila[2].'</i><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Telefono: </b><i>'.$fila[3].'</i></th>';
                                     echo '</tr>';
-                            
+
                                     echo '<tr>';
                                     echo '<th><b>Direccion: </b></th>';
                                     echo '<th><i>'.$fila[4].'</i></th>';
                                     echo '</tr>';
                             }
-                        }                      
+                        }
                       ?>
-                        
+
                       </tbody>
-                      
                       <thead>
                         <tr>
                           <th></th>
@@ -70,9 +68,9 @@
                                     echo '<th><i>'.$fila[5].'</i></th>';
                                     echo '</tr>';
                             }
-                        }                      
+                        }
                       ?>
-                        
+
                       </tbody>
                     </table>
 

@@ -68,29 +68,29 @@ if(isset($_REQUEST["id"])){
                                 </div>
                             </div>
          <div class="row">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="" data-example-id="togglable-tabs" role="tabpanel">
-                                            <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
-                                                <li class="active" role="presentation"> <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                                                    NUEVO PRODUCTO
-                                                </a> </li>
-                                                <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content2" name="tab2" id="profile-tab" role="tab">
-                                                    LISTA DE PRODUCTOS
-                                                </a> </li>
-                                                <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content3" name="tab3" id="profile-tab" role="tab">
-                                                    LISTA DE PRODUCTOS EN BAJA
-                                                </a> </li>
-                                            </ul>
-                                            <div class="tab-content" id="myTabContent">
-                                                <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="" data-example-id="togglable-tabs" role="tabpanel">
+                    <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                        <li class="active" role="presentation"> <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
+                            NUEVO PRODUCTO
+                        </a> </li>
+                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content2" name="tab2" id="profile-tab" role="tab">
+                            LISTA DE PRODUCTOS
+                        </a> </li>
+                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content3" name="tab3" id="profile-tab" role="tab">
+                            LISTA DE PRODUCTOS EN BAJA
+                        </a> </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                 <div class="x_content">
                     <div class="x_title" style="background: #2A3F54">
                         <h3 align="center" style=" color: white">Datos Personales</h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="form-horizontal form-label-left" id="formProducto" name="formProducto" method="post">
+                        <form class="form-horizontal form-label-left" id="formProducto" name="formProducto" method="get">
                             <input type="hidden" name="bandera" id="bandera" />
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $idProducto;?>" />
                             <div id="cambiaso">

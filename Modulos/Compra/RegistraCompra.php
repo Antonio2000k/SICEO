@@ -52,6 +52,14 @@
                         </div>
                         <div class="x_content">
                                 <form class="form-horizontal form-label-left" name="formCompra" id="formCompra" method="get">
+                                       <div class="row text-center">
+                                           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoProducto">
+                                             <span class="glyphicon glyphicon-plus"></span> Nuevo producto
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoCliente">
+                                             <span class="glyphicon glyphicon-user"></span> Nuevo proveedor
+                                            </button>
+                                       </div>
                                         <div class="item form-group">
                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"> Proveedor* </label>
@@ -74,7 +82,7 @@
                                             </select>
                                             </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"> Modelo* </label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                             <select class="form-control SProducto" name="modelo" id="modelo" onchange="actualiza('cambioNombre')">
@@ -94,7 +102,10 @@
                                                 <?php }}}  */?>
                                             </select>
                                             </div>
-                                            </div>                                           
+                                            </div>
+                                            <div class="col-md-1 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <button class="btn btn-info btn-icon left-icon" data-toggle="modal" data-target="#editarProducto" onclick="lanzaModal();"> <i class="fa fa-info-circle"></i></button>
+                                            </div>                                          
                                         </div>
                                         <div class="item form-group">
                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
@@ -221,6 +232,30 @@
         </div>
         </div>
     </div>
+    
+    <!--- Modal -->
+        <div class="modal fade" id="editarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <center>
+                            <h3 class="modal-title" id="exampleModalLabel">Informacion producto.</h3> </center>
+                    </div>
+                    <div class="modal-body" id="cargala">
+                        <form class="form-horizontal" method="post" id="editar_usuario" name="editar_usuario">
+			            <div id="resultados_ajax2"></div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			            <button type="submit" class="btn btn-primary" id="actualizar_datos">Actualizar datos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal -->
+        <?php include 'Modal/modificacionProducto.php'; ?>
+        
     <!--Aqui va fin el contenido-->
     <footer><?php        include "../../ComponentesForm/footer.php";      ?> </footer>
 </div>        
@@ -229,7 +264,6 @@
     <?php include "../../ComponentesForm/scripts.php";    ?>
      <script>
                 $(function () {
-                    //Initialize Select2 Elements
                     $('.SProveedor').select2()
                     $('.SProducto').select2()
                 })

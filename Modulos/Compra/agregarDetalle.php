@@ -1,28 +1,44 @@
-<?php session_start(); 
-    $opcion=$_REQUEST["opcion"];
-    $cantidad=$_REQUEST["cantidad"];
-    
-	if($opcion=="agregar"){
-		$id=$_REQUEST["id"];
-		$acumulador=$_SESSION["acumulador"];
-		$matriz=$_SESSION["matriz"];
-		$acumulador++;
-		$matriz[$acumulador][0]=$idlugar;
-		$_SESSION['acumulador']=$acumulador;
-		$_SESSION['matriz']=$matriz;
+<?php session_start();     
+    $opcion=$_REQUEST["opcion"];	
 
-		impresion();
+	if($opcion=="agregar"){	
+		$acumulador=$_SESSION["acumulador"];    
+        $id=$_REQUEST["modelo"];
+        $cantidad=$_REQUEST["cantidad"];
+        if(existeCodigo($id)){
+            
+        }else{
+            $matriz=$_SESSION["matriz"];
+            $acumulador++;
+            $matriz[$acumulador][0]=$id;
+            $matriz[$acumulador][1]=$cantidad;
+            $_SESSION['acumulador']=$acumulador;
+            $_SESSION['matriz']=$matriz;
+        }
+     impresion();
 	}
 
 	if($opcion=="quitar"){
-		$id= $_GET["id"];
-
+        $quitar=$_REQUEST['quitar'];
 		$matriz=$_SESSION['matriz'];
-		unset($matriz[$id]);//Eliminacion de un indice en la matriz
-
+        //var_export($matriz);//Muestra todos los elementos del array
+		unset($matriz[$quitar]);//Eliminacion de un indice en la matriz
+        //echo'<br><br>';
+        //var_export($matriz);//Muestra todos los elementos del array
 		$_SESSION['matriz']=$matriz;
+        $acumulador--;
 		impresion();
 	}
+function existeCodigo($codigo){
+    $valor=false;
+    $acumulador=$_SESSION["acumulador"];
+    $matriz=$_SESSION["matriz"];
+    for($i=1 ; $i<=$acumulador; $i++){
+       if($codigo===$matriz[$i][0])
+           $valor=true;
+    }
+    return $valor;
+}
 
 function impresion(){
  ?>
@@ -34,59 +50,32 @@ function impresion(){
                 <th>Cantidad</th>
                 <th>Opciones</th>
             </tr>
-        </thead>
-	<?php
+        </thead>        
+       <tbody>
+        <tr>
+        <?php
 		$acumulador=$_SESSION['acumulador'];
 		$matriz=$_SESSION['matriz'];
 		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz
-	 ?>
-	
-        <tbody>
-        <tr>
-        <td class="text-center">
-        <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!');"> <i class="fa fa-ban"></i></button>
-        </td>
-        </tr>
-        <?php }  }?>
+			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
+            $id=$matriz[$i][0];
+            include '../../Config/conexion.php';
+            pg_query("BEGIN");
+            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
+            $nue=pg_num_rows($resultado);
+                if($nue>0){
+                while ($fila = pg_fetch_array($resultado)) {
+                     echo '<td>'.$fila[0].'</td>';
+                     echo '<td>'.$fila[1].'</td>';
+                    echo '<td>'.$matriz[$i][1].'</td>'; ?>
+                    <td class="text-center"><button class="btn btn-warning btn-icon left-icon" onClick="Eliminar('<?php echo $i;?>');"> <i class="fa fa-remove"></i></button><button class="btn btn-info btn-icon left-icon" onClick="verificar();"> <i class="fa fa-edit"></i></button></td>
+                    <?php
+                    }
+                }
+        
+        echo '</tr>';
+        }  }?>
         </tbody>
 </table>
 <?php } ?>
 
-<?php
-function impresion2(){
- ?>
-<table id="example1" class="table table-bordered table-striped">
-	<thead>
-	<tr>
-		<th align="center">Sintomas</th>
-		<th align="center">Accion</th>
-	</tr>
-	</thead>
-	<?php
-		$acumulador=$_SESSION['acumulador'];
-		$matriz=$_SESSION['matriz'];
-		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz
-	 ?>
-	<tr style="font-size: 14px;">
-	<?php
-		include("../../config/conexion.php");
-		$idlugar=$matriz[$i][0];
-
-		$result=$conexion->query("select * from sintoma where id='$idlugar' order by nombre");
-		if($result){
-			while($fila=$result->fetch_object()){
-				$xnombre=$fila->nombre;
-			}
-		}
-	 ?>
-	 <td align="left"><?php echo $xnombre; ?></td>
-	 <td>
-		<button type="button" name="btn" class="btn btn-block btn-success" onclick="showUser('quitar','<?php echo $i ?>')">Quitar</button>
-		</td>
-	 </tr>
-	 <?php }  }?>
-
-</table>
-<?php } ?>

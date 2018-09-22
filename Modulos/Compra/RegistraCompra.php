@@ -1,4 +1,16 @@
-<?php session_start(); ?>
+<?php session_start(); 
+//echo $_SESSION["mensaje"];
+$mensaje=$_SESSION["mensaje"];
+$acumulador=$_SESSION["acumulador"];
+$matriz=$_SESSION["matriz"];
+//echo $acumulador;
+/*
+if(isset($acumulador)){
+    unset($_SESSION["matriz"]);
+    unset($_SESSION["acumulador"]);
+}
+*/
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +20,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>SICEO | Compras </title>
     <?php include "../../ComponentesForm/estilos.php";  ?>
+    <link href="propio.css" rel="stylesheet">
     <script src="compra.js"></script>
 </head>
 <body class="nav-md">
@@ -51,7 +64,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                                <form class="form-horizontal form-label-left" name="formCompra" id="formCompra" method="get">
+                                <form class="form-horizontal form-label-left" name="formCompra" id="formCompra" method="post">
                                        <div class="row text-center">
                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoProducto">
                                              <span class="glyphicon glyphicon-plus"></span> Nuevo producto
@@ -149,6 +162,7 @@
                                 <div class="item form-group">
                                 <div class="row">
                                     <div class="x_content" id="mostrar">
+                                       <?php echo $_SESSION["mensaje"]; ?>
                                         <table id="datatable" class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
@@ -158,7 +172,31 @@
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody id="myTable">
+        <tr>
+        <?php
+		$acumulador=$_SESSION['acumulador'];
+		$matriz=$_SESSION['matriz'];
+		for($i=1 ; $i<=$acumulador ; $i++){
+			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
+            $id=$matriz[$i][0];
+            include '../../Config/conexion.php';
+            pg_query("BEGIN");
+            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
+            $nue=pg_num_rows($resultado);
+                if($nue>0){
+                while ($fila = pg_fetch_array($resultado)) {
+                     echo '<td>'.$fila[0].'</td>';
+                     echo '<td>'.$fila[1].'</td>';
+                    echo '<td>'.$matriz[$i][1].'</td>'; ?>
+                    <td class="text-center"><button class="btn btn-warning btn-icon left-icon" onClick="Eliminar('<?php echo $i;?>');"> <i class="fa fa-remove"></i></button><button class="btn btn-info btn-icon left-icon" onClick="verificar();"> <i class="fa fa-edit"></i></button></td>
+                    <?php
+                    }
+                }
+        
+        echo '</tr>';
+        }  }?>
+        </tbody>
                                         </table>
                                     </div>
                                 </div>

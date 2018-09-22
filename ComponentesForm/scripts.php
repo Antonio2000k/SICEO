@@ -1,5 +1,5 @@
-<!-- jQuery -->
-<script src="../../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="../../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
@@ -70,6 +70,8 @@
     
     <!-- Select2 --->
     <script src="../../vendors/select2/dist/js/select2.full.min.js"></script>
+    <!-- JQuery Confirm -->
+    <script src="../../vendors/jquery-confirm-master/dist/jquery-confirm.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>

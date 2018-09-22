@@ -241,7 +241,7 @@ if(isset($_REQUEST["id"])){
                         <h2>PRODUCTOS </h2>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">
+                    <div class="x_content" id="imprimirTablaActivados">
                         <table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">
                             <thead>
                                 <tr>
@@ -253,7 +253,7 @@ if(isset($_REQUEST["id"])){
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="imprimirTablaActivados">
+                            <tbody>
                                 <?php
                           include("../../Config/conexion.php");
                           $query_s= pg_query($conexion, "select * from productos where bestado='t' order by cmodelo");
@@ -425,9 +425,6 @@ if($bandera=='modificar'){
 				}else{
 					pg_query("commit");
                     mensajeInformacion('Informacion','Datos almacenados','info');
-                    echo "<script type='text/javascript'>";
-                    echo "document.location.href='producto.php';";
-                    echo "</script>";
 				}
 }
     if($bandera=="Dbajar" || $bandera=='Dactivar'){
@@ -444,15 +441,12 @@ if($bandera=='modificar'){
 
 				}else{
 					pg_query("commit");
-          echo "<script language='javascript'>";
-                echo "recargaTablaBaja();";
-                echo "</script>";
                     mensajeInformacion('Informacion','Datos almacenados','info');
 				}
 }
 if($bandera=="cancelar"){
                     echo "<script type='text/javascript'>";
-                    echo "document.location.href='registrarEmpleado.php';";
+                    echo "document.location.href='producto.php';";
                     echo "</script>";
 }
 
@@ -462,7 +456,6 @@ function mensajeInformacion($titulo,$mensaje,$tipo){
             echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
             echo "document.getElementById('bandera').value='';";
             echo "document.getElementById('baccion').value='';";
-            echo "recargaTabla();";
             echo "</script>";
 
 }

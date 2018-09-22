@@ -1,12 +1,12 @@
 <?php session_start();     
-    $opcion=$_REQUEST["opcion"];	
+    $opcion=$_REQUEST["opcion"];
 
 	if($opcion=="agregar"){	
 		$acumulador=$_SESSION["acumulador"];    
         $id=$_REQUEST["modelo"];
         $cantidad=$_REQUEST["cantidad"];
         if(existeCodigo($id)){
-            
+            $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>  Producto ya se encuentra en la lista</h5></div>';            
         }else{
             $matriz=$_SESSION["matriz"];
             $acumulador++;
@@ -14,8 +14,10 @@
             $matriz[$acumulador][1]=$cantidad;
             $_SESSION['acumulador']=$acumulador;
             $_SESSION['matriz']=$matriz;
+            $mensaje='<div class="text-center success"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto agregado a la lista</h5></div>';
         }
-     impresion();
+        $_SESSION["mensaje"]=$mensaje;
+     //impresion($mensaje);
 	}
 
 	if($opcion=="quitar"){
@@ -27,7 +29,9 @@
         //var_export($matriz);//Muestra todos los elementos del array
 		$_SESSION['matriz']=$matriz;
         $acumulador--;
-		impresion();
+        $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
+        $_SESSION["mensaje"]=$mensaje;
+		//impresion();
 	}
 function existeCodigo($codigo){
     $valor=false;
@@ -40,9 +44,9 @@ function existeCodigo($codigo){
     return $valor;
 }
 
-function impresion(){
- ?>
-<table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">
+function impresion($mensaje){
+   echo $mensaje;
+ ?><table id="tabla" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Modelo</th>
@@ -51,7 +55,7 @@ function impresion(){
                 <th>Opciones</th>
             </tr>
         </thead>        
-       <tbody>
+       <tbody id="myTable">
         <tr>
         <?php
 		$acumulador=$_SESSION['acumulador'];
@@ -77,5 +81,6 @@ function impresion(){
         }  }?>
         </tbody>
 </table>
+<script></script>
 <?php } ?>
 

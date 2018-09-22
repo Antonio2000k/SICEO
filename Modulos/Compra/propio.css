@@ -1,0 +1,23 @@
+.info,.error,.success{
+    border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
+    padding: 2px 5px 5px 1px;
+    margin: 0px 200px 20px 200px;
+}
+.info {
+    background: #d9edf7;    
+}
+
+.error {
+    background: #f2dede;
+}
+
+.success {
+    background: rgb(85, 248, 63,.5);
+}
+
+div.info:hover {
+    text-decoration-color: blue;
+    background-color: #dff0d8;
+}

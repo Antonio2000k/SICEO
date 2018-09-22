@@ -30,24 +30,28 @@
                 swal('Error!', 'Complete los campos!', 'error');
                 document.getElementById('bandera').value = "";
                 opc = false;
-            }
-            else {
+            }else if(parseFloat(document.getElementById('precioCompra').value)>=parseFloat(document.getElementById('precioVenta').value)){
+                swal('Error','El precio de venta debe ser mayor al precio de compra','warning');
+                opc=false;
+            }else {
                 if (opcion === "guardar") {
                     document.getElementById('bandera').value = "add";
                 }
                 else document.getElementById('bandera').value = "modificar";
                 opc = true;
             }
-            $(document).ready(function () {
-                $("#formProducto").submit(function () {
-                    if (opc != true) {
-                        return false;
-                    }
-                    else return true;
-                });
-            });
+            if(opc)
+                document.formProducto.submit();
+            else
+                detener();
         }
 
+        
+        function detener(){
+                $("#formProducto").submit(function () {
+                     return false;
+                });
+        }
         function limpiarIn(opcion) {
             if (opcion == "limpiarM") {
                 document.getElementById('bandera').value = 'cancelar';
@@ -63,12 +67,19 @@
         }
 
         function alertaSweet(titulo, texto, tipo) {
-            swal(titulo, texto, tipo);
+            swal({
+                title: titulo
+                , text: texto
+                , type: 'info'
+                , showCancelButton: false
+                , confirmButtonColor: '#3085d6'
+                , confirmButtonText: 'ok'
+            }).then((result) => {
+                    document.location.href='producto.php';                
+            })
         }
-
+    
         function DarBaja(id, opcion, mensaje, conf) {
-            //alert("Entree");
-            //alert(" ID  "+id+"   Opcion  "+opcion);
             swal({
                 title: 'Confirmaci&oacuten'
                 , text: mensaje
@@ -118,41 +129,6 @@
             xmlhttp.send();
         }
 
-        function recargaTabla() {
-            //alert("Entre    Opcion "+opcion);
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("imprimirTablaActivados").innerHTML = xmlhttp.responseText;
-                    recargaTablaBaja();
-                }
-            }
-            xmlhttp.open("post", "recargaTablaProducto.php", true);
-            xmlhttp.send();
-        }
-
-        function recargaTablaBaja() {
-            //alert("Entre    Opcion "+opcion);
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("imprimirTablaDesactivados").innerHTML = xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("post", "recargaTablaProductoBaja.php", true);
-            xmlhttp.send();
-        }
-
         function verificarCodigo() {
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
@@ -190,6 +166,7 @@
         function cambioBaccion(id) {
             document.getElementById('baccionVer').value = id;
         }
+
 
 
         

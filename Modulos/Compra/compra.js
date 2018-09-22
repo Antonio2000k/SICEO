@@ -51,6 +51,7 @@ function verificar() {
                 var id=document.getElementById('modelo').value;
                 var cantidad=document.getElementById('cantidad').value;
                 showUser(id,cantidad,"agregar");
+                document.formCompra.submit();
             }            
             detener(opcion);
         }
@@ -93,6 +94,7 @@ function Eliminar(id) {
             }).then((result) => {
                 if (result.value) {
                     showUser(id,'','quitar');
+                    document.formCompra.submit();
                 }
             })
         }

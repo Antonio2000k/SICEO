@@ -70,8 +70,6 @@
     
     <!-- Select2 --->
     <script src="../../vendors/select2/dist/js/select2.full.min.js"></script>
-    <!-- JQuery Confirm -->
-    <script src="../../vendors/jquery-confirm-master/dist/jquery-confirm.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>

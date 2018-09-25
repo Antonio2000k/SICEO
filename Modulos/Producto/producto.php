@@ -402,7 +402,7 @@ $marca=($_REQUEST["marca"]);
 $garantia=($_REQUEST["garantia"]);
 include("../../Config/conexion.php");
 if($bandera=="add"){
-    mensajeInformacion('Esta','Entre  '.$modelo,'info');
+    //mensajeInformacion('Esta','Entre  '.$modelo,'info');
     pg_query("BEGIN");
           $result=pg_query($conexion,"insert into productos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
             eid_garantia, eid_proveedor, eid_marca, bestado) values('$modelo','$nombre','0','$precioC','$color','$precioV','$garantia','$proveedor','$marca','1')");
@@ -412,7 +412,6 @@ if($bandera=="add"){
                     }else{
                         pg_query("commit");
                         mensajeInformacion('Informacion','Datos almacenados','info');
-                        clearstatcache();
                     }
 
   }

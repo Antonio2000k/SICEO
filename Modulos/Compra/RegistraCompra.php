@@ -1,15 +1,8 @@
 <?php session_start(); 
-//echo $_SESSION["mensaje"];
-$mensaje=$_SESSION["mensaje"];
-$acumulador=$_SESSION["acumulador"];
-$matriz=$_SESSION["matriz"];
-//echo $acumulador;
-/*
-if(isset($acumulador)){
+if(isset($_SESSION["acumulador"])){
     unset($_SESSION["matriz"]);
     unset($_SESSION["acumulador"]);
 }
-*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +58,9 @@ if(isset($acumulador)){
                         </div>
                         <div class="x_content">
                                 <form class="form-horizontal form-label-left" name="formCompra" id="formCompra" method="post">
+                                     <div class="row" id="modificarLista">
+                                          <input type="hidden" name="bandera" id="bandera" />
+                                      <input type="hidden" name="baccion" id="baccion"/>
                                        <div class="row text-center">
                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoProducto">
                                              <span class="glyphicon glyphicon-plus"></span> Nuevo producto
@@ -82,7 +78,7 @@ if(isset($acumulador)){
                                             <?php
                                            include '../../Config/conexion.php';
                                             pg_query("BEGIN");
-                                            $resultado=pg_query($conexion, "select * from proveedor");
+                                            $resultado=pg_query($conexion, "select * from proveedor where bestado='t'");
                                             $nue=pg_num_rows($resultado);
                                                 if($nue>0){
                                                 while ($fila = pg_fetch_array($resultado)) {
@@ -100,25 +96,17 @@ if(isset($acumulador)){
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                             <select class="form-control SProducto" name="modelo" id="modelo" onchange="actualiza('cambioNombre')">
                                             <option value="0">Seleccione</option>
-                                            <?php /*
-                                           include '../../Config/conexion.php';
-                                            pg_query("BEGIN");
-                                            $resultado=pg_query($conexion, "select * from productos");
-                                            $nue=pg_num_rows($resultado);
-                                                if($nue>0){
-                                                while ($fila = pg_fetch_array($resultado)) {
-                                                if($fila[0]==$proveedor){
-                                            ?>
-                                            <option selected="" value="<?php echo $fila[0]?>"><?php echo $fila[1].' '.$fila[2]?></option>
-                                            <?php }else{ ?>
-                                            <option value="<?php echo $fila[0]?>"><?php echo $fila[1].' '.$fila[2]?></option>
-                                                <?php }}}  */?>
                                             </select>
                                             </div>
                                             </div>
+                                            
+                                            
                                             <div class="col-md-1 col-sm-6 col-xs-12 form-group has-feedback">
-                                                <button class="btn btn-info btn-icon left-icon" data-toggle="modal" data-target="#editarProducto" onclick="lanzaModal();"> <i class="fa fa-info-circle"></i></button>
-                                            </div>                                          
+                                                <button class="btn btn-info btn-icon left-icon" data-toggle="modal" data-target="#editarProducto" onclick="lanzaModal();" id="btnInfoProducto" disabled> <i class="fa fa-info-circle"></i></button>
+                                            </div>  
+                                            
+                                                                                    
+                                                                                                                                                                    
                                         </div>
                                         <div class="item form-group">
                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
@@ -137,74 +125,30 @@ if(isset($acumulador)){
                                             </div>                                            
                                         </div>
                                         <div class="item form-group">
-                                           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha*</label>
-                                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                                <div class="control-group">
-                                                    <div class="controls" style="padding-left: 15px;">
-                                                        <div class="xdisplay_inputx form-group has-feedback">
-                                                            <input type="text" class="form-control has-feedback-left" id="single_cal1" aria-describedby="inputSuccess2Status" style="padding-left: 55px;">
-                                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true" style="padding-left:0px; margin-left: -10px;"></span>
-                                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </div>
                                             <div class="item form-group" align="center">
-                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-md-12 col-sm-12 col-xs-12" id="divAgregar">
                                                     <button class="btn btn-primary source" onclick="verificar();"><i class="fa fa-plus"></i> Agregar</button>
                                                 </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12" hidden id="divModificar">
+                                                    <button class="btn btn-primary source" onclick="verificar('modificar');"><i class="fa fa-refresh"></i> Modificar</button>
+                                                </div>
                                             </div>
-                                        </div>                                        
-                                    </form>
+                                        </div>
+                                     </div>                                        
+                                </form>
                                 <div class="row">
-                                <div class="item form-group">
+                                
                                 <div class="row">
                                     <div class="x_content" id="mostrar">
-                                       <?php echo $_SESSION["mensaje"]; ?>
-                                        <table id="datatable" class="table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Modelo</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Nombre</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="myTable">
-        <tr>
-        <?php
-		$acumulador=$_SESSION['acumulador'];
-		$matriz=$_SESSION['matriz'];
-		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
-            $id=$matriz[$i][0];
-            include '../../Config/conexion.php';
-            pg_query("BEGIN");
-            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
-            $nue=pg_num_rows($resultado);
-                if($nue>0){
-                while ($fila = pg_fetch_array($resultado)) {
-                     echo '<td>'.$fila[0].'</td>';
-                     echo '<td>'.$fila[1].'</td>';
-                    echo '<td>'.$matriz[$i][1].'</td>'; ?>
-                    <td class="text-center"><button class="btn btn-warning btn-icon left-icon" onClick="Eliminar('<?php echo $i;?>');"> <i class="fa fa-remove"></i></button><button class="btn btn-info btn-icon left-icon" onClick="verificar();"> <i class="fa fa-edit"></i></button></td>
-                    <?php
-                    }
-                }
-        
-        echo '</tr>';
-        }  }?>
-        </tbody>
-                                        </table>
+                                       <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"];?>"/>
+                                        
                                     </div>
                                 </div>
-                            </div>
-                            <div class="item form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
-                                    <button class="btn btn-success btn-icon left-icon"> <i class="fa fa-save"></i> <span>Guardar</span></button>
-                                    <button class="btn btn-danger  btn-icon left-icon"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                            
+                            <div class="item form-group text-center">
+                                <div class="col-md-12">
+                                    <button class="btn btn-success btn-icon left-icon" onclick="guardar();"> <i class="fa fa-save"></i> <span>Guardar</span></button>
+                                    <button class="btn btn-danger  btn-icon left-icon" onclick="cancelar();"> <i class="fa fa-close"></i><span>Cancelar</span></button>
                                 </div>
                             </div>
                             </div>
@@ -217,52 +161,46 @@ if(isset($acumulador)){
                 <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
-                        <div class="x_title"><h2>COMPRAS </h2><div class="clearfix"></div></div>
+                        <div class="x_title">
+                            <h2>COMPRAS </h2>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="x_content">
                             <table id="datatable" class="table table-striped table-bordered" id="tblBajaProducto">
                                 <thead>
                                     <tr>
-                                        <th>Modelo</th>
-                                        <th>Nombre</th>
-                                        <th>Color</th>
-                                        <th>Precio Venta</th>
-                                        <th>Existencia</th>
-                                        <th>Opciones</th>
+                                        <th>N°</th>
+                                        <th>Empleado</th>
+                                        <th>Fecha</th>
+                                        <th>Total Compra</th>
+                                        <th>Ver Mas</th>
                                     </tr>
                                 </thead>
-                                <tbody id="imprimirTablaDesactivados">
+                                <tbody>
                                     <?php
-                                  include("../../Config/conexion.php");
-                                  $query_s= pg_query($conexion, "select * from productos where bestado='f' order by cmodelo ");
-                                  while($fila=pg_fetch_array($query_s)){
-                                    ?>
+                          include("../../Config/conexion.php");
+                          $query_s= pg_query($conexion, "select * from compra order by ffecha_compra");
+                          while($fila=pg_fetch_array($query_s)){
+                      ?>
                                 <tr>
                                     <td><?php echo $fila[0]; ?></td>
                                     <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo $fila[4]; ?></td>
-                                    <td>$<?php echo $fila[5]; ?></td>
-                                    <?php
-                                  if($fila[2]<=3){
-                                      echo '<td class="p-3 mb-2 bg-danger text-white">'.$fila[2].'</td>';
-                                  }else{
-                                     echo '<td>'.$fila[2].'</td>';
-                                  }
-                                ?>
+                                    <td><?php echo $fila[2]; ?></td>
+                                    <td>$<?php echo $fila[3]; ?></td>
                             <td class="text-center">
-                                <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-ban"></i></button>
-                                <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
-                            </td>
-                            </tr>
-                            <?php
-                            }
-                            ?>
+                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
+                        </td>
+                </tr>
+                <?php
+                      }
+                        ?>
                             </tbody>
-                            </table>
-                        </div>
-                        </div>
+                        </table>
                     </div>
                 </div>
-                                                                     
+            </div>
+        </div>
+                                                                                                
             </div>
         </div>
         </div>
@@ -277,7 +215,7 @@ if(isset($acumulador)){
                 <div class="modal-content">
                     <div class="modal-header">
                         <center>
-                            <h3 class="modal-title" id="exampleModalLabel">Informacion producto.</h3> </center>
+                            <h3 class="modal-title" id="exampleModalLabel">Informaci&oacuten producto</h3> </center>
                     </div>
                     <div class="modal-body" id="cargala">
                         <form class="form-horizontal" method="post" id="editar_usuario" name="editar_usuario">
@@ -292,7 +230,23 @@ if(isset($acumulador)){
             </div>
         </div>
         <!-- Fin Modal -->
-        <?php include 'Modal/modificacionProducto.php'; ?>
+        
+        <!--- Modal -->
+        <div class="modal fade" id="modalDetalleCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <center>
+                            <h3 class="modal-title" id="exampleModalLabel">Detalle Compra</h3> </center>
+                    </div>
+                    <div class="modal-body" id="cargaDetalle"> </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-round btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal -->
         
     <!--Aqui va fin el contenido-->
     <footer><?php        include "../../ComponentesForm/footer.php";      ?> </footer>
@@ -301,10 +255,59 @@ if(isset($acumulador)){
 </div>
     <?php include "../../ComponentesForm/scripts.php";    ?>
      <script>
-                $(function () {
-                    $('.SProveedor').select2()
-                    $('.SProducto').select2()
-                })
-            </script>
+        $(function () {
+            $('.SProveedor').select2()
+            $('.SProducto').select2()
+        });
+    </script>
 </body>
 </html>
+<?php
+$bandera=$_REQUEST["bandera"];
+//total();
+
+if($bandera==="guardarTodo"){
+    $acumulador=$_SESSION["acumulador"];
+    $matriz=$_SESSION["matriz"];
+    
+  pg_query("BEGIN");
+  $result=pg_query($conexion,"INSERT INTO compra(eid_compra, cid_empleado, ffecha_venta, rtotal_venta) values('5','te','2018-12-12','".total()."')");
+  if(!$result){
+            pg_query("rollback");
+            mensajeInformacion('Error','Datos no almacenados','error');
+            }else{
+                pg_query("commit");
+                mensajeInformacion('Informacion','Datos almacenados','info');
+            }
+}
+
+function mensajeInformacion($titulo,$mensaje,$tipo){
+            echo "<script language='javascript'>";
+            echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
+            echo "document.getElementById('bandera').value='';";
+            echo "document.getElementById('baccion').value='';";
+            echo "</script>";
+
+}
+
+function total(){
+		$acumulador=$_SESSION['acumulador'];
+		$matriz=$_SESSION['matriz'];
+        $valor=0;
+		for($i=1 ; $i<=$acumulador ; $i++){
+			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
+            $id=$matriz[$i][0];
+            include '../../Config/conexion.php';
+            pg_query("BEGIN");
+            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
+            $nue=pg_num_rows($resultado);
+                if($nue>0){
+                while ($fila = pg_fetch_array($resultado)) {
+                        $valor=$valor+($matriz[$i][1]*$fila[3]);            
+                   }
+                }
+             }  
+        }
+    return $valor;
+}
+?>

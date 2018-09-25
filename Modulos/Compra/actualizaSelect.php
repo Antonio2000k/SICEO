@@ -8,7 +8,7 @@
         <option value="0">Seleccione</option>
         <?php       
         pg_query("BEGIN");
-        $resultado=pg_query($conexion, "SELECT  productos.cnombre, productos.cmodelo,  proveedor.eid_proveedor FROM proveedor INNER JOIN productos ON productos.eid_proveedor = proveedor.eid_proveedor where productos.eid_proveedor='".$cambio."'");
+        $resultado=pg_query($conexion, "SELECT  productos.cnombre, productos.cmodelo,  proveedor.eid_proveedor FROM proveedor INNER JOIN productos ON productos.eid_proveedor = proveedor.eid_proveedor where productos.eid_proveedor='".$cambio."' and productos.bestado='t'");
         $nue=pg_num_rows($resultado);
             if($nue>0){
             while ($fila = pg_fetch_array($resultado)) {

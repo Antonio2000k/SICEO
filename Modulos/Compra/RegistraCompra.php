@@ -119,7 +119,7 @@ if(isset($_SESSION["acumulador"])){
                                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad*</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad" onkeypress="return soloNumeros(event)">
+                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad" onkeypress="return soloNumeros(event,'entero')">
                                                 <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                             </div>                                            
@@ -217,14 +217,50 @@ if(isset($_SESSION["acumulador"])){
                         <center>
                             <h3 class="modal-title" id="exampleModalLabel">Informaci&oacuten producto</h3> </center>
                     </div>
-                    <div class="modal-body" id="cargala">
-                        <form class="form-horizontal" method="post" id="editar_usuario" name="editar_usuario">
-			            <div id="resultados_ajax2"></div>
-                        </form>
+                    <div class="modal-body" id="cargala">                       
+                       <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                          <div class="x_content">
+                            <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                    <th class="text-center"><b><i class="fa fa-shopping-cart"></i>Producto</b></th>
+                                </tr>
+                              </thead>
+                              <tbody>                      
+                            </table>
+                             </div>
+                        </div>
+                      </div>
+			               
+                            <div class="text-center">
+                        <button class="btn btn-info btn-icon" onClick="aparecer();"> <i class="fa fa-refresh"></i> <span>Modificar</span></button>
+                    </div>                    
+                    
+                    <div class="row" hidden id="divModificarProducto">
+                        <div class="item form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12"> Precio de Compra* </label>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12"> Precio de Venta* </label>
+                    </div>
+                    </div>
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
+                            <div class="col-md-12 col-sm-9 col-xs-12">
+                                <input type="number" class="form-control has-feedback-left" id="precioCompra" class="form-control col-md-7 col-xs-12" name="precioCompra"  autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input type="number" class="form-control has-feedback-left" id="precioVenta" class="form-control col-md-7 col-xs-12" name="precioVenta" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                        </div>
+                    </div>
+                    </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			            <button type="submit" class="btn btn-primary" id="actualizar_datos">Actualizar datos</button>
+			            <button type="submit" class="btn btn-primary" id="actualizar_datos" onclick="modificarPreciosProducto();">Actualizar datos</button>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,11 @@
-function soloNumeros(e) {
+function soloNumeros(e,opcion) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
-            letras = "1234567890";
-            especiales = [8, 37, 39, 46];
+            if(opcion=="entero")
+                letras = "1234567890";
+            else
+               letras = "1234567890."; 
+            especiales = [8, 37, 39];
             tecla_especial = false;
             for(var i in especiales) {
                 if(key == especiales[i]) {
@@ -66,9 +69,13 @@ function showUser(id,cantidad,opcion) {
             document.getElementById("mostrar").innerHTML = xmlhttp.responseText;
         }
     }
-    if (opcion == "agregar" || opcion=="modificar") {
+    if (opcion == "agregar") {
             xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
             xmlhttp.send();
+    }
+    if(opcion==="modificar"){
+        xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
+        xmlhttp.send();
     }
     if (opcion == "quitar") {
         xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&quitar=" + id, true);
@@ -79,7 +86,7 @@ function showUser(id,cantidad,opcion) {
         if(vacio==""){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");          
         }else{
-            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&quitar=" + id, true);
+            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion, true);
             xmlhttp.send();
         }
     }
@@ -87,7 +94,10 @@ function showUser(id,cantidad,opcion) {
 function verificar(opcion) {
             if (document.getElementById('cantidad').value == "" || document.getElementById('modelo').value == "0") {
                 swal('Error!', 'Complete los campos!', 'error');
-            }else{
+            }
+            else if(parseInt(document.getElementById("cantidad").value)==0){
+                    swal('Informacion','Cantidad tiene que ser mayor a cero','warning');
+                    }else{
                 var id=document.getElementById('modelo').value;
                 var cantidad=document.getElementById('cantidad').value;
                 if(opcion==="modificar"){
@@ -96,7 +106,10 @@ function verificar(opcion) {
                     var quepaso=document.getElementById("quepaso").value;
                     if(quepaso=='1'){
                         $("#divModificar").hide();
-                        $("#divAgregar").show();
+                        $("#divAgregar").show();                        
+                        document.getElementById("proveedor").disabled=false;
+                        document.getElementById("modelo").disabled=false;
+                        document.getElementById("BtnInfoProducto").disabled=true;
                     }
                 }else
                     showUser(id,cantidad,"agregar");
@@ -227,25 +240,74 @@ function modificarLista(cantidad,modelo,proveedor){
                 if (result.value) {
                     $("#divAgregar").hide();
                     $("#divModificar").show();
-                    
-                    document.getElementById('proveedor').disabled=true;                 
+                    $("#btnInfoProducto").disabled=false;
+                    document.getElementById('proveedor').disabled=true;
+                                        
                     $("#proveedor").val(proveedor);
                     $("#proveedor").change();
                     
-                    var x = document.getElementById("modelo");
-                    var option = document.createElement("option");
-                    option.text = modelo;
-                    x.add(option);
+                   $('#modelo').append($('<option>',
+                     {
+                        value: modelo,
+                        text : modelo 
+                    }));                 
                     
                     $("#modelo").val(modelo);
-                    //$("#modelo").change();
+                    $("#modelo").change();
                     
-                    //document.getElementById('modelo').disabled=true;
+                    document.getElementById('modelo').disabled=true;
                     document.getElementById('cantidad').value=cantidad;
                     }
             })
     
 }
 
+function nuevoAjax2()
+          {
+            var xmlhttp=false;
+            try {
+                xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
+            } catch(e) {
+                try {
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                } catch(E) { xmlhttp=false;
+                           }
+            } if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+                xmlhttp=new XMLHttpRequest();
+            }
+            return xmlhttp;
+          }
 
+          function modificarPreciosProducto(){
+              var precioVenta=document.getElementById('precioVenta').value;
+              var precioCompra=document.getElementById('precioCompra').value;
+              var modelo=document.getElementById("modelo").value;
+              
+              if(precioCompra=="" || precioVenta==""){
+                  alertaDetener("Error","Complete los campos",'error');
+              }else if(parseInt(precioCompra)==0 || parseInt(precioVenta)==0){
+                  alertaDetener("informacion","Los precios deben ser mayores a cero",'warning');
+              }else{
+                  $('#editarProducto').modal('hide');              
+                  var ajax2=nuevoAjax2();
+                  ajax2.open("POST", "ajax/editarProducto.php", true);
+                  ajax2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                  ajax2.send("precioCompra="+precioCompra+"&precioVenta="+precioVenta+"&modelo="+modelo);
+                  ajax2.onreadystatechange=function() {
+                      if (ajax2.readyState==4) {
+                          if(ajax2.status==200) {
+                              var respuesta=ajax2.responseXML;
+                          }else{
+                              alert("Estado: " + ajax2.status + "\nMotivo: " + ajax2.statusText);
+                          }
+                      }
+                  }
+                swal( 'Exito!', 'Proceso Completado!', 'success' );
+              }
+              
+          }
+
+function aparecer(){
+    $("#divModificarProducto").show();    
+}
 

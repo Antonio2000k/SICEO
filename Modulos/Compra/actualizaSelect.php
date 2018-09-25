@@ -14,9 +14,9 @@
             while ($fila = pg_fetch_array($resultado)) {
             if($fila[0]==$proveedor){
         ?>
-        <option selected="" value="<?php echo $fila[1]?>"><?php echo $fila[1];?></option>
+        <option selected="" value="<?php echo $fila[1];?>"><?php echo $fila[1];?></option>
         <?php }else{ ?>
-        <option value="<?php echo $fila[1]?>"><?php echo $fila[1];?></option>
+        <option value="<?php echo $fila[1];?>"><?php echo $fila[1];?></option>
             <?php }}} ?>
         <?php
     }

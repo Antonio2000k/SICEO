@@ -51,7 +51,7 @@
                             }
                     }
                 }
-        impresion($mensaje,$quepaso);
+        imprimirGuardar($mensaje,$quepaso);
     }
 
     if($opcion=="modificar"){
@@ -66,9 +66,6 @@
                 $matriz[$n][1]=$cantidad;
                 $_SESSION["matriz"]=$matriz;
                 $mensaje='<div class="text-center success"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto modificado</h5></div>';
-            }else{
-                $quepaso=0;
-                $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto no modificado</h5></div>';
             }
         }        
         impresion($mensaje,$quepaso);
@@ -137,6 +134,13 @@ function actualizaStock(){
     $_SESSION["matriz"]=$matriz;
 }
 
+function imprimirGuardar($mensaje,$quepaso){
+      echo $mensaje;
+?>  
+       <input type="hidden"id="quepaso" value="<?php echo $quepaso ?>"/>
+       <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"]; ?>"/>
+       <?php
+}
 function impresion($mensaje,$quepaso){
    echo $mensaje;
 ?>  
@@ -188,7 +192,7 @@ function impresion($mensaje,$quepaso){
         }  }?>
         </tbody>
 </table>
-<?php } 
+<?php }
 
 
 function total(){

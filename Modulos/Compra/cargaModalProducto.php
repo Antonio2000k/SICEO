@@ -26,10 +26,13 @@
                         }
                       ?>                      
                     </table>
+                    
                     <div class="text-center">
-                        <button class="btn btn-info btn-icon" onClick="verificar();"> <i class="fa fa-refresh"></i> <span>Modificar</span></button>
+                        <button class="btn btn-info btn-icon" onClick="aparecer();"> <i class="fa fa-refresh"></i> <span>Modificar</span></button>
                     </div>                    
-                    <div class="item form-group">
+                    
+                    <div class="row" hidden id="divModificarProducto">
+                        <div class="item form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <label class="control-label col-md-12 col-sm-12 col-xs-12"> Precio de Compra* </label>
                     </div>
@@ -40,12 +43,13 @@
                     <div class="item form-group">
                         <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
                             <div class="col-md-12 col-sm-9 col-xs-12">
-                                <input type="number" class="form-control has-feedback-left" id="precioCompra" class="form-control col-md-7 col-xs-12" name="precioCompra"  autocomplete="off" step="any" min="0"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                <input type="number" class="form-control has-feedback-left" id="precioCompra" class="form-control col-md-7 col-xs-12" name="precioCompra"  autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <input type="number" class="form-control has-feedback-left" id="precioVenta" class="form-control col-md-7 col-xs-12" name="precioVenta" autocomplete="off" step="any" min="0"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                <input type="number" class="form-control has-feedback-left" id="precioVenta" class="form-control col-md-7 col-xs-12" name="precioVenta" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                         </div>
+                    </div>
                     </div>
                   </div>
                 </div>

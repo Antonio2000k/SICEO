@@ -231,7 +231,7 @@ if(isset($_REQUEST["id"])){
                         </div>
 
                         <?php
-                        include "../../ComponentesForm/menu.php";
+                        include "../../ComponentesForm/menu2.php";
                         ?>
                         
                     </div>

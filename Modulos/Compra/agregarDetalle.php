@@ -16,10 +16,12 @@
                 $quepaso=0;
                 }else{                    
                     pg_query("commit");
-                    $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';                    
+                    $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                        pg_query("BEGIN");
+                        $maximo=pg_query($conexion,"SELECT max(compra.eid_compra) FROM compra");
                     for($k=1 ; $k<=$acumulador+1 ; $k++){
                         pg_query("BEGIN");
-                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra) values('".$matriz[$k][0]."','".$matriz[$k][1]."','1')");
+                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo+1)."')");
                         if(!$resulta){
                             pg_query("rollback");
                              $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';

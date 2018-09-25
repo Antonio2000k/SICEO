@@ -8,7 +8,7 @@
     $quepaso=1;
       include '../../Config/conexion.php';
       pg_query("BEGIN");
-      $result=pg_query($conexion,"INSERT INTO compra(eid_compra, cid_empleado, ffecha_compra, rtotal_compra) values('te','2018-12-12','".$total."')");
+      $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra) values('te','2018-12-12','".$total."')");
       if(!$result){
                 pg_query("rollback");
                 $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados INgreso Compra</h5>
@@ -19,7 +19,7 @@
                     $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';                    
                     for($k=1 ; $k<=$acumulador+1 ; $k++){
                         pg_query("BEGIN");
-                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_detalle_compra, id_producto, ecantidad, id_compra) values('".$matriz[$k][0]."','".$matriz[$k][1]."','1')");
+                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra) values('".$matriz[$k][0]."','".$matriz[$k][1]."','1')");
                         if(!$resulta){
                             pg_query("rollback");
                              $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';

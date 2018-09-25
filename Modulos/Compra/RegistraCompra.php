@@ -119,7 +119,7 @@ if(isset($_SESSION["acumulador"])){
                                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad*</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad">
+                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad" onkeypress="return soloNumeros(event)">
                                                 <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                             </div>                                            

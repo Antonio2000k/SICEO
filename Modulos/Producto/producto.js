@@ -1,4 +1,22 @@
-        function soloLetras(e) {
+function soloNumeros(e) {
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toLowerCase();
+            letras = "1234567890.";
+            especiales = [8, 37, 39, 46];
+            tecla_especial = false;
+            for(var i in especiales) {
+                if(key == especiales[i]) {
+                    tecla_especial = true;
+                    break;
+                }
+            }
+            if(letras.indexOf(tecla) == -1 && !tecla_especial){
+                NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten numeros");
+                return false;
+            }       
+        }      
+
+function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
             letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
@@ -151,17 +169,8 @@
             var modelo = document.getElementById('modelo').value;
             xmlhttp.open("post", "existeCodigo.php?codigo=" + modelo, true);
             xmlhttp.send();
-        }
+        }       
         
-        function validarEmail() {
-            var valor = document.getElementById('correo').value;
-            if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)) {}
-            else {
-                paso = false;
-                NotificacionSoloLetras2('error', "<b>Error: </b>Correo incorrecto");
-                document.getElementById('correo').value = '';
-            }
-        }
 
         function cambioBaccion(id) {
             document.getElementById('baccionVer').value = id;

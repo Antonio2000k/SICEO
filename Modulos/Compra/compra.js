@@ -1,3 +1,32 @@
+function soloNumeros(e) {
+            key = e.keyCode || e.which;
+            tecla = String.fromCharCode(key).toLowerCase();
+            letras = "1234567890";
+            especiales = [8, 37, 39, 46];
+            tecla_especial = false;
+            for(var i in especiales) {
+                if(key == especiales[i]) {
+                    tecla_especial = true;
+                    break;
+                }
+            }
+            if(letras.indexOf(tecla) == -1 && !tecla_especial){
+                Notificacion('error',"<b>Error: </b>Solo se permiten numeros");
+                return false;
+            }       
+        }
+
+ function Notificacion(tipo,msg){
+        notif({
+          type:tipo,
+          msg:msg ,
+          position: "center",
+          timeout: 3000,
+          clickable: true
+            
+        });
+    }
+
 function actualiza(opcion) {
     var cambio = document.getElementById('proveedor').value;
     var cambioNombre = document.getElementById('modelo').value;

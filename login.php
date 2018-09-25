@@ -232,7 +232,8 @@ if (isset($_REQUEST["bandera"])) {
           em.ccelular,
           em.ccorreo,
           em.cdireccion,
-          em.csexo
+          em.csexo,
+          em.cid_empleado
           from usuarios as us
           inner join empleados as em on us.cid_empleado = em.cid_empleado where cusuario=trim('$usuariO') and cpassword=trim('$clavE')  ");
     
@@ -250,6 +251,7 @@ if (isset($_REQUEST["bandera"])) {
       $_SESSION["correoEmpleado"]=$fila[8];
       $_SESSION["dirEmpleado"]=$fila[9];
       $_SESSION["sexEmpleado"]=$fila[10];
+      $_SESSION["cid_empleado"]=$fila[11];
 
           if($fila[2] == 1){
             $_SESSION["autenticado"]="yeah";

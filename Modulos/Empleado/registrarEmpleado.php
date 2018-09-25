@@ -130,7 +130,14 @@ if(isset($_REQUEST["id"])){
                                     <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="form-group">
                                             <label class="control-label col-md-5 col-sm-2 col-xs-12">Fecha de Nacimiento*</label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <div class='input-group date' id='myDatepicker2'>
+                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'" onclick="showHint(this.value)" onkeyup="showHint(this.value)" onchange="showHint(this.value)" autocomplete="off" />
+                                                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                                <span id="txtHint"></span>
+                                            </div>
+                                            <!--<div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="control-group">
                                                     <div class="controls">
                                                         <div class="xdisplay_inputx form-group has-feedback">
@@ -139,7 +146,7 @@ if(isset($_REQUEST["id"])){
                                                             <span id="inputSuccess2Status" class="sr-only">(success)</span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>

@@ -28,7 +28,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <li><a><i class="fa fa-home"></i> Inicio </a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar</a></li>
+                      <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar Empleado</a></li>
+                      <li><a href="../../Modulos/Empleado/listaEmpleado.php">Lista de Empleados</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>

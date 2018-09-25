@@ -12,7 +12,6 @@ if(isset($_REQUEST["id"])){
         $garantia = $fila[6];
         $proveedor = $fila[7];
         $marca = $fila[8];
-
     } 
 }else{
         $idProducto = null;
@@ -96,7 +95,22 @@ if(isset($_REQUEST["id"])){
                             <div id="cambiaso">
                                 <input type="hidden" id="baccionVer" value="1" /> </div>
                             <div class="row">
-                                <!--Codigos-->
+                                <div class="item form-group col-md-12 col-sm-12 col-xs-12 form-group has-feedback text-center">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                <label class="control-label col-md-5 col-sm-3 col-xs-12"> Tipo de Producto* </label>
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                    <select class="form-control STipo" name="tipo" id="tipo">
+                                        <option value="0">Seleccione</option>
+                                        <option value="1">Lente</option>
+                                        <option value="2">Accesorio</option>
+                                    </select>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Codigos-->                         
+                                
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12"> Modelo* </label>
@@ -379,6 +393,7 @@ if(isset($_REQUEST["id"])){
             <script>
                 $(function () {
                     //Initialize Select2 Elements
+                    $('.STipo').select2()
                     $('.SMarca').select2()
                     $('.SProveedor').select2()
                     $('.SGarantia').select2()

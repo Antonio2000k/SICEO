@@ -73,14 +73,14 @@ function soloLetras(e) {
         function limpiarIn(opcion) {
             if (opcion == "limpiarM") {
                 document.getElementById('bandera').value = 'cancelar';
-            }
-            else {
-                $(document).ready(function () {
+            }else {
+                /*$(document).ready(function () {
                     $("#formProducto")[0].reset();
                     $("#formProducto").submit(function () {
                         return false;
                     });
-                });
+                }); */
+                DarBaja('0',"cancelar","Desea cancelar el proceso","Si, lo deseo cancelar");
             }
         }
 
@@ -109,10 +109,14 @@ function soloLetras(e) {
                 , confirmButtonText: conf
             }).then((result) => {
                 if (result.value) {
-                    if (opcion == 'baja') document.getElementById('bandera').value = "Dbajar";
-                    else document.getElementById('bandera').value = "Dactivar";
-                    document.getElementById('baccion').value = id;
-                    document.formProducto.submit();
+                    if(opcion!=="cancelar"){
+                        if (opcion == 'baja') document.getElementById('bandera').value = "Dbajar";
+                        else document.getElementById('bandera').value = "Dactivar";
+                        document.getElementById('baccion').value = id;
+                        document.formProducto.submit();
+                    }else{
+                        document.location.href="producto.php";
+                    }
                 }
             })
         }

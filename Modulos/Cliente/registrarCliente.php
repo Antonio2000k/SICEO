@@ -1,5 +1,5 @@
 
-  <?php
+  <?php session_start();
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];

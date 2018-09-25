@@ -13,10 +13,6 @@
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
-    </meta>
-    </meta>
-    </meta>
-    </meta>
 </head>
 
 <body class="nav-md">
@@ -189,9 +185,6 @@
                                                             </div>      
                                                         </div>
                                                     </div>
-                                                    <!--Aqui finaliza el primer registro-->
-                                                    </br>
-                                                </br>
                                             </div>
                                         </div>
                                         <div aria-labelledby="profile-tab" class="tab-pane fade" id="tab_content2" role="tabpanel">

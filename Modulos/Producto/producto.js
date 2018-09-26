@@ -92,7 +92,8 @@ function soloLetras(e) {
         }
         function limpiarIn(opcion) {
             if (opcion == "limpiarM") {
-                document.getElementById('bandera').value = 'cancelar';
+                detener();
+                DarBaja('0',"cancelarM","Desea cancelar la modificación","Si, lo deseo cancelar");
             }else {
                 detener();
                 DarBaja('0',"cancelar","Desea cancelar el proceso","Si, lo deseo cancelar");
@@ -115,7 +116,6 @@ function soloLetras(e) {
                         document.location.href='producto.php';                
             })
         }
-    
         function DarBaja(id, opcion, mensaje, conf) {
             swal({
                 title: 'Confirmaci&oacuten'
@@ -128,7 +128,9 @@ function soloLetras(e) {
                 , confirmButtonText: conf
             }).then((result) => {
                 if (result.value) {
-                    if(opcion!=="cancelar"){
+                    if(opcion==="cancelarM")                        
+                        document.getElementById('bandera').value = 'cancelar';
+                    if(opcion!=="cancelar" && opcion!=="cancelarM"){
                         if (opcion == 'baja') document.getElementById('bandera').value = "Dbajar";
                         else document.getElementById('bandera').value = "Dactivar";
                         document.getElementById('baccion').value = id;

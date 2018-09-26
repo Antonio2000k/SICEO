@@ -74,30 +74,38 @@
 <!-- Initialize datetimepicker -->
     <script>
         $(document).ready(function() {
-    // obtenemos la fecha actual - años para el minimo aceptado
-    var date = new Date();
-    var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70; 
-    var date2 = new Date();
-    var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-2;
-    $('#myDatepicker2').datetimepicker({
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70; 
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-5;
+            $('#myDatepicker2').datetimepicker({
 
-        format: 'DD/MM/YYYY',
-        allowInputToggle: true,
-        minDate: new Date(y, m, d),
-        maxDate: new Date(y2, m2, d2)
-       
-    });
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
 
-    /*obtenemos la fecha actual - años para el minimo aceptado
-    var date2 = new Date();
-    var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-1; 
+            });
 
-    $("#myDatepicker2").on("dp.change", function(e) {
+        });
         
-        $('#myDatepicker2').data("DateTimePicker").maxDate(new Date(y2, m2, d2));
+        $(document).ready(function() {
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth()-1, d = date.getDate(), y = date.getFullYear(); 
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear();
+            $('#myDatepicker1').datetimepicker({
 
-    });*/
-});
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
+
+            });
+
+        });
    /* $('#myDatepicker').datetimepicker();
     
     $('#myDatepicker0').datetimepicker({

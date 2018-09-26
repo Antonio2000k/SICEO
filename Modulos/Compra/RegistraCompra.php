@@ -125,6 +125,16 @@ if(isset($_SESSION["acumulador"])){
                                             </div>                                            
                                         </div>
                                         <div class="item form-group">
+                                        <label class="control-label col-md-5 col-sm-3 col-xs-12">Fecha *</label>
+                                            <div class="form-group">
+                                                <div class='input-group date' id='myDatepicker1'>
+                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'"  autocomplete="off" onblur="vali('fecha');"/>
+                                                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                                <span id="txtHint"></span>
+                                            </div>
+                                         </div>
+                                        <div class="item form-group">
                                             <div class="item form-group" align="center">
                                                 <div class="col-md-12 col-sm-12 col-xs-12" id="divAgregar">
                                                     <button class="btn btn-primary source" onclick="verificar();"><i class="fa fa-plus"></i> Agregar</button>

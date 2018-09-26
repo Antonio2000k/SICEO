@@ -86,19 +86,10 @@ if(isset($_REQUEST["id"])){
                 }
             }
             if(opcion == 'fecha'){
-
-              
               var date = new Date();
-              var y = date.getFullYear()-5; 
+              var m=date.getMonth(), y = date.getFullYear()-5; 
               var date2 = new Date();
               var y2 = date2.getFullYear()-2;
-              
-              //$annoMin < $anno && $anno > $annoMin;
-              /*if($anno > $annoMin || $anno < $annoMax){
-                echo "$anno";
-              }*/
-              //var i=1;
-             // var y=3;
               var fecha=document.getElementById('fecha').value;
               
                   if (fecha.substr(6,9) >= y && fecha.substr(6,9) <= y2) {

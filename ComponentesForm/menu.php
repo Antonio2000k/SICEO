@@ -34,7 +34,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../clientes.php">Registrar</a></li>
+                      <li><a href="../../Modulos/Cliente/registrarCliente.php">Registrar</a></li>
                       <li><a href="empleados.php">Listado de clientes</a></li>
                     </ul>
                   </li>

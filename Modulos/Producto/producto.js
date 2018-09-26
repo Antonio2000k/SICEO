@@ -44,19 +44,39 @@ function soloLetras(e) {
 
         function verificar(opcion) {
             var opc = true;
-            if (document.getElementById('modelo').value == "" || document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombre').value == "" || document.getElementById('color').value == "" || document.getElementById('proveedor').value == 0 || document.getElementById('marca').value == 0 || document.getElementById('garantia').value == 0) {
-                swal('Error!', 'Complete los campos!', 'error');
-                document.getElementById('bandera').value = "";
-                opc = false;
-            }else if(parseFloat(document.getElementById('precioCompra').value)>=parseFloat(document.getElementById('precioVenta').value)){
-                swal('Error','El precio de venta debe ser mayor al precio de compra','warning');
-                opc=false;
-            }else {
-                if (opcion === "guardar") {
-                    document.getElementById('bandera').value = "add";
+            var tipo=document.getElementById("tipo").value;
+            if(tipo==="1"){
+                if (document.getElementById('modelo').value == "" || document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombre').value == "" || document.getElementById('color').value == "" || document.getElementById('proveedor').value == 0 || document.getElementById('marca').value == 0 || document.getElementById('garantia').value == 0 || document.getElementById("tipo").value==0) {
+                    swal('Error!', 'Complete los campos!', 'error');
+                    document.getElementById('bandera').value = "";
+                    opc = false;
+                }else if(parseFloat(document.getElementById('precioCompra').value)>=parseFloat(document.getElementById('precioVenta').value)){
+                    swal('Error','El precio de venta debe ser mayor al precio de compra','warning');
+                    opc=false;
+                }else {
+                    if (opcion === "guardar") {
+                        document.getElementById('bandera').value = "add";
+                    }
+                    else document.getElementById('bandera').value = "modificar";
+                    opc = true;
                 }
-                else document.getElementById('bandera').value = "modificar";
-                opc = true;
+            }else if(tipo==="2"){
+                if (document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombre').value == "" || document.getElementById('proveedor').value == 0 || document.getElementById('marca').value == 0 || document.getElementById("tipo").value==0) {
+                    swal('Error!', 'Complete los campos!', 'error');
+                    document.getElementById('bandera').value = "";
+                    opc = false;
+                }else if(parseFloat(document.getElementById('precioCompra').value)>=parseFloat(document.getElementById('precioVenta').value)){
+                    swal('Error','El precio de venta debe ser mayor al precio de compra','warning');
+                    opc=false;
+                }else {
+                    if (opcion === "guardar") {
+                        document.getElementById('bandera').value = "add";
+                    }
+                    else document.getElementById('bandera').value = "modificar";
+                    opc = true;
+                }
+            }else if(tipo==="0"){
+                detener();
             }
             if(opc)
                 document.formProducto.submit();
@@ -74,26 +94,25 @@ function soloLetras(e) {
             if (opcion == "limpiarM") {
                 document.getElementById('bandera').value = 'cancelar';
             }else {
-                /*$(document).ready(function () {
-                    $("#formProducto")[0].reset();
-                    $("#formProducto").submit(function () {
-                        return false;
-                    });
-                }); */
+                detener();
                 DarBaja('0',"cancelar","Desea cancelar el proceso","Si, lo deseo cancelar");
             }
         }
 
-        function alertaSweet(titulo, texto, tipo) {
+        function alertaSweet(titulo, texto, tipo,opcion) {
+            //alert(opcion);
             swal({
                 title: titulo
                 , text: texto
-                , type: 'info'
+                , type: tipo
                 , showCancelButton: false
                 , confirmButtonColor: '#3085d6'
                 , confirmButtonText: 'ok'
             }).then((result) => {
-                    document.location.href='producto.php';                
+                if(opcion=='detener')
+                    detener();
+                    else
+                        document.location.href='producto.php';                
             })
         }
     
@@ -151,7 +170,8 @@ function soloLetras(e) {
             xmlhttp.send();
         }
 
-        function verificarCodigo() {
+        function verificarCodigo(opcion) {
+            //alert(opcion);
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }
@@ -163,15 +183,23 @@ function soloLetras(e) {
                     document.getElementById("cambiaso").innerHTML = xmlhttp.responseText;
                     var paso = document.getElementById('baccionVer').value;
                     if (paso == 0) {
-                        alertaSweet("Error", "Codigo ya se encuentra registrado", "error");
+                        if(opcion=="codigo"){
+                            alertaSweet("Error", "Codigo ya se encuentra registrado", "error","detener");
                         document.getElementById('modelo').focus();
                         document.getElementById('modelo').value = "";
+                        }else if(opcion=="nombre"){
+                            alertaSweet("Error", "Nombre ya se encuentra registrado", "error","detener");
+                        document.getElementById('nombre').focus();
+                        document.getElementById('nombre').value = "";
+                        }
                     }
                 }
             }
-
-            var modelo = document.getElementById('modelo').value;
-            xmlhttp.open("post", "existeCodigo.php?codigo=" + modelo, true);
+            if(opcion==="codigo")
+                var modelo = document.getElementById('modelo').value;
+            else if(opcion==="nombre")
+                var modelo = document.getElementById('nombre').value;
+            xmlhttp.open("post", "existeCodigo.php?codigo=" +modelo+"&opcion="+opcion, true);
             xmlhttp.send();
         }       
         
@@ -179,6 +207,21 @@ function soloLetras(e) {
         function cambioBaccion(id) {
             document.getElementById('baccionVer').value = id;
         }
+
+function cambioTipoModelo(){
+    var opcion=document.getElementById("tipo").value;
+    ///alert("Entre    "+opcion);
+    if(opcion==="2"){ 
+        document.getElementById("modelo").disabled=true;
+        document.getElementById("modelo").value="";
+        document.getElementById("garantia").disabled=true;
+        $("#garantia").val('0');
+        $("#garantia").change();
+    }else if(opcion==="1"){  //alert("Entre    "+opcion);
+        document.getElementById("modelo").disabled=false;
+        document.getElementById("garantia").disabled=false;
+    }
+}
 
 
 

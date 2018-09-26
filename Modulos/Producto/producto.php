@@ -12,6 +12,8 @@ if(isset($_REQUEST["id"])){
         $garantia = $fila[6];
         $proveedor = $fila[7];
         $marca = $fila[8];
+        $tipoR=$fila[10];
+        //echo $fila[10];
     } 
 }else{
         $idProducto = null;
@@ -22,6 +24,7 @@ if(isset($_REQUEST["id"])){
         $garantia = 0;
         $proveedor = 0;
         $marca = 0;
+        $tipoR=0;
 
 
 }
@@ -72,13 +75,16 @@ if(isset($_REQUEST["id"])){
                 <div class="" data-example-id="togglable-tabs" role="tabpanel">
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                         <li class="active" role="presentation"> <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                            NUEVO PRODUCTO
+                            NUEVO
                         </a> </li>
                         <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content2" name="tab2" id="profile-tab" role="tab">
-                            LISTA DE PRODUCTOS
+                            PRODUCTOS
                         </a> </li>
                         <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content3" name="tab3" id="profile-tab" role="tab">
-                            LISTA DE PRODUCTOS EN BAJA
+                            PRODUCTOS DADOS DE BAJA
+                        </a> </li>
+                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content4" name="tab3" id="profile-tab" role="tab">
+                            STOCK
                         </a> </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -89,7 +95,7 @@ if(isset($_REQUEST["id"])){
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="form-horizontal form-label-left" id="formProducto" name="formProducto" method="get">
+                        <form class="form-horizontal form-label-left" id="formProducto" name="formProducto" method="post">
                             <input type="hidden" name="bandera" id="bandera" />
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $idProducto;?>" />
                             <div id="cambiaso">
@@ -99,11 +105,23 @@ if(isset($_REQUEST["id"])){
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                 <label class="control-label col-md-5 col-sm-3 col-xs-12"> Tipo de Producto* </label>
                                 <div class="col-md-4 col-sm-9 col-xs-12">
-                                    <select class="form-control STipo" name="tipo" id="tipo">
-                                        <option value="0">Seleccione</option>
-                                        <option value="1">Lente</option>
-                                        <option value="2">Accesorio</option>
-                                    </select>
+                                   <?php
+                                        if(!isset($iddatos)){
+                                            echo '<select class="form-control STipo" name="tipo" id="tipo" onchange="cambioTipoModelo();">';
+                                            echo '<option value="0" >Seleccione</option>';
+                                            echo '<option value="1" >Lente</option>';
+                                            echo '<option value="2" >Accesorio</option>';
+                                        }else{
+                                            echo '<select class="form-control STipo" name="tipo" id="tipo" onchange="cambioTipoModelo();" disabled>';
+                                            echo '<option value="0">Seleccione</option>';                                         
+                                           if($tipoR==="Lente")
+                                                echo '<option value="1" selected="">Lente</option>';
+                                            else if($tipoR==="Accesorio")
+                                                echo '<option value="2" selected="">Accesorio</option>'; 
+                                        }         
+                                    echo '</select>';
+                                            ?>
+                                    
                                 </div>
                                 </div>
                                 </div>
@@ -112,17 +130,21 @@ if(isset($_REQUEST["id"])){
                                 <!--Codigos-->                         
                                 
                                 <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" id="divModelo">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12"> Modelo* </label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
                                             <?php
-                                if(!isset($iddatos)){
-                                    echo '<input type="text" class="form-control has-feedback-left" id="modelo" class="form-control col-md-7 col-xs-12" name="modelo" placeholder="Ingrese el modelo" autocomplete="off" value="'.$idProducto.'" onblur="verificarCodigo();">';
-                                }else{
-                                    echo '<input type="text" class="form-control has-feedback-left" id="modelo" class="form-control col-md-7 col-xs-12" name="modelo" placeholder="Ingrese el modelo" autocomplete="off" value="'.$idProducto.'" disabled>';
-                                }
-                            ?> <span class="fa fa-cog form-control-feedback left" aria-hidden="true"></span> </div>
-                            </div>
+                                    if(!isset($iddatos)){
+                                        ?>
+                                        <input type="text" class="form-control has-feedback-left" id="modelo" class="form-control col-md-7 col-xs-12" name="modelo" placeholder="Ingrese el modelo" autocomplete="off" value="<?php echo $idProducto; ?>" onblur="verificarCodigo('codigo');">
+                                            <?php
+                                    }else{
+                                        echo '<input type="text" class="form-control has-feedback-left" id="modelo" class="form-control col-md-7 col-xs-12" name="modelo" placeholder="Ingrese el modelo" autocomplete="off" value="'.$idProducto.'" disabled>';
+                                    }
+                                ?> <span class="fa fa-cog form-control-feedback left" aria-hidden="true"></span> </div>
+                                </div>
+                            
+                            
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12"> Proveedor* </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -153,7 +175,19 @@ if(isset($_REQUEST["id"])){
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12"> Nombre* </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left" id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" placeholder="Ingrese el nombre" autocomplete="off" value="<?php  echo $Rnombre;?>"> <span class="fa fa-toggle-right form-control-feedback left" aria-hidden="true"></span> </div>
+                           <?php 
+                            if($tipoR==="Accesorio"){
+                                echo '<input type="text" class="form-control has-feedback-left" id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" placeholder="Ingrese el nombre" autocomplete="off" value="'.$Rnombre.'" disabled> <span class="fa fa-toggle-right form-control-feedback left" aria-hidden="true"></span> ';
+                            }else{
+                                ?>
+                                    
+                                <input type="text" class="form-control has-feedback-left" id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" placeholder="Ingrese el nombre" autocomplete="off" value="<?php echo $Rnombre; ?>" onblur="verificarCodigo('nombre')"> <span class="fa fa-toggle-right form-control-feedback left" aria-hidden="true"></span>
+                                <?php
+                            }                           
+                            
+                            ?>
+                            
+                        </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12"> Marca* </label>
@@ -185,15 +219,19 @@ if(isset($_REQUEST["id"])){
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12"> Precio de Compra* </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" class="form-control has-feedback-left" id="precioCompra" class="form-control col-md-7 col-xs-12" name="precioCompra" placeholder="Precio de compra" autocomplete="off" step="any" min="0" value="<?php  echo $precioCompra;?>" onkeypress="return soloNumeros(event)"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                <input type="text" class="form-control has-feedback-left" id="precioCompra" class="form-control col-md-7 col-xs-12" name="precioCompra" placeholder="Precio de compra" autocomplete="off"  value="<?php  echo $precioCompra;?>" onkeypress="return soloNumeros(event)"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12"> Garantia* </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <select class="form-control SGarantia" name="garantia" id="garantia">
-                                    <option value="0">Seleccione</option>
-                                    <?php
-                                   include '../../Config/conexion.php';
+                               <?php 
+                                    if($tipoR==="Accesorio"){
+                                        echo '<select class="form-control SGarantia" name="garantia" id="garantia" disabled>';
+                                        echo '<option value="0" selected="">Seleccione</option>';
+                                    }else{
+                                        echo '<select class="form-control SGarantia" name="garantia" id="garantia">';
+                                        echo '<option value="0" selected="">Seleccione</option>';
+                                        include '../../Config/conexion.php';
                                     pg_query("BEGIN");
                                     $resultado=pg_query($conexion, "select * from garantia");
                                     $nue=pg_num_rows($resultado);
@@ -201,15 +239,14 @@ if(isset($_REQUEST["id"])){
                                         while ($fila = pg_fetch_array($resultado)) {
                                         if($fila[0]==$garantia){
                                     ?>
-                                        <option selected="" value="<?php echo $fila[0]?>">
-                                            <?php echo $fila[1]?>
-                                        </option>
+                                        <option selected="" value="<?php echo $fila[0]?>"><?php echo $fila[2]?></option>
                                         <?php }else{ ?>
-                                            <option value="<?php echo $fila[0]?>">
-                                                <?php echo $fila[1]?>
-                                            </option>
-                                            <?php }}} ?>
-                                </select>
+                                            <option value="<?php echo $fila[0]?>"><?php echo $fila[2]?></option>
+                                            <?php }}}
+                                    }                       
+                                echo '</select>';
+                                ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -222,7 +259,7 @@ if(isset($_REQUEST["id"])){
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12"> Precio de Venta* </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type="number" class="form-control has-feedback-left" id="precioVenta" class="form-control col-md-7 col-xs-12" name="precioVenta" placeholder="Precio de venta" autocomplete="off" step="any" min="0" value="<?php  echo $precioVenta;?>" onkeypress="return soloNumeros(event)"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                <input type="text" class="form-control has-feedback-left" id="precioVenta" class="form-control col-md-7 col-xs-12" name="precioVenta" placeholder="Precio de venta" autocomplete="off" value="<?php  echo $precioVenta;?>" onkeypress="return soloNumeros(event)"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                         </div>
                     </div>
                     <div class="item form-group">
@@ -261,7 +298,7 @@ if(isset($_REQUEST["id"])){
                                 <tr>
                                     <th>Modelo</th>
                                     <th>Nombre</th>
-                                    <th>Color</th>
+                                    <th>Tipo</th>
                                     <th>Precio Venta</th>
                                     <th>Existencia</th>
                                     <th>Opciones</th>
@@ -276,7 +313,7 @@ if(isset($_REQUEST["id"])){
                         <tr>
                             <td><?php echo $fila[0]; ?></td>
                             <td><?php echo $fila[1]; ?></td>
-                            <td><?php echo $fila[4]; ?></td>
+                            <td><?php echo $fila[10]; ?></td>
                             <td>$<?php echo $fila[5]; ?></td>
                             <?php
                               if($fila[2]<=3){
@@ -287,7 +324,7 @@ if(isset($_REQUEST["id"])){
                         ?>
                         <td class="text-center">
                             <button class="btn btn-info btn-icon left-icon" onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i></button>
-                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!');"> <i class="fa fa-ban"></i></button>
+                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!');"> <i class="fa fa-arrow-circle-down"></i></button>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
                         </td>
                 </tr>
@@ -300,11 +337,11 @@ if(isset($_REQUEST["id"])){
                     </div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>PRODUCTOS </h2>
+                            <h2>PRODUCTOS DADOS DE BAJA</h2>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -313,7 +350,7 @@ if(isset($_REQUEST["id"])){
                                     <tr>
                                         <th>Modelo</th>
                                         <th>Nombre</th>
-                                        <th>Color</th>
+                                        <th>Tipo</th>
                                         <th>Precio Venta</th>
                                         <th>Existencia</th>
                                         <th>Opciones</th>
@@ -328,7 +365,7 @@ if(isset($_REQUEST["id"])){
                                 <tr>
                                     <td><?php echo $fila[0]; ?></td>
                                     <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo $fila[4]; ?></td>
+                                    <td><?php echo $fila[10]; ?></td>
                                     <td>$<?php echo $fila[5]; ?></td>
                                     <?php
                               if($fila[2]<=3){
@@ -338,7 +375,7 @@ if(isset($_REQUEST["id"])){
                               }
                         ?>
                         <td class="text-center">
-                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-ban"></i></button>
+                            <button class="btn btn-primary btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-arrow-circle-up"></i></button>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
                         </td>
                 </tr>
@@ -351,7 +388,61 @@ if(isset($_REQUEST["id"])){
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+         <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>STOCK PRODUCTOS </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="datatable-keytable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo</th>
+                                        <th>Precio Venta</th>
+                                        <th>Existencia</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="imprimirTablaDesactivados">
+                                    <?php
+                          include("../../Config/conexion.php");
+                          $query_s= pg_query($conexion, "select * from productos where bestado='f'and estock<3 order by cmodelo ");
+                          while($fila=pg_fetch_array($query_s)){
+                      ?>
+                                <tr>
+                                    <td><?php echo $fila[0]; ?></td>
+                                    <td><?php echo $fila[1]; ?></td>
+                                    <td><?php echo $fila[10]; ?></td>
+                                    <td>$<?php echo $fila[5]; ?></td>
+                                    <?php
+                              if($fila[2]<=3){
+                                  echo '<td class="p-3 mb-2 bg-danger text-white">'.$fila[2].'</td>';
+                              }else{
+                                 echo '<td>'.$fila[2].'</td>';
+                              }
+                        ?>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-arrow-circle-down"></i></button>
+                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
+                        </td>
+                </tr>
+                <?php
+                      }
+                        ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           
+                                            
+                                             
+                                               </div>
                                         </div>
                                     </div>
                                 </div>
@@ -415,13 +506,24 @@ $precioC=($_REQUEST["precioCompra"]);
 $proveedor=$_REQUEST["proveedor"];
 $marca=($_REQUEST["marca"]);
 $garantia=($_REQUEST["garantia"]);
+$tipo=$_REQUEST["tipo"];
+if($tipo==="1")
+    $tipoc="Lente";
+else
+    $tipoc="Accesorio";
+
 include("../../Config/conexion.php");
 if($bandera=="add"){
     //mensajeInformacion('Esta','Entre  '.$modelo,'info');
     pg_query("BEGIN");
+    if($tipo=="1"){
           $result=pg_query($conexion,"insert into productos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
-            eid_garantia, eid_proveedor, eid_marca, bestado) values('$modelo','$nombre','0','$precioC','$color','$precioV','$garantia','$proveedor','$marca','1')");
-          if(!$result){
+            eid_garantia, eid_proveedor, eid_marca, bestado, ctipo) values('$modelo','$nombre','0','$precioC','$color','$precioV','$garantia','$proveedor','$marca','1','$tipoc')");  
+    }else if($tipo==="2"){
+        $result=pg_query($conexion,"insert into productos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
+            eid_garantia, eid_proveedor, eid_marca, bestado, ctipo) values('$nombre','$nombre','0','$precioC','$color','$precioV','1','$proveedor','$marca','1','$tipoc')"); 
+    }
+    if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
@@ -432,10 +534,14 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-          $result=pg_query($conexion,"update productos set  cnombre='$nombre', rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+          if($tipoc=="Lente"){
+              $result=pg_query($conexion,"update productos set  cnombre='$nombre', rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+          }else if($tipoc=="Accesorio"){
+              $result=pg_query($conexion,"update productos set rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+          }    
             if(!$result){
-				pg_query("rollback");
-				mensajeInformacion('Error','Datos no almacenados','error');
+				pg_query("rollback");   
+				mensajeInformacion('Error','Mensaje '.$tipoc,'error');
 				}else{
 					pg_query("commit");
                     mensajeInformacion('Informacion','Datos almacenados','info');
@@ -467,7 +573,7 @@ if($bandera=="cancelar"){
 }
 function mensajeInformacion($titulo,$mensaje,$tipo){
             echo "<script language='javascript'>";
-            echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
+            echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."','avanzar');";
             echo "document.getElementById('bandera').value='';";
             echo "document.getElementById('baccion').value='';";
             echo "</script>";

@@ -128,7 +128,7 @@ if(isset($_SESSION["acumulador"])){
                                         <label class="control-label col-md-5 col-sm-3 col-xs-12">Fecha *</label>
                                             <div class="form-group">
                                                 <div class='input-group date' id='myDatepicker1'>
-                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'"  autocomplete="off" onblur="vali('fecha');"/>
+                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'"  autocomplete="off" onblur="valiFecha();"/>
                                                     <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                                 <span id="txtHint"></span>
@@ -157,7 +157,7 @@ if(isset($_SESSION["acumulador"])){
                             
                             <div class="item form-group text-center">
                                 <div class="col-md-12">
-                                    <button class="btn btn-success btn-icon left-icon" onclick="guardar();"> <i class="fa fa-save"></i> <span>Guardar</span></button>
+                                    <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#tipoCompra"> <i class="fa fa-save"></i> <span>Guardar</span></button>
                                     <button class="btn btn-danger  btn-icon left-icon" onclick="cancelar();"> <i class="fa fa-close"></i><span>Cancelar</span></button>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@ if(isset($_SESSION["acumulador"])){
                                 <tr>
                                     <td><?php echo $fila[0]; ?></td>
                                     <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo $fila[2]; ?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
                                     <td>$<?php echo $fila[3]; ?></td>
                             <td class="text-center">
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
@@ -286,6 +286,27 @@ if(isset($_SESSION["acumulador"])){
                             <h3 class="modal-title" id="exampleModalLabel">Detalle Compra</h3> </center>
                     </div>
                     <div class="modal-body" id="cargaDetalle"> </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-round btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal -->
+        
+        <!--- Modal -->
+        <div class="modal fade" id="tipoCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <center><h3 class="modal-title" id="exampleModalLabel">Tipo Compra</h3> </center>
+                    </div>
+                    <div class="modal-body" id="cargaDetalle"> 
+                        <div class="col-md-12 text-center">
+                                    <button class="btn btn-success btn-icon left-icon" onclick="guardar();"> <i class="fa fa-save"></i> <span>Contado</span></button>
+                                    <button class="btn btn-danger  btn-icon left-icon"> <i class="fa fa-close"></i><span>Credito</span></button>
+                                </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-round btn-primary" data-dismiss="modal">Cerrar</button>
                     </div>

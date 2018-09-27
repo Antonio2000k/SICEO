@@ -6,14 +6,14 @@
     $matriz=$_SESSION["matriz"];
     $total=total();
     $quepaso=1;
+    $fechita=date("m-d-Y", strtotime($_REQUEST["fecha"]));
     $id_empleado=$_SESSION["cid_empleado"];
       include '../../Config/conexion.php';
       pg_query("BEGIN");
-      $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra) values('".$id_empleado."','2018-12-12','".$total."')");
+      $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra) values('".$id_empleado."','".$fechita."','".$total."')");
       if(!$result){
                 pg_query("rollback");
-                $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados INgreso Compra</h5>
-                </div>';
+                $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso Compra</h5></div>';
                 $quepaso=0;
                 }else{                    
                     pg_query("commit");

@@ -19,6 +19,21 @@ function soloNumeros(e,opcion) {
             }       
         }
 
+function valiFecha(){
+    //alert('entre');
+    var date = new Date();
+      var m=date.getMonth(), d = date.getDate(); 
+      var date2 = new Date();    
+      var fecha=document.getElementById('fecha').value;
+        //alert(fecha);
+        //alert(m);
+        //alert(fecha.substr(3,2));
+          if ((m+1)<fecha.substr(3,2)) {
+              Notificacion('error', "<b>Error: </b>La fecha de compra esta fuera del rango permitido");
+              document.getElementById('fecha').value="";
+          }
+}
+
  function Notificacion(tipo,msg){
         notif({
           type:tipo,
@@ -86,11 +101,16 @@ function showUser(id,cantidad,opcion) {
         if(vacio==""){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");          
         }else{
-            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion, true);
+            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion+"&fecha="+formatStringToDate(document.getElementById("fecha").value), true);
             xmlhttp.send();
         }
     }
 }
+function formatStringToDate(text) {
+    var str=text.replace("/","-"); 
+    return str.replace("/","-");    
+}
+
 function verificar(opcion) {
             if (document.getElementById('cantidad').value == "" || document.getElementById('modelo').value == "0") {
                 swal('Error!', 'Complete los campos!', 'error');
@@ -198,16 +218,40 @@ function cancelar() {
                 }
             })
         }
+function tipoCompra(){
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        swal(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+}
 
 function guardar(){
-    //alert('Entre a guardar');
-    showUser("0",'0','guardarTodo');
-    var quepaso=document.getElementById("quepaso").value;
-    if(quepaso=="1"){
-        alertaSweet("Exito","Compra guardada","info");
-    }else{
-        alertaSweet("Error","Compra no guardada","error");
-    }
+    var fecha=document.getElementById("fecha").value;
+     if(fecha==""){
+        alertaDetener("Informacion","Ingrese una fecha","warning");  
+     }else{        
+         showUser("0",'0','guardarTodo');
+        var quepaso=document.getElementById("quepaso").value;
+        if(quepaso=="1"){
+            alertaSweet("Exito","Compra guardada","info");
+        }else{
+            alertaSweet("Error","Compra no guardada","error");
+        }
+     }
+    
 }
 function verMas(str, opcion) {
     //alert('Entre');
@@ -241,16 +285,14 @@ function modificarLista(cantidad,modelo,proveedor){
                     $("#divAgregar").hide();
                     $("#divModificar").show();
                     $("#btnInfoProducto").disabled=false;
-                    document.getElementById('proveedor').disabled=true;
-                                        
+                    document.getElementById('proveedor').disabled=true;                                        
                     $("#proveedor").val(proveedor);
-                    $("#proveedor").change();
-                    
+                    $("#proveedor").change();                    
                    $('#modelo').append($('<option>',
                      {
                         value: modelo,
                         text : modelo 
-                    }));                 
+                    }));             
                     
                     $("#modelo").val(modelo);
                     $("#modelo").change();

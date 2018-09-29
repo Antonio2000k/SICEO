@@ -1,5 +1,5 @@
     <?php
-                include '../../Config/conexion.php';
+                include '../../../Config/conexion.php';
                 $cambio=$_REQUEST['idd'];
    ?>
     <div class="col-md-12 col-sm-12 col-xs-12">

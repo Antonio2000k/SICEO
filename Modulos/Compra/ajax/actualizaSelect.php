@@ -1,5 +1,5 @@
 <?php
-    include '../../Config/conexion.php';
+    include '../../../Config/conexion.php';
     $opcion=$_REQUEST["opcion"];
     $cambio=$_REQUEST["cambio"];
    // echo '<input type="text" name="esta" value="'.$cambio.'">';

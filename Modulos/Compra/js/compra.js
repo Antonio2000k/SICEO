@@ -67,8 +67,8 @@ function actualiza(opcion) {
             }
         }
     }
-    if (opcion === "cambioModelo") xmlhttp.open("get", "actualizaSelect.php?opcion=" + opcion + "&cambio=" + cambio, true);
-    else xmlhttp.open("get", "actualizaSelect.php?opcion=" + opcion + "&cambio=" + cambioNombre, true);
+    if (opcion === "cambioModelo") xmlhttp.open("post", "ajax/actualizaSelect.php?opcion=" + opcion + "&cambio=" + cambio, true);
+    else xmlhttp.open("post", "ajax/actualizaSelect.php?opcion=" + opcion + "&cambio=" + cambioNombre, true);
     xmlhttp.send();
 }
 
@@ -85,15 +85,15 @@ function showUser(id,cantidad,opcion) {
         }
     }
     if (opcion == "agregar") {
-            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
+            xmlhttp.open("post", "ajax/agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
             xmlhttp.send();
     }
     if(opcion==="modificar"){
-        xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
+        xmlhttp.open("post", "ajax/agregarDetalle.php?opcion=" + opcion + "&modelo=" + id+ "&cantidad=" + cantidad, true);
         xmlhttp.send();
     }
     if (opcion == "quitar") {
-        xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion + "&quitar=" + id, true);
+        xmlhttp.open("post", "ajax/agregarDetalle.php?opcion=" + opcion + "&quitar=" + id, true);
         xmlhttp.send();
     }
     if(opcion=="guardarTodo"){
@@ -101,7 +101,7 @@ function showUser(id,cantidad,opcion) {
         if(vacio==""){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");          
         }else{
-            xmlhttp.open("post", "agregarDetalle.php?opcion=" + opcion+"&fecha="+formatStringToDate(document.getElementById("fecha").value), true);
+            xmlhttp.open("post", "ajax/agregarDetalle.php?opcion=" + opcion+"&fecha="+formatStringToDate(document.getElementById("fecha").value), true);
             xmlhttp.send();
         }
     }
@@ -157,7 +157,7 @@ function lanzaModal(){
                     document.getElementById("cargala").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("get", "cargaModalProducto.php?idd=" + producto, true);
+            xmlhttp.open("post", "ajax/cargaModalProducto.php?idd=" + producto, true);
             xmlhttp.send();
         }
 function Eliminar(id) {
@@ -218,25 +218,6 @@ function cancelar() {
                 }
             })
         }
-function tipoCompra(){
-    swal({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.value) {
-        swal(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
-      }
-    })
-}
 
 function guardar(){
     var fecha=document.getElementById("fecha").value;
@@ -254,7 +235,6 @@ function guardar(){
     
 }
 function verMas(str, opcion) {
-    //alert('Entre');
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }
@@ -323,16 +303,17 @@ function nuevoAjax2()
           function modificarPreciosProducto(){
               var precioVenta=document.getElementById('precioVenta').value;
               var precioCompra=document.getElementById('precioCompra').value;
-              var modelo=document.getElementById("modelo").value;
-              
+              var modelo=document.getElementById("modelo").value;              
               if(precioCompra=="" || precioVenta==""){
                   alertaDetener("Error","Complete los campos",'error');
               }else if(parseInt(precioCompra)==0 || parseInt(precioVenta)==0){
                   alertaDetener("informacion","Los precios deben ser mayores a cero",'warning');
-              }else{
+              }else if(parseInt(precioCompra)>parseInt(precioVenta)){
+                      alertaDetener("informacion","El precio de venta debe ser mayor al precio de compra",'warning'); 
+                       }else{
                   $('#editarProducto').modal('hide');              
                   var ajax2=nuevoAjax2();
-                  ajax2.open("POST", "ajax/editarProducto.php", true);
+                  ajax2.open("post", "ajax/editarProducto.php", true);
                   ajax2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                   ajax2.send("precioCompra="+precioCompra+"&precioVenta="+precioVenta+"&modelo="+modelo);
                   ajax2.onreadystatechange=function() {
@@ -348,8 +329,52 @@ function nuevoAjax2()
               }
               
           }
+function cargarC(){   
+    //document.getElementById("btnguardarcredito").style.display = "block";  
+    $("#cargarCredito").show();
+}
 
 function aparecer(){
     $("#divModificarProducto").show();    
 }
+
+function guardarNuevoProducto(){
+    $(document).ready(function() { 
+    var options = { 
+        target:        '#guardo',   // target element(s) to be updated with server response 
+        //beforeSubmit:  showRequest,  // pre-submit callback 
+        success:       showResponse, // post-submit callback  
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    }; 
+    $('#formProductoM').ajaxForm(options); 
+});
+} 
+
+function showRequest(formData, jqForm, options) { 
+    var queryString = $.param(formData);  
+    alert('About to submit: \n\n' + queryString); 
+    return true; 
+} 
+
+function showResponse(responseText, statusText, xhr, $form)  {  
+    //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.'); 
+    if(responseText==="1")
+        alertaDetener("Informacion","Producto agregado","info"); 
+    else if(responseText==="0")
+        alertaDetener("Informacion","Producto no agregado","error"); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

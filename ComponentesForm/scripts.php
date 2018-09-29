@@ -70,6 +70,9 @@
     
     <!-- Select2 --->
     <script src="../../vendors/select2/dist/js/select2.full.min.js"></script>
+    
+    <!-- JQuery Form -->
+    <script src="../../vendors/jquery_form/dist/jquery.form.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>

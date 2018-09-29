@@ -1,22 +1,4 @@
-function soloNumeros(e) {
-            key = e.keyCode || e.which;
-            tecla = String.fromCharCode(key).toLowerCase();
-            letras = "1234567890.";
-            especiales = [8, 37, 39, 46];
-            tecla_especial = false;
-            for(var i in especiales) {
-                if(key == especiales[i]) {
-                    tecla_especial = true;
-                    break;
-                }
-            }
-            if(letras.indexOf(tecla) == -1 && !tecla_especial){
-                NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten numeros");
-                return false;
-            }       
-        }      
-
-function soloLetras(e) {
+ function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
             letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
@@ -35,18 +17,19 @@ function soloLetras(e) {
         }
 
         function limpia() {
-            var val = document.getElementById("nombre").value;
+            var val = document.getElementById("nombreP").value;
             var tam = val.length;
             for (i = 0; i < tam; i++) {
-                if (!isNaN(val[i])) document.getElementById("nombre").value = '';
+                if (!isNaN(val[i])) document.getElementById("nombreP").value = '';
             }
         }
 
-        function verificar(opcion) {
+        function verificarP(opcion) {
+            //alert("Entre");
             var opc = true;
             var tipo=document.getElementById("tipo").value;
             if(tipo==="1" || tipo==="0"){
-                if (document.getElementById('modelo').value == "" || document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombre').value == "" || document.getElementById('color').value == "" || document.getElementById('proveedor').value == 0 || document.getElementById('marca').value == 0 || document.getElementById('garantia').value == 0 || document.getElementById("tipo").value==0) {
+                if (document.getElementById('modeloP').value == "" || document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombreP').value == "" || document.getElementById('color').value == "" || document.getElementById('proveedorP').value == 0 || document.getElementById('marca').value == 0 || document.getElementById('garantia').value == 0 || document.getElementById("tipo").value==0) {
                     swal('Error!', 'Complete los campos!', 'error');
                     document.getElementById('bandera').value = "";
                     opc = false;
@@ -61,9 +44,8 @@ function soloLetras(e) {
                     opc = true;
                 }
             }else if(tipo==="2"){
-                if (document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombre').value == "" || document.getElementById('proveedor').value == 0 || document.getElementById('marca').value == 0 || document.getElementById("tipo").value==0) {
+                if (document.getElementById('precioCompra').value == "" || document.getElementById('precioVenta').value == "" || document.getElementById('nombreP').value == "" || document.getElementById('proveedorP').value == 0 || document.getElementById('marca').value == 0 || document.getElementById("tipo").value==0) {
                     swal('Error!', 'Complete los campos!', 'error');
-                    document.getElementById('bandera').value = "";
                     opc = false;
                 }else if(parseFloat(document.getElementById('precioCompra').value)>=parseFloat(document.getElementById('precioVenta').value)){
                     swal('Error','El precio de venta debe ser mayor al precio de compra','warning');
@@ -76,31 +58,22 @@ function soloLetras(e) {
                     opc = true;
                 }
             }else if(tipo==="0"){
-                detener();
+                detenerP();
             }
             if(opc)
-                document.formProducto.submit();
+                document.formProductoP.submit();
             else
-                detener();
+                detenerP();
         }
 
         
-        function detener(){
-                $("#formProducto").submit(function () {
+        function detenerP(){
+                $("#formProductoP").submit(function () {
                      return false;
                 });
         }
-        function limpiarIn(opcion) {
-            if (opcion == "limpiarM") {
-                detener();
-                DarBaja('0',"cancelarM","Desea cancelar la modificación","Si, lo deseo cancelar");
-            }else {
-                detener();
-                DarBaja('0',"cancelar","Desea cancelar el proceso","Si, lo deseo cancelar");
-            }
-        }
 
-        function alertaSweet(titulo, texto, tipo,opcion) {
+        function alertaSweetP(titulo, texto, tipo,opcion) {
             //alert(opcion);
             swal({
                 title: titulo
@@ -111,39 +84,10 @@ function soloLetras(e) {
                 , confirmButtonText: 'ok'
             }).then((result) => {
                 if(opcion=='detener')
-                    detener();
+                    detenerP();
                     else
                         document.location.href='producto.php';                
             })
-        }
-        function DarBaja(id, opcion, mensaje, conf) {
-            swal({
-                title: 'Confirmaci&oacuten'
-                , text: mensaje
-                , type: 'warning'
-                , showCancelButton: true
-                , confirmButtonColor: '#3085d6'
-                , cancelButtonColor: '#d33'
-                , cancelButtonText: 'Cancelar'
-                , confirmButtonText: conf
-            }).then((result) => {
-                if (result.value) {
-                    if(opcion==="cancelarM")                        
-                        document.getElementById('bandera').value = 'cancelar';
-                    if(opcion!=="cancelar" && opcion!=="cancelarM"){
-                        if (opcion == 'baja') document.getElementById('bandera').value = "Dbajar";
-                        else document.getElementById('bandera').value = "Dactivar";
-                        document.getElementById('baccion').value = id;
-                        document.formProducto.submit();
-                    }else{
-                        document.location.href="producto.php";
-                    }
-                }
-            })
-        }
-
-        function llamarPagina(id) {
-            window.open("producto.php?id=" + id, '_parent');
         }
 
         function NotificacionSoloLetras2(tipo, msg) {
@@ -154,22 +98,6 @@ function soloLetras(e) {
                 , timeout: 3000
                 , clickable: true
             });
-        }
-
-        function ajax_act(str, opcion) {
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("cargala").innerHTML = xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("post", "cargarModal.php?idd=" + opcion, true);
-            xmlhttp.send();
         }
 
         function verificarCodigo(opcion) {
@@ -186,21 +114,21 @@ function soloLetras(e) {
                     var paso = document.getElementById('baccionVer').value;
                     if (paso == 0) {
                         if(opcion=="codigo"){
-                            alertaSweet("Error", "Codigo ya se encuentra registrado", "error","detener");
+                            alertaSweetP("Error", "Codigo ya se encuentra registrado", "error","detener");
                         document.getElementById('modelo').focus();
                         document.getElementById('modelo').value = "";
                         }else if(opcion=="nombre"){
-                            alertaSweet("Error", "Nombre ya se encuentra registrado", "error","detener");
-                        document.getElementById('nombre').focus();
-                        document.getElementById('nombre').value = "";
+                            alertaSweetP("Error", "Nombre ya se encuentra registrado", "error","detener");
+                        document.getElementById('nombreP').focus();
+                        document.getElementById('nombreP').value = "";
                         }
                     }
                 }
             }
             if(opcion==="codigo")
-                var modelo = document.getElementById('modelo').value;
+                var modelo = document.getElementById('modeloP').value;
             else if(opcion==="nombre")
-                var modelo = document.getElementById('nombre').value;
+                var modelo = document.getElementById('nombreP').value;
             xmlhttp.open("post", "existeCodigo.php?codigo=" +modelo+"&opcion="+opcion, true);
             xmlhttp.send();
         }       
@@ -214,13 +142,13 @@ function cambioTipoModelo(){
     var opcion=document.getElementById("tipo").value;
     ///alert("Entre    "+opcion);
     if(opcion==="2"){ 
-        document.getElementById("modelo").disabled=true;
-        document.getElementById("modelo").value="";
+        document.getElementById("modeloP").disabled=true;
+        document.getElementById("modeloP").value="";
         document.getElementById("garantia").disabled=true;
         $("#garantia").val('0');
         $("#garantia").change();
     }else if(opcion==="1"){  //alert("Entre    "+opcion);
-        document.getElementById("modelo").disabled=false;
+        document.getElementById("modeloP").disabled=false;
         document.getElementById("garantia").disabled=false;
     }
 }

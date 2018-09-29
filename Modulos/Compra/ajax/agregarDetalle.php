@@ -8,7 +8,7 @@
     $quepaso=1;
     $fechita=date("m-d-Y", strtotime($_REQUEST["fecha"]));
     $id_empleado=$_SESSION["cid_empleado"];
-      include '../../Config/conexion.php';
+      include '../../../Config/conexion.php';
       pg_query("BEGIN");
       $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra) values('".$id_empleado."','".$fechita."','".$total."')");
       if(!$result){
@@ -118,7 +118,7 @@ function existeCodigo($codigo){
 function actualizaStock(){
     $acumulador=$_SESSION["acumulador"];
     $matriz=$_SESSION["matriz"];
-    include '../../Config/conexion.php';
+    include '../../../Config/conexion.php';
     for($i=1 ; $i<=$acumulador ; $i++){
             pg_query("BEGIN");
             $resultado=pg_query($conexion, "select * from productos");
@@ -170,7 +170,7 @@ function impresion($mensaje,$quepaso){
 		for($i=1 ; $i<=$acumulador ; $i++){
 			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
             $id=$matriz[$i][0];
-            include '../../Config/conexion.php';
+            include '../../../Config/conexion.php';
             pg_query("BEGIN");
             $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
             $nue=pg_num_rows($resultado);
@@ -202,7 +202,7 @@ function total(){
 		for($i=1 ; $i<=$acumulador ; $i++){
 			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
             $id=$matriz[$i][0];
-            include '../../Config/conexion.php';
+            include '../../../Config/conexion.php';
             pg_query("BEGIN");
             $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
             $nue=pg_num_rows($resultado);

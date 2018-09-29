@@ -13,8 +13,9 @@ if(isset($_SESSION["acumulador"])){
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>SICEO | Compras </title>
     <?php include "../../ComponentesForm/estilos.php";  ?>
-    <link href="propio.css" rel="stylesheet">
-    <script src="compra.js"></script>
+    <link href="css/propio.css" rel="stylesheet">
+    <script src="js/compra.js"></script>
+    <script src="js/nuevoProducto.js"></script>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -59,8 +60,11 @@ if(isset($_SESSION["acumulador"])){
                         <div class="x_content">
                                 <form class="form-horizontal form-label-left" name="formCompra" id="formCompra" method="post">
                                      <div class="row" id="modificarLista">
-                                          <input type="hidden" name="bandera" id="bandera" />
+                                    <input type="hidden" name="bandera" id="bandera" />
                                       <input type="hidden" name="baccion" id="baccion"/>
+                                      <div class="row" id="guardo">
+                                          <input type="hidden" name="guardoXD" id="guardoXD"/>
+                                      </div>                                      
                                        <div class="row text-center">
                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoProducto">
                                              <span class="glyphicon glyphicon-plus"></span> Nuevo producto
@@ -301,20 +305,55 @@ if(isset($_SESSION["acumulador"])){
                     <div class="modal-header">
                         <center><h3 class="modal-title" id="exampleModalLabel">Tipo Compra</h3> </center>
                     </div>
-                    <div class="modal-body" id="cargaDetalle"> 
+                    <div class="modal-body"> 
                         <div class="col-md-12 text-center">
-                                    <button class="btn btn-success btn-icon left-icon" onclick="guardar();"> <i class="fa fa-save"></i> <span>Contado</span></button>
-                                    <button class="btn btn-danger  btn-icon left-icon"> <i class="fa fa-close"></i><span>Credito</span></button>
-                                </div>
+                            <button class="btn btn-dark btn-icon left-icon" onclick="guardar();"> <i class="fa fa-money"></i> <span>  Contado</span></button>
+                            <button class="btn btn-warning  btn-icon left-icon" onclick="cargarC();"> <i class="fa fa-credit-card"></i><span>  Credito</span></button>
+                        </div>
+                        <div  class="row" hidden id="cargarCredito">
+                        <div class="item form-group text-center">
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                <label class="control-label col-md-12 col-sm-12 col-xs-12">Cuotas* </label>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                <label class="control-label col-md-12 col-sm-12 col-xs-12"> Periodo(dias)* </label>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <input type="number" class="form-control has-feedback-left" id="coutas" class="form-control col-md-7 col-xs-12" name="precioCompra" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input type="number" class="form-control has-feedback-left" id="periodo" class="form-control col-md-7 col-xs-12" name="precioVenta" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback text-center">
+                                <label class="control-label col-md-12 col-sm-12 col-xs-12">Abono inicial</label>
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <input type="number" class="form-control has-feedback-left" id="abonoInicial" class="form-control col-md-7 col-xs-12" name="precioCompra" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <button type="button" class="btn btn-success" id="btnguardarcredito" onclick="guardarCredito();"><i class="fa fa-save"></i><span>  Guardar compra</span></button>   
+                        </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-round btn-primary" data-dismiss="modal">Cerrar</button>
+                    <div class="modal-footer text-center">                    
+                        <button type="button" class="btn btn-round btn-primary" data-dismiss="modal">Cerrar</button>                
                     </div>
                 </div>
             </div>
         </div>
         <!-- Fin Modal -->
         
+        <?php include'Modal/modificacionProducto.php'; ?>
     <!--Aqui va fin el contenido-->
     <footer><?php        include "../../ComponentesForm/footer.php";      ?> </footer>
 </div>        
@@ -325,56 +364,11 @@ if(isset($_SESSION["acumulador"])){
         $(function () {
             $('.SProveedor').select2()
             $('.SProducto').select2()
+            $('.STipo').select2()
+            $('.SProveedorP').select2()
+            $('.SMarca').select2()
+            $('.SGarantia').select2()
         });
     </script>
 </body>
 </html>
-<?php
-$bandera=$_REQUEST["bandera"];
-//total();
-
-if($bandera==="guardarTodo"){
-    $acumulador=$_SESSION["acumulador"];
-    $matriz=$_SESSION["matriz"];
-    
-  pg_query("BEGIN");
-  $result=pg_query($conexion,"INSERT INTO compra(eid_compra, cid_empleado, ffecha_venta, rtotal_venta) values('5','te','2018-12-12','".total()."')");
-  if(!$result){
-            pg_query("rollback");
-            mensajeInformacion('Error','Datos no almacenados','error');
-            }else{
-                pg_query("commit");
-                mensajeInformacion('Informacion','Datos almacenados','info');
-            }
-}
-
-function mensajeInformacion($titulo,$mensaje,$tipo){
-            echo "<script language='javascript'>";
-            echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
-            echo "document.getElementById('bandera').value='';";
-            echo "document.getElementById('baccion').value='';";
-            echo "</script>";
-
-}
-
-function total(){
-		$acumulador=$_SESSION['acumulador'];
-		$matriz=$_SESSION['matriz'];
-        $valor=0;
-		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
-            $id=$matriz[$i][0];
-            include '../../Config/conexion.php';
-            pg_query("BEGIN");
-            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
-            $nue=pg_num_rows($resultado);
-                if($nue>0){
-                while ($fila = pg_fetch_array($resultado)) {
-                        $valor=$valor+($matriz[$i][1]*$fila[3]);            
-                   }
-                }
-             }  
-        }
-    return $valor;
-}
-?>

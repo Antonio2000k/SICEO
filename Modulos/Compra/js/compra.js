@@ -18,7 +18,6 @@ function soloNumeros(e,opcion) {
                 return false;
             }       
         }
-
 function valiFecha(){
     //alert('entre');
     var date = new Date();
@@ -33,8 +32,7 @@ function valiFecha(){
               document.getElementById('fecha').value="";
           }
 }
-
- function Notificacion(tipo,msg){
+function Notificacion(tipo,msg){
         notif({
           type:tipo,
           msg:msg ,
@@ -44,7 +42,6 @@ function valiFecha(){
             
         });
     }
-
 function actualiza(opcion) {
     var cambio = document.getElementById('proveedor').value;
     var cambioNombre = document.getElementById('modelo').value;
@@ -71,7 +68,6 @@ function actualiza(opcion) {
     else xmlhttp.open("post", "ajax/actualizaSelect.php?opcion=" + opcion + "&cambio=" + cambioNombre, true);
     xmlhttp.send();
 }
-
 function showUser(id,cantidad,opcion) {
     if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -105,12 +101,25 @@ function showUser(id,cantidad,opcion) {
             xmlhttp.send();
         }
     }
+    if(opcion==="guardarTodoCredito"){
+        var vacio=document.getElementById("estaVacio").value;
+        if(vacio==""){
+            alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");          
+        }else{
+            var cuota=document.getElementById("cuotas").value;
+            var periodo=document.getElementById("periodo").value;
+            var abono=document.getElementById("abonoInicial").value;
+            if(abono==="")
+                abono="0";
+            xmlhttp.open("post", "ajax/agregarDetalle.php?opcion=guardarTodoCredito" +"&fecha="+formatStringToDate(document.getElementById("fecha").value)+"&cuota="+cuota+"&periodo="+periodo+"&abono="+abono, true);
+            xmlhttp.send();
+        }
+    }
 }
 function formatStringToDate(text) {
     var str=text.replace("/","-"); 
     return str.replace("/","-");    
 }
-
 function verificar(opcion) {
             if (document.getElementById('cantidad').value == "" || document.getElementById('modelo').value == "0") {
                 swal('Error!', 'Complete los campos!', 'error');
@@ -137,7 +146,6 @@ function verificar(opcion) {
              detener();
             
     }
-
 function detener(){
     $("#formCompra").submit(function () {
                 return false;
@@ -176,7 +184,6 @@ function Eliminar(id) {
                 }
             })
         }
-
 function alertaSweet(titulo, texto, tipo) {
             swal({
                 title: titulo
@@ -201,7 +208,6 @@ function alertaDetener(titulo, texto, tipo) {
                     detener();               
             })
         }
-
 function cancelar() {
             swal({
                 title: 'Confirmaci&oacuten'
@@ -218,21 +224,63 @@ function cancelar() {
                 }
             })
         }
-
-function guardar(){
+function enviarCompra(opcion,mensaje){
+    swal({
+                title: 'Confirmaci&oacuten'
+                , text: mensaje
+                , type: 'warning'
+                , showCancelButton: true
+                , confirmButtonColor: '#3085d6'
+                , cancelButtonColor: '#d33'
+                , cancelButtonText: 'Cancelar'
+                , confirmButtonText: 'Si'
+            }).then((result) => {
+                if (result.value) {
+                    if(opcion==="contado"){
+                        showUser("0",'0','guardarTodo');                        
+                    }else if(opcion==="credito"){
+                        showUser("0","0",'guardarTodoCredito');
+                    }                        
+                    comprobacionGuardado();                        
+                }
+            })
+         
+}
+function guardarContado(){
     var fecha=document.getElementById("fecha").value;
      if(fecha==""){
         alertaDetener("Informacion","Ingrese una fecha","warning");  
-     }else{        
-         showUser("0",'0','guardarTodo');
-        var quepaso=document.getElementById("quepaso").value;
+     }else{   
+        enviarCompra("contado","Esta seguro de realizar la compra al contado");
+     }
+}
+function guardarCredito(){
+    var cuota=document.getElementById("cuotas").value;
+    var periodo=document.getElementById("periodo").value;
+    var abono=document.getElementById("abonoInicial").value;
+    var fecha=document.getElementById("fecha").value;
+    var total=document.getElementById("total").value;
+    //alert("Abono   "+abono);
+    //alert("Total   "+total);
+    if(parseFloat(abono)>=parseFloat(total)){
+       alertaDetener("Informacion","El abono supera el valor de la compra","warning"); 
+    }else if(fecha==""){
+        alertaDetener("Informacion","Ingrese una fecha","warning");  
+     }else{   
+        if(cuota==="" || periodo==="")
+        alertaDetener("Error","Complete los campos",'error');
+        else{
+            enviarCompra("credito","Esta seguro de guardar la compra al credito");
+        }
+     }
+}
+function comprobacionGuardado(){
+    var quepaso=document.getElementById("quepaso").value;
         if(quepaso=="1"){
             alertaSweet("Exito","Compra guardada","info");
         }else{
             alertaSweet("Error","Compra no guardada","error");
         }
-     }
-    
 }
 function verMas(str, opcion) {
             if (window.XMLHttpRequest) {
@@ -249,7 +297,6 @@ function verMas(str, opcion) {
             xmlhttp.open("post", "ajax/cargaModalDetalleCompra.php?idd=" + opcion, true);
             xmlhttp.send();
         }
-
 function modificarLista(cantidad,modelo,proveedor){
     swal({
                 title: 'Confirmaci&oacuten'
@@ -283,9 +330,7 @@ function modificarLista(cantidad,modelo,proveedor){
             })
     
 }
-
-function nuevoAjax2()
-          {
+function nuevoAjax2(){
             var xmlhttp=false;
             try {
                 xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
@@ -299,8 +344,7 @@ function nuevoAjax2()
             }
             return xmlhttp;
           }
-
-          function modificarPreciosProducto(){
+function modificarPreciosProducto(){
               var precioVenta=document.getElementById('precioVenta').value;
               var precioCompra=document.getElementById('precioCompra').value;
               var modelo=document.getElementById("modelo").value;              
@@ -333,11 +377,9 @@ function cargarC(){
     //document.getElementById("btnguardarcredito").style.display = "block";  
     $("#cargarCredito").show();
 }
-
 function aparecer(){
     $("#divModificarProducto").show();    
 }
-
 function guardarNuevoProducto(){
     $(document).ready(function() { 
     var options = { 
@@ -350,13 +392,11 @@ function guardarNuevoProducto(){
     $('#formProductoM').ajaxForm(options); 
 });
 } 
-
 function showRequest(formData, jqForm, options) { 
     var queryString = $.param(formData);  
     alert('About to submit: \n\n' + queryString); 
     return true; 
 } 
-
 function showResponse(responseText, statusText, xhr, $form)  {  
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.'); 
     if(responseText==="1")
@@ -364,9 +404,6 @@ function showResponse(responseText, statusText, xhr, $form)  {
     else if(responseText==="0")
         alertaDetener("Informacion","Producto no agregado","error"); 
 }
-
-
-
 
 
 

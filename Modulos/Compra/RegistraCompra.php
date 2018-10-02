@@ -307,7 +307,7 @@ if(isset($_SESSION["acumulador"])){
                     </div>
                     <div class="modal-body"> 
                         <div class="col-md-12 text-center">
-                            <button class="btn btn-dark btn-icon left-icon" onclick="guardar();"> <i class="fa fa-money"></i> <span>  Contado</span></button>
+                            <button class="btn btn-dark btn-icon left-icon" onclick="guardarContado();"> <i class="fa fa-money"></i> <span>  Contado</span></button>
                             <button class="btn btn-warning  btn-icon left-icon" onclick="cargarC();"> <i class="fa fa-credit-card"></i><span>  Credito</span></button>
                         </div>
                         <div  class="row" hidden id="cargarCredito">
@@ -322,11 +322,11 @@ if(isset($_SESSION["acumulador"])){
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-9 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="coutas" class="form-control col-md-7 col-xs-12" name="precioCompra" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="cuotas" class="form-control col-md-7 col-xs-12" name="cuotas" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="periodo" class="form-control col-md-7 col-xs-12" name="precioVenta" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="periodo" class="form-control col-md-7 col-xs-12" name="periodo" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                         </div>
                         <div class="item form-group">
@@ -337,7 +337,7 @@ if(isset($_SESSION["acumulador"])){
                         <div class="item form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-9 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="abonoInicial" class="form-control col-md-7 col-xs-12" name="precioCompra" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="abonoInicial" class="form-control col-md-7 col-xs-12" name="abonoInicial" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                         </div>
                         <div class="row text-center">

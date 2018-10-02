@@ -1,7 +1,7 @@
 <?php session_start();     
     $opcion=$_REQUEST["opcion"];
 
-    if($opcion==="guardarTodo"){
+    if($opcion==="guardarTodo" || $opcion==="guardarTodoCredito"){
     $acumulador=$_SESSION["acumulador"];
     $matriz=$_SESSION["matriz"];
     $total=total();
@@ -10,7 +10,14 @@
     $id_empleado=$_SESSION["cid_empleado"];
       include '../../../Config/conexion.php';
       pg_query("BEGIN");
-      $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra) values('".$id_empleado."','".$fechita."','".$total."')");
+      if($opcion==="guardarTodo"){
+          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."','".$fechita."','".$total."','0','0','0')");
+      }else if($opcion==="guardarTodoCredito"){
+          $abono=$_REQUEST["abono"];
+          $cuotas=$_REQUEST["cuota"];
+          $periodo=$_REQUEST["periodo"];
+          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."','".$fechita."','".$total."','".$cuotas."','".$periodo."','".$abono."')");
+      }      
       if(!$result){
                 pg_query("rollback");
                 $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso Compra</h5></div>';
@@ -146,6 +153,7 @@ function impresion($mensaje,$quepaso){
 ?>  
        <input type="hidden"id="quepaso" value="<?php echo $quepaso ?>"/>
        <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"]; ?>"/>
+       <input type="hidden" id="total" value="<?php echo total(); ?>"/>
        <div class="item form-group text-center">
         <div class="col-md-3 col-sm-9 col-xs-12">
             <label class="form-control has-feedback-center" class="form-control col-md-3 col-xs-12">Total Compra $<?php echo total();?></label>

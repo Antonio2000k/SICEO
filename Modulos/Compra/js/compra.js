@@ -21,14 +21,20 @@ function soloNumeros(e,opcion) {
 function valiFecha(){
     //alert('entre');
     var date = new Date();
-      var m=date.getMonth(), d = date.getDate(); 
+    var fecha=document.getElementById('fecha').value;
+      var mesActual=parseInt(date.getMonth()+1);
+      var mesDigitado=parseInt(fecha.substr(3,2));
+      var d = date.getDate(); 
       var date2 = new Date();    
-      var fecha=document.getElementById('fecha').value;
-        //alert(fecha);
-        //alert(m);
-        //alert(fecha.substr(3,2));
-          if ((m+1)<fecha.substr(3,2)) {
-              Notificacion('error', "<b>Error: </b>La fecha de compra esta fuera del rango permitido");
+      
+        //alert("Actual   "+parseInt(m+1));
+        //alert("Ingreado  "+fecha.substr(3,2));
+          if (mesActual<mesDigitado) {
+              Notificacion('error', "<b>Error: </b>Mes menor al actual");
+              document.getElementById('fecha').value="";
+          }
+          if (mesActual>mesDigitado) {
+              Notificacion('error', "<b>Error: </b>Mes mayor al actual");
               document.getElementById('fecha').value="";
           }
 }
@@ -254,25 +260,41 @@ function guardarContado(){
         enviarCompra("contado","Esta seguro de realizar la compra al contado");
      }
 }
+function guardar(){
+    var vacio=document.getElementById("estaVacio").value;
+    if(vacio==""){
+            alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");  
+    }else{
+        $('#tipoCompra').modal('show');
+    }
+    
+}
 function guardarCredito(){
     var cuota=document.getElementById("cuotas").value;
     var periodo=document.getElementById("periodo").value;
     var abono=document.getElementById("abonoInicial").value;
     var fecha=document.getElementById("fecha").value;
-    var total=document.getElementById("total").value;
+    var vacio=document.getElementById("estaVacio").value;
     //alert("Abono   "+abono);
     //alert("Total   "+total);
-    if(parseFloat(abono)>=parseFloat(total)){
+    if(vacio==""){
+            alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");  
+    }else{
+         var total=document.getElementById("total").value;
+        if(parseFloat(abono)>=parseFloat(total)){
        alertaDetener("Informacion","El abono supera el valor de la compra","warning"); 
-    }else if(fecha==""){
-        alertaDetener("Informacion","Ingrese una fecha","warning");  
-     }else{   
-        if(cuota==="" || periodo==="")
-        alertaDetener("Error","Complete los campos",'error');
-        else{
-            enviarCompra("credito","Esta seguro de guardar la compra al credito");
-        }
-     }
+        }else if(fecha==""){
+            alertaDetener("Informacion","Ingrese una fecha","warning");  
+         }else{   
+            if(cuota==="" || periodo==="")
+            alertaDetener("Error","Complete los campos",'error');
+            else{
+                enviarCompra("credito","Esta seguro de guardar la compra al credito");
+            }
+         }
+        
+    }
+    
 }
 function comprobacionGuardado(){
     var quepaso=document.getElementById("quepaso").value;
@@ -282,7 +304,7 @@ function comprobacionGuardado(){
             alertaSweet("Error","Compra no guardada","error");
         }
 }
-function verMas(str, opcion) {
+function verMas(str, opcion,tipo) {
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }
@@ -294,7 +316,10 @@ function verMas(str, opcion) {
                     document.getElementById("cargaDetalle").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("post", "ajax/cargaModalDetalleCompra.php?idd=" + opcion, true);
+            if(tipo==="contado")
+                xmlhttp.open("post", "ajax/cargaModalDetalleCompra.php?idd=" + opcion+"&tipo="+tipo, true);
+            else if(tipo==="credito")
+                xmlhttp.open("post", "ajax/cargaModalDetalleCompra.php?idd=" + opcion+"&tipo="+tipo, true);
             xmlhttp.send();
         }
 function modificarLista(cantidad,modelo,proveedor){
@@ -404,13 +429,6 @@ function showResponse(responseText, statusText, xhr, $form)  {
     else if(responseText==="0")
         alertaDetener("Informacion","Producto no agregado","error"); 
 }
-
-
-
-
-
-
-
 
 
 

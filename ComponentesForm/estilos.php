@@ -27,6 +27,10 @@
    
    <!-- Notify3 -->
    <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">
+   
+   <!-- iziModal -->
+   
+   <link rel="stylesheet" href="../../vendors/iziModal-master/css/iziModal.min.css">
  
 
     

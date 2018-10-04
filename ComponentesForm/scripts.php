@@ -73,6 +73,9 @@
     
     <!-- JQuery Form -->
     <script src="../../vendors/jquery_form/dist/jquery.form.min.js"></script>
+    
+    <!-- iziModal-->
+    <script src="../../vendors/iziModal-master/js/iziModal.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>
@@ -81,7 +84,7 @@
             var date = new Date();
             var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70; 
             var date2 = new Date();
-            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-5;
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-18;
             $('#myDatepicker2').datetimepicker({
 
                 format: 'DD/MM/YYYY',
@@ -100,12 +103,10 @@
             var date2 = new Date();
             var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear();
             $('#myDatepicker1').datetimepicker({
-
                 format: 'DD/MM/YYYY',
                 allowInputToggle: true,
                 minDate: new Date(y, m, d),
                 maxDate: new Date(y2, m2, d2)
-
             });
 
         });

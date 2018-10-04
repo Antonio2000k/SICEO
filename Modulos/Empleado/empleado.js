@@ -1,5 +1,3 @@
-
-
         function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -32,7 +30,7 @@
             if(opcion==='dui'){
                 var valor = document.getElementById('dui').value;
                 if (/^[0-9]{8}\-[0-9]{1}$/.test(valor)) {
-                    
+                    verificarCodigo('dui');
                 }else {
                     document.getElementById('dui').focus();
                     NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Dui</b>");
@@ -64,11 +62,10 @@
             if(document.getElementById('nombre').value=="" ||
             document.getElementById('apellido').value=="" ||
             document.getElementById('telefono').value=="" ||
-            document.getElementById('single_cal1').value=="" ||
+            document.getElementById('fecha').value=="" ||
             document.getElementById('dui').value=="" || document.getElementById('correo').value=="" ||
             document.getElementById('celular').value=="" ||
-            document.getElementById('direccion').value=="" ||
-            (!document.getElementById('generoF').checked || !document.getElementById('generoM').checked)){
+            document.getElementById('direccion').value==""){
                 swal('Error!','Complete los campos!','error');
                 document.getElementById('bandera').value="";
                 opc=false;
@@ -92,26 +89,57 @@
       }
 
     function limpiarIn(opcion){
-        if(opcion=="limpiarM"){
-            document.getElementById('bandera').value='cancelar';
-        }else{
-            $(document).ready(function(){
-              $("#formEmpleado")[0].reset();
-              $("#formEmpleado").submit(function() {
-                  return false;		
-                });
-            });
-        }
-    }
+        detener();
+        swal({
+          title: 'Confirmaci&oacuten',
+          text: 'Desea cancelar el proceso actual',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText:'Cancelar',
+          confirmButtonText: 'Si, lo deseo cancelar'
+        }).then((result) => {
+          if (result.value) {
+            limpiaF(opcion);
+          }
+        })
         
+    }
+function detener(){
+        $("#formEmpleado").submit(function () {
+             return false;
+        });
+}
+function limpiaF(opcion){
+    //alert("Opcion   "+opcion);
+    if(opcion=="limpiarM"){
+            document.location.href='registrarEmpleado.php';
+    }else if(opcion==="limpiar"){
+        $(document).ready(function(){
+          $("#formEmpleado")[0].reset();
+        });
+    }
+}
     function alertaSweet(titulo,texto,tipo){
-			swal(titulo,texto,tipo);
+			swal({
+          title: 'Confirmaci&oacuten',
+          text: texto,
+          type: tipo,
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          if (result.value) {
+              document.location.href='registrarEmpleado.php';            
+          }
+        })
     }
 
         
     function DarBaja(id,opcion,mensaje,conf){
         swal({
-          title: 'Confirmaci&oacute',
+          title: 'Confirmaci&oacuten',
           text: mensaje,
           type: 'warning',
           showCancelButton: true,
@@ -148,33 +176,46 @@
         });
     }
     
-    function ajax_act(str){
-			if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-          } else {
-          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                  }
-            xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-              document.getElementById("imprimir").innerHTML = xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("post", "recargaTblEmpleados.php", true);
-    xmlhttp.send();
-			}
-
-
-    
     function validarEmail(){
         var valor=document.getElementById('correo').value;
-        if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){           
+        if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){       verificarCodigo('correo');    
         } else {
             paso=false;
             NotificacionSoloLetras2('error',"<b>Error: </b>Correo incorrecto");
             document.getElementById('correo').value='';
         }
     }
-
+function verificarCodigo(opcion) {
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("cambiaso").innerHTML = xmlhttp.responseText;
+            var paso = document.getElementById('baccionVer').value;
+            //alert("Paso   "+paso);
+            if (paso == 0) {
+                if(opcion=="dui"){
+                    swal("Error", "Dui ya se encuentra registrado", "error");
+                document.getElementById('dui').focus();
+                document.getElementById('dui').value = "";
+                }else if(opcion=="correo"){
+                    swal("Error", "Correo ya se encuentra registrado", "error");
+                document.getElementById('correo').focus();
+                document.getElementById('correo').value = "";
+                }
+            }
+        }
+    }
+    if(opcion==="dui")
+        var modelo = document.getElementById('dui').value;
+    else if(opcion==="correo")
+        var modelo = document.getElementById('correo').value;
+    xmlhttp.open("post", "ajax/existeDui.php?codigo=" +modelo+"&opcion="+opcion, true);
+    xmlhttp.send();
+}
 
     

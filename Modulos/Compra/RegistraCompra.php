@@ -44,7 +44,10 @@ if(isset($_SESSION["acumulador"])){
                     <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">REGISTRAR COMPRA</a>
                 </li>
                 <li class="" role="presentation">
-                    <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">LISTADO DE COMPRAS</a>
+                    <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">COMPRAS AL CONTADO</a>
+                </li>
+                <li class="" role="presentation">
+                    <a aria-expanded="false" data-toggle="tab" href="#tab_content3" id="profile-tab" role="tab">COMPRAS AL CREDITO</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -52,7 +55,7 @@ if(isset($_SESSION["acumulador"])){
                     <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
-                        <div class="x_title" style="background: #2A3F54"><h2 style="text-indent: 400px; color: white">Datos del producto</h2>
+                        <div class="x_title" style="background: #2A3F54"><h2 style="text-indent: 400px; color: white">Datos de la compra</h2>
                             <ul class="nav navbar-right panel_toolbox"><li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                             </ul>
                             <div class="clearfix"></div>
@@ -62,6 +65,7 @@ if(isset($_SESSION["acumulador"])){
                                      <div class="row" id="modificarLista">
                                     <input type="hidden" name="bandera" id="bandera" />
                                       <input type="hidden" name="baccion" id="baccion"/>
+                                      <input type="hidden" name="baccion" id="baccionVer"/>
                                       <div class="row" id="guardo">
                                           <input type="hidden" name="guardoXD" id="guardoXD"/>
                                       </div>                                      
@@ -123,7 +127,7 @@ if(isset($_SESSION["acumulador"])){
                                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad*</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad" onkeypress="return soloNumeros(event,'entero')">
+                                                <input type="number" class="form-control has-feedback-left" class="form-control col-md-7 col-xs-12" placeholder="Cantidad" name="cantidad" id="cantidad" onkeypress="return soloNumeros(event,'entero')" min="1" max="100" value="1">
                                                 <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                             </div>                                            
@@ -161,7 +165,7 @@ if(isset($_SESSION["acumulador"])){
                             
                             <div class="item form-group text-center">
                                 <div class="col-md-12">
-                                    <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#tipoCompra"> <i class="fa fa-save"></i> <span>Guardar</span></button>
+                                    <button class="btn btn-success btn-icon left-icon" onclick="guardar();"> <i class="fa fa-save"></i> <span>Guardar</span></button>
                                     <button class="btn btn-danger  btn-icon left-icon" onclick="cancelar();"> <i class="fa fa-close"></i><span>Cancelar</span></button>
                                 </div>
                             </div>
@@ -176,7 +180,7 @@ if(isset($_SESSION["acumulador"])){
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>COMPRAS </h2>
+                            <h2>COMPRAS AL CONTADO</h2>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -193,7 +197,7 @@ if(isset($_SESSION["acumulador"])){
                                 <tbody>
                                     <?php
                           include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra order by ffecha_compra");
+                          $query_s= pg_query($conexion, "select * from compra where eperiodo<=0 order by ffecha_compra");
                           while($fila=pg_fetch_array($query_s)){
                       ?>
                                 <tr>
@@ -202,7 +206,49 @@ if(isset($_SESSION["acumulador"])){
                                     <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
                                     <td>$<?php echo $fila[3]; ?></td>
                             <td class="text-center">
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
+                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','contado')"> <i class="fa fa-list-ul"></i></button>
+                        </td>
+                </tr>
+                <?php
+                      }
+                        ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>COMPRAS AL CREDITO</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="datatable-fixed-header" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Empleado</th>
+                                        <th>Fecha</th>
+                                        <th>Total Compra</th>
+                                        <th>Ver Mas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                          include("../../Config/conexion.php");
+                          $query_s= pg_query($conexion, "select * from compra where eperiodo>0 order by ffecha_compra");
+                          while($fila=pg_fetch_array($query_s)){
+                      ?>
+                                <tr>
+                                    <td><?php echo $fila[0]; ?></td>
+                                    <td><?php echo $fila[1]; ?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
+                                    <td>$<?php echo $fila[3]; ?></td>
+                            <td class="text-center">
+                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','credito')"> <i class="fa fa-list-ul"></i></button>
                         </td>
                 </tr>
                 <?php
@@ -215,6 +261,7 @@ if(isset($_SESSION["acumulador"])){
             </div>
         </div>
                                                                                                 
+                                                                                            
             </div>
         </div>
         </div>
@@ -281,7 +328,7 @@ if(isset($_SESSION["acumulador"])){
         </div>
         <!-- Fin Modal -->
         
-        <!--- Modal -->
+        <!--- Modal Detalle Compra-->
         <div class="modal fade" id="modalDetalleCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -298,7 +345,7 @@ if(isset($_SESSION["acumulador"])){
         </div>
         <!-- Fin Modal -->
         
-        <!--- Modal -->
+        <!--- Modal Tipo de Compra-->
         <div class="modal fade" id="tipoCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -307,7 +354,7 @@ if(isset($_SESSION["acumulador"])){
                     </div>
                     <div class="modal-body"> 
                         <div class="col-md-12 text-center">
-                            <button class="btn btn-dark btn-icon left-icon" onclick="guardarContado();"> <i class="fa fa-money"></i> <span>  Contado</span></button>
+                            <button class="btn btn-dark btn-icon left-icon" onclick="guardarContado('lanza');"> <i class="fa fa-money"></i> <span>  Contado</span></button>
                             <button class="btn btn-warning  btn-icon left-icon" onclick="cargarC();"> <i class="fa fa-credit-card"></i><span>  Credito</span></button>
                         </div>
                         <div  class="row" hidden id="cargarCredito">
@@ -322,11 +369,11 @@ if(isset($_SESSION["acumulador"])){
                         <div class="item form-group">
                             <div class="col-md-6 col-sm-12 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-9 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="cuotas" class="form-control col-md-7 col-xs-12" name="cuotas" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="cuotas" class="form-control col-md-7 col-xs-12" name="cuotas" autocomplete="off" min="1" value="1" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="periodo" class="form-control col-md-7 col-xs-12" name="periodo" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="periodo" class="form-control col-md-7 col-xs-12" name="periodo" autocomplete="off" min="1" value="1" onkeypress="return soloNumeros(event,'entero')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                         </div>
                         <div class="item form-group">
@@ -337,7 +384,7 @@ if(isset($_SESSION["acumulador"])){
                         <div class="item form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                 <div class="col-md-12 col-sm-9 col-xs-12">
-                                    <input type="number" class="form-control has-feedback-left" id="abonoInicial" class="form-control col-md-7 col-xs-12" name="abonoInicial" autocomplete="off" min="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
+                                    <input type="number" class="form-control has-feedback-left" id="abonoInicial" class="form-control col-md-7 col-xs-12" name="abonoInicial" autocomplete="off" min="0" value="0" onkeypress="return soloNumeros(event,'punto')"> <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span> </div>
                             </div>
                         </div>
                         <div class="row text-center">
@@ -352,6 +399,14 @@ if(isset($_SESSION["acumulador"])){
             </div>
         </div>
         <!-- Fin Modal -->
+        
+        <div id="cambiaso">
+            
+        </div>
+        
+        
+        
+        <!-- fin iziModal-->
         
         <?php include'Modal/modificacionProducto.php'; ?>
     <!--Aqui va fin el contenido-->

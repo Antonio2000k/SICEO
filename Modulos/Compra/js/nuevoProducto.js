@@ -40,7 +40,6 @@
                     if (opcion === "guardar") {
                         document.getElementById('bandera').value = "add";
                     }
-                    else document.getElementById('bandera').value = "modificar";
                     opc = true;
                 }
             }else if(tipo==="2"){

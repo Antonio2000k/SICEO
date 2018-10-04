@@ -25,7 +25,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Inicio </a></li>
+                  <li><a href="../../index.php"><i class="fa fa-home"></i> Inicio </a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar Empleado</a></li>
@@ -35,7 +35,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Cliente/registrarCliente.php">Registrar</a></li>
-                      <li><a href="empleados.php">Listado de clientes</a></li>
+                      <li><a href="../../Modulos/Cliente/listaCliente.php">Listado de clientes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
@@ -54,7 +54,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="proveedor.php">Proveedores</a></li>
-                      <li><a href="empleados.php">Compras</a></li>
+                      <li><a href="../../Modulos/Compra/RegistraCompra.php">Compras</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>

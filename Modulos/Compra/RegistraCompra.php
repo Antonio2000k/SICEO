@@ -159,7 +159,6 @@ if(isset($_SESSION["acumulador"])){
                                 <div class="row">
                                     <div class="x_content" id="mostrar">
                                        <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"];?>"/>
-                                        
                                     </div>
                                 </div>
                             

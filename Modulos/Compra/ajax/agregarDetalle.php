@@ -107,6 +107,7 @@
         //var_export($matriz);//Muestra todos los elementos del array
 		$_SESSION['matriz']=$matriz;
         $acumulador--;
+        $_SESSION['acumulador']=$acumulador;
         $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
         //$_SESSION["mensaje"]=$mensaje;
 		impresion($mensaje,1);

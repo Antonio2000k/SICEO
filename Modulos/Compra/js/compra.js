@@ -262,6 +262,7 @@ function guardarContado(){
 }
 function guardar(){
     var vacio=document.getElementById("estaVacio").value;
+    alert("Vacio   "+vacio);
     if(vacio==""){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");  
     }else{

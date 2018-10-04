@@ -25,8 +25,6 @@ if(isset($_REQUEST["id"])){
         $proveedor = 0;
         $marca = 0;
         $tipoR=0;
-
-
 }
 ?>
     <!DOCTYPE html>
@@ -96,11 +94,21 @@ if(isset($_REQUEST["id"])){
                     </div>
                     <div class="x_content">
                         <form class="form-horizontal form-label-left" id="formProducto" name="formProducto" method="post">
+                           <div class="row" id="guardo" hidden>
+                              <input type="hidden" name="guardoXD" id="guardoXD"/>
+                          </div> 
                             <input type="hidden" name="bandera" id="bandera" />
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $idProducto;?>" />
                             <div id="cambiaso">
                                 <input type="hidden" id="baccionVer" value="1" /> </div>
                             <div class="row">
+                               <div class="row text-center">
+                                           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevaMarca">
+                                             <span class="glyphicon glyphicon-plus"></span> Nuevo Marca
+                                            </button>
+                                       </div>
+                               <div class="clearfix"></div><br>
+                               
                                 <div class="item form-group col-md-12 col-sm-12 col-xs-12 form-group has-feedback text-center">
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                 <label class="control-label col-md-5 col-sm-3 col-xs-12"> Tipo de Producto* </label>
@@ -181,7 +189,7 @@ if(isset($_REQUEST["id"])){
                             }else{
                                 ?>
                                     
-                                <input type="text" class="form-control has-feedback-left" id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" placeholder="Ingrese el nombre" autocomplete="off" value="<?php echo $Rnombre; ?>" onblur="verificarCodigo('nombre')"> <span class="fa fa-toggle-right form-control-feedback left" aria-hidden="true"></span>
+                                <input type="text" class="form-control has-feedback-left" id="nombre" class="form-control col-md-7 col-xs-12" name="nombre" placeholder="Ingrese el nombre" autocomplete="off" value="<?php echo $Rnombre; ?>" onblur="verificarCodigo('nombre')" onkeypress="return soloLetras(event)"> <span class="fa fa-toggle-right form-control-feedback left" aria-hidden="true"></span>
                                 <?php
                             }                           
                             
@@ -469,6 +477,8 @@ if(isset($_REQUEST["id"])){
             </div>
         </div>
         <!-- Fin Modal -->
+        
+        <?php include 'Modal/nuevaMarca.php';?>
         <footer>
             <?php
               include "../../ComponentesForm/footer.php";

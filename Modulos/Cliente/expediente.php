@@ -634,7 +634,7 @@ if(isset($_REQUEST["id"])){
                               </table>
 
                               <div style="text-align: center;">
-                                <label ">Diseño y tiempo de uso</label>
+                                <label >Diseño y tiempo de uso</label>
                                 <br>
                                   <textarea style="width: 400px; height: 52px;" id="descriplenso" name="descriplenso"></textarea>
                               </div>
@@ -713,7 +713,7 @@ if(isset($_REQUEST["id"])){
 
                                 <tbody>
                                   <tr>
-                                    <td width="50" height="16"</td>
+                                    <td width="50" height="16"></td>
                                       <td style="width:50px; height:20px; text-align:center;">DNP</td>
                                       <td style="width:50px; height:20px; text-align:center;">DIP</td>
                                       <td style="width:50px; height:20px; text-align:center;">ALT PUPILAR</td>

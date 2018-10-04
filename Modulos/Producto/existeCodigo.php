@@ -26,5 +26,16 @@
 							 pg_query("rollback");
 						 	echo '<input type="hidden" id="baccionVer" value="1"/>';
 						 }
+    }else if($opcion==="marca"){
+        pg_query("BEGIN");
+				 $result=pg_query($conexion,"select * from marca where cnombre='".$codigo."'");
+				 $nue=pg_num_rows($result);
+						 if($nue>0){
+							 pg_query("commit");
+							  echo '<input type="hidden" id="baccionVer" value="0"/>';
+						 }else {
+							 pg_query("rollback");
+						 	echo '<input type="hidden" id="baccionVer" value="1"/>';
+						 }
     }
  ?>

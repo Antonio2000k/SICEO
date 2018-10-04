@@ -182,16 +182,19 @@ function verificarCodigo(opcion) {
                     alertaSweet("Error", "Nombre ya se encuentra registrado", "error","detener");
                 document.getElementById('nombre').focus();
                 document.getElementById('nombre').value = "";
+                }else if(opcion=="marca"){
+                    alertaSweet("Error", "Marca ya se encuentra registrada", "error","detener");
+                document.getElementById('nombreM').focus();
+                document.getElementById('nombreM').value = "";
                 }
             }
         }
     }
-    if(opcion==="codigo")
-        var modelo = document.getElementById('modelo').value;
-    else if(opcion==="nombre")
-        var modelo = document.getElementById('nombre').value;
-    xmlhttp.open("post", "existeCodigo.php?codigo=" +modelo+"&opcion="+opcion, true);
-    xmlhttp.send();
+        if (opcion === "codigo") var modelo = document.getElementById('modelo').value;
+        else if (opcion === "nombre") var modelo = document.getElementById('nombre').value;
+        else if (opcion==="marca") var modelo=document.getElementById('nombreM').value;
+        xmlhttp.open("post", "existeCodigo.php?codigo=" + modelo + "&opcion=" + opcion, true);
+        xmlhttp.send();
 }       
 function cambioBaccion(id) {
     document.getElementById('baccionVer').value = id;
@@ -211,6 +214,37 @@ function cambioTipoModelo(){
     }
 }
 
+        function verificarM(opcion) {
+                if (document.getElementById('nombreM').value == "") {
+                    swal('Error!', 'Complete los campos!', 'error');
+                }else {
+                    guardarNuevaMarca();
+                }
+        }
 
+function guardarNuevaMarca(){
+    $(document).ready(function() { 
+    var options = { 
+        target:        '#guardo',   // target element(s) to be updated with server response 
+        //beforeSubmit:  showRequest,  // pre-submit callback 
+        success:       showResponse, // post-submit callback 
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    }; 
+    $('#formMarca').ajaxSubmit(options); 
+});
+} 
 
-        
+function showRequest(formData, jqForm, options) { 
+    var queryString = $.param(formData);  
+    alert('About to submit: \n\n' + queryString); 
+    return true; 
+} 
+function showResponse(responseText, statusText, xhr, $form)  {  
+    //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.'); 
+    if(responseText==="1")
+        alertaSweet("Informacion","Producto agregado","info",''); 
+    else if(responseText==="0")
+        alertaSweet("Informacion","Producto no agregado","error",'detener'); 
+}
+ 

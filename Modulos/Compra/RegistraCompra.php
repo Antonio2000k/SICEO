@@ -402,9 +402,6 @@ if(isset($_SESSION["acumulador"])){
         <div id="cambiaso">
             
         </div>
-        
-        
-        
         <!-- fin iziModal-->
         
         <?php include'Modal/modificacionProducto.php'; ?>

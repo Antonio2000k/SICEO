@@ -20,21 +20,33 @@ function soloNumeros(e,opcion) {
         }
 function valiFecha(){
     //alert('entre');
-    var date = new Date();
-    var fecha=document.getElementById('fecha').value;
-      var mesActual=parseInt(date.getMonth()+1);
-      var mesDigitado=parseInt(fecha.substr(3,2));
-      var d = date.getDate(); 
-      var date2 = new Date();    
+var fecha = document.getElementById('fecha').value;
+    alert("Fecha    "+fecha.substr(6, 9));
+var yActual = parseInt(date.getFullYear());
+var yDigitado=parseInt(fecha.substr(6, 9));
+var date = new Date();
+
+var mesActual = parseInt(date.getMonth() + 1);
+var mesDigitado = parseInt(fecha.substr(3, 2));
+var d = date.getDate();
+var date2 = new Date();  
       
-        //alert("Actual   "+parseInt(m+1));
-        //alert("Ingreado  "+fecha.substr(3,2));
+        alert("Actual   "+yActual);
+        alert("Ingreado  "+yDigitado);
           if (mesActual<mesDigitado) {
-              Notificacion('error', "<b>Error: </b>Mes menor al actual");
+              Notificacion('error', "<b>Error: </b>Mes mayor al actual");
               document.getElementById('fecha').value="";
           }
           if (mesActual>mesDigitado) {
-              Notificacion('error', "<b>Error: </b>Mes mayor al actual");
+              Notificacion('error', "<b>Error: </b>Mes menor al actual");
+              document.getElementById('fecha').value="";
+          }
+          if (yActual<yDigitado) {
+              Notificacion('error', "<b>Error: </b>Año mayor al actual");
+              document.getElementById('fecha').value="";
+          }
+          if (yActual>yDigitado) {
+              Notificacion('error', "<b>Error: </b>Año menor al actual");
               document.getElementById('fecha').value="";
           }
 }
@@ -262,7 +274,7 @@ function guardarContado(){
 }
 function guardar(){
     var vacio=document.getElementById("estaVacio").value;
-    alert("Vacio   "+vacio);
+    //alert("Vacio   "+vacio);
     if(vacio==""){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");  
     }else{

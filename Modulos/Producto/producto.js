@@ -214,13 +214,13 @@ function cambioTipoModelo(){
     }
 }
 
-        function verificarM(opcion) {
-                if (document.getElementById('nombreM').value == "") {
-                    swal('Error!', 'Complete los campos!', 'error');
-                }else {
-                    guardarNuevaMarca();
-                }
+function verificarM(opcion) {
+        if (document.getElementById('nombreM').value == "") {
+            swal('Error!', 'Ingrese un nombre', 'error');
+        }else {
+            guardarNuevaMarca();
         }
+}
 
 function guardarNuevaMarca(){
     $(document).ready(function() { 
@@ -243,8 +243,8 @@ function showRequest(formData, jqForm, options) {
 function showResponse(responseText, statusText, xhr, $form)  {  
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.'); 
     if(responseText==="1")
-        alertaSweet("Informacion","Producto agregado","info",''); 
+        alertaSweet("Informacion","Marca agregada","info",''); 
     else if(responseText==="0")
-        alertaSweet("Informacion","Producto no agregado","error",'detener'); 
+        alertaSweet("Informacion","Marca no agregada","error",'detener'); 
 }
  

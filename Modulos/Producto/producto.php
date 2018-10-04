@@ -128,8 +128,7 @@ if(isset($_REQUEST["id"])){
                                                 echo '<option value="2" selected="">Accesorio</option>'; 
                                         }         
                                     echo '</select>';
-                                            ?>
-                                    
+                                            ?>                                    
                                 </div>
                                 </div>
                                 </div>
@@ -418,7 +417,7 @@ if(isset($_REQUEST["id"])){
                                 <tbody id="imprimirTablaDesactivados">
                                     <?php
                           include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from productos where bestado='f'and estock<3 order by cmodelo ");
+                          $query_s= pg_query($conexion, "select * from productos where bestado='t' and estock<3 order by cmodelo");
                           while($fila=pg_fetch_array($query_s)){
                       ?>
                                 <tr>
@@ -544,14 +543,14 @@ if($bandera=="add"){
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
-          if($tipoc=="Lente"){
-              $result=pg_query($conexion,"update productos set  cnombre='$nombre', rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
-          }else if($tipoc=="Accesorio"){
-              $result=pg_query($conexion,"update productos set rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+          if($tipoR=="Lente"){
+              $result=pg_query($conexion,"UPDATE productos SET rprecio_compra='$precioC', cnombre='$nombre', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+          }else if($tipoR=="Accesorio"){
+              $result=pg_query($conexion,"UPDATE productos SET rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
           }    
             if(!$result){
 				pg_query("rollback");   
-				mensajeInformacion('Error','Mensaje '.$tipoc,'error');
+				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
 					pg_query("commit");
                     mensajeInformacion('Informacion','Datos almacenados','info');
@@ -568,7 +567,6 @@ if($bandera=='modificar'){
       if(!$result){
 				pg_query("rollback");
 				mensajeInformacion('Error','Datos no almacenados','error');
-
 				}else{
 					pg_query("commit");
                     mensajeInformacion('Informacion','Datos almacenados','info');

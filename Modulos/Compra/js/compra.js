@@ -21,23 +21,22 @@ function soloNumeros(e,opcion) {
 function valiFecha(){
     //alert('entre');
 var fecha = document.getElementById('fecha').value;
-    alert("Fecha    "+fecha.substr(6, 9));
+var date = new Date();
+//alert("Fecha    "+fecha.substr(6, 9));
 var yActual = parseInt(date.getFullYear());
 var yDigitado=parseInt(fecha.substr(6, 9));
-var date = new Date();
-
 var mesActual = parseInt(date.getMonth() + 1);
 var mesDigitado = parseInt(fecha.substr(3, 2));
-var d = date.getDate();
-var date2 = new Date();  
+var dActual= parseInt(date.getDate());
+var dDigitado=parseInt(fecha.substr(0, 2));
       
-        alert("Actual   "+yActual);
-        alert("Ingreado  "+yDigitado);
+        //alert("Actual   "+dActual);
+        //alert("Ingreado  "+dDigitado);
           if (mesActual<mesDigitado) {
               Notificacion('error', "<b>Error: </b>Mes mayor al actual");
               document.getElementById('fecha').value="";
           }
-          if (mesActual>mesDigitado) {
+          if ((mesActual-1)>mesDigitado) {
               Notificacion('error', "<b>Error: </b>Mes menor al actual");
               document.getElementById('fecha').value="";
           }
@@ -47,6 +46,10 @@ var date2 = new Date();
           }
           if (yActual>yDigitado) {
               Notificacion('error', "<b>Error: </b>Año menor al actual");
+              document.getElementById('fecha').value="";
+          }
+            if (dActual<dDigitado) {
+              Notificacion('error', "<b>Error: </b>Dia mayor al actual");
               document.getElementById('fecha').value="";
           }
 }
@@ -152,6 +155,7 @@ function verificar(opcion) {
                     showUser(id,cantidad,"modificar");
                     var quepaso=document.getElementById("quepaso").value;
                     if(quepaso=='1'){
+                        actualiza('cambioModelo');
                         $("#divModificar").hide();
                         $("#divAgregar").show();                        
                         document.getElementById("proveedor").disabled=false;
@@ -275,7 +279,7 @@ function guardarContado(){
 function guardar(){
     var vacio=document.getElementById("estaVacio").value;
     //alert("Vacio   "+vacio);
-    if(vacio==""){
+    if(vacio=="" || vacio==="0"){
             alertaDetener("Informacion","Debe ingresar un producto a la lista","warning");  
     }else{
         $('#tipoCompra').modal('show');

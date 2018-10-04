@@ -106,8 +106,10 @@
         //echo'<br><br>';
         //var_export($matriz);//Muestra todos los elementos del array
 		$_SESSION['matriz']=$matriz;
+        $acumulador=$_SESSION["acumulador"];
         $acumulador--;
-        $_SESSION['acumulador']=$acumulador;
+        $_SESSION["acumulador"]=$acumulador;
+        //$_SESSION['acumulador']=$acumulador;
         $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
         //$_SESSION["mensaje"]=$mensaje;
 		impresion($mensaje,1);
@@ -192,7 +194,7 @@ function impresion($mensaje,$quepaso){
                     
                 ?>
                     
-                    <td class="text-center"><button class="btn btn-warning btn-icon left-icon" onClick="Eliminar('<?php echo $i;?>');"> <i class="fa fa-remove"></i></button><button class="btn btn-info btn-icon left-icon" onClick="modificarLista('<?php echo $matriz[$i][1];?>','<?php echo $matriz[$i][0]?>','<?php echo $fila[7]?>');"> <i class="fa fa-edit"></i></button></td>
+                    <td class="text-center"><button class="btn btn-warning btn-icon left-icon" onClick="Eliminar('<?php echo $i;?>');"> <i class="fa fa-trash"></i></button><button class="btn btn-info btn-icon left-icon" onClick="modificarLista('<?php echo $matriz[$i][1];?>','<?php echo $matriz[$i][0]?>','<?php echo $fila[7]?>');"> <i class="fa fa-edit"></i></button></td>
                     <?php
                     }
                 }

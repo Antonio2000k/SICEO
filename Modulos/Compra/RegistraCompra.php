@@ -69,7 +69,7 @@ if(isset($_SESSION["acumulador"])){
                                       <div class="row" id="guardo">
                                           <input type="hidden" name="guardoXD" id="guardoXD"/>
                                       </div>                                      
-                                       <div class="row text-center">
+                                       <div class="row text-center" hidden>
                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#nuevoProducto">
                                              <span class="glyphicon glyphicon-plus"></span> Nuevo producto
                                             </button>
@@ -356,6 +356,8 @@ if(isset($_SESSION["acumulador"])){
                             <button class="btn btn-dark btn-icon left-icon" onclick="guardarContado('lanza');"> <i class="fa fa-money"></i> <span>  Contado</span></button>
                             <button class="btn btn-warning  btn-icon left-icon" onclick="cargarC();"> <i class="fa fa-credit-card"></i><span>  Credito</span></button>
                         </div>
+                        <br>
+                        <br>
                         <div  class="row" hidden id="cargarCredito">
                         <div class="item form-group text-center">
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">

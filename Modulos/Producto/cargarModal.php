@@ -28,7 +28,7 @@
                       <thead>
                         <tr>
                           <th></th>
-                            <th style="padding-left:90px;"><b><i class="fa fa-male"></i>   Proveedor</b></th>
+                            <th style="padding-left:40px;"><b><i class="fa fa-male"></i>   Proveedor</b></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -62,7 +62,7 @@
                       <thead>
                         <tr>
                           <th></th>
-                            <th style="padding-left:90px;"><b><i class="fa fa-shield"></i>    Marca</b></th>
+                            <th style="padding-left:40px;"><b><i class="fa fa-shield"></i>    Marca</b></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -86,7 +86,7 @@
                       <thead>
                         <tr>
                           <th></th>
-                            <th style="padding-left:90px;"><b><i class="fa fa-info-circle"></i>    Garantia</b></th>
+                            <th style="padding-left:40px;"><b><i class="fa fa-info-circle"></i>    Garantia</b></th>
                         </tr>
                       </thead>
                       <tbody>

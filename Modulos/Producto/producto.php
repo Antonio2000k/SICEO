@@ -331,7 +331,13 @@ if(isset($_REQUEST["id"])){
                         ?>
                         <td class="text-center">
                             <button class="btn btn-info btn-icon left-icon" onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i></button>
+                            <?php 
+                                if($fila[2]==0){
+                            ?>
                             <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!');"> <i class="fa fa-arrow-circle-down"></i></button>
+                            <?php
+                                }
+                            ?>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
                         </td>
                 </tr>
@@ -433,7 +439,13 @@ if(isset($_REQUEST["id"])){
                               }
                         ?>
                         <td class="text-center">
-                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-arrow-circle-down"></i></button>
+                           <?php
+                              if($fila[2]==0){
+                            ?>
+                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i></button>
+                            <?php
+                              }
+                            ?>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
                         </td>
                 </tr>

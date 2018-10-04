@@ -11,7 +11,7 @@ if(isset($_REQUEST["id"])){
         $Rsexo = $fila[4];
         $Rtelefono = $fila[5];
         $Rdireccion = $fila[6];
-        
+
     }
 }else{
         $RidCliente = null;
@@ -21,7 +21,7 @@ if(isset($_REQUEST["id"])){
         $Rsexo = null;
         $Rtelefono = null;
         $Rdireccion = null;
-        
+
 }
 ?>
 <!DOCTYPE html>
@@ -58,12 +58,12 @@ if(isset($_REQUEST["id"])){
             if(letras.indexOf(tecla) == -1 && !tecla_especial){
                 NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten letras");
                 return false;
-            }       
+            }
         }
 
         function vali(opcion) {
-            
-            
+
+
             if(opcion==='telefono'){
                 var valor = document.getElementById('telefono').value;
                 if (/^[2|6|7]{1}[0-9]{3}\-[0-9]{4}$/.test(valor)) {
@@ -82,9 +82,9 @@ if(isset($_REQUEST["id"])){
                     NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Edad</b>");
                 }
             }
-                   
+
         }
-        
+
         function limpia() {
             var val = document.getElementById("nombre").value;
             var tam = val.length;
@@ -93,7 +93,7 @@ if(isset($_REQUEST["id"])){
                     document.getElementById("nombre").value = '';
             }
         }
-        
+
       function verificar(opcion){
           var opc=true;
             if(document.getElementById('nombre').value=="" || document.getElementById('apellido').value=="" ||
@@ -109,16 +109,16 @@ if(isset($_REQUEST["id"])){
                 document.getElementById('bandera').value="modificar";
                 opc=true;
             }
-          
+
           $(document).ready(function(){
           $("#formCliente").submit(function() {
-              if (opc!=true) {    
+              if (opc!=true) {
                 return false;
-              } else 
-                  return true;      
+              } else
+                  return true;
             });
         });
-          
+
       }
 
     function limpiarIn(opcion){
@@ -128,24 +128,24 @@ if(isset($_REQUEST["id"])){
             $(document).ready(function(){
               $("#formCliente")[0].reset();
               $("#formCliente").submit(function() {
-                  return false;   
+                  return false;
                 });
             });
         }
     }
-        
+
     function alertaSweet(titulo,texto,tipo){
       swal(titulo,texto,tipo);
     }
 
-        
-    
-       
+
+
+
     function llamarPagina(id){
      window.open("registrarCliente.php?id="+id, '_parent');
   }
-        
-        
+
+
     function NotificacionSoloLetras2(tipo,msg){
         notif({
           type:tipo,
@@ -153,10 +153,10 @@ if(isset($_REQUEST["id"])){
           position: "center",
           timeout: 3000,
           clickable: true
-            
+
         });
     }
-    
+
     function ajax_act(str){
       if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
@@ -181,14 +181,14 @@ if(isset($_REQUEST["id"])){
             <div class="main_container">
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
-                        
+
                         <div class="clearfix">
                         </div>
 
                         <?php
                         include "../../ComponentesForm/menu.php";
                         ?>
-                        
+
                     </div>
 
         <!-- page content -->
@@ -198,15 +198,16 @@ if(isset($_REQUEST["id"])){
               <div class="x_panel">
                  <div >
                      <img  align="left" src="../../production/images/emplea.png" width="120" height="120">
-                        <h1 class="col-xs-12 col-sm-8 col-md-10" align="center">
+                        <h1 class="col-xs-12 col-sm-8 col-md-10"  align="center">
                           Lista de Clientes
                         </h1>
                       </img>
                   </div>
                   <div align="center">
-                      <p class="col-xs-12 col-sm-8 col-md-10 " >
-                        Bienvenido en esta sección puede registrar clientes en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente. En la pestaña de lista de clientes se muestran todos los clientes registrados.
-                      </p>
+                      <h4 style="font-size: medium;" class="col-xs-12 col-sm-8 col-md-10 " >
+                        Bienvenido en esta seccion podra ver el listado de todos los clientes registrados en SICEO.<br>
+                        En la pestaña <b>NUEVO CLIENTE</b> podra añadir más clientes al Sistema.
+                      </h4>
                   </div>
               </div>
             </div>
@@ -218,7 +219,7 @@ if(isset($_REQUEST["id"])){
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                        <li class="col-md-5 col-sm-5 col-xs-5" role="presentation">
                           <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" aria-expanded="true"  href="registrarCliente.php" id="home-tab"  >
-                             NUEVO CLIENTE 
+                             NUEVO CLIENTE
                           </a>
                         </li>
                         <li class="active col-md-5 col-sm-5 col-xs-5"  role="presentation">
@@ -232,7 +233,7 @@ if(isset($_REQUEST["id"])){
                       <div class="x_content">
                         <div class="x_title" style="background: #2A3F54">
                            <h3 align="center" style=" color: white">Datos Personales</h3>
-                              
+
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content">
@@ -274,10 +275,10 @@ if(isset($_REQUEST["id"])){
                                   <div class="col-md-5 col-sm-5 col-xs-12">
                                         <div class="form-group">
                                             <label class="control-label col-md-5 col-sm-2 col-xs-12">Edad*</label>
-                                            
+
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <input type="text" class="form-control has-feedback-left" id="edad" name="edad"    aria-describedby="inputSuccess2Status" style="padding-left: 55px;"  placeholder="Edad" value="<?php echo $Redad ?>" autocomplete="off">
-                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>        
+                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -294,7 +295,7 @@ if(isset($_REQUEST["id"])){
                                     </div>
 
                                     <br><br><br>
-                                    
+
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Direcci&oacuten*</label>
                                             <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
@@ -303,10 +304,10 @@ if(isset($_REQUEST["id"])){
                                             </div>
                                   </div>
 
-                                  
-                                                
+
+
                                   <div class="ln_solid"></div>
-                                                
+
                                   <div class="item form-group">
                                     <center>
                                        <div class="col-md-12 col-sm-6 col-xs-12 ">
@@ -334,12 +335,7 @@ if(isset($_REQUEST["id"])){
                       <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
-                                <div class="x_title">
-                                  <h2>PACIENTES </h2>
-                                     
-                                <div class="clearfix"></div>
-                                </div>
-                                
+
                                 <div class="x_content">
                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                   <thead>
@@ -361,19 +357,23 @@ if(isset($_REQUEST["id"])){
                                               FROM clientes
                                               INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente
                                                order by clientes.cnombre");
-                                        
+
                                           while($fila=pg_fetch_array($query_s)){
                                       ?>
                                     <tr>
                                       <td><?php echo $fila[7]; ?></td>
                                       <td><?php echo $fila[1]; ?></td>
                                       <td><?php echo $fila[2]; ?></td>
-                                      <td><?php echo $fila[3]; ?></td>
+                                      <td><?php if($fila[3]==1){
+                                                  echo $fila[3]  ." "."año";
+                                                }else{
+                                                  echo $fila[3]  ." "."años";
+                                                } ?></td>
                                       <td> <?php echo $fila[5]; ?> </td>
-                                      
+
                                       <td class="text-center">
                                         <button class="btn btn-info btn-icon left-icon"  onClick="Expediente('<?php echo $fila[7]; ?>')"> <i class="fa fa-th-list"></i> <span>Ver</span></button>
-                                      
+
                                        <!-- <button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>-->
 
                                       </td>
@@ -381,26 +381,83 @@ if(isset($_REQUEST["id"])){
                                     <?php
                                       }
                                         ?>
-                                    
+
                                   </tbody>
                                 </table>
                                     </div>
                                    </div>
                                  </div>
                                 </div>
-                              </div>  
+                              </div>
                             </div>
                           </div>
                            </div>
-                        </div>                
+                        </div>
                       </div>
                   </div>
                 </div>
               </div>
             </div>
-        
-        <!-- /page content -->
 
+        <!-- /page content -->
+        <!--modal-->
+     <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div style="float: right; color: red">
+                <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                  <span style="color: red" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                <h5 align="center" style=" color: white">ASISTENCIA LISTADO DE CLIENTES</h5>
+                <div class="clearfix"></div>
+              </div>
+          </div>
+          <div class="modal-body modal-md">
+            <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+                <div class="item active">
+                  <img class="img-responsive" src="../Ayuda/Clientes/listaCliente.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+
+                </div>
+
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Clientes/ayuda.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+
+                </div>
+
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Clientes/ayudaextraP.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+
+                </div>
+              </div>
+
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
         <footer>
             <?php
               include "../../ComponentesForm/footer.php";
@@ -432,25 +489,25 @@ if($bandera=="add"){
     $r=pg_query($conexion,"select * from clientes");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
-    
+
     $query_s=pg_query($conexion,"select count(*) from expediente ");
     while ($fila = pg_fetch_array($query_s)) {
-            $ida=$fila[0];                                 
+            $ida=$fila[0];
             $ida++ ;
         }
-    
+
           $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion')");
           $res= pg_query($conexion,"INSERT INTO expediente (eid_expediente, eid_cliente) VALUES ($ida, '$codigo')");
 
-          
 
-         
+
+
           if(!$result || !$res){
                     pg_query("rollback");
                     echo "<script type='text/javascript'>";
                     echo pg_result_error($conexion);
                     echo "alertaSweet('Error','Datos no almacenados', 'error');";
-                    
+
                       echo "ajax_act('');";
                     echo "document.getElementById('bandera').value='';";
                       echo "document.getElementById('baccion').value='';";
@@ -465,13 +522,13 @@ if($bandera=="add"){
                 echo "</script>";
           }
 
-          
+
        /*   if(){
                     pg_query("rollback");
                     echo "<script type='text/javascript'>";
                     echo pg_result_error($conexion);
                     echo "alertaSweet('Error','Datos no almacenados 2', 'error');";
-                    
+
                       echo "ajax_act('');";
                     echo "document.getElementById('bandera').value='';";
                       echo "document.getElementById('baccion').value='';";
@@ -485,12 +542,12 @@ if($bandera=="add"){
                 echo "document.getElementById('baccion').value='';";
                 echo "</script>";
           }*/
-    
+
   }
 /*  if($bandera=='modificar'){
       pg_query("BEGIN");
-        
-            $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");    
+
+            $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
               if(!$result){
                 pg_query("rollback");
           echo "<script type='text/javascript'>";
@@ -499,7 +556,7 @@ if($bandera=="add"){
           echo "document.getElementById('bandera').value='';";
             echo "document.getElementById('baccion').value='';";
             echo "ajax_act('');";
-          
+
           echo "</script>";
               }else{
                 pg_query("commit");
@@ -508,10 +565,10 @@ if($bandera=="add"){
           echo "document.getElementById('bandera').value='';";
             echo "document.getElementById('baccion').value='';";
             echo "ajax_act('');";
-          
+
           echo "</script>";
               }
-        
+
   }*/
   if($bandera=="cancelar"){
                       echo "<script type='text/javascript'>";
@@ -519,7 +576,7 @@ if($bandera=="add"){
                       echo "</script>";
   }
 
-     
+
 }
 
 
@@ -553,9 +610,7 @@ function mensajeInformacion($titulo,$mensaje,$tipo){
             echo "document.getElementById('baccion').value='';";
             echo "ajax_act('');";
             echo "</script>";
-    
+
 }
 
 ?>
-
-

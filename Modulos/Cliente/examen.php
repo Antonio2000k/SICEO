@@ -2,9 +2,9 @@
   if(isset($_REQUEST["id"])){
       include("../../Config/conexion.php");
       $iddatos = $_REQUEST["id"];
-      
+
       $query_s = pg_query($conexion, "SELECT eid_examen, cobservaciones, eid_expediente, eid_antecedente_medico,
-                                      eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, 
+                                      eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha,
                                       cid_empleado FROM examen WHERE eid_expediente = '$iddatos'");
       while ($fila = pg_fetch_array($query_s)) {
           $RidExpediente = $fila[2];
@@ -12,11 +12,11 @@
       }
   }else{
           $RidExpediente = null;
-          
+
   }
-  
+
   date_default_timezone_set('America/El_Salvador');
-  
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,14 +27,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SICEO | </title>
+    <title>SICEO | Examen </title>
 
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
 
-   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
   function validaFloat(numero){
     if (!/^([0-9])*[.]?[0-9]*$/.test(numero))
@@ -56,23 +54,24 @@
             if(letras.indexOf(tecla) == -1 && !tecla_especial){
                 NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten letras");
                 return false;
-            }       
+            }
         }
+        
 
   function verificar(){
           var opc=true;
           if(document.getElementById('idexpediente').value=="" || document.getElementById('examino').value==""
-           || document.getElementById('avsclred').value=="" || document.getElementById('avsclrei').value=="" 
+           || document.getElementById('avsclred').value=="" || document.getElementById('avsclrei').value==""
             || document.getElementById('avsccred').value=="" || document.getElementById('avsclrei').value==""
             || document.getElementById('esfred').value=="" || document.getElementById('esfrei').value==""
             || document.getElementById('cilred').value=="" || document.getElementById('cilrei').value==""
             || document.getElementById('ejered').value=="" || document.getElementById('ejerei').value==""
-            || document.getElementById('adiccionred').value=="" || document.getElementById('adiccionrei').value=="" 
+            || document.getElementById('adiccionred').value=="" || document.getElementById('adiccionrei').value==""
             || document.getElementById('prismared').value=="" || document.getElementById('prismarei').value==""
             || document.getElementById('cbred').value=="" || document.getElementById('cbrei').value==""
             || document.getElementById('avlejred').value=="" || document.getElementById('avlejrei').value==""
             || document.getElementById('avcered').value=="" || document.getElementById('avcerei').value==""){
-                
+
                 alertaSweet('Error!','Complete los campos!','error');
                 document.getElementById('bandera').value="";
                 opc=false;
@@ -82,16 +81,16 @@
                 setTimeout(document.formExam.submit(),2000);
                 opc=true;
             }
-          
+
           $(document).ready(function(){
           $("#formExam").submit(function() {
-              if (opc!=true) {    
+              if (opc!=true) {
                 return false;
-              } else 
-                  return true;      
+              } else
+                  return true;
             });
         });
-          
+
       }
 
       function limpia() {
@@ -110,7 +109,7 @@
             $(document).ready(function(){
               $("#formCliente")[0].reset();
               $("#formCliente").submit(function() {
-                  return false;   
+                  return false;
                 });
             });
         }
@@ -123,15 +122,19 @@
             type: tipo,
             title: titulo,
             showConfirmButton: false,
-            
+
           });
-    }    
+    }
 
     function llamarPagina(id){
      window.open("registrarCliente.php?id="+id, '_parent');
   }
-        
-        
+
+  function cancelar(){
+    location.href=('listaCliente.php');
+  }
+
+
     function NotificacionSoloLetras2(tipo,msg){
         notif({
           type:tipo,
@@ -139,11 +142,24 @@
           position: "center",
           timeout: 3000,
           clickable: true
-            
+
         });
     }
+
+    function vali(opcion) {
+
+            if(opcion==='expediente'){
+                var valor = document.getElementById('idexpediente').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('idexpediente').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Seleccione <b>Cliente</b>");
+                }
+            }
+    }
 </script>
-  
+
   </head>
 
   <body class="nav-md">
@@ -151,7 +167,7 @@
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
-            
+
 
             <div class="clearfix"></div>
 
@@ -172,7 +188,7 @@
                     </div>
                  <div align="center">
                   <p>
-                      Bienvenido en esta sección aquí puede registrar los examenes en el sistema.
+                      Bienvenido en esta sección puede registrar los examenes en el sistema.
                   </p>
                   </div>
                 </div>
@@ -182,42 +198,47 @@
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-          
+
                   <form  class="form-horizontal form-label-left" id="formExam" name="formExam" method="post">
                     <div class="item form-group">
+
+
                       <label class="control-label col-md-1 col-sm-2 col-xs-12">Cliente*</label>
-                      
-                      <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
+                      <input type="hidden" name="bandera" id="bandera"/>
+                      <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidExpediente;?>"/>
 
-                        <input type="hidden" name="bandera" id="bandera"/>
-                        
-                        <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidExpediente;?>"/>
+                      <div class="col-md-5 col-sm-3 col-xs-8 form-group ">
 
-                        <input type="text" class="form-control has-feedback-left"  id="idexpediente" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="idexpediente" placeholder="Cliente" value="<?php echo $RidExpediente; ?>" onkeypress="return soloLetras(event)" autocomplete="off" list="listaCliente" >
+                        <input type="text" class="form-control has-feedback-left  "  id="idexpediente" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="idexpediente" onblur="vali('expediente');" placeholder="Cliente" value="<?php echo $RidExpediente; ?>"  autocomplete="off" list="listaCliente" >
                         <datalist id="listaCliente" >
                             <?php
-                              include("../../Config/conexion.php");
-                              
-                              $query_s=pg_query($conexion,"select cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo, cl.ctelefonof, cl.cdireccion, ex.eid_expediente from expediente as ex 
-                                INNER JOIN clientes as cl on ex.eid_cliente = cl.eid_cliente order by eid_expediente");
-                              
+                             include("../../Config/conexion.php");
+
+                              $query_s=pg_query($conexion,"select cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo, cl.ctelefonof, cl.cdireccion, ex.cid_expediente from expediente2 as ex
+                                INNER JOIN clientes as cl on ex.eid_cliente = cl.eid_cliente order by cid_expediente");
+
                               while($fila=pg_fetch_array($query_s)){
                                 echo " <option value='$fila[7] - $fila[1]  $fila[2]'>";
                               }
                             ?>
                         </datalist>
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+
+                      </div>
+
+                      <div class="col-md-2 col-sm-3 col-xs-8 form-group ">
+                          <button float-right class="btn btn-info btn-icon left-icon"  data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-th-list"></i> <span>Nuevo Cliente</span></button>
                       </div>
 
                       <label  style="text-align: justify;"class="control-label col-md-1 col-sm-2 col-xs-12">Fecha*</label>
-                        <div class="col-md-3.5 col-sm-4 col-xs-12 form-group has-feedback">
-                          <input style="text-align: center;" type="text" class="form-control has-feedback-left"  id="single_cal1" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="factual"   autocomplete="off" value="<?php ini_set('date.timezone',  'America/El_Salvador'); echo date('d-m-Y');  ?>" disabled="" >
+                        <div class="col-md-3 col-sm-4 col-xs-12 form-group has-feedback">
+                          <input style="text-align: center;" type="text" class="form-control has-feedback-left"  id="single_cal1" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="factual"   autocomplete="off" value="<?php ini_set('date.timezone',  'America/El_Salvador'); echo date('d/m/Y');  ?>" disabled="" >
                           <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                         </div>
                    </div>
                    <div class="col-md-12 col-sm-12 col-xs-12">
-                      <div class="x_panel">            
-                         
+                      <div class="x_panel">
+
                             <div class="row">
                                 <section id="wizard">
                                   <div id="rootwizard">
@@ -230,7 +251,13 @@
                                               <li><a href="#tab3" data-toggle="tab">Lensometria</a></li>
                                               <li><a href="#tab4" data-toggle="tab">Refraccion final </a></li>
                                               <li><a href="#tab5" data-toggle="tab">Medidas</a></li>
-                                                            
+
+
+                                              <div style="float: right;">
+                                              <button  class="btn btn-success btn-icon left-icon;" onClick="verificar();"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
+                                              <button class="btn btn-danger  btn-icon left-icon" onClick="cancelar();"  > <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                               </div>
+
                                             </ul>
                                           </div>
                                       </div>
@@ -238,7 +265,7 @@
 
                                     <div class="tab-content">
                                        <div class="tab-pane" id="tab1">
-                                          
+
                                              <div class="x_panel">
                                                   <div class="x_content">
                                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
@@ -251,45 +278,45 @@
 
                                                   <tbody>
                                                     <tr>
-                                                      <td width="2%">DM</td>
-                                                      
+                                                      <td width="2%">GLUCOSA</td>
+
                                                       <td width="50%"><input id="dm" name="dm" type="text" class="form-control" ></td>
-                                                      
+
                                                     </tr>
                                                      <tr>
-                                                      <td width="2%">HA</td>
+                                                      <td width="2%">PRESION ART.</td>
                                                       <td width="2%"><input id="ha" name="ha" type="text" class="form-control" ></td>
-                                                      
+
                                                     </tr>
                                                     <tr>
-                                                      <td width="2%">CyT</td>
-                                                      
+                                                      <td width="2%">TRIGLICERIDOS</td>
+
                                                       <td width="50%"><input id="cyt" name="cyt" type="text" class="form-control"></td>
-                                                      
+
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">TIROIDES</td>
-                                                      
+
                                                       <td width="50%"><input id="tiroides" name="tiroides" type="text" class="form-control" ></td>
-                                                      
+
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">OTROS</td>
-                                                      
+
                                                       <td width="50%"><input id="otros" name="otros" type="text" class="form-control" ></td>
-                                                      
+
                                                     </tr>
-                                                    
-                                                    
+
+
                                                   </tbody>
                                                 </table>
                                               </div>
-                                                   
-                                                 
+
+
                                             </div>
-                                              
-                                                
-                                                
+
+
+
                                           </div>
                                           <div class="tab-pane" id="tab2">
                                           <div class="x_panel">
@@ -298,8 +325,8 @@
                                                 <thead>
                                                   <tr>
                                                     <th style=" text-align:center;" colspan="3">Antec y Dx Ocular</th>
-                                                      
-                                                      
+
+
                                                   </tr>
                                                 </thead>
 
@@ -309,51 +336,53 @@
                                                       <td width="2%"></td>
                                                       <td colspan="1" width="50%">PERSONAL</td>
                                                       <td colspan="1" width="50%">FAMILIAR</td>
-                                                      
+
                                                     </tr>
-                                                    
+
                                                      <tr>
                                                       <td width="2%">GLAUCOMA</td>
                                                       <td width="50%"><input id="glaucomap" name="glaucomap" type="text" class="form-control" ></td>
 
                                                       <td width="50%"><input id="glaucomf"  type="text" class="form-control" name="glaucomf"></td>
-                                                      
+
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">CATARATA</td>
-                                                      
+
                                                        <td width="40%"><input id="cataratap"  type="text" class="form-control" name="cataratap"></td>
-                                                      
+
                                                       <td width="40%"><input id="catarataf"  type="text" class="form-control" name="catarataf"></td>
-                                                      
+
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">DR</td>
-                                                     
+
                                                        <td colspan="3" width="100%"><input id="drp"  type="text" class="form-control" name="drp"></td>
-                                                     
-                                                      
-                                                      
+
+
+
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">OTRO</td>
-                                                      
+
                                                       <td colspan="3" width="50%"><input id="otro"  type="text" class="form-control" name="otro"></td>
                                                     </tr>
                                                     <tr>
                                                       <td width="2%">OP DE</td>
-                                                      
+
                                                       <td colspan="3" width="50%"><input id="op"  type="text" class="form-control" name="op"></td>
-                                                      
+
                                                     </tr>
-                                                    
-                                                    
+
+
                                                   </tbody>
                                                 </table>
-                                              </div>   
+                                              </div>
                                               </div>
                                             </div>
                                           <div class="tab-pane" id="tab3">
+                                            <div class="x_panel">
+                                            <div class="x_content">
                                               <table class="table table-bordered table-striped table-condensed">
                                                 <thead>
                                                   <tr>
@@ -368,11 +397,11 @@
                                                     <th style="text-align:center;" >AV CE</th>
                                                   </tr>
                                                 </thead>
-                                                
+
                                                 <tbody>
                                                   <tr>
                                                     <td>Ojo Derecho</td>
-                                                    <td><input   type="text" class="form-control" id="esflend" name="esflend"></td>
+                                                    <td><input   type="text" class="form-control" id="esflend" name="esflend" ></td>
                                                     <td><input   type="text" class="form-control"  id="cillend" name="cillend"></td>
                                                     <td><input  type="text" class="form-control"  id="ejelend" name="ejelend"></td>
                                                     <td><input   type="text" class="form-control"  id="adiccionlend" name="adiccionlend"></td>
@@ -381,7 +410,7 @@
                                                     <td><input  type="text" class="form-control"  id="avlejlend" name="avlejlend"></td>
                                                     <td><input  type="text" class="form-control"  id="avcelend"  name="avcelend"></td>
                                                   </tr>
-                                                  
+
                                                   <tr>
                                                     <td>Ojo Izquierdo</td>
                                                     <td><input    type="text" class="form-control" id="esfleni" name="esfleni"></td>
@@ -399,11 +428,14 @@
                                               <div style="text-align: center;">
                                                 <label ">Diseño y tiempo de uso</label>
                                                 <br>
-                                                  <textarea style="width: 800px; height: 102px;" id="descriplenso" name="descriplenso"></textarea>
+                                                  <textarea style="width: 400px; height: 52px;" id="descriplenso" name="descriplenso"></textarea>
                                               </div>
                                             </div>
-                                            
+                                            </div >
+                                            </div >
                                             <div class="tab-pane" id="tab4">
+                                              <div class="x_panel">
+                                              <div class="x_content">
                                               <table class="table table-bordered table-striped table-condensed">
                                                 <thead>
                                                   <tr>
@@ -420,11 +452,11 @@
                                                     <th style="text-align:center;" >AV CE</th>
                                                   </tr>
                                                 </thead>
-                                                
+
                                                 <tbody>
                                                   <tr>
                                                     <td>Ojo Derecho</td>
-                                                    <td><input   type="text" class="form-control" id="avsclred" name="avsclred"></td>
+                                                    <td><input   type="number" class="form-control" id="avsclred" name="avsclred"></td>
                                                     <td><input   type="text" class="form-control" id="avsccred" name="avsccred"></td>
                                                     <td><input  type="text" class="form-control" id="esfred" name="esfred"></td>
                                                     <td><input   type="text" class="form-control" id="cilred" name="cilred"></td>
@@ -435,7 +467,7 @@
                                                     <td><input   type="text" class="form-control" id="avlejred" name="avlejred"></td>
                                                     <td><input  type="text" class="form-control" id="avcered" name="avcered"></td>
                                                   </tr>
-                                                  
+
                                                   <tr>
                                                     <td>Ojo Izquierdo</td>
                                                     <td><input  type="text" class="form-control" id="avsclrei" name="avsclrei"></td>
@@ -455,94 +487,92 @@
                                               <div style="text-align: center;">
                                                 <label ">Diseño</label>
                                                 <br>
-                                                <textarea  style="width: 800px; height: 102px;" id="descriprefrac" name="descriprefrac"></textarea>
+                                                <textarea  style="width: 400px; height: 52px;" id="descriprefrac" name="descriprefrac"></textarea>
                                               </div>
                                             </div>
-                                            
+                                            </div>
+                                            </div>
                                             <div class="tab-pane" id="tab5">
+                                              <div class="x_panel">
+                                            <div class="x_content">
                                               <table class="table table-bordered table-striped table-condensed">
                                                 <thead>
                                                   <tr align="center"">
                                                     <th style="text-align:center;" colspan="5">Medidas</th>
                                                     <th style="text-align:center;">Examino</th>
-                                                    
+
                                                   </tr>
                                                 </thead>
-                                                
+
                                                 <tbody>
                                                   <tr>
-                                                    <td style="width:50px; height:20px; text-align:center;" ></td>
-                                                    <td style="width:100px; height:20px; text-align:center;">DNP</td>
-                                                    <td style="width:100px; height:20px; text-align:center;">DIP</td>
-                                                    <td style="width:100px; height:20px; text-align:center;">ALT PUPILAR</td>
-                                                    <td style="width:100px; height:20px; text-align:center;">ALT DE OBLEA</td>
-                                                    <td style="width:100px; height:20px; text-align:center;"></td>
-                                                               
+                                                    <td width="50" height="16"</td>
+                                                    <td style="width:50px; height:20px; text-align:center;">DNP</td>
+                                                    <td style="width:50px; height:20px; text-align:center;">DIP</td>
+                                                    <td style="width:50px; height:20px; text-align:center;">ALT PUPILAR</td>
+                                                    <td style="width:50px; height:20px; text-align:center;">ALT DE OBLEA</td>
+                                                    <td style="width:50px; height:20px; text-align:center;"></td>
+
                                                   </tr>
-                                                  
+
                                                   <tr>
-                                                    <td style="width:50px; height:20px; text-align:center;">Ojo Derecho</td>
-                                                    <td><input  type="tex" class="form-control" id="dnpde" name="dnpde"></td>
-                                                    <td rowspan="2"><input cols="40" rows="5" style="width:100px; height:100px;" type="text" class="form-control" id="dip"  name="dip" /></td>
-                                                    <td rowspan="2"><input cols="40" rows="5" style="width:100px; height:100px;" type="text" class="form-control" id="altpupi"  name="altpupi"></td>
-                                                    <td rowspan="2"><input cols="40" rows="5" style="width:100px; height:100px;"  type="text"  class="form-control" id="altoblea"  name="altoblea"></td>
-                                                    <td rowspan="4">
-                                                      <input cols="40" rows="5" style="width:400px; height:100px;"   type="text" class="form-control" id="examino"  name="examino" list="listaEmp"><datalist id="listaEmp" >
+                                                    <td width="50" height="16">Ojo Derecho</td>
+                                                    <td style="width:60px; height:40px;"><input  type="tex" class="form-control" id="dnpde" name="dnpde"></td>
+                                                    <td  style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5" type="text" class="form-control" id="dip"  name="dip" /></td>
+                                                    <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"  type="text" class="form-control" id="altpupi"  name="altpupi"></td>
+                                                    <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"   type="text"  class="form-control" id="altoblea"  name="altoblea"></td>
+                                                    <td style="width:100; height:100px;" rowspan="4">
+                                                      <input cols="40" rows="5"    type="text" class="form-control" id="examino"  name="examino" list="listaEmp"><datalist id="listaEmp" >
                                                           <?php
                                                             include("../../Config/conexion.php");
-                                                            
+
                                                             $query_s=pg_query($conexion,"select * from empleados order by cnombre");
-                                                            
+
                                                             while($fila=pg_fetch_array($query_s)){
                                                               echo " <option value='$fila[0] $fila[1]  $fila[2]'>";
                                                             }
                                                           ?>
                                                       </datalist>
                                                     </td>
-                                                                
+
                                                   </tr>
-                                                  
+
                                                   <tr>
-                                                    <td>Ojo Izquierdo</td>
-                                                    <td><input  type="text" class="form-control" id="dnpiz" name="dnpiz"></td>
-                                                    
-                                                                
+                                                    <td width="50" height="16">Ojo Izquierdo</td>
+                                                    <td style="width:60px; height:40px;"><input  type="text" class="form-control" id="dnpiz" name="dnpiz"></td>
+
+
                                                   </tr>
                                                 </tbody>
                                               </table>
 
                                               <div style="text-align: center;">
-                                                <label ">Observacion</label>
+                                                <label>Observacion</label>
                                                   <br>
-                                                  <textarea style="width: 800px; height: 102px;" rows="5" cols="100"  id="" id="observacion" name="observacion"></textarea>
+                                                  <textarea style="width: 400px; height: 50px;" rows="5" cols="100"  id="" id="observacion" name="observacion"></textarea>
                                               </div>
-                                              
-                                              <center>
-                                                <div class="col-md-12 col-sm-6 col-xs-12 ">
-                                                  <button class="btn btn-success btn-icon left-icon;" onClick="verificar();"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
-                                                  <button class="btn btn-danger  btn-icon left-icon" > <i class="fa fa-close"></i> <span>Cancelar</span></button>
-                                                </div>
-                                              </center>
+                                              <br><br>
+                                              </div>
                                             </div>
-                                                      
+                                            </div>
+
                                             <ul class="pager wizard">
-                                              <li class="previous first" style="display:none;"><a href="#">Primera</a></li>
-                                              <li class="previous"><a >Anterior</a></li>
-                                              <li class="next last" style="display:none;"><a href="#">Ultima</a></li>
-                                              <li class="next"><a >Siguiente</a></li>
+                                              <li class="previous"><a>Anterior</a></li>
+                                                <li class="next"><a>Siguiente</a></li>
                                             </ul>
 
-                                                      
+
+
                                           </div>
 
                                         </div>
 
                                       </section>
-                                            
+
                                     </div>
-                                  
-                                </div>   
-                              </div> 
+
+                                </div>
+                              </div>
                           </form>
                         </div>
                       </div>
@@ -560,7 +590,7 @@
              include "../../ComponentesForm/footer.php";
           ?>
         </footer>
-        
+
         <!-- /footer content -->
       </div>
     </div>
@@ -570,23 +600,30 @@
         include "../../ComponentesForm/scripts.php";
     ?>
 
+    <script>
+        $(function () {
+            $('.SExamen').select2()
+            $('.SProducto').select2()
+        });
+    </script>
+
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-      <script src="../../bootstrap/js/bootstrap.min.js"></script> 
-        <script src="../../bootstrap/jquery.bootstrap.wizard.js"></script>
-        <script src=".././bootstrap/prettify.js"></script>
+      <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../vendors/bootstrap/dist/js/jquery.bootstrap.wizard.js"></script>
+
         <script>
         $(document).ready(function() {
-            $('#rootwizard').bootstrapWizard();
-          window.prettyPrint && prettyPrint()
-        });
+          $('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
+      });
         </script>
-	
+
+
   </body>
 </html>
 <?php
 
 function cortar($palabra){
-    $parte = explode(" ",$palabra); 
+    $parte = explode(" ",$palabra);
 
     return $parte[0];
       }
@@ -594,7 +631,7 @@ if(isset($_REQUEST["bandera"])){
 $baccion=$_REQUEST["baccion"];
 $bandera=$_REQUEST["bandera"];
 $idexpediente= cortar($_REQUEST["idexpediente"]);
-$fechaA= date("d-m-Y H:i:s"); 
+$fechaA= date("d-m-Y");
 
 //datos de antecedentes medicos
 $antmcdm = $_REQUEST["dm"];
@@ -675,7 +712,7 @@ include("../../Config/conexion.php");
 
       $query_s1=pg_query($conexion,"select count(*) from antecedente_medico ");
         while ($fila = pg_fetch_array($query_s1)) {
-            $idantm=$fila[0];                                 
+            $idantm=$fila[0];
             $idantm++ ;
         }
 
@@ -683,57 +720,56 @@ include("../../Config/conexion.php");
 
       $query_s2=pg_query($conexion,"select count(*) from antecedente_ocular ");
         while ($fila = pg_fetch_array($query_s2)) {
-            $idanto=$fila[0];                                 
+            $idanto=$fila[0];
             $idanto++ ;
         }
-      
+
       $ressult2= pg_query($conexion,"INSERT INTO antecedente_ocular (eid_antecedente_ocular, cglaucomap, cglaucomaf, ccataratap, ccatarataf, cdoctor, cotro, coperadod) VALUES ($idanto, '$antoglaucomap', '$antoglaucomaf', '$antocataratap', '$antocatarataf', '$antocdoctor', '$antocotro', '$antooperad')");
 
       $query_s3=pg_query($conexion,"select count(*) from lensometria ");
         while ($fila = pg_fetch_array($query_s3)) {
-            $idlen=$fila[0];                                 
+            $idlen=$fila[0];
             $idlen++ ;
         }
-      $ressult3= pg_query($conexion,"INSERT INTO lensometria (eid_lensometria, resfera_ojoderecho, 
-        resfera_ojoizquierdo, rcilindro_ojoderecho, rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo, 
+      $ressult3= pg_query($conexion,"INSERT INTO lensometria (eid_lensometria, resfera_ojoderecho,
+        resfera_ojoizquierdo, rcilindro_ojoderecho, rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo,
         radiccion_ojoderecho, radiccion_ojoizquierdo, rprisma_ojoderecho, rprisma_ojodizquierdo, rcb_ojoderecho,
-         rcb_ojoizquierdo, rav_lej_ojoderecho, rav_lej_ojoizquierdo, rav_cer_ojoderecho, rav_cer_ojoizquierdo, 
-         cdescripcion)  VALUES ($idlen, $lesfojoderecho, $lesfojoizquierdo, $lcilojoderecho, $lcilojoizquierdo, 
-        $lejeojoderecho, $lejeojoizquierdo, $ladicojoderecho, $ladicojoizquierdo, $lprisojoderecho, 
-        $lprisojodizquierdo, $lcbojoderecho, $lcbojoizquierdo, $lavlejojoderecho, $lavlejojoizquierdo, 
+         rcb_ojoizquierdo, rav_lej_ojoderecho, rav_lej_ojoizquierdo, rav_cer_ojoderecho, rav_cer_ojoizquierdo,
+         cdescripcion)  VALUES ($idlen, $lesfojoderecho, $lesfojoizquierdo, $lcilojoderecho, $lcilojoizquierdo,
+        $lejeojoderecho, $lejeojoizquierdo, $ladicojoderecho, $ladicojoizquierdo, $lprisojoderecho,
+        $lprisojodizquierdo, $lcbojoderecho, $lcbojoizquierdo, $lavlejojoderecho, $lavlejojoizquierdo,
         $lavcerojoderecho, $lavcerojoizquierdo, '$ldescripcion')");
 
       $query_s4=pg_query($conexion,"select count(*) from refraccion ");
         while ($fila = pg_fetch_array($query_s4)) {
-            $idref=$fila[0];                                 
+            $idref=$fila[0];
             $idref++ ;
         }
       $ressult4= pg_query($conexion,"INSERT INTO refraccion (eid_refraccion, ravscl_ojoderecho, ravscl_ojoizquierdo,
        ravscc_ojoderecho, ravscc_ojoizquierdo, resfera_ojoderecho, resfera_ojoizquierdo, rcilindro_ojoderecho,
        rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo, radiccion_ojoderecho, radiccion_ojoizquierdo,
        rprisma_ojoderecho, rprisma_ojoizquierdo, rcb_ojoderecho, rcb_ojoizquierdo, ravlej_ojoderecho,
-       ravlej_ojoizquierdo, ravcer_ojoderecho, ravcer_ojoizquierdo, cdescripcion) VALUES ($idref, $ravsclojoderecho, 
+       ravlej_ojoizquierdo, ravcer_ojoderecho, ravcer_ojoizquierdo, cdescripcion) VALUES ($idref, $ravsclojoderecho,
        $ravsclojoizquierdo, $ravsccojoderecho, $ravsccojoizquierdo, $resfojoderecho, $resfojoizquierdo,
-       $rcilojoderecho , $rcilojoizquierdo, $rejeojoderecho, $rejeojoizquierdo, $radicojoderecho, 
+       $rcilojoderecho , $rcilojoizquierdo, $rejeojoderecho, $rejeojoizquierdo, $radicojoderecho,
        $radicojoizquierdo, $rprisojoderecho, $rprisojodizquierdo, $rcbojoderecho, $rcbojoizquierdo, $ravlejojoderecho,
         $ravlejojoizquierdo, $ravcerojoderecho, $ravcerojoizquierdo, '$rdescripcion')");
 
       $query_s5=pg_query($conexion,"select count(*) from medidas ");
         while ($fila = pg_fetch_array($query_s5)) {
-            $idmed=$fila[0];                                 
+            $idmed=$fila[0];
             $idmed++ ;
         }
       $ressult5= pg_query($conexion,"INSERT INTO medidas (eid_medidas, rdnp_ojoderecho, rdnp_ojoizquierdo, rdip, ralt_pupilar, ralt_oblea, cexamino, cobservacion) VALUES ($idmed, $rdnpojoderecho, $rdnpojoizquierdo, $rdip,
        $raltpupilar, $raltoblea, '$cexamino', '$cobservacion')");
-        
+
       $query_s6=pg_query($conexion,"select count(*) from examen ");
         while ($fila = pg_fetch_array($query_s6)) {
-            $idexam=$fila[0];                                 
+            $idexam=$fila[0];
             $idexam++ ;
-        }    
-      $ressult6= pg_query($conexion,"INSERT INTO examen (eid_examen, cobservaciones, eid_expediente, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, cid_empleado)  VALUES ($idexam, '$cobservacion', $idexpediente, $idantm, $idanto, $idlen, $idref, $idmed, 
-        '$fechaA', '$cexamino')");
-            
+        }
+      $ressult6= pg_query($conexion,"INSERT INTO examen (eid_examen, cobservaciones, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, cid_empleado, cid_expediente)  VALUES ($idexam, '$cobservacion', $idantm, $idanto, $idlen, $idref, $idmed, '$fechaA', '$cexamino',  '$idexpediente')");
+
 
               if(!$result1 || !$ressult2 || !$ressult3 || !$ressult4 || !$ressult5 || !$ressult6){
                 pg_query("rollback");
@@ -753,10 +789,10 @@ include("../../Config/conexion.php");
                                      }, 2000);";
                       echo "document.getElementById('bandera').value='';";
                       echo "document.getElementById('baccion').value='';";
-                
-                  echo "</script>";   
+
+                  echo "</script>";
               }
-        
+
   }
   if($bandera=="cancelar"){
                       echo "<script type='text/javascript'>";
@@ -764,7 +800,7 @@ include("../../Config/conexion.php");
                       echo "</script>";
   }
 
-     
+
 }
 
 

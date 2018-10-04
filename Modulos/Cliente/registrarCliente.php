@@ -1,5 +1,12 @@
-
-  <?php session_start();
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idus=$_SESSION["idUsuario"];
+if($_SESSION['autenticado']!="yeah" || $t!=1){
+  header("Location: ../../index.php");
+  exit();
+  }
+?>
+<?php
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -59,7 +66,11 @@ if(isset($_REQUEST["id"])){
             if(letras.indexOf(tecla) == -1 && !tecla_especial){
                 NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten letras");
                 return false;
-            }       
+            } 
+
+            if(e){
+
+            }      
         }
 
 
@@ -70,11 +81,15 @@ if(isset($_REQUEST["id"])){
             if(opcion==='telefono'){
                 var valor = document.getElementById('telefono').value;
                 if (/^[2|6|7]{1}[0-9]{3}\-[0-9]{4}$/.test(valor)) {
-
-                }else {
+                  
+                }else if(valor==""){
+                  document.getElementById('telefono').focus();
+                  NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Telefono</b>");
+                }else{
                     document.getElementById('telefono').focus();
-                    NotificacionSoloLetras2('error', "<b>Error: </b>telefono debe iniciar con 2, 6 o 7");
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Telefono debe iniciar con 2, 6 o 7");
                 }
+                
             }
             if(opcion==='edad'){
                 var valor = document.getElementById('edad').value;
@@ -85,11 +100,45 @@ if(isset($_REQUEST["id"])){
                     NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Edad</b>");
                 }
             }
+
+            if(opcion==='nombre'){
+                var valor = document.getElementById('nombre').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('nombre').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Nombres</b>");
+                }
+            }
+
+            if(opcion==='apellido'){
+                var valor = document.getElementById('apellido').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('apellido').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Apellidos</b>");
+                }
+            }
+
+            if(opcion==='direccion'){
+                var valor = document.getElementById('direccion').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('direccion').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Direccion</b>");
+                }
+            }
+
             if(opcion == 'fecha'){
+
+              
               var date = new Date();
-              var m=date.getMonth(), y = date.getFullYear()-5; 
+              var y = date.getFullYear()-80; 
               var date2 = new Date();
-              var y2 = date2.getFullYear()-2;
+              var y2 = date2.getFullYear()-1;
+              
               var fecha=document.getElementById('fecha').value;
               
                   if (fecha.substr(6,9) >= y && fecha.substr(6,9) <= y2) {
@@ -143,21 +192,38 @@ if(isset($_REQUEST["id"])){
           
       }
 
-    function limpiarIn(opcion){
-        if(opcion=="limpiarM"){
-            document.getElementById('bandera').value='cancelar';
-        }else{
-            $(document).ready(function(){
-              $("#formCliente")[0].reset();
-              $("#formCliente").submit(function() {
-                  return false;   
-                });
-            });
+      function cancelar() {
+            swal({
+                title: 'Confirmaci&oacuten'
+                , text: 'Desea cancelar el registro'
+                , type: 'warning'
+                , showCancelButton: true
+                , confirmButtonColor: '#3085d6'
+                , cancelButtonColor: '#d33'
+                , cancelButtonText: 'Cancelar'
+                , confirmButtonText: 'Si, lo deseo cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href="registrarCliente.php";
+                }
+            })
         }
-    }
+
+ 
+  
+    
+  
+  
         
     function alertaSweet(titulo,texto,tipo){
-      swal(titulo,texto,tipo);
+      swal({
+            position:'center',
+            text: texto,
+            type: tipo,
+            title: titulo,
+            showConfirmButton: false,
+
+          });
     }
 
     function showHint(str) {
@@ -222,7 +288,7 @@ if(isset($_REQUEST["id"])){
                         </div>
 
                         <?php
-                        include "../../ComponentesForm/menu2.php";
+                        include "../../ComponentesForm/menu.php";
                         ?>
                         
                     </div>
@@ -240,9 +306,9 @@ if(isset($_REQUEST["id"])){
                       </img>
                   </div>
                   <div align="center">
-                      <p class="col-xs-12 col-sm-8 col-md-10 " >
+                      <h5 class="col-xs-12 col-sm-8 col-md-10 " >
                         Bienvenido en esta sección puede registrar clientes en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente. En la pestaña de lista de clientes se muestran todos los clientes registrados.
-                      </p>
+                      </h5>
                   </div>
               </div>
             </div>
@@ -282,13 +348,13 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-2 col-xs-12">Nombres*</label>
                                    <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" autocomplete="off" >
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" onblur="vali('nombre');" autocomplete="off" >
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
 
                                    <label class="control-label col-md-1 col-sm-2 col-xs-12">Apellidos*</label>
                                     <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" autocomplete="off" >
+                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" onblur="vali('apellido');" autocomplete="off" >
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                 </div>
@@ -341,7 +407,7 @@ if(isset($_REQUEST["id"])){
 
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Direcci&oacuten*</label>
                                             <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
-                                                <input type="text" class="form-control has-feedback-left" id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" autocomplete="off">
+                                                <input type="text" class="form-control has-feedback-left" id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" autocomplete="off" onblur="vali('direccion');">
                                                 <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                   </div>
@@ -362,7 +428,7 @@ if(isset($_REQUEST["id"])){
                                                 }else{
                                                     ?>
                                                     <button class="btn btn-info btn-icon left-icon;" onClick="verificar('modificar');"> <i  class="fa fa-save"  name="btnModificar" id="btnModificar"></i> <span >Modificar</span></button>
-                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiarM');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                                    <button class="btn btn-danger  btn-icon left-icon" onclick="cancelar();"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                                     <?php
                                                 }
                                            ?>
@@ -452,21 +518,68 @@ if(isset($_REQUEST["id"])){
             </div>
         
         <!-- /page content -->
+        <!--modal-->  
+     <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div style="float: right; color: red">
+                <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                  <span style="color: red" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE CLIENTES</h5>
+                <div class="clearfix"></div>
+              </div>
+          </div>
+          <div class="modal-body modal-md"> 
+            <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
 
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+                <div class="item active">
+                  <img class="img-responsive" src="../Ayuda/Clientes/registroCliente.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+                </div>
+                
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Clientes/ayuda2.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+                </div>
+                
+              </div>
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+        
         <footer>
             <?php
               include "../../ComponentesForm/footer.php";
               $fecha = $_REQUEST["fecha"];
               $anno2 = date('Y', strtotime($fecha));
-              echo "$anno2";
+              //echo "$anno2";
               $annoMax = date('Y')+1;
-              $annoMin = date('Y')-5;
+              $annoMin = date('Y')-70;
               $anno = date('Y')-1;
-              //$annoMin < $anno && $anno > $annoMin;
+              
               if($anno > $annoMin || $anno < $annoMax){
-                echo "$anno";
+                //echo "$anno";
               }
-
              ?>
         </footer>
       </div>
@@ -487,7 +600,6 @@ $bandera=$_REQUEST["bandera"];
 $nombre=($_REQUEST["nombre"]);
 $apellido=($_REQUEST["apellido"]);
 $telefono=($_REQUEST["telefono"]);
-$edad=$_REQUEST["edad"];
 $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
@@ -523,7 +635,7 @@ $fecha = $_REQUEST["fecha"];
 
   }
 
-  $edad = busca_edad($fecha);
+
   //echo "$edad";
 include("../../Config/conexion.php");
 if($bandera=="add"){
@@ -531,7 +643,7 @@ if($bandera=="add"){
     $r=pg_query($conexion,"select * from clientes");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
-    
+    $edad = busca_edad($fecha);
     $expediente = getExpediente($nombre, $apellido);
             
           $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion,ffecha) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion', to_date('$fecha', 'mm/dd/yyyy'))");
@@ -544,10 +656,9 @@ if($bandera=="add"){
                     echo "<script type='text/javascript'>";
                     echo pg_result_error($conexion);
                     echo "alertaSweet('Error','Datos no almacenados', 'error');";
-                    
-                      echo "ajax_act('');";
+                    echo "ajax_act('');";
                     echo "document.getElementById('bandera').value='';";
-                      echo "document.getElementById('baccion').value='';";
+                     echo "document.getElementById('baccion').value='';";
                     echo "</script>";
           }else{
             
@@ -555,6 +666,9 @@ if($bandera=="add"){
                 echo "<script type='text/javascript'>";
                 echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
                 echo "ajax_act('');";
+                echo "setTimeout (function llamarPagina(){
+                                        location.href=('expediente.php?id='+'".$expediente."');
+                                     }, 2000);";
                 echo "document.getElementById('bandera').value='';";
                 echo "document.getElementById('baccion').value='';";
                 echo "</script>";
@@ -610,17 +724,7 @@ function generar($nombree,$apellidos){
   }
 
 
-function validaCliente($baccion){
-    $valor=0;
-    include("../../Config/conexion.php");
-    $query_s= pg_query($conexion, "select * from cliente order by cnombre");
-        while($fila=pg_fetch_array($query_s)){
-            if(strcmp($fila[0],$baccion)===0){
-                $valor=0;
-            }
-        }
-    return $valor;
-}
+
 
 
 function mensajeInformacion($titulo,$mensaje,$tipo){
@@ -634,5 +738,3 @@ function mensajeInformacion($titulo,$mensaje,$tipo){
 }
 
 ?>
-
-

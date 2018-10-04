@@ -298,7 +298,7 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo date('d/m/Y', strtotime($fila[3])); ?></td>
 
                                       <td class="text-center">
-                                        <button class="btn btn-info btn-icon left-icon"  onClick="Exam('<?php echo $fila[0]; ?>','<?php echo $fila[4]; ?>')"> <i class="fa fa-th-list"></i> <span>Ver</span></button>
+                                        <button class="btn btn-info btn-icon left-icon"  onClick="Exam('<?php echo $fila[0]; ?>','<?php echo $fila[4]; ?>')"> <i class="fa fa-file-pdf-o"></i> <span></span></button>
 
                                        <!-- <button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>-->
 

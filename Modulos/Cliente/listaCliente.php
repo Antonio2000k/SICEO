@@ -372,7 +372,7 @@ if(isset($_REQUEST["id"])){
                                       <td> <?php echo $fila[5]; ?> </td>
 
                                       <td class="text-center">
-                                        <button class="btn btn-info btn-icon left-icon"  onClick="Expediente('<?php echo $fila[7]; ?>')"> <i class="fa fa-th-list"></i> <span>Ver</span></button>
+                                        <button class="btn btn-info btn-icon left-icon"  onClick="Expediente('<?php echo $fila[7]; ?>')"> <i class="fa fa-plus-square"></i> <span></span></button>
 
                                        <!-- <button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>-->
 

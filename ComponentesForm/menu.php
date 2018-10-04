@@ -90,8 +90,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="../../production/images/user.png" alt=""><?php
-                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ; 
-                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]); 
+                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ;
+                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]);
                    echo $nombre." ".$apellido;
                    ?>
                     <span class=" fa fa-angle-down"></span>

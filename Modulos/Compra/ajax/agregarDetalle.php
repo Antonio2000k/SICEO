@@ -111,7 +111,7 @@
 		$_SESSION['matriz']=$matriz;
         $acumulador=$_SESSION["acumulador"];
         $acumulador--;
-        $_SESSION["acumulador"]=$acumulador;
+        //$_SESSION["acumulador"]=$acumulador;
         //$_SESSION['acumulador']=$acumulador;
         $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
         //$_SESSION["mensaje"]=$mensaje;

@@ -73,23 +73,23 @@ if(isset($_REQUEST["id"])){
                 <div class="" data-example-id="togglable-tabs" role="tabpanel">
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                         <li class="active" role="presentation"> <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                            NUEVO
+                            REGISTRAR PRODUCTO
                         </a> </li>
-                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content2" name="tab2" id="profile-tab" role="tab">
-                            PRODUCTOS
+                        <li class="" role="presentation"> <a aria-expanded="false"  href="listaProducto.php" id="profile-tab">
+                            LISTA DE PRODUCTOS
                         </a> </li>
-                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content3" name="tab3" id="profile-tab" role="tab">
+                        <li class="" role="presentation"> <a aria-expanded="false"  href="listaProductoi.php" id="profile-tab">
                             PRODUCTOS DADOS DE BAJA
                         </a> </li>
-                        <li class="" role="presentation"> <a aria-expanded="false" data-toggle="tab" href="#tab_content4" name="tab3" id="profile-tab" role="tab">
+                        <li class="" role="presentation"> <a aria-expanded="false"  href="stock.php" id="profile-tab">
                             STOCK
                         </a> </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                 <div class="x_content">
-                    <div class="x_title" style="background: #2A3F54">
-                        <h3 align="center" style=" color: white">Datos Personales</h3>
+                    <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                        <h3 align="center" style=" color: white">Datos del Producto</h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -160,7 +160,7 @@ if(isset($_REQUEST["id"])){
                                         <?php
                                    include '../../Config/conexion.php';
                                     pg_query("BEGIN");
-                                    $resultado=pg_query($conexion, "select * from proveedor");
+                                    $resultado=pg_query($conexion, "select * from proveedor where bestado='t'");
                                     $nue=pg_num_rows($resultado);
                                         if($nue>0){
                                         while ($fila = pg_fetch_array($resultado)) {

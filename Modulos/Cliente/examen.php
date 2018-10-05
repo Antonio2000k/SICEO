@@ -29,9 +29,47 @@
 
     <title>SICEO | Examen </title>
 
-    <?php
-      include "../../ComponentesForm/estilos.php";
-    ?>
+         <!-- Bootstrap -->
+    <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <!-- Font Awesome -->
+    <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../../build/css/custom.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="../../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="../../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+   <!-- SwettAlert2-->
+   <link rel="stylesheet" href="../../vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.css">
+   
+   <!-- Select2 -->
+   <link rel="stylesheet" href="../../vendors/select2/dist/css/select2.min.css">
+   
+   <!-- Notify3 -->
+   <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">
+   
+   <!-- iziModal -->
+   
+   <link rel="stylesheet" href="../../vendors/iziModal-master/css/iziModal.min.css">
+  
+   <!-- include alertify.css -->
+    <link rel="stylesheet" href="../../alertas/build/css/alertify.css"> 
+
+    
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <script type="text/javascript">
   function validaFloat(numero){
@@ -227,7 +265,7 @@
                       </div>
 
                       <div class="col-md-2 col-sm-3 col-xs-8 form-group ">
-                          <button float-right class="btn btn-info btn-icon left-icon"  data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-th-list"></i> <span>Nuevo Cliente</span></button>
+                          <button float-right class="btn btn-info btn-icon left-icon"  data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-plus-square"></i> <span></span></button>
                       </div>
 
                       <label  style="text-align: justify;"class="control-label col-md-1 col-sm-2 col-xs-12">Fecha*</label>
@@ -591,24 +629,142 @@
           ?>
         </footer>
 
-        <!-- /footer content -->
+ <!--modal-->  
+     <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div style="float: right; color: red">
+                <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                  <span style="color: red" aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE CLIENTES</h5>
+                <div class="clearfix"></div>
+              </div>
+          </div>
+          <div class="modal-body modal-md"> 
+            <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+                <div class="item active">
+                  <img class="img-responsive" src="../Ayuda/Clientes/registroCliente.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+                </div>
+                
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Clientes/ayuda2.png" alt="...">
+                  <div class="carousel-caption">
+                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                  </div>
+                </div>
+                
+              </div>
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+          </div> 
+        </div>
       </div>
     </div>
+      
 
 
-    <?php
-        include "../../ComponentesForm/scripts.php";
-    ?>
+    <!-- jQuery -->
+    
+    <!-- Bootstrap -->
+    
+    <!-- FastClick -->
+    <script src="../../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../../vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="../../vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="../../vendors/Flot/jquery.flot.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot pluins -->
+    <script src="../../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../../vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../../vendors/DateJS/build/date-es-ES.js"></script>
+    <!-- JQVMap -->
+    <script src="../../vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="../../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="../../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-datetimepicker -->    
+    <script src="../../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="../../build/js/custom.min.js"></script>
+    
+    <!-- jquery.inputmask -->
+    <script src="../../vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="../../vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.js"></script>
 
-    <script>
-        $(function () {
-            $('.SExamen').select2()
-            $('.SProducto').select2()
-        });
-    </script>
 
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!-- Datatables -->
+    <script src="../../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../../vendors/pdfmake/build/vfs_fonts.js"></script>   
+    
+    <!-- PNotify3 -->
+    <script src="../../vendors/notifit-2-master/dist/notifit.min.js"></script>
+    
+    <!-- Select2 --->
+    <script src="../../vendors/select2/dist/js/select2.full.min.js"></script>
+    
+    <!-- JQuery Form -->
+    <script src="../../vendors/jquery_form/dist/jquery.form.min.js"></script>
+    
+    <!-- iziModal-->
+    <script src="../../vendors/iziModal-master/js/iziModal.min.js"></script>
+
+    <!-- include alertify script -->
+<script src="../../alertas/build/alertify.js"></script>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
       <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
         <script src="../../vendors/bootstrap/dist/js/jquery.bootstrap.wizard.js"></script>
 
         <script>
@@ -616,6 +772,59 @@
           $('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
       });
         </script>
+
+<!-- Initialize datetimepicker -->
+    <script>
+        $(document).ready(function() {
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70; 
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-18;
+            $('#myDatepicker2').datetimepicker({
+
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
+
+            });
+
+        });
+
+        $(document).ready(function() {
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70;
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-1;
+            $('#myDatepicker3').datetimepicker({
+
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
+
+            });
+
+        });
+        
+        $(document).ready(function() {
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth()-1, d = date.getDate(), y = date.getFullYear(); 
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear();
+            $('#myDatepicker1').datetimepicker({
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
+            });
+
+        });
+</script>
+    
 
 
   </body>

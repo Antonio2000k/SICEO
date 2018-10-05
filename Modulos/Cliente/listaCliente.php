@@ -219,7 +219,7 @@ if(isset($_REQUEST["id"])){
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                        <li class="col-md-5 col-sm-5 col-xs-5" role="presentation">
                           <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" aria-expanded="true"  href="registrarCliente.php" id="home-tab"  >
-                             NUEVO CLIENTE
+                             REGISTRAR CLIENTE
                           </a>
                         </li>
                         <li class="active col-md-5 col-sm-5 col-xs-5"  role="presentation">
@@ -335,7 +335,10 @@ if(isset($_REQUEST["id"])){
                       <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
-
+                              <div class="x_title">
+                                <h2>CLIENTES </h2>
+                                <div class="clearfix"></div>
+                            </div>
                                 <div class="x_content">
                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                   <thead>

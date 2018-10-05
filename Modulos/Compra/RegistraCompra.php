@@ -44,10 +44,10 @@ if(isset($_SESSION["acumulador"])){
                     <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">REGISTRAR COMPRA</a>
                 </li>
                 <li class="" role="presentation">
-                    <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">COMPRAS AL CONTADO</a>
+                    <a aria-expanded="true"  href="Comprac.php" id="home-tab">COMPRAS AL CONTADO</a>
                 </li>
                 <li class="" role="presentation">
-                    <a aria-expanded="false" data-toggle="tab" href="#tab_content3" id="profile-tab" role="tab">COMPRAS AL CREDITO</a>
+                    <a aria-expanded="true"  href="Compracd.php" id="home-tab">COMPRAS AL CREDITO</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -55,7 +55,7 @@ if(isset($_SESSION["acumulador"])){
                     <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
-                        <div class="x_title" style="background: #2A3F54"><h2 style="text-indent: 400px; color: white">Datos de la compra</h2>
+                        <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)"><h2 style="text-indent: 400px; color: white">Datos de la compra</h2>
                             <ul class="nav navbar-right panel_toolbox"><li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                             </ul>
                             <div class="clearfix"></div>
@@ -158,7 +158,7 @@ if(isset($_SESSION["acumulador"])){
                                 
                                 <div class="row">
                                     <div class="x_content" id="mostrar">
-                                       <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"];?>"/>
+                                       <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumuladorNo"];?>"/>
                                     </div>
                                 </div>
                             

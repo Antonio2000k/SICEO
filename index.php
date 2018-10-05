@@ -150,12 +150,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="production/images/user.png" alt=""><?php
-                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ; 
-                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]); 
-                   echo $nombre." ".$apellido;
+                    <h7 style="color: black; font-size: 13px;"><img src="production/images/user.png" alt="">
+                    <?php
+                    list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ;
+                    list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]);
+                    echo $nombre." ".$apellido;
                    ?>
-                    <span class=" fa fa-angle-down"></span>
+                    <span class=" fa fa-angle-down"></span></h7>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a data-toggle="modal" href="#myModall" > Perfil</a></li>
@@ -179,12 +180,16 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
-                <div class="x_title" style="background: #2A3F54;"  >
-                  <h2 style="text-indent: 450px; color: white">Accesos</h2>
+                
+                <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)"  >
+                    <h3 align="center" style="color: white">Accesos</h3>
                   <div class="clearfix"></div>
                 </div>
+                <center>
+                  <img src="images/Grupo.png"  width="269" height="70"  ></p></a>
+                </center>
                 <div class="x_content">
-                  <br>
+
                   <br>
                 <div class="row top_tiles">
                     <div class="animated flipInY col-lg-2 col-md-2 col-sm-6 col-xs-12">
@@ -222,8 +227,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     </div>
                   </div>
                 </div>
-                <br>
-                <br>
+
                   
                 </div>
               </div>

@@ -62,7 +62,7 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="js/expediente.js">
       
 
@@ -482,6 +482,7 @@ if(isset($_REQUEST["id"])){
               <form  class="form-horizontal form-label-left" id="formExam" name="formExam" method="post">
                 <input type="hidden" name="bandera2" id="bandera2"/>
                 <input type="hidden" name="bacciones" id="bacciones" value="<?php echo $RidExpediente;?>"/>
+                <input type="hidden" id="nombre_clienteID" name="nombre_clienteID" value="">
               <div class="x_panel">
 
                     <section id="wizard">
@@ -728,7 +729,7 @@ if(isset($_REQUEST["id"])){
                                       <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"  type="number" onkeypress="return soloNumeros(event,'punto')"class="form-control" id="altpupi"  name="altpupi"></td>
                                       <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"   type="number" onkeypress="return soloNumeros(event,'punto')"  class="form-control" id="altoblea"  name="altoblea"></td>
                                       <td style="width:100; height:100px;" rowspan="4">
-                                        <input cols="40" rows="5" placeholder="Empleado" type="text" class="form-control examino" id="examino"  name="examino" list="listaEmp">
+                                        <input cols="40" rows="5" placeholder="Empleado" type="text" class="form-control examino" id="examino"  name="examino" list="listaEmp" oninput="obtenerDatosCliente(this.value);">
                                         <datalist id="listaEmp" >
                                           <?php
                                             include("../../Config/conexion.php");
@@ -745,7 +746,7 @@ if(isset($_REQUEST["id"])){
 
                                     <tr>
                                       <td width="50" height="16">Ojo Izquierdo</td>
-                                      <td style="width:60px; height:40px;"><input  type="text" class="form-control" id="dnpiz" name="dnpiz"></td>
+                                      <td style="width:60px; height:40px;"><input  type="number" onkeypress="return soloNumeros(event,'punto')" class="form-control" id="dnpiz" name="dnpiz"></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -873,27 +874,25 @@ include("../../Config/conexion.php");
   if($bandera2=='add'){
       pg_query("BEGIN");
 
-      $query_s1=pg_query($conexion,"select count(*) from antecedente_medico ");
+      $query_s1=pg_query($conexion,"select MAX(antecedente_medico.eid_antecedente_medico) from antecedente_medico ");
         while ($fila = pg_fetch_array($query_s1)) {
             $idantm=$fila[0];
-            $idantm++ ;
-        }
+        }$idantm++ ;
 
       $result1=pg_query($conexion,"INSERT INTO  antecedente_medico (eid_antecedente_medico, cdm, cha, ccyt, ctiroides, cotros)  VALUES ($idantm, '$antmcdm', '$antmcha', '$antmccyte', '$antmtiroides', '$antmcotros') ");
 
-      $query_s2=pg_query($conexion,"select count(*) from antecedente_ocular ");
+      $query_s2=pg_query($conexion,"select MAX(antecedente_ocular.eid_antecedente_ocular) from antecedente_ocular ");
         while ($fila = pg_fetch_array($query_s2)) {
             $idanto=$fila[0];
-            $idanto++ ;
-        }
+        }$idanto++ ;
 
       $ressult2= pg_query($conexion,"INSERT INTO antecedente_ocular (eid_antecedente_ocular, cglaucomap, cglaucomaf, ccataratap, ccatarataf, cdoctor, cotro, coperadod) VALUES ($idanto, '$antoglaucomap', '$antoglaucomaf', '$antocataratap', '$antocatarataf', '$antocdoctor', '$antocotro', '$antooperad')");
 
-      $query_s3=pg_query($conexion,"select count(*) from lensometria ");
+      $query_s3=pg_query($conexion,"select MAX(lensometria.eid_lensometria) from lensometria ");
         while ($fila = pg_fetch_array($query_s3)) {
             $idlen=$fila[0];
-            $idlen++ ;
-        }
+        }$idlen++ ;
+
       $ressult3= pg_query($conexion,"INSERT INTO lensometria (eid_lensometria, resfera_ojoderecho,
         resfera_ojoizquierdo, rcilindro_ojoderecho, rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo,
         radiccion_ojoderecho, radiccion_ojoizquierdo, rprisma_ojoderecho, rprisma_ojodizquierdo, rcb_ojoderecho,
@@ -903,11 +902,11 @@ include("../../Config/conexion.php");
         $lprisojodizquierdo, $lcbojoderecho, $lcbojoizquierdo, $lavlejojoderecho, $lavlejojoizquierdo,
         $lavcerojoderecho, $lavcerojoizquierdo, '$ldescripcion')");
 
-      $query_s4=pg_query($conexion,"select count(*) from refraccion ");
+      $query_s4=pg_query($conexion,"select MAX(refraccion.eid_refraccion) from refraccion ");
         while ($fila = pg_fetch_array($query_s4)) {
             $idref=$fila[0];
-            $idref++ ;
-        }
+        }$idref++ ;
+
       $ressult4= pg_query($conexion,"INSERT INTO refraccion (eid_refraccion, ravscl_ojoderecho, ravscl_ojoizquierdo,
        ravscc_ojoderecho, ravscc_ojoizquierdo, resfera_ojoderecho, resfera_ojoizquierdo, rcilindro_ojoderecho,
        rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo, radiccion_ojoderecho, radiccion_ojoizquierdo,
@@ -918,19 +917,18 @@ include("../../Config/conexion.php");
        $radicojoizquierdo, $rprisojoderecho, $rprisojodizquierdo, $rcbojoderecho, $rcbojoizquierdo, $ravlejojoderecho,
         $ravlejojoizquierdo, $ravcerojoderecho, $ravcerojoizquierdo, '$rdescripcion')");
 
-      $query_s5=pg_query($conexion,"select count(*) from medidas ");
+      $query_s5=pg_query($conexion,"select MAX(medidas.eid_medidas) from medidas ");
         while ($fila = pg_fetch_array($query_s5)) {
             $idmed=$fila[0];
-            $idmed++ ;
-        }
+        }$idmed++ ;
+
       $ressult5= pg_query($conexion,"INSERT INTO medidas (eid_medidas, rdnp_ojoderecho, rdnp_ojoizquierdo, rdip, ralt_pupilar, ralt_oblea, cexamino, cobservacion) VALUES ($idmed, $rdnpojoderecho, $rdnpojoizquierdo, $rdip,
        $raltpupilar, $raltoblea, '$cexamino', '$cobservacion')");
 
-      $query_s6=pg_query($conexion,"select count(*) from examen ");
+      $query_s6=pg_query($conexion,"select MAX(examen.eid_examen) from examen ");
         while ($fila = pg_fetch_array($query_s6)) {
             $idexam=$fila[0];
-            $idexam++ ;
-        }
+        }$idexam++ ;
       $ressult6= pg_query($conexion,"INSERT INTO examen (eid_examen, cobservaciones, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, cid_empleado, cid_expediente)  VALUES ($idexam, '$cobservacion', $idantm, $idanto, $idlen, $idref, $idmed, '$fechaA', '$cexamino',  '$idexpediente')");
 
 

@@ -3,7 +3,7 @@
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from proveedor where cid_proveedor=$iddatos");
+    $query_s = pg_query($conexion, "select * from proveedor where eid_proveedor=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
         $Rid_proveedor = $fila[0];
         $Rnombre = $fila[1];
@@ -12,7 +12,8 @@ if(isset($_REQUEST["id"])){
         $Rtelefonof = $fila[4];
         $Rcelular = $fila[5];
         $Rdireccion = $fila[6];
-        $Remail = $fila[7];
+        $Restado = $fila[7];
+        $Remail = $fila[8];
       }
 }else{
   $Rid_proveedor = null;
@@ -22,6 +23,7 @@ if(isset($_REQUEST["id"])){
         $Rtelefonof =  null;
         $Rcelular =  null;
         $Rdireccion =  null;
+        $Restado = null;
         $Remail =  null; 
       }
 ?>
@@ -80,7 +82,7 @@ if(isset($_REQUEST["id"])){
                   <div class="" role="tabpanel" data-example-id="togglable-tabs">
                   <ul id="myTab" class="nav nav-tabs bar_tabs " role="tablist" >
                         <li role="presentation" class="col-md-3 col-sm-3 col-xs-3">
-                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedor.php" id="home-tab"  aria-expanded="false">NUEVO PROVEEDOR</a>
+                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedor.php" id="home-tab"  aria-expanded="false">REGISTRAR PROVEEDOR</a>
                         </li>
                         <li class="active col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="true">LISTA DE PROVEEDORES ACTIVOS</a>
                         </li>
@@ -89,9 +91,9 @@ if(isset($_REQUEST["id"])){
                         </li>
                   </ul>
                       <div id="myTabContent" class="tab-content">
-                      <!--  <div role="tabpanel" class="tab-pane fade " id="tab_content1" aria-labelledby="home-tab">
+                      <div role="tabpanel" class="tab-pane fade " id="tab_content1" aria-labelledby="home-tab">
                           <div class="x_content">
-                            <div class="x_title" style="background: #2A3F54">
+                            <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
                               <h3 align="center" style=" color: white">Datos Proveedor
                             </h3>
                                <div class="clearfix"></div>
@@ -203,7 +205,7 @@ if(isset($_REQUEST["id"])){
                                   </form>
                               </div>
                           </div>
-                        </div> -->
+                        </div> 
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
@@ -231,11 +233,11 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[4]; ?></td>
                                       <td> <?php echo $fila[3]; ?> </td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
-                                      <?php if($fila[8]=='t'){ ?>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
-                                      <?php }if($fila[8]=='f'){?>
-                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
+                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span></span></button>
+                                      <?php if($fila[7]=='t'){ ?>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span></span></button>
+                                      <?php }if($fila[7]=='f'){?>
+                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i> <span>Activar</span></button> 
                                       <?php }?>
                                       </td>
                                     </tr>
@@ -276,9 +278,9 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[4]; ?></td>
                                       <td> <?php echo $fila[3]; ?> </td>
                                       <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
-                                      <?php if($fila[8]=='t'){ ?>
+                                      <?php if($fila[7]=='t'){ ?>
                                       <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
-                                      <?php }if($fila[8]=='f'){?>
+                                      <?php }if($fila[7]=='f'){?>
                                         <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
                                       <?php }?>
                                       </td>
@@ -351,7 +353,7 @@ if($bandera=="add"){
                         
 
                         echo "<script type='text/javascript'>";
-                        echo "alertaSweet('Error!','Complete !','error');";
+                        echo "alertaSweet('Informacion','Datos Almacenados','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
@@ -372,7 +374,7 @@ if($bandera=="add"){
         }else{
           pg_query("commit");
                     echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Error!','Complete lo!','error');";
+                    echo "alertaSweet('Informacion','Datos actualizados!','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
@@ -399,7 +401,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
         }else{
           pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Error!','Complete los !','error');";
+                    echo "alertaSweet('Succes!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');

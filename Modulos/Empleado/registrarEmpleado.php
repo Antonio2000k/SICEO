@@ -76,24 +76,24 @@ include "../../ComponentesForm/menu.php";
                 <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                        <li class="active" role="presentation">
                           <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                            NUEVO EMPLEADO
+                            REGISTRAR EMPLEADO
                           </a>
                         </li>
                         <li class="" role="presentation">
-                          <a aria-expanded="false" data-toggle="tab" href="#tab_content2" name="tab2" id="profile-tab" role="tab">
+                          <a   aria-expanded="false" href="listaEmpleado.php"  id="profile-tab" >
                             LISTA DE EMPLEADOS
                           </a>
                         </li>
                         <li class="" role="presentation">
-                          <a aria-expanded="false" data-toggle="tab" href="#tab_content3" name="tab2" id="profile-tab" role="tab">
+                          <a aria-expanded="false" href="listaEmpleadoi.php" n id="profile-tab" >
                             EMPLEADOS DADOS DE BAJA
                           </a>
                         </li>
-                    </ul>
+                  </ul>
                 <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                       <div class="x_content">
-                        <div class="x_title" style="background: #2A3F54">
+                        <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
                            <h3 align="center" style=" color: white">Datos Personales</h3>
                                <div class="clearfix"></div>
                         </div>

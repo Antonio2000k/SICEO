@@ -14,7 +14,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     "<center><h1>Desea cerrar la sesión?</h1></center>", function(){ alertify.success('Ok')
         document.location.href="../../ComponentesForm/fin.php";
         }, function(){
-          alertify.error('No ha cerrado la sesión').dismissOthers()}).set('labels', {ok:'si', cancel:'no'}).set({transition:'zoom'});;
+          alertify.error('No ha cerrado la sesión').dismissOthers()}).set('labels', {ok:'si', cancel:'no'});;
     }
 
   function ayuda(){
@@ -50,31 +50,51 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar Empleado</a></li>
                       <li><a href="../../Modulos/Empleado/listaEmpleado.php">Lista de Empleados</a></li>
+                      <li><a href="../../Modulos/Empleado/listaEmpleadoi.php">Empleados de Baja</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Cliente/registrarCliente.php">Registrar</a></li>
+                      <li><a href="../../Modulos/Cliente/registrarCliente.php">Registrar Cliente</a></li>
                       <li><a href="../../Modulos/Cliente/listaCliente.php">Listado de clientes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Producto/producto.php">Registar</a></li>
+                      <li><a href="../../Modulos/Producto/producto.php">Registar Producto</a></li>
+                      <li><a href="../../Modulos/Producto/listaProducto.php">Lista de Producto</a></li>
+                      <li><a href="../../Modulos/Producto/listaProductoi.php">Producto de Baja</a></li>
+                      <li><a href="../../Modulos/Producto/stock.php">Stock</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-line-chart"></i> Servicios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ventas.php">Venta</a></li>
-                      <li><a href="examen.php">Examen</a></li>
-                      <li><a href="ventas.php">Reparaciones</a></li>
-                      <li><a href="empleados.php">Control de garantias</a></li>
+                      <li><a href="../../Modulos/Ventas/ventas.php">Registrar Venta</a></li>
+                      <li><a href="../../Modulos/Ventas/listaVentas.php">Lista de Ventas</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="proveedor.php">Proveedores</a></li>
-                      <li><a href="../../Modulos/Compra/RegistraCompra.php">Compras</a></li>
+                      <li><a>Proveedores<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedor.php">Registrar Proveedor</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedora.php">Lista de Proveedores</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedori.php">Proveedores de Baja</a>
+                            </li>
+                          </ul>
+                      </li>
+                      <li><a>Compras<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="../../Modulos/Compra/RegistraCompra.php">Registrar Compras</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Compra/Comprac.php">Compras al contado</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Compra/Compracd.php">Compras al credito</a>
+                            </li>
+                          </ul>
+                      </li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>
@@ -107,14 +127,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               </div>
 
               <ul class="nav navbar-nav navbar-right">
-                <li class="">
+                <li class="" >
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="../../production/images/user.png" alt=""><?php
+                    <h7 style="color: black; font-size: 13px;"><img src="../../production/images/user.png" alt="">
+                    <?php
                     list($nombre, $palabra2) = explode(' ', $_SESSION["nombreEmpleado"]) ;
                     list($apellido, $palabra2) = explode(' ',$_SESSION["apellidoEmpleado"]);
-                   echo $nombre." ".$apellido;
+                    echo $nombre." ".$apellido;
                    ?>
-                    <span class=" fa fa-angle-down"></span>
+                    <span class=" fa fa-angle-down"></span></h7>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
 

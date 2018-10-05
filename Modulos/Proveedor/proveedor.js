@@ -1,4 +1,4 @@
-function soloLetras(e) {
+ function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
             letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
@@ -17,15 +17,59 @@ function soloLetras(e) {
         }
         
         function vali(opcion) {
-            if(opcion==='telefonoc'){
+            if(opcion==='empresa'){
+                var valor = document.getElementById('empresa').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('empresa').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Empresa</b>");
+                }
+            }
+
+            if(opcion==='direccion'){
+                var valor = document.getElementById('direccion').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('direccion').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Direccion</b>");
+                }
+            }
+
+            if(opcion==='nombre'){
+                var valor = document.getElementById('nombre').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('nombre').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Nombres</b>");
+                }
+            }
+
+            if(opcion==='apellido'){
+                var valor = document.getElementById('apellido').value;
+                if (valor!="") {
+
+                }else {
+                    document.getElementById('apellido').focus();
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Apellidos</b>");
+                }
+            }
+
+            if(opcion==='celular'){
                 var valor = document.getElementById('telefonoc').value;
                 if (/^[6|7]{1}[0-9]{3}\-[0-9]{4}$/.test(valor)) {
 
-                }else {
+                }else if(valor==""){
+                  document.getElementById('telefonoc').focus();
+                  NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Celular</b>");
+                }else{
                     document.getElementById('telefonoc').focus();
-                    NotificacionSoloLetras2('error', "<b>Error: </b>Celular debe iniciar con 6 o 7");
+                    NotificacionSoloLetras2('error', "<b>Error: </b>Celular debe iniciar con 2, 6 o 7");
                     document.getElementById('telefonoc').value = '';
                 }
+                
             }
             
             if(opcion==='tele'){
@@ -62,11 +106,14 @@ function soloLetras(e) {
                 document.getElementById('bandera').value="";
                 opc=false;
             }else{
-                if(opcion==="guardar")
-                document.getElementById('bandera').value="add";
-                else
+                if(opcion==="guardar"){
+                  opc=false;
+                  document.getElementById('bandera').value="add";
+                opc=true;
+                }else{
                 document.getElementById('bandera').value="modificar";
                 opc=true;
+              }
             }
           
           $(document).ready(function(){
@@ -114,8 +161,8 @@ function soloLetras(e) {
                 document.getElementById('bandera').value="Dbajar";
               else
                   document.getElementById('bandera').value="Dactivar";
-              document.getElementById('baccion').value=id;
-              document.formProveedor.submit();
+                  document.getElementById('baccion').value=id;
+                  document.formProveedor.submit();
             
           }
         })
@@ -136,33 +183,20 @@ function soloLetras(e) {
             
         });
     }
-    
-
-    function ajax(str){
-          if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-              } else {
-              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                      }
-                xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                  document.getElementById("imprimir2").innerHTML = xmlhttp.responseText;
-            }
-        }
-        xmlhttp.open("post", "recargaTblproveedorInac.php", true);
-        xmlhttp.send();
-    }
 
 
     
     function validarEmail(){
-        var valor=document.getElementById('correo').value;
+        var valor=document.getElementById('email').value;
         if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){           
-        } else {
-            paso=false;
+        }
+        else if(valor==""){
+                  document.getElementById('email').focus();
+                  NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Correo</b>");
+        }else {
+            
             NotificacionSoloLetras2('error',"<b>Error: </b>Correo incorrecto");
-            document.getElementById('correo').value='';
+            //document.getElementById('email').value='';
         }
     }
 
@@ -181,4 +215,29 @@ function soloLetras(e) {
         }
     }
 
-    
+    function verificarCodigo(opcion) {
+      //var empresa=document.getElementById("empresa").value;
+      //alert("Empresa   "+empresa);
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("cambiaso").innerHTML = xmlhttp.responseText;
+            var paso = document.getElementById('baccionVer').value;
+            if (paso == 0) {
+                if(opcion=="empresa"){
+                    swal("Error", "Empresa ya se encuentra registrada", "error");
+                document.getElementById('empresa').focus();
+                document.getElementById('empresa').value = "";
+                }
+            }
+        }
+    }
+        if (opcion === "empresa") var modelo = document.getElementById('empresa').value;
+        xmlhttp.open("post", "existeEmpresa.php?codigo=" + modelo + "&opcion=" + opcion, true);
+        xmlhttp.send();
+}

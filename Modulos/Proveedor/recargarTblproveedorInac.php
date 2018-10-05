@@ -10,9 +10,9 @@
                                       <td><?php echo $fila[4]; ?></td>
                                       <td> <?php echo $fila[3]; ?> </td>
                                       <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
-                                      <?php if($fila[8]=='t'){ ?>
+                                      <?php if($fila[7]=='t'){ ?>
                                       <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al empleado '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
-                                      <?php }if($fila[8]=='f'){?>
+                                      <?php }if($fila[7]=='f'){?>
                                         <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al empleado '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
                                       <?php }?>
                                       </td>

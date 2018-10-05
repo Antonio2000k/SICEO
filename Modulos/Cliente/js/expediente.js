@@ -5,6 +5,24 @@ function Exam(id,idex){
          window.open("examen.php?id="+id, '_parent');
       }
 
+      function obtenerDatosCliente(obj) {
+          if(obj!="") {
+            $.post("buscar.php",{
+              "texto":obj,"opcion":1},function(respuesta) {
+                if(respuesta!="") {
+                  document.getElementById('examino').style.borderColor="#21df2c";
+                  document.getElementById('nombre_clienteID').value=respuesta;
+                  
+                }
+                else {
+                  document.getElementById('examino').style.borderColor="#C70039";
+                  document.getElementById('nombre_clienteID').value="";
+                  
+                }
+            });
+          }
+        }
+
       function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -142,8 +160,8 @@ function Exam(id,idex){
             if(opcion=="entero")
                 letras = "1234567890";
             else
-               letras = "1234567890."; 
-            especiales = [8, 37, 39];
+               letras = "1234567890.-"; 
+            especiales = [8, 37, 39, 189];
             tecla_especial = false;
             for(var i in especiales) {
                 if(key == especiales[i]) {

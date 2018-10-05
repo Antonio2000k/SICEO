@@ -14,7 +14,7 @@
     <script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="../../vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons ->
+    <!-- Skycons -->
     <script src="/vendors/skycons/skycons.js"></script>
     <!-- Flot -->
     <script src="../../vendors/Flot/jquery.flot.js"></script>
@@ -77,6 +77,9 @@
     <!-- iziModal-->
     <script src="../../vendors/iziModal-master/js/iziModal.min.js"></script>
 
+    <!-- include alertify script -->
+<script src="../../alertas/build/alertify.js"></script>
+
 <!-- Initialize datetimepicker -->
     <script>
         $(document).ready(function() {
@@ -86,6 +89,23 @@
             var date2 = new Date();
             var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-18;
             $('#myDatepicker2').datetimepicker({
+
+                format: 'DD/MM/YYYY',
+                allowInputToggle: true,
+                minDate: new Date(y, m, d),
+                maxDate: new Date(y2, m2, d2)
+
+            });
+
+        });
+
+        $(document).ready(function() {
+            // obtenemos la fecha actual - años para el minimo aceptado
+            var date = new Date();
+            var m = date.getMonth(), d = date.getDate(), y = date.getFullYear()-70;
+            var date2 = new Date();
+            var m2 = date2.getMonth(), d2 = date2.getDate(), y2 = date2.getFullYear()-1;
+            $('#myDatepicker3').datetimepicker({
 
                 format: 'DD/MM/YYYY',
                 allowInputToggle: true,

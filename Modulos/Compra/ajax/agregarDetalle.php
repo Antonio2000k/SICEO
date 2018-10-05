@@ -32,7 +32,10 @@
                     
                     for($k=1 ; $k<=$acumulador+1 ; $k++){
                         pg_query("BEGIN");
-                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo)."')");
+                        $resultado=pg_query($conexion,"select rprecio_compra from productos where cmodelo='".$matriz[$k][0]."'");
+                        while ($fila = pg_fetch_array($resultado)) {$precioCompra=$fila[0];}
+                        
+                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra,rprecio_compradetalle) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo)."','".$precioCompra."')");
                         if(!$resulta){
                             pg_query("rollback");
                              $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';

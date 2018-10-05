@@ -106,7 +106,10 @@ function alertaSweet(titulo, texto, tipo,opcion) {
             }).then((result) => {
                 if(opcion=='detener')
                     detener();
-                    else
+                    else if(opcion==="detenerx"){
+                        actualizaMarca();
+                        $('#nuevaMarca').modal('hide');
+                    }else
                         document.location.href='producto.php';                
             })
         }
@@ -243,8 +246,25 @@ function showRequest(formData, jqForm, options) {
 function showResponse(responseText, statusText, xhr, $form)  {  
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + '\n\nThe output div should have already been updated with the responseText.'); 
     if(responseText==="1")
-        alertaSweet("Informacion","Marca agregada","info",''); 
+        alertaSweet("Informacion","Marca agregada","info",'detenerx'); 
     else if(responseText==="0")
         alertaSweet("Informacion","Marca no agregada","error",'detener'); 
+}
+
+function actualizaMarca() {
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("marca").innerHTML = xmlhttp.responseText;
+            
+        }
+    }
+    xmlhttp.open("post", "ajax/actualizaSelectMarca.php", true);
+    xmlhttp.send();
 }
  

@@ -348,7 +348,7 @@ if(isset($_REQUEST["id"])){
               //echo "$anno2";
               $annoMax = date('Y')+1;
               $annoMin = date('Y')-70;
-              $anno = date('Y')-1;
+              $anno = date('Y');
               
               if($anno > $annoMin || $anno < $annoMax){
                 //echo "$anno";

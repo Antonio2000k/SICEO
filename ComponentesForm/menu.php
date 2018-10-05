@@ -7,11 +7,31 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
   exit();
   }
 ?>
+<script type="text/javascript" class="init">
+  function Salir(){
+    alertify.confirm("<center>ATENCI&Oacute;N!</center>",
+    "<center><img src='../../images/warning.png' width='150' height='150'></center>"+
+    "<center><h1>Desea cerrar la sesión?</h1></center>", function(){ alertify.success('Ok')
+        document.location.href="../../ComponentesForm/fin.php";
+        }, function(){
+          alertify.error('No ha cerrado la sesión').dismissOthers()}).set('labels', {ok:'si', cancel:'no'}).set({transition:'zoom'});;
+    }
+
+  function ayuda(){
+        $(document).ready(function () {
+      $("#ayuda").modal();
+        });
+    }
+  </script>
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
 
-              <a href="index.php" class="site_title"><p align="center"> <img  width="179" height="70" src="../../production/images/SiceoL.png" ></p></a>
+              <a href="index.php" class="site_title">
+                <p align="center">
+                  <img  width="179" height="70" src="../../production/images/SiceoL.png" >
+                </p>
+              </a>
             </div>
 </div>
             <!-- /menu profile quick info -->
@@ -100,8 +120,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                     <li><a data-toggle="modal" href="#myModall" > Perfil</a></li>
 
-                    <li><a href="javascript:;">Ayuda</a></li>
-                    <li><a href="../../ComponentesForm/fin.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
+                    <li onClick="ayuda()" data-placement="bottom"><a >Ayuda</a></li>
+                    <li onClick="Salir()" data-placement="bottom"><a ><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 

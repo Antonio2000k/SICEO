@@ -237,7 +237,7 @@ if(isset($_REQUEST["id"])){
                                       <?php if($fila[7]=='t'){ ?>
                                       <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span></span></button>
                                       <?php }if($fila[7]=='f'){?>
-                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i> <span>Activar</span></button> 
+                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i> <span></span></button> 
                                       <?php }?>
                                       </td>
                                     </tr>
@@ -401,7 +401,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
         }else{
           pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Succes!','Datos actualizados !','success');";
+                    echo "alertaSweet('Exito!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');

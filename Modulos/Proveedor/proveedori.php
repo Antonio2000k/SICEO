@@ -36,7 +36,7 @@ if(isset($_REQUEST["id"])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SICEO |  Lista de Proveedores Inactivos </title>
+    <title>SICEO | Lista de Proveedores Activos </title>
 
     <?php
       include "../../ComponentesForm/estilos.php";
@@ -65,7 +65,7 @@ if(isset($_REQUEST["id"])){
                  <div>
                      <img align="left" src="../../production/images/man.png">
                         <h1 align="center">
-                            Lista de Proveedores Inactivos
+                          Lista de Proveedores Activos
                         </h1>
                       </img>
                   </div>
@@ -81,11 +81,13 @@ if(isset($_REQUEST["id"])){
                 <div class="x_panel">
                   <div class="" role="tabpanel" data-example-id="togglable-tabs">
                   <ul id="myTab" class="nav nav-tabs bar_tabs " role="tablist" >
-                        <li role="presentation" class=" col-md-3 col-sm-3 col-xs-3"><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedor.php" id="home-tab"  aria-expanded="false">REGISTRAR PROVEEDOR</a>
+                        <li role="presentation" class="col-md-3 col-sm-3 col-xs-3">
+                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedor.php" id="home-tab"  aria-expanded="false">REGISTRAR PROVEEDOR</a>
                         </li>
-                        <li class="col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedora.php"  id="profile-tab"  aria-expanded="false">LISTA DE PROVEEDORES ACTIVOS</a>
+                        <li class="col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedora.php" id="home-tab"  aria-expanded="false">LISTA DE PROVEEDORES ACTIVOS</a>
                         </li>
-                        <li class="active col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="#tab_content3"  id="profile-tab"  aria-expanded="false">LISTA DE PROVEEDORES INACTIVOS</a>
+                        <li class="active col-md-4 col-sm-3 col-xs-3" role="presentation" class="">
+                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="true">LISTA DE PROVEEDORES INACTIVOS</a>
                         </li>
                   </ul>
                       <div id="myTabContent" class="tab-content">
@@ -100,9 +102,6 @@ if(isset($_REQUEST["id"])){
                                   <form class="form-horizontal form-label-left" id="formProveedor" name="formProveedor" method="post">
                             <input type="hidden" name="bandera" id="bandera"/>
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $Rid_proveedor;?>"/>
-                            <div id="cambiaso">
-                                <input type="hidden" id="baccionVer" value="1" /> </div>
-                            <div class="row">
                                     <div class="row">
                                       
                                       <div class="item form-group">
@@ -113,7 +112,7 @@ if(isset($_REQUEST["id"])){
                                       <div class="item form-group">
                                         <label class="control-label col-md-1 col-sm-1 col-xs-12">Empresa*</label>
                                         <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                              <input type="tel" class="form-control has-feedback-left"  id="empresa" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="empresa" placeholder="Nombre de la Empresa" value="<?php echo $Rempresa; ?>" onkeypress="return soloLetras(event)" autocomplete="off" onblur="verificarCodigo('empresa')">
+                                              <input type="tel" class="form-control has-feedback-left"  id="empresa" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="empresa" placeholder="Nombre de la Empresa" value="<?php echo $Rempresa; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
                                               <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                         </div>
                                         <label class="control-label col-md-1 col-sm-2 col-xs-12">Telefono*</label>
@@ -207,7 +206,7 @@ if(isset($_REQUEST["id"])){
                               </div>
                           </div>
                         </div> 
-                       <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                    <!--   <div role="tabpanel" class="tab-pane fade " id="tab_content2" aria-labelledby="profile-tab">
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                               <div class="x_content">
@@ -234,11 +233,11 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[4]; ?></td>
                                       <td> <?php echo $fila[3]; ?> </td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span></span></button>
                                       <?php if($fila[7]=='t'){ ?>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span></span></button>
                                       <?php }if($fila[7]=='f'){?>
-                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
+                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i> <span>Activar</span></button> 
                                       <?php }?>
                                       </td>
                                     </tr>
@@ -278,9 +277,9 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[4]; ?></td>
                                       <td> <?php echo $fila[3]; ?> </td>
-                                      <td class="text-center">
+                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span></span></button>
                                       <?php if($fila[7]=='t'){ ?>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span>Dar de Baja</span></button>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span></span></button>
                                       <?php }if($fila[7]=='f'){?>
                                         <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i> <span></span></button> 
                                       <?php }?>
@@ -318,7 +317,7 @@ if(isset($_REQUEST["id"])){
     <?php
         include "../../ComponentesForm/scripts.php";
     ?>
-	
+  
   </body>
 </html>
 <?php
@@ -346,7 +345,7 @@ if($bandera=="add"){
     }else{
       
           $result=pg_query($conexion,"insert into proveedor(eid_proveedor,cnombre, capellido, cempresa,ctelefonof, ccelular, cdireccion, cemail, bestado) values('$ida','$nombre','$apellido','$empresa','$telefono','$telefonoc','$direccion','$email','1')");
-         if(!$result){
+          if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
@@ -402,10 +401,10 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
         }else{
           pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Succes!','Datos actualizados !','success');";
+                    echo "alertaSweet('Exito!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
-                                      location.href=('proveedora.php');
+                                      location.href=('proveedor.php');
                                     }, 2000);";
                       echo "</script>";
         }

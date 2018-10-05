@@ -80,8 +80,8 @@
         }        
         impresion($mensaje,$quepaso);
     }
-	if($opcion=="agregar"){	
-		$acumulador=$_SESSION["acumulador"];    
+    if($opcion=="agregar"){ 
+        $acumulador=$_SESSION["acumulador"];    
         $id=$_REQUEST["modelo"];
         $cantidad=$_REQUEST["cantidad"];
         $quepaso=1;
@@ -99,24 +99,25 @@
         }
         //$_SESSION["mensaje"]=$mensaje;
         impresion($mensaje,$quepaso);
-	}
+    }
 
-	if($opcion=="quitar"){
+    if($opcion=="quitar"){
         $quitar=$_REQUEST['quitar'];
-		$matriz=$_SESSION['matriz'];
+        $matriz=$_SESSION['matriz'];
         //var_export($matriz);//Muestra todos los elementos del array
-		unset($matriz[$quitar]);//Eliminacion de un indice en la matriz
+        unset($matriz[$quitar]);//Eliminacion de un indice en la matriz
         //echo'<br><br>';
         //var_export($matriz);//Muestra todos los elementos del array
-		$_SESSION['matriz']=$matriz;
+        $_SESSION['matriz']=$matriz;
         $acumulador=$_SESSION["acumulador"];
         $acumulador--;
         //$_SESSION["acumulador"]=$acumulador;
+        $_SESSION['acumuladorNo']=$acumulador;
         //$_SESSION['acumulador']=$acumulador;
         $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
         //$_SESSION["mensaje"]=$mensaje;
-		impresion($mensaje,1);
-	}
+        impresion($mensaje,1);
+    }
 function existeCodigo($codigo){
     $valor=false;
     $acumulador=$_SESSION["acumulador"];
@@ -179,10 +180,10 @@ function impresion($mensaje,$quepaso){
        <tbody>
         <tr>
         <?php
-		$acumulador=$_SESSION['acumulador'];
-		$matriz=$_SESSION['matriz'];
-		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
+        $acumulador=$_SESSION['acumulador'];
+        $matriz=$_SESSION['matriz'];
+        for($i=1 ; $i<=$acumulador ; $i++){
+            if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
             $id=$matriz[$i][0];
             include '../../../Config/conexion.php';
             pg_query("BEGIN");
@@ -210,11 +211,11 @@ function impresion($mensaje,$quepaso){
 
 
 function total(){
-		$acumulador=$_SESSION['acumulador'];
-		$matriz=$_SESSION['matriz'];
+        $acumulador=$_SESSION['acumulador'];
+        $matriz=$_SESSION['matriz'];
         $valor=0;
-		for($i=1 ; $i<=$acumulador ; $i++){
-			if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
+        for($i=1 ; $i<=$acumulador ; $i++){
+            if(array_key_exists($i, $matriz)){//Verifica si existe el indice en la matriz  
             $id=$matriz[$i][0];
             include '../../../Config/conexion.php';
             pg_query("BEGIN");

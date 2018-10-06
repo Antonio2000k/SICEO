@@ -440,19 +440,7 @@ if(isset($_REQUEST["id"])){
      </div>
   </div>
 
-    <?php
-          include "../../ComponentesForm/scripts.php";
-        ?>
 
-        <!--<script src="../../bootstrap/js/bootstrap.min.js"></script>  -->
-        <script src="../../bootstrap/jquery.bootstrap.wizard.js"></script>
-
-        <script>
-        $(document).ready(function() {
-            $('#rootwizard').bootstrapWizard();
-          window.prettyPrint && prettyPrint()
-        });
-        </script>
 
   <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -707,20 +695,20 @@ if(isset($_REQUEST["id"])){
                               <table class="table table-bordered table-striped table-condensed">
                                 <thead>
                                   <tr align="center">
-                                    <th style="text-align:center;" colspan="5">Medidas</th>
-                                    <th style="text-align:center;">Examino</th>
+                                    <th style="width: 202000px; text-align:center;" colspan="5">Medidas</th>
+                                    <th style="width:100px; text-align:center; ">Examino</th>
                                   </tr>
                                 </thead>
 
                                 <tbody>
                                   <tr>
                                     <td width="50" height="16"></td>
-                                      <td style="width:50px; height:20px; text-align:center;">DNP</td>
-                                      <td style="width:50px; height:20px; text-align:center;">DIP</td>
-                                      <td style="width:50px; height:20px; text-align:center;">ALT PUPILAR</td>
-                                      <td style="width:50px; height:20px; text-align:center;">ALT DE OBLEA</td>
-                                      <td style="width:50px; height:20px; text-align:center;"></td>
-                                    </tr>
+                                    <td style="width:50px; height:20px; text-align:center;">DNP</td>
+                                    <td style="width:50px; height:20px; text-align:center;">DIP</td>
+                                    <td style="width:50px; height:20px; text-align:center;">ALT PUPILAR</td>
+                                    <td style="width:50px; height:20px; text-align:center;">ALT DE OBLEA</td>
+                                    <td style="width:100px; text-align:center;"></td>
+                                  </tr>
 
                                     <tr>
                                       <td width="50" height="16">Ojo Derecho</td>
@@ -728,19 +716,20 @@ if(isset($_REQUEST["id"])){
                                       <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5" type="number" onkeypress="return soloNumeros(event,'punto')" class="form-control" id="dip"  name="dip" /></td>
                                       <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"  type="number" onkeypress="return soloNumeros(event,'punto')"class="form-control" id="altpupi"  name="altpupi"></td>
                                       <td style="width:50px; height:100px;" rowspan="2"><input cols="40" rows="5"   type="number" onkeypress="return soloNumeros(event,'punto')"  class="form-control" id="altoblea"  name="altoblea"></td>
-                                      <td style="width:100; height:100px;" rowspan="4">
-                                        <input cols="40" rows="5" placeholder="Empleado" type="text" class="form-control examino" id="examino"  name="examino" list="listaEmp" oninput="obtenerDatosCliente(this.value);">
-                                        <datalist id="listaEmp" >
+                                      <td style="width:50px; height:100px;" rowspan="4">
+                                        <select  style="width:280px" class="form-control SExamino" id="examino" name="examino"  >
+                                          <option>Empleado</option>
                                           <?php
                                             include("../../Config/conexion.php");
 
                                             $query_s=pg_query($conexion,"select * from empleados order by cnombre");
 
                                             while($fila=pg_fetch_array($query_s)){
-                                              echo " <option value='$fila[0] $fila[1]  $fila[2]'>";
+                                              echo " <option value='$fila[0] '>$fila[1]  $fila[2]</option>";
                                             }
                                           ?>
-                                        </datalist>
+                                        </select>
+                                        
                                       </td>
                                     </tr>
 
@@ -776,7 +765,24 @@ if(isset($_REQUEST["id"])){
           </div>
         </div>
       </div>
+      <?php
+          include "../../ComponentesForm/scripts.php";
+        ?>
+        <script>
+          $(function () {
+                $('.SExamino').select2();
+            });
+        </script>
 
+        <!--<script src="../../bootstrap/js/bootstrap.min.js"></script>  -->
+        <script src="../../bootstrap/jquery.bootstrap.wizard.js"></script>
+
+        <script>
+        $(document).ready(function() {
+            $('#rootwizard').bootstrapWizard();
+          window.prettyPrint && prettyPrint()
+        });
+        </script>
   </body>
 </html>
 <?php

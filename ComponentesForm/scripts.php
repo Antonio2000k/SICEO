@@ -80,6 +80,12 @@
     <!-- include alertify script -->
 <script src="../../alertas/build/alertify.js"></script>
 
+<!-- DateExporter -->
+<script src="../../vendors/tableExport.jquery/tableExport.js"></script>
+<script src="../../vendors/tableExport.jquery/jquery.base64.js"></script>
+<script src="../../vendors/tableExport.jquery/jspdf/libs/sprintf.js"></script>
+<script src="../../vendors/tableExport.jquery/jspdf/jspdf.js"></script>
+<script src="../../vendors/tableExport.jquery/jspdf/libs/base64.js"></script>
 <!-- Initialize datetimepicker -->
     <script>
         $(document).ready(function() {

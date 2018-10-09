@@ -299,7 +299,19 @@ if(isset($_REQUEST["id"])){
                         <h2>PRODUCTOS </h2>
                         <div class="clearfix"></div>
                     </div>
+                    
+                    
+                    
+                    
                     <div class="x_content" id="imprimirTablaActivados">
+                       
+                       
+                   
+							
+							
+					
+                       
+                       
                         <table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">
                             <thead>
                                 <tr>

@@ -1,4 +1,3 @@
-
 <?php
 	 $codigo=$_REQUEST['codigo'];
      $opcion=$_REQUEST['opcion'];

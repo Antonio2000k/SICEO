@@ -70,14 +70,15 @@
         $id=$_REQUEST["modelo"];
         $cantidad=$_REQUEST["cantidad"];
         $quepaso=1;
-        
+       // var_export($matriz);
         for($n=1 ; $n<=$acumulador ; $n++){
             if($matriz[$n][0]===$id){
                 $matriz[$n][1]=$cantidad;
                 $_SESSION["matriz"]=$matriz;
                 $mensaje='<div class="text-center success"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto modificado</h5></div>';
             }
-        }        
+        }
+       // var_export($matriz);
         impresion($mensaje,$quepaso);
     }
     if($opcion=="agregar"){ 
@@ -110,11 +111,11 @@
         //var_export($matriz);//Muestra todos los elementos del array
         $_SESSION['matriz']=$matriz;
         $acumulador=$_SESSION["acumulador"];
+        //$acumuladorNo=$_SESSION["acumuladorNo"];
+        $cuenta=count($matriz);
         $acumulador--;
-        //$_SESSION["acumulador"]=$acumulador;
-        $_SESSION['acumuladorNo']=$acumulador;
-        //$_SESSION['acumulador']=$acumulador;
-        $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado a la lista</h5></div>';
+        $_SESSION["acumuladorNo"]=$cuenta;
+        $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-info-circle"></i>Exito</strong> Producto eliminado de la lista</h5></div>';
         //$_SESSION["mensaje"]=$mensaje;
         impresion($mensaje,1);
     }
@@ -159,7 +160,7 @@ function impresion($mensaje,$quepaso){
    echo $mensaje;
 ?>  
        <input type="hidden"id="quepaso" value="<?php echo $quepaso ?>"/>
-       <input type="hidden" id="estaVacio" value="<?php echo $_SESSION["acumulador"]; ?>"/>
+       <input type="hidden" id="estaVacio" value="<?php echo count($_SESSION["matriz"]); ?>"/>
        <input type="hidden" id="total" value="<?php echo total(); ?>"/>
        <div class="item form-group text-center">
         <div class="col-md-3 col-sm-9 col-xs-12">

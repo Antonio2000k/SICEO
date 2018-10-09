@@ -99,6 +99,7 @@ function showUser(id,cantidad,opcion) {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById("mostrar").innerHTML = xmlhttp.responseText;
+            actualiza('cambioModelo');
         }
     }
     if (opcion == "agregar") {
@@ -152,10 +153,11 @@ function verificar(opcion) {
                 var cantidad=document.getElementById('cantidad').value;
                 if(opcion==="modificar"){
                     //alert("ENviando Modificar")
-                    showUser(id,cantidad,"modificar");
+                    
+                    showUser(id,cantidad,"modificar");                    
                     var quepaso=document.getElementById("quepaso").value;
                     if(quepaso=='1'){
-                        actualiza('cambioModelo');
+                        //actualiza('cambioModelo');
                         $("#divModificar").hide();
                         $("#divAgregar").show();                        
                         document.getElementById("proveedor").disabled=false;

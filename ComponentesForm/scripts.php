@@ -87,6 +87,8 @@
 <script src="../../vendors/tableExport.jquery/jspdf/jspdf.js"></script>
 <script src="../../vendors/tableExport.jquery/jspdf/libs/base64.js"></script>
 
+<!-- Boostrap Notify -->
+<script src="../../vendors/bootstrap-notify-master/bootstrap-notify.min.js"></script>
 <!-- Initialize datetimepicker -->
     <script>
         

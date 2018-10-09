@@ -146,7 +146,7 @@ function formatStringToDate(text) {
     return str.replace("/","-");    
 }
 function verificar(opcion) {
-            if (document.getElementById('cantidad').value == "" || document.getElementById('modelo').value == "0") {
+                if (document.getElementById('cantidad').value == "" || document.getElementById('modelo').value == "0") {
                 swal('Error!', 'Complete los campos!', 'error');
             }
             else if(parseInt(document.getElementById("cantidad").value)==0){

@@ -100,6 +100,8 @@ function showUser(id,cantidad,opcion) {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById("mostrar").innerHTML = xmlhttp.responseText;
             actualiza('cambioModelo');
+            // Recarga Tabla con Nuevos Datos
+            $('.tblCompra').DataTable();
         }
     }
     if (opcion == "agregar") {
@@ -137,6 +139,7 @@ function showUser(id,cantidad,opcion) {
             xmlhttp.send();
         }
     }
+    
 }
 function formatStringToDate(text) {
     var str=text.replace("/","-"); 

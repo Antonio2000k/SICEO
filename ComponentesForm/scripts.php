@@ -86,8 +86,10 @@
 <script src="../../vendors/tableExport.jquery/jspdf/libs/sprintf.js"></script>
 <script src="../../vendors/tableExport.jquery/jspdf/jspdf.js"></script>
 <script src="../../vendors/tableExport.jquery/jspdf/libs/base64.js"></script>
+
 <!-- Initialize datetimepicker -->
     <script>
+        
         $(document).ready(function() {
             // obtenemos la fecha actual - años para el minimo aceptado
             var date = new Date();

@@ -167,7 +167,7 @@ function impresion($mensaje,$quepaso){
             <label class="form-control has-feedback-center" class="form-control col-md-3 col-xs-12">Total Compra $<?php echo total();?></label>
         </div>
     </div>
-       <table id="tabla" class="table table-striped table-bordered" style="paddign-top:20px;">
+       <table id="tabla" class="table table-striped table-bordered tblCompra" style="paddign-top:20px;">
         <thead>
             <tr>
                 <th>Modelo</th>

@@ -357,7 +357,7 @@ if($bandera=="add"){
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
-                                    }, 2000);";
+                                    }, 1000);";
                     echo "</script>";
                     }
     }
@@ -378,7 +378,7 @@ if($bandera=="add"){
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
-                                    }, 2000);";
+                                    }, 1000);";
                     echo "</script>";
         }
       }
@@ -404,8 +404,8 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
                     echo "alertaSweet('Exito!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
-                                      location.href=('proveedor.php');
-                                    }, 2000);";
+                                      location.href=('proveedora.php');
+                                    }, 1000);";
                       echo "</script>";
         }
 }

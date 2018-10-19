@@ -79,10 +79,12 @@ if(isset($_REQUEST["id"])){
                       </img>
                   </div>
                   <div align="center">
-                      <h5 class="col-xs-12 col-sm-8 col-md-10 " >
-                        Bienvenido en esta sección puede registrar clientes en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente. En la pestaña de lista de clientes se muestran todos los clientes registrados.
-                      </h5>
+                      <h4 style="font-size: medium;" class="col-xs-12 col-sm-8 col-md-10 " >
+                        Bienvenido en esta sección puede registrar clientes en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente. En la pestaña <b>LISTA DE CLIENTES</b> se muestran todos los clientes registrados.
+                        
+                      </h4>
                   </div>
+                  
               </div>
             </div>
 

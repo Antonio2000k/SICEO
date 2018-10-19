@@ -9,6 +9,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 ?>
 <script type="text/javascript" class="init">
   function Salir(){
+    alertify.defaults.theme.ok = "btn btn-primary";
+    alertify.defaults.theme.cancel = "btn btn-danger";
     alertify.confirm("<center>ATENCI&Oacute;N!</center>",
     "<center><img src='../../images/warning.png' width='150' height='150'></center>"+
     "<center><h1>Desea cerrar la sesión?</h1></center>", function(){ alertify.success('Ok')

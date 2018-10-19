@@ -206,7 +206,7 @@ if(isset($_REQUEST["id"])){
                   <div align="center">
                       <h4 style="font-size: medium;" class="col-xs-12 col-sm-8 col-md-10 " >
                         Bienvenido en esta seccion podra ver el listado de todos los clientes registrados en SICEO.<br>
-                        En la pestaña <b>NUEVO CLIENTE</b> podra añadir más clientes al Sistema.
+                        En la pestaña <b>REGISTRAR CLIENTE</b> podra añadir más clientes al Sistema.
                       </h4>
                   </div>
               </div>

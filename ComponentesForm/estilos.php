@@ -32,7 +32,11 @@
    
    <link rel="stylesheet" href="../../vendors/iziModal-master/css/iziModal.min.css">
   
-   <!-- include alertify.css -->
-    <link rel="stylesheet" href="../../alertas/build/css/alertify.css"> 
+   
+
+     <!-- Librerias de Alertify -->
+  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/alertify.css"/>
+  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/alertify.min.css"/>
+  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/themes/bootstrap.css"/>
 
     

@@ -365,7 +365,7 @@ include("../../Config/conexion.php");
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
-                                    }, 2000);";
+                                    }, 1000);";
                     echo "</script>";
                     }
     }
@@ -387,7 +387,7 @@ include("../../Config/conexion.php");
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
-                                    }, 2000);";
+                                    }, 1000);";
                     echo "</script>";
         }
       }
@@ -414,7 +414,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedor.php');
-                                    }, 2000);";
+                                    }, 1000);";
                       echo "</script>";
         }
 

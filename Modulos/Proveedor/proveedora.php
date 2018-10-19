@@ -404,8 +404,8 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
                     echo "alertaSweet('Exito!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
-                                      location.href=('proveedor.php');
-                                    }, 2000);";
+                                      location.href=('proveedori.php');
+                                    }, 1000);";
                       echo "</script>";
         }
 }

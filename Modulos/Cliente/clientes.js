@@ -1,6 +1,4 @@
 
-<script type="text/javascript">
-
   function Expediente(id){
      window.open("expediente.php?id="+id, '_parent');
   }
@@ -149,11 +147,3 @@
     xmlhttp.open("post", "recargaTblClientes.php", true);
     xmlhttp.send();
 			}
-
-
-    </script>
-    
-
-
-   <!-- || (!document.getElementById('generoF').checked ||
-           !document.getElementById('generoM').checked) -->

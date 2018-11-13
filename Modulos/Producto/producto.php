@@ -120,11 +120,12 @@ if(isset($_REQUEST["id"])){
                                             echo '<option value="1" >Lente</option>';
                                             echo '<option value="2" >Accesorio</option>';
                                         }else{
-                                            echo '<select class="form-control STipo" name="tipo" id="tipo" onchange="cambioTipoModelo();" disabled>';
+                                            echo '<select class="form-control STipo" name="tipo" id="tipo" onchange="cambioTipoModelo();" >';
                                             echo '<option value="0">Seleccione</option>';                                         
-                                           if($tipoR==="Lente")
+                                           if($tipoR==="Lente"){
                                                 echo '<option value="1" selected="">Lente</option>';
-                                            else if($tipoR==="Accesorio")
+                                                echo '<option value="2" >Accesorio</option>';
+                                            }else if($tipoR==="Accesorio")
                                                 echo '<option value="2" selected="">Accesorio</option>'; 
                                         }         
                                     echo '</select>';

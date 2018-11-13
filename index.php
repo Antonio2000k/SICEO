@@ -228,7 +228,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </div>
                 </div>
 
+                <?php 
+                  ini_set('date.timezone', 'America/El_Salvador');
+                  include("Config/conexion.php");
+                  $query = pg_query($conexion, "SELECT eid_bitacora, accion, ffecha, hora FROM bitacora");
                   
+                  while ($filas = pg_fetch_array($query)) {
+                      echo $filas[0] . " " . $filas[1] ." ". $filas[2] . " " . $filas[3] . " " . "\n";
+                  }
+                ?>  
                 </div>
               </div>
             </div>

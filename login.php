@@ -240,25 +240,51 @@ if (isset($_REQUEST["bandera"])) {
 
 
     while($fila= pg_fetch_array($query_s)){
-      $_SESSION["idUsuario"]=$fila[0];
-      $_SESSION["nombrUsuario"]=$fila[1];
+      $idAccess = $_SESSION["idUsuario"]=$fila[0];
+      $nomusAccess =$_SESSION["nombrUsuario"]=$fila[1];
       $_SESSION["nivelUsuario"]=$fila[2];
-      $_SESSION["nombreEmpleado"]=$fila[3];
-      $_SESSION["apellidoEmpleado"]=$fila[4];
+      $nomAccess = $_SESSION["nombreEmpleado"]=$fila[3];
+      $apeAccess = $_SESSION["apellidoEmpleado"]=$fila[4];
       $_SESSION["duiEmpleado"]=$fila[5];
       $_SESSION["telEmpleado"]=$fila[6];
       $_SESSION["celEmpleado"]=$fila[7];
       $_SESSION["correoEmpleado"]=$fila[8];
       $_SESSION["dirEmpleado"]=$fila[9];
       $_SESSION["sexEmpleado"]=$fila[10];
-      $_SESSION["cid_empleado"]=$fila[11];
+      $idEmpAccess = $_SESSION["cid_empleado"]=$fila[11];
 
+     // $usAc =$_SESSION["idUsuario"];
           if($fila[2] == 1){
-            $_SESSION["autenticado"]="yeah";
-            echo "<script type='text/javascript'>";
             
-            echo "location.href='index.php';";
-            echo "</script>"; 
+            $query_ide=pg_query($conexion,"select count(*) from bitacora ");
+            $accion = 'El administrador ' . $idAccess. '('. $nomAccess. " " .$apeAccess. ") inició sesión";
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $fechaR = date("d/m/Y");
+            $hora = date("h:i:s");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, hora)
+                  VALUES ($ida, $idAccess, '".$accion."' , '$fechaR' , '$hora' )");
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  echo "alert('Datos Almacenados');";
+                  $_SESSION["autenticado"]="yeah";
+                  
+                  echo "location.href='index.php';";
+                  
+                  echo "</script>";
+            }
+            
           }
           if($fila[2] == 2){
               $_SESSION["autenticado"]="yeah";

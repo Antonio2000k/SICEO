@@ -107,7 +107,6 @@ if(isset($_REQUEST["id"])){
                           $style='max-width: 110px;';
 
                              if($sexo=='M'){
-                              //echo "<img src="../assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">";
                                 echo "<div class=\"control-label col-md-6 col-sm-6 col-xs-6\"><h3 id=\"perfil\"  align=\"left\" style=\"color: white\">&nbsp&nbsp&nbsp&nbsp&nbsp<img src=\"".$man."\" width=\"35\" height=\"35\" > &nbsp $nombre $apellido </h3></div>
                                 <div class=\"control-label col-md-6 col-sm-6 col-xs-6\"><h3 id=\"perfil\"  align=\"right\" style=\"color: white\">N° Expediente: $RidExpediente</h3></div>";
                              }else{
@@ -298,7 +297,7 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo date('d/m/Y', strtotime($fila[3])); ?></td>
 
                                       <td class="text-center">
-                                        <button class="btn btn-info btn-icon left-icon"  onClick="Exam('<?php echo $fila[0]; ?>','<?php echo $fila[4]; ?>')"> <i class="fa fa-file-pdf-o"></i> <span></span></button>
+                                        <button class="btn btn-info btn-icon left-icon"  onclick="Exam('<?php echo $fila[0]; ?>','<?php echo $fila[4]; ?>')"> <i class="fa fa-file-pdf-o"></i> <span></span></button>
 
                                        <!-- <button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>-->
 
@@ -801,7 +800,7 @@ $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
 $idexpediente= cortar($_REQUEST["bacciones"]);
-$fechaA= date("d-m-Y");
+$fechaA= date("d/m/Y");
 
 //datos de antecedentes medicos
 $antmcdm = $_REQUEST["dm"];

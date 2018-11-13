@@ -39,140 +39,7 @@ if(isset($_REQUEST["id"])){
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
-    <script type="text/javascript">
-      function Expediente(id){
-     window.open("expediente.php?id="+id, '_parent');
-  }
-      function soloLetras(e) {
-            key = e.keyCode || e.which;
-            tecla = String.fromCharCode(key).toLowerCase();
-            letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
-            especiales = [8, 37, 39, 46];
-            tecla_especial = false;
-            for(var i in especiales) {
-                if(key == especiales[i]) {
-                    tecla_especial = true;
-                    break;
-                }
-            }
-            if(letras.indexOf(tecla) == -1 && !tecla_especial){
-                NotificacionSoloLetras2('error',"<b>Error: </b>Solo se permiten letras");
-                return false;
-            }
-        }
-
-        function vali(opcion) {
-
-
-            if(opcion==='telefono'){
-                var valor = document.getElementById('telefono').value;
-                if (/^[2|6|7]{1}[0-9]{3}\-[0-9]{4}$/.test(valor)) {
-
-                }else {
-                    document.getElementById('telefono').focus();
-                    NotificacionSoloLetras2('error', "<b>Error: </b>telefono debe iniciar con 2, 6 o 7");
-                }
-            }
-            if(opcion==='edad'){
-                var valor = document.getElementById('edad').value;
-                if (/^[0-9]{2}$/.test(valor)) {
-
-                }else {
-                    document.getElementById('edad').focus();
-                    NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Edad</b>");
-                }
-            }
-
-        }
-
-        function limpia() {
-            var val = document.getElementById("nombre").value;
-            var tam = val.length;
-            for(i = 0; i < tam; i++) {
-                if(!isNaN(val[i]))
-                    document.getElementById("nombre").value = '';
-            }
-        }
-
-      function verificar(opcion){
-          var opc=true;
-            if(document.getElementById('nombre').value=="" || document.getElementById('apellido').value=="" ||
-            document.getElementById('telefono').value=="" || document.getElementById('edad').value=="" ||
-            document.getElementById('direccion').value=="" ){
-                swal('Error!','Complete los campos!','error');
-                document.getElementById('bandera').value="";
-                opc=false;
-            }else{
-                if(opcion==="guardar")
-                document.getElementById('bandera').value="add";
-                else
-                document.getElementById('bandera').value="modificar";
-                opc=true;
-            }
-
-          $(document).ready(function(){
-          $("#formCliente").submit(function() {
-              if (opc!=true) {
-                return false;
-              } else
-                  return true;
-            });
-        });
-
-      }
-
-    function limpiarIn(opcion){
-        if(opcion=="limpiarM"){
-            document.getElementById('bandera').value='cancelar';
-        }else{
-            $(document).ready(function(){
-              $("#formCliente")[0].reset();
-              $("#formCliente").submit(function() {
-                  return false;
-                });
-            });
-        }
-    }
-
-    function alertaSweet(titulo,texto,tipo){
-      swal(titulo,texto,tipo);
-    }
-
-
-
-
-    function llamarPagina(id){
-     window.open("registrarCliente.php?id="+id, '_parent');
-  }
-
-
-    function NotificacionSoloLetras2(tipo,msg){
-        notif({
-          type:tipo,
-          msg:msg ,
-          position: "center",
-          timeout: 3000,
-          clickable: true
-
-        });
-    }
-
-    function ajax_act(str){
-      if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-          } else {
-          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                  }
-            xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-              document.getElementById("imprimir").innerHTML = xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("post", "recargaTblClientes.php", true);
-    xmlhttp.send();
-      }
-    </script>
+    <script src="js/cliente.js"></script>
   </head>
 
   <body class="nav-md">
@@ -211,7 +78,23 @@ if(isset($_REQUEST["id"])){
                   </div>
               </div>
             </div>
-
+            
+            <div class="form-group" style="float: right;">
+              <div class="btn-group" >
+                
+                <button float-right class="btn btn-info btn-icon left-icon dropdown-toggle"  data-toggle="dropdown" d>
+                  <i class="fa fa-th-list"></i>
+                  <span>Reportes</span>
+                </button>
+                <ul class="dropdown-menu " role="menu">
+                  <li><a href="#" data-toggle="modal" data-target="#impresion"> FECHA</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#sexo"> SEXO</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#fesexo"> FECHA Y SEXO</a></li>
+                </ul>
+              </div> 
+              
+                      
+            </div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -229,109 +112,7 @@ if(isset($_REQUEST["id"])){
                         </li>
                     </ul>
                   <div class="tab-content" id="myTabContent">
-                 <!--   <div aria-labelledby="home-tab" class="tab-pane fade" id="tab_content1" role="tabpanel">
-                      <div class="x_content">
-                        <div class="x_title" style="background: #2A3F54">
-                           <h3 align="center" style=" color: white">Datos Personales</h3>
-
-                               <div class="clearfix"></div>
-                        </div>
-                         <div class="x_content">
-                           <form class="form-horizontal form-label-left" id="formCliente" name="formCliente" method="post">
-                            <input type="hidden" name="bandera" id="bandera"/>
-                            <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidCliente;?>"/>
-                             <div class="row">
-                                Codigos
-                                  <div class="ln_solid"></div>
-
-                                <div class="item form-group">
-                                   <label class="control-label col-md-1 col-sm-2 col-xs-12">Nombres*</label>
-                                   <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" autocomplete="off" >
-                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                   </div>
-
-                                   <label class="control-label col-md-1 col-sm-2 col-xs-12">Apellidos*</label>
-                                    <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                       <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" autocomplete="off" >
-                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
-                                </div>
-
-                                <div class="item form-group">
-                                  <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                    <div class="col-sm-3">
-                                      <label class="control-label col-md-3 col-sm-4 col-xs-12">Sexo*</label>
-                                    </div>
-                                       <div class="col-sm-3">
-                                          <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" <?php if ($Rsexo == "M") echo "checked"; ?>/>
-                                       </div>
-                                       <div class="col-sm-3">
-                                           <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
-                                       </div>
-                                  </div>
-
-
-                                  <div class="col-md-5 col-sm-5 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-5 col-sm-2 col-xs-12">Edad*</label>
-
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" class="form-control has-feedback-left" id="edad" name="edad"    aria-describedby="inputSuccess2Status" style="padding-left: 55px;"  placeholder="Edad" value="<?php echo $Redad ?>" autocomplete="off">
-                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                 </div>
-
-                                 <div class="ln_solid"></div>
-
-
-                                  <div class="item form-group">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Telefono de contacto*</label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                       <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off" onblur="vali('telefono');">
-                                      <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
-
-                                    <br><br><br>
-
-
-                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Direcci&oacuten*</label>
-                                            <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
-                                                <input type="text" class="form-control has-feedback-left" id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" autocomplete="off">
-                                                <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
-                                            </div>
-                                  </div>
-
-
-
-                                  <div class="ln_solid"></div>
-
-                                  <div class="item form-group">
-                                    <center>
-                                       <div class="col-md-12 col-sm-6 col-xs-12 ">
-                                          <?php
-                                                if(!isset($iddatos)){
-                                                    ?>
-                                                    <button class="btn btn-success btn-icon left-icon;" onClick="verificar('guardar');"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
-                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiar');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
-                                                    <?php
-                                                }else{
-                                                    ?>
-                                                    <button class="btn btn-info btn-icon left-icon;" onClick="verificar('modificar');"> <i  class="fa fa-save"  name="btnModificar" id="btnModificar"></i> <span >Modificar</span></button>
-                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiarM');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
-                                                    <?php
-                                                }
-                                           ?>
-                                      </div>
-                                    </center>
-                                  </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div> -->
+                 
                       <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
@@ -468,6 +249,159 @@ if(isset($_REQUEST["id"])){
         </footer>
       </div>
                 <!--Aqui va fin el contenido-->
+
+      <!--- Modal Impresion -->
+
+        <div class="modal fade" id="impresion" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group" > 
+                  <button type="button" class="btn btn-info " id="daterange-btn" style="float: right;">
+                    <i class="fa fa-calendar"></i> Rango
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango3" id="rango3"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  
+                        
+                </div>
+                <br><br>
+                <div class="item form-group"> 
+
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango4" id="rango4" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+                        
+                </div>
+                              
+               <br><br><br>
+              </div>
+              
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="Rep()"> <i class="fa fa-print"></i> Imprimir</button>
+                  
+                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="modal fade" id="sexo" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group" > 
+                  <label class="control-label col-md-1 col-sm-2 col-xs-12">Sexo*</label>
+                  <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
+                    <div class="col-md-4 col-xs-12 col-sm-4">
+                      <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M"/>
+                    </div>
+                    <div class="col-md-4 col-xs-12 col-sm-4">
+                      <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" />
+                    </div>
+                  </div>
+                </div>
+                            
+                            
+                                
+                 <br><br><br>
+              </div>
+              
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="RepS()"> <i class="fa fa-print"></i> Imprimir</button>
+                  
+                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="fesexo" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group" > 
+                  <button type="button" class="btn btn-info " id="daterange-btn2" style="float: right;">
+                    <i class="fa fa-calendar"></i> Rango
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango1" id="rango1"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  
+                        
+                </div>
+                <br><br>
+                <div class="item form-group"> 
+
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango2" id="rango2" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+                        
+                </div>
+                <br><br><br>
+                <div class="item form-group" > 
+                  <label class="control-label col-md-1 col-sm-2 col-xs-12">Sexo*</label>
+                  <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
+                    <div class="col-md-4 col-xs-12 col-sm-4">
+                      <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoMM" value="M"/>
+                    </div>
+                    <div class="col-md-4 col-xs-12 col-sm-4">
+                      <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoFF" value="F" />
+                    </div>
+                  </div>
+                </div>
+                            
+                            
+                                
+                 <br>
+              </div>
+              
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="RepBoth()"> <i class="fa fa-print"></i> Imprimir</button>
+                  
+                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Modal -->
      </div>
   </div>
 
@@ -476,144 +410,3 @@ if(isset($_REQUEST["id"])){
         ?>
     </body>
 </html>
-<?php
-if(isset($_REQUEST["bandera"])){
-$baccion=$_REQUEST["baccion"];
-$bandera=$_REQUEST["bandera"];
-$nombre=($_REQUEST["nombre"]);
-$apellido=($_REQUEST["apellido"]);
-$telefono=($_REQUEST["telefono"]);
-$edad=$_REQUEST["edad"];
-$direccion=($_REQUEST["direccion"]);
-$sexo=$_REQUEST["genero"];
-include("../../Config/conexion.php");
-if($bandera=="add"){
-    pg_query("BEGIN");
-    $r=pg_query($conexion,"select * from clientes");
-    $numero = pg_num_rows($r);
-    $codigo=generar($nombre,$apellido).$numero;
-
-    $query_s=pg_query($conexion,"select count(*) from expediente ");
-    while ($fila = pg_fetch_array($query_s)) {
-            $ida=$fila[0];
-            $ida++ ;
-        }
-
-          $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion')");
-          $res= pg_query($conexion,"INSERT INTO expediente (eid_expediente, eid_cliente) VALUES ($ida, '$codigo')");
-
-
-
-
-          if(!$result || !$res){
-                    pg_query("rollback");
-                    echo "<script type='text/javascript'>";
-                    echo pg_result_error($conexion);
-                    echo "alertaSweet('Error','Datos no almacenados', 'error');";
-
-                      echo "ajax_act('');";
-                    echo "document.getElementById('bandera').value='';";
-                      echo "document.getElementById('baccion').value='';";
-                    echo "</script>";
-          }else{
-                pg_query("commit");
-                echo "<script type='text/javascript'>";
-                echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
-                echo "ajax_act('');";
-                echo "document.getElementById('bandera').value='';";
-                echo "document.getElementById('baccion').value='';";
-                echo "</script>";
-          }
-
-
-       /*   if(){
-                    pg_query("rollback");
-                    echo "<script type='text/javascript'>";
-                    echo pg_result_error($conexion);
-                    echo "alertaSweet('Error','Datos no almacenados 2', 'error');";
-
-                      echo "ajax_act('');";
-                    echo "document.getElementById('bandera').value='';";
-                      echo "document.getElementById('baccion').value='';";
-                    echo "</script>";
-          }else{
-                pg_query("commit");
-                echo "<script type='text/javascript'>";
-                echo "alertaSweet('Informacion','Datos Almacenados 2', 'success');";
-                echo "ajax_act('');";
-                echo "document.getElementById('bandera').value='';";
-                echo "document.getElementById('baccion').value='';";
-                echo "</script>";
-          }*/
-
-  }
-/*  if($bandera=='modificar'){
-      pg_query("BEGIN");
-
-            $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
-              if(!$result){
-                pg_query("rollback");
-          echo "<script type='text/javascript'>";
-          echo pg_result_error($conexion);
-          echo "alertaSweet('Error','Datos no almacenados', 'error');";
-          echo "document.getElementById('bandera').value='';";
-            echo "document.getElementById('baccion').value='';";
-            echo "ajax_act('');";
-
-          echo "</script>";
-              }else{
-                pg_query("commit");
-          echo "<script type='text/javascript'>";
-          echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
-          echo "document.getElementById('bandera').value='';";
-            echo "document.getElementById('baccion').value='';";
-            echo "ajax_act('');";
-
-          echo "</script>";
-              }
-
-  }*/
-  if($bandera=="cancelar"){
-                      echo "<script type='text/javascript'>";
-                      echo "document.location.href='registrarCliente.php';";
-                      echo "</script>";
-  }
-
-
-}
-
-
-function generar($nombree,$apellidos){
-    $str=trim($nombree).trim($apellidos);
-    $cad="";
-    for($i=0; strlen($cad)<2; $i++){
-      $cad.=substr($str,rand(0,strlen($str)-1),1);
-    }
-    return strtoupper($cad);
-  }
-
-
-function validaCliente($baccion){
-    $valor=0;
-    include("../../Config/conexion.php");
-    $query_s= pg_query($conexion, "select * from cliente order by cnombre");
-        while($fila=pg_fetch_array($query_s)){
-            if(strcmp($fila[0],$baccion)===0){
-                $valor=0;
-            }
-        }
-    return $valor;
-}
-
-
-function mensajeInformacion($titulo,$mensaje,$tipo){
-            echo "<script language='javascript'>";
-            echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
-            echo "document.getElementById('bandera').value='';";
-            echo "document.getElementById('baccion').value='';";
-            echo "ajax_act('');";
-            echo "</script>";
-
-}
-
-?>

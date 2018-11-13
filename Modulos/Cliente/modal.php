@@ -1,36 +1,30 @@
-<?php
-  $fecha = "11-06-1998";
-  function busca_edad($fecha_nacimiento){
-  $dia=date("d");
-  $mes=date("m");
-  $ano=date("Y");
-
-
-  $dianaz=date("d",strtotime($fecha_nacimiento));
-  $mesnaz=date("m",strtotime($fecha_nacimiento));
-  $anonaz=date("Y",strtotime($fecha_nacimiento));
-
-
-  //si el mes es el mismo pero el día inferior aun no ha cumplido años, le quitaremos un año al actual
-
-  if (($mesnaz == $mes) && ($dianaz > $dia)) {
-  $ano=($ano-1); }
-
-  //si el mes es superior al actual tampoco habrá cumplido años, por eso le quitamos un año al actual
-
-  if ($mesnaz > $mes) {
-  $ano=($ano-1);}
-
-   //ya no habría mas condiciones, ahora simplemente restamos los años y mostramos el resultado como su edad
-
-  $edad=($ano-$anonaz);
-
-
-  return $edad;
-
-
-  }
-
-  $edad = busca_edad($fecha);
-  echo "$edad";
+<?php 
+  $cambio=$_REQUEST["idd"];
+  if($cambio === "fecha"){
 ?>
+
+    
+     <?php
+   }
+
+   if($cambio === "sexo"){
+?>
+
+    <div class="item form-group" > 
+      <label class="control-label col-md-1 col-sm-2 col-xs-12">Sexo*</label>
+      <div class="col-md-1 col-sm-4 col-xs-12 form-group has-feedback">
+        <div class="col-md-4 col-xs-12 col-sm-4">
+          <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M"/>
+        </div>
+        <div class="col-md-4 col-xs-12 col-sm-4">
+          <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" />
+        </div>
+      </div>
+    </div>
+                
+                
+                    
+     <br><br><br>
+     <?php
+   }
+   ?>

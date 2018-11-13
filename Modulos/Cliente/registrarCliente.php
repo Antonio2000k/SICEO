@@ -145,27 +145,21 @@ if(isset($_REQUEST["id"])){
                                     </div>
                                   </div>
 
-                                        <div class="item form-group">
-                                          
-                                          <div class="col-md-5 col-sm-5 col-xs-12">
+                                  <div class="col-md-7 col-sm-4 col-xs-12 form-group ">
                                             
-                                            <label class="control-label col-md-5 col-sm-3 col-xs-12">Fecha de Nacimiento*</label>
+                                            <label class="control-label col-md-4 col-sm-3 col-xs-12">Fecha de Nacimiento*</label>
                                             <div class="form-group">
-                                                <div class='input-group date' id='myDatepicker3'>
-                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'"  autocomplete="off" onblur="vali('fecha');"/>
+                                                <div class="col-md-4 col-xs-12 col-sm-4" id='myDatepicker3'>
+                                                    <input type='text' class="form-control has-feedback-left col-md-2 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'"  autocomplete="off" onblur="vali('fecha'); calcularEdad();" />
                                                     <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
-                                                <span id="txtHint"></span>
-                                            </div>
-                                        
-                                            
-                                          <!--  <div class="col-md-2 col-sm-4 col-xs-12 form-group">
-                                               <input type="text" class="form-control has-feedback-left" id="edad" class="form-control col-md-2 col-sm-4 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="edad" placeholder="Edad"  onkeypress="return soloLetras(event)"  >
-                                               <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                            </div> -->
-                                        </div>
-                                    </div>
-                                 </div>
+                                                <div class="col-md-3 col-sm-4 col-xs-12 form-group">
+                                                 <input type="text" class="form-control has-feedback-left" id="edad" class="form-control col-md-5 col-sm-4 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="edad" placeholder="Edad"/>
+                                                 <span class="fa fa-user form-control-feedback left" aria-hidden="true"/></span>
+                                              </div> 
+                                            </div> 
+                                  </div>
+                                </div>
 
                                  <div class="ln_solid"></div>
 
@@ -348,7 +342,7 @@ if(isset($_REQUEST["id"])){
               $fecha = $_REQUEST["fecha"];
               $anno2 = date('Y', strtotime($fecha));
               //echo "$anno2";
-              $annoMax = date('Y')+1;
+              $annoMax = date('Y')-1;
               $annoMin = date('Y')-70;
               $anno = date('Y');
               
@@ -365,7 +359,36 @@ if(isset($_REQUEST["id"])){
         <?php
           include "../../ComponentesForm/scripts.php";
         ?>
-        
+        <script type="text/javascript">
+          $(document).ready(function() {
+              var warn_on_unload="";
+              $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() 
+              {
+                  warn_on_unload = "Si sale de la pagina, no se guardaran los datos, guarde los datos antes de abandonar la pagina.";
+           
+                  $('#submit').click(function() { 
+                      warn_on_unload = "";}); 
+           
+                  $('#submit1').click(function() { 
+                      warn_on_unload = "";});  
+           
+                  $('#modificar_direcciones').click(function() { 
+                      warn_on_unload = "";}); 
+           
+                  $('#eliminar_direcciones').click(function() { 
+                      warn_on_unload = "";}); 
+           
+                  $('#guardar_direcciones').click(function() { 
+                      warn_on_unload = "";});                                             
+           
+                      window.onbeforeunload = function() { 
+                      if(warn_on_unload != ''){
+                          return warn_on_unload;
+                      }   
+                  }
+              });
+          });
+          </script>
     </body>
 </html>
 <?php
@@ -379,49 +402,19 @@ $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
 $fecha = $_REQUEST["fecha"];
-  function busca_edad($fecha_nacimiento){
-  $dia=date("d");
-  $mes=date("m");
-  $ano=date("Y");
+$edad = substr($_REQUEST["edad"],0,1);
 
-
-  $dianaz=date("d",strtotime($fecha_nacimiento));
-  $mesnaz=date("m",strtotime($fecha_nacimiento));
-  $anonaz=date("Y",strtotime($fecha_nacimiento));
-
-
-  //si el mes es el mismo pero el día inferior aun no ha cumplido años, le quitaremos un año al actual
-
-  if (($mesnaz == $mes) && ($dianaz > $dia)) {
-  $ano=($ano-1); }
-
-  //si el mes es superior al actual tampoco habrá cumplido años, por eso le quitamos un año al actual
-
-  if ($mesnaz > $mes) {
-  $ano=($ano-1);}
-
-   //ya no habría mas condiciones, ahora simplemente restamos los años y mostramos el resultado como su edad
-
-  $edad=($ano-$anonaz);
-
-
-  return $edad;
-
-
-  }
-
-
-  //echo "$edad";
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
     $r=pg_query($conexion,"select * from clientes");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
-    $edad = busca_edad($fecha);
+    
     $expediente = getExpediente($nombre, $apellido);
+    $fechaR = date('d/m/Y');
             
-          $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion,ffecha) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion', to_date('$fecha', 'mm/dd/yyyy'))");
+          $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion,ffecha,ffechar) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion', to_date('$fecha', 'mm/dd/yyyy'), to_date('$fechaR', 'dd/mm/yyyy'))");
           $res= pg_query($conexion,"INSERT INTO expediente2 (cid_expediente, eid_cliente) VALUES ('" . $expediente . "', '$codigo')");
           
 

@@ -120,7 +120,7 @@ FROM
 	while($row = pg_fetch_assoc($query_s)){
 		
 		//$pdf->cell(170,6,$row['cnombre'],1,"L");
-		$texto1=utf8_decode("\nApellidos:  ".$row['capellido']."   		                         "."Nombres:  ".$row['cnombre']." 																										"."Edad:  ".$row['eedad']." años"."\n\nFecha:  ".  date("d/ m/ Y")."                                     			 	   "."Tel:  ".$row['ctelefonof']."                                              ");	
+		$texto1=utf8_decode("\nApellidos:  ".$row['capellido']."   		                         "."Nombres:  ".$row['cnombre']." 																										"."Edad:  ".$row['eedad']." años"."\n\nFecha:  ". date('d/m/Y', strtotime($row['ffecha']))."                                     			 	   "."Tel:  ".$row['ctelefonof']."                                              ");	
 
 		
 	

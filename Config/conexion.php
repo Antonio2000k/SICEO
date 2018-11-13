@@ -1,7 +1,7 @@
 <?php
 $server="localhost";
 $puerto="5432";
-$database="siceoDB2";
+$database="siceoDBC";
 $usuario="postgres";
 $clave="root";
 

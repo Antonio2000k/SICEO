@@ -67,6 +67,18 @@ if(isset($_REQUEST["id"])){
             </div>
                                 </div>
                             </div>
+
+        <div class="form-group" style="float: right;">
+              <div class="btn-group" >
+                
+                <button float-right class="btn btn-info btn-icon left-icon "  data-toggle="modal" data-target="#edad">
+                  <i class="fa fa-th-list"></i>
+                  <span>Reportes</span>
+                </button>
+              </div> 
+              
+                      
+            </div>
          <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -494,6 +506,141 @@ if(isset($_REQUEST["id"])){
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="modal fade" id="edad" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <br>
+                <center>
+                  <button class="btn btn-info btn-icon left-icon " id="e1" onclick="mostrarFormularios('prov');"> <i class="fa fa-print"></i> Proveedor</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e2" onclick="mostrarFormularios('est');"> <i class="fa fa-print"></i> Estado</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e3" onclick="mostrarFormularios('tipo');"> <i class="fa fa-print"></i> Tipo</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e4" onclick="mostrarFormularios('marca');"> <i class="fa fa-print"></i> Marca</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e5" onclick="mostrarFormularios('garantia');"> <i class="fa fa-print"></i> Garantia</button> 
+                </center>
+                <br>
+                <div id="cambio">
+                  <div class="modal-body">
+                    <div class="item form-group" id="divPro" hidden>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"> Proveedor * </label>
+                        
+                            <select style="width:220px" class="form-control SProveedor" name="proved" id="proved">
+                                <option value="">Seleccione</option>
+                                <?php
+                                   include '../../Config/conexion.php';
+                                    pg_query("BEGIN");
+                                    $resultado=pg_query($conexion, "select * from proveedor");
+                                    $nue=pg_num_rows($resultado);
+                                        if($nue>0){
+                                        while ($fila = pg_fetch_array($resultado)) {
+                                        if($fila[0]==$proveedor){
+                                ?>
+                                    <option selected="" value="<?php echo $fila[0]?>">
+                                        <?php echo $fila[3]?>
+                                    </option>
+                                <?php }else{ ?>
+                                        <option value="<?php echo $fila[0]?>">
+                                            <?php echo $fila[3]?>
+                                        </option>
+                                <?php }}} ?>
+                            </select>
+                        
+                        
+                    </div>
+                    <div class="item form-group" id="divMar" hidden>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"> Marca* </label>
+                        
+                        <select style="width:220px" class="form-control SMarca" name="marcaL" id="marcaL">
+                            <option value="">Seleccione</option>
+                            <?php
+                                include '../../Config/conexion.php';
+                                pg_query("BEGIN");
+                                $resultado=pg_query($conexion, "select * from marca");
+                                $nue=pg_num_rows($resultado);
+                                if($nue>0){
+                                    while ($fila = pg_fetch_array($resultado)) {
+                                        if($fila[0]==$marca){
+                            ?>
+                                            <option selected="" value="<?php echo $fila[1]?>">
+                                                <?php echo $fila[1]?>
+                                            </option>
+                                <?php }else{ ?>
+                                            <option value="<?php echo $fila[1]?>">
+                                                <?php echo $fila[1]?>
+                                            </option>
+                                    <?php }}} ?>
+                        </select>
+                    </div>
+                    <div class="item form-group" id="divGar" hidden>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"> Garantia* </label>
+                        <select style="width:220px" class="form-control SGarantia" name="garantias" id="garantias">;
+                            <option value="" selected="">Seleccione</option>;
+                               <?php 
+                                    
+                                    include '../../Config/conexion.php';
+                                    pg_query("BEGIN");
+                                    $resultado=pg_query($conexion, "select * from garantia");
+                                    $nue=pg_num_rows($resultado);
+                                        if($nue>0){
+                                        while ($fila = pg_fetch_array($resultado)) {
+                                        if($fila[0]==$garantia){
+                                    ?>
+                                        <option selected="" value="<?php echo $fila[2]?>"><?php echo $fila[2]?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $fila[2]?>"><?php echo $fila[2]?></option>
+                                            <?php }}}
+                                                           
+                                ?>
+                        </select>;
+                    </div>
+
+                    <div class="item form-group" id="divEstado" hidden> 
+                      <label class="control-label col-md-2 col-sm-2 col-xs-12">Estado *</label>
+                      <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
+                        <div class="col-md-4 col-xs-12 col-sm-4">
+                          <label>Activo</label>  <input type="radio" class="flat" name="estad" id="estActi" value="t"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-4">
+                          <label>De Baja</label>  <input type="radio" class="flat" name="estad" id="estDes" value="f" />
+                        </div>
+                      </div>
+                      <br><br>
+                    </div>
+
+                    <div class="item form-group" id="divTip" hidden> 
+                      <label class="control-label col-md-2 col-sm-2 col-xs-12">Tipo *</label>
+                      <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
+                        <div class="col-md-4 col-xs-12 col-sm-4">
+                          <label>Lente</label>  <input type="radio" class="flat" name="tipos" id="tipoLen" value="Lente"/>
+                        </div>
+                        <div class="col-md-4 col-xs-12 col-sm-4">
+                          <label>Accesorio</label>  <input type="radio" class="flat" name="tipos" id="tipoAc" value="Accesorio" />
+                        </div>
+                      </div>
+                      <br><br>
+                    </div>
+                    
+                    
+                  </div>
+                  
+                  <div class="modal-footer">
+                    
+                      <button class='btn btn-info btn-icon left-icon pull-left' id='impri' data-dismiss='modal' onclick='RepEdad()' > <i class='fa fa-print'></i> Imprimir</button>
+                    
+                    
+                    <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                  </div>
+                </div>
+            </div>
+          </div>
         </div>
         <!-- Fin Modal -->
         

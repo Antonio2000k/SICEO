@@ -186,6 +186,8 @@
             $('#daterange-btn2 ')
             
         })
+
+        
    /* $('#myDatepicker').datetimepicker();
     
     $('#myDatepicker0').datetimepicker({

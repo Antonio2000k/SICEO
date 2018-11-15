@@ -174,23 +174,7 @@ function Expediente(id){
             showConfirmButton: false,
 
           });
-    }
-
-    function showHint(str) {
-      if (str.length == 0) { 
-          document.getElementById("txtHint").innerHTML = "";
-          return;
-      } else {
-          var xmlhttp = new XMLHttpRequest();
-          xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  document.getElementById("txtHint").innerHTML = this.responseText;
-              }
-          };
-          xmlhttp.open("POST", "fecha.php?q=" + str, true);
-          xmlhttp.send();
-      }
-  }    
+    } 
     
        
     function llamarPagina(id){
@@ -239,10 +223,41 @@ function Expediente(id){
         var sexoF = document.getElementById("generoF").checked;
 
         if(sexoM){
+          $('#sexo').modal('show');
           window.open("../../reporteCliente.php?sexo=M");
+          
         } else if(sexoF){
+          $('#sexo').modal('show');
           window.open("../../reporteCliente.php?sexo=F");
+          
         }
+
+
+      }
+
+      function RepEdad(){
+        var edadE = document.getElementById("edadEs").value;
+        var edadMe = document.getElementById("edadMe").value;
+        var edadMa = document.getElementById("edadMa").value;
+        var edadMeR = document.getElementById("edadR1").value;
+        var edadMaR = document.getElementById("edadR2").value;
+
+        if(edadE!=""){
+          window.open("../../reporteCliente.php?edad="+edadE);
+          limpiarFormulario();
+        } else if(edadMe!=""){
+          window.open("../../reporteCliente.php?edadMe="+edadMe);
+          limpiarFormulario();
+        }else if(edadMa!=""){
+          window.open("../../reporteCliente.php?edadMa="+edadMa);
+          limpiarFormulario();
+        }else if(edadMeR!="" && edadMaR!=""){
+          window.open("../../reporteCliente.php?edadMe="+edadMeR + "&edadMa="+edadMaR);
+          limpiarFormulario();
+        }
+
+
+
       }
 
       function RepBoth(){
@@ -361,5 +376,73 @@ function Expediente(id){
       }
     }
 
-        
-        
+    function cambioDiv(opcion) {
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+      } else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+          document.getElementById("cambio").innerHTML = xmlhttp.responseText;
+        }
+      }
+      xmlhttp.open("POST", "modal.php?cambio=" + opcion, true);
+      xmlhttp.send();
+  }   
+
+  function mostrarFormulario(opcion){
+    if(opcion==="edadE"){
+        $("#divE").show();
+        $("#divEme").hide();
+        document.getElementById("edadMe").value = "";
+        $("#divEma").hide();
+        document.getElementById("edadMa").value = "";
+        $("#divER").hide();
+        document.getElementById("edadR1").value = "";
+        document.getElementById("edadR2").value = "";
+    }
+    if(opcion==="edadMe"){
+        $("#divE").hide();
+        document.getElementById("edadEs").value = "";
+        $("#divEme").show();
+        $("#divEma").hide();
+        document.getElementById("edadMa").value = "";
+        $("#divER").hide();
+        document.getElementById("edadR1").value = "";
+        document.getElementById("edadR2").value = "";
+    }
+    if(opcion==="edadMa"){
+        $("#divE").hide();
+        document.getElementById("edadEs").value = "";
+        $("#divEme").hide();
+        document.getElementById("edadMe").value = "";
+        $("#divEma").show();
+        $("#divER").hide();
+        document.getElementById("edadR1").value = "";
+        document.getElementById("edadR2").value = "";
+    }
+    if(opcion==="edadR"){
+        $("#divE").hide();
+        document.getElementById("edadEs").value = "";
+        $("#divEme").hide();
+        document.getElementById("edadMe").value = "";
+        $("#divEma").hide();
+        document.getElementById("edadMa").value = "";
+        $("#divER").show();
+    }
+    
+  }
+
+  function limpiarFormulario(){
+    $("#divE").hide();
+    document.getElementById("edadEs").value = "";
+    $("#divEme").hide();
+    document.getElementById("edadMe").value = "";
+    $("#divEma").hide();
+    document.getElementById("edadMa").value = "";
+    $("#divER").hide();
+    document.getElementById("edadR1").value = "";
+    document.getElementById("edadR2").value = "";
+  }

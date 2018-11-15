@@ -256,7 +256,7 @@ if (isset($_REQUEST["bandera"])) {
      // $usAc =$_SESSION["idUsuario"];
           if($fila[2] == 1){
             
-            $query_ide=pg_query($conexion,"select count(*) from bitacora ");
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
             $accion = 'El administrador ' . $idAccess. '('. $nomAccess. " " .$apeAccess. ") inició sesión";
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
@@ -287,10 +287,34 @@ if (isset($_REQUEST["bandera"])) {
             
           }
           if($fila[2] == 2){
-              $_SESSION["autenticado"]="yeah";
-              echo "<script type='text/javascript'>";
-              echo "location.href='index2.php';";
-              echo "</script>"; 
+              
+              $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El Empleado ' . $idAccess. '('. $nomAccess. " " .$apeAccess. ") inició sesión";
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $fechaR = date("d/m/Y");
+            $hora = date("h:i:s");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, hora)
+                  VALUES ($ida, $idAccess, '".$accion."' , '$fechaR' , '$hora' )");
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  echo "alert('Datos Almacenados');";
+                  $_SESSION["autenticado2"]="yeah2";
+                  echo "location.href='index2.php';";
+                  echo "</script>"; 
+            }
+            
           }
           
       

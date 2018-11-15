@@ -91,7 +91,7 @@ include "../../ComponentesForm/menu.php";
                         </li>
                   </ul>
                 <div class="tab-content" id="myTabContent">
-                   <!-- <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
+                    <div aria-labelledby="home-tab" class="tab-pane fade " id="tab_content1" role="tabpanel">
                       <div class="x_content">
                         <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
                            <h3 align="center" style=" color: white">Datos Personales</h3>
@@ -103,7 +103,7 @@ include "../../ComponentesForm/menu.php";
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidEmpleado;?>"/>
                             <div id="cambiaso"><input type="hidden" id="baccionVer" value="1" /> </div>
                              <div class="row">
-                                <!--Codigos
+                                Codigos
                                   <div class="ln_solid"></div>
                                 <div class="item form-group">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres*</label>
@@ -201,7 +201,7 @@ include "../../ComponentesForm/menu.php";
                         
                           </div>
                         </div>
-                      </div>-->
+                      </div>
                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
@@ -247,7 +247,7 @@ include "../../ComponentesForm/menu.php";
                                    </div>
                                  </div>
                     </div>
-                  <!--  <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                   <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
                                 <div class="x_title">
@@ -290,7 +290,7 @@ include "../../ComponentesForm/menu.php";
                                     </div>
                                    </div>
                                  </div>
-                    </div> -->
+                    </div> 
                  
                 </div>
             </div>

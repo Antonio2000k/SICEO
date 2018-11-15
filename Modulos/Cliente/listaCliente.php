@@ -2,7 +2,7 @@
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from clientes where eid_cliente='$iddatos' order by cnombre");
+    $query_s = pg_query($conexion, "SELECT * from clientes where eid_cliente='$iddatos' order by cnombre");
     while ($fila = pg_fetch_array($query_s)) {
         $RidCliente = $fila[0];
         $Rnombre = $fila[1];
@@ -40,6 +40,7 @@ if(isset($_REQUEST["id"])){
       include "../../ComponentesForm/estilos.php";
     ?>
     <script src="js/cliente.js"></script>
+
   </head>
 
   <body class="nav-md">
@@ -82,7 +83,7 @@ if(isset($_REQUEST["id"])){
             <div class="form-group" style="float: right;">
               <div class="btn-group" >
                 
-                <button float-right class="btn btn-info btn-icon left-icon dropdown-toggle"  data-toggle="dropdown" d>
+                <button float-right class="btn btn-info btn-icon left-icon dropdown-toggle"  data-toggle="dropdown" >
                   <i class="fa fa-th-list"></i>
                   <span>Reportes</span>
                 </button>
@@ -90,6 +91,7 @@ if(isset($_REQUEST["id"])){
                   <li><a href="#" data-toggle="modal" data-target="#impresion"> FECHA</a></li>
                   <li><a href="#" data-toggle="modal" data-target="#sexo"> SEXO</a></li>
                   <li><a href="#" data-toggle="modal" data-target="#fesexo"> FECHA Y SEXO</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#edad"> EDAD</a></li>
                 </ul>
               </div> 
               
@@ -312,7 +314,10 @@ if(isset($_REQUEST["id"])){
                 <center>
                   <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
               </div>
-              <div class="modal-body">
+            <!--  <button class="btn btn-info btn-icon left-icon " id="imp" onclick="cambioDiv('sexo')"> <i class="fa fa-print"></i> Sexo</button> 
+                <button class="btn btn-info btn-icon left-icon " id="imp" onclick="cambioDiv('fecha')"> <i class="fa fa-print"></i> Fecha</button> -->
+              <div class="modal-body" >
+                <br>
                 <div class="item form-group" > 
                   <label class="control-label col-md-1 col-sm-2 col-xs-12">Sexo*</label>
                   <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
@@ -324,10 +329,10 @@ if(isset($_REQUEST["id"])){
                     </div>
                   </div>
                 </div>
-                            
+                              
                             
                                 
-                 <br><br><br>
+                 <br>
               </div>
               
                 <div class="modal-footer">
@@ -397,6 +402,83 @@ if(isset($_REQUEST["id"])){
                   <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="RepBoth()"> <i class="fa fa-print"></i> Imprimir</button>
                   
                   <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="edad" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <br>
+                <center>
+                  <button class="btn btn-info btn-icon left-icon " id="e1" onclick="mostrarFormulario('edadE');"> <i class="fa fa-print"></i> Edad Especifica</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e2" onclick="mostrarFormulario('edadMe');"> <i class="fa fa-print"></i> Menor a</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e3" onclick="mostrarFormulario('edadMa');"> <i class="fa fa-print"></i> Mayor a</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e4" onclick="mostrarFormulario('edadR');"> <i class="fa fa-print"></i> Rango de edad</button> 
+                </center>
+                <br>
+                <div id="cambio">
+                  <div class="modal-body">
+                    <div class="item form-group" id="divE" hidden > 
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Edad*</label>
+                      <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" name="edadEs" id="edadEs" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Edad"  autocomplete="off" >
+                        <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+                      <br><br>
+                      
+                    </div>
+
+                    <div class="item form-group" id="divEme" hidden> 
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Menor a*</label>
+                      <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" name="edadMe" id="edadMe"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Menor a"  autocomplete="off" >
+                        <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+                      <br><br>
+                    </div>
+
+                    <div class="item form-group" id="divEma" hidden> 
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Mayor a*</label>
+                      <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" name="edadMa" id="edadMa"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Mayor a"  autocomplete="off" >
+                        <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+                      <br><br>
+                    </div>
+
+                    <div class="item form-group" id="divER" hidden > 
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Menor a*</label>
+                      <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback" >
+                        <input type="text" name="edadR1" id="edadR1"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Menor a"  autocomplete="off" >
+                        <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+                      <br><br><br>
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Mayor a*</label>
+                      <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback" >
+                        <input type="text" name="edadR2" id="edadR2"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Mayor a"  autocomplete="off" >
+                        <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+                      <br><br>
+                    </div>
+                    
+                  </div>
+                  
+                  <div class="modal-footer">
+                    
+                      <button class='btn btn-info btn-icon left-icon pull-left' id='impri' data-dismiss='modal' onclick='RepEdad()' > <i class='fa fa-print'></i> Imprimir</button>
+                    
+                    
+                    <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                  </div>
                 </div>
             </div>
           </div>

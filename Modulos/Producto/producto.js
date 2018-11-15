@@ -267,4 +267,108 @@ function actualizaMarca() {
     xmlhttp.open("post", "ajax/actualizaSelectMarca.php", true);
     xmlhttp.send();
 }
+
+function RepEdad(){
+    var proveedor = document.getElementById("proved").value;
+    var estadoA = document.getElementById("estActi").checked;
+    var estadoD = document.getElementById("estDes").checked;
+    var tipoL = document.getElementById("tipoLen").checked;
+    var tipoA = document.getElementById("tipoAc").checked;
+    var marca = document.getElementById("marcaL").value;
+    var garantia = document.getElementById("garantias").value;
+
+    if(proveedor!= ""){
+        window.open("../../reporteProducto.php?proveedor="+proveedor);
+        limpiarFormulario();
+    }
+    if(marca!= ""){
+        window.open("../../reporteProducto.php?marca="+marca);
+        limpiarFormulario();
+    }
+    if(garantia!= ""){
+        window.open("../../reporteProducto.php?garantia="+garantia);
+        limpiarFormulario();
+    }
+    if(estadoA){
+          window.open("../../reporteProducto.php?estado=t");
+          limpiarFormulario();
+    } else if(estadoD){
+          window.open("../../reporteProducto.php?estado=f");
+          limpiarFormulario();
+    }
+
+    if(tipoL && estadoA){
+          window.open("../../reporteProducto.php?tipo=Lente"+"&estado=t");
+          limpiarFormulario();
+    } else if(tipoA && estadoA){
+          window.open("../../reporteProducto.php?tipo=Accesorio"+"&estado=t");
+          limpiarFormulario();
+    }
+
+    if(tipoL && estadoD){
+          window.open("../../reporteProducto.php?tipo=Lente"+"&estado=f");
+          limpiarFormulario();
+    } else if(tipoA && estadoD){
+          window.open("../../reporteProducto.php?tipo=Accesorio"+"&estado=f");
+          limpiarFormulario();
+    }
+
+
+}
+$("#e1").click(function(){
+    var valor=$("input:radio[name=estActi]:checked").val();
+    if(valor){
+        $("input:radio[name=estActi]").filter("[value="+valor+"]").prop("checked", false);
+        // ejecutamos el evento change()
+        $("input:radio[name=estActi]").change();
+    }
+});
  
+function mostrarFormularios(opcion){
+    if(opcion==="prov"){
+        $("#divPro").show();
+        $("#divEstado").hide();  
+        $("#divTip").hide();
+        $("#divMar").hide();
+        $("#divGar").hide();
+    }
+    if(opcion==="est"){
+        $("#divEstado").show();
+        $("#divPro").hide();
+        $("#divTip").hide();
+        $("#divMar").hide();
+        $("#divGar").hide();
+    }
+    if(opcion==="tipo"){
+        $("#divTip").show();
+        $("#divPro").hide();
+        $("#divEstado").hide();
+        $("#divMar").hide();
+        $("#divGar").hide();
+    }
+    if(opcion==="marca"){
+        $("#divMar").show();
+        $("#divPro").hide();
+        $("#divEstado").hide();
+        $("#divTip").hide();
+        $("#divGar").hide();
+    }
+    if(opcion==="garantia"){
+        $("#divGar").show();
+        $("#divMar").hide();
+        $("#divPro").hide();
+        $("#divEstado").hide();
+        $("#divTip").hide();
+    }
+    
+    
+  }
+
+  function limpiarFormulario(){
+    $("#divGar").hide();
+    $("#divMar").hide();
+    $("#divPro").hide();
+    $("#divEstado").hide();
+    $("#divTip").hide();
+    
+  }

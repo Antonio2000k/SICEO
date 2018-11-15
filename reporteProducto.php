@@ -43,7 +43,6 @@ require 'Config/conexion.php';
 
 			$segunda=$primera+$primera+3; 
 
-			$tercera=$segunda+13; 
 
 			$len=strlen($texto); 
 			if($len>=1){ 
@@ -52,8 +51,6 @@ require 'Config/conexion.php';
 				$this->Cell($c_ancho,$primera,$w_texto[0],0,0,'C',0); 
 				$this->SetX($x_posicion); 
 				$this->Cell($c_ancho,$segunda,$w_texto[1],0,0,'C',0); 
-				$this->SetX($x_posicion); 
-				$this->Cell($c_ancho,$tercera,$w_texto[2],0,0,'C',0); 
 				$this->SetX($x_posicion); 
 				$this->Cell($c_ancho,$c_alto,'',0,0,'C',0); 
 			} else{ 

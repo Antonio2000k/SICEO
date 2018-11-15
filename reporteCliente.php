@@ -64,7 +64,7 @@
 			$this->Cell(30);
 			if( $sexo == "M"){
 				$this->Cell(135,10, "Del sexo Masculino" ,0,1,'C');
-			} if( $sexo == "F"){
+			} else if( $sexo == "F"){
 				$this->Cell(135,10, "Del sexo Femenino" ,0,1,'C');
 			} else if($edadMe!= "" && $edadMa!="" ){
 				$this->Cell(135,10, utf8_decode("Entre la edad de ". $edadMe . " a " . $edadMa) ,0,1,'C');

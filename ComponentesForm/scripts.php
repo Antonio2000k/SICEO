@@ -78,7 +78,9 @@
     <script src="../../vendors/iziModal-master/js/iziModal.min.js"></script>
 
     <!-- include alertify script -->
-<script src="../../alertas/build/alertify.js"></script>
+    
+    <script src="../../alertas/build/alertify.js"></script>
+    <script src="../../alertas/build/alertify.min.js"></script>
 
 <!-- DateExporter -->
 <script src="../../vendors/tableExport.jquery/tableExport.js"></script>

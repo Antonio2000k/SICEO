@@ -35,8 +35,8 @@
    
 
      <!-- Librerias de Alertify -->
-  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/alertify.css"/>
-  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/alertify.min.css"/>
-  <link rel="stylesheet" href="../../libreriasJS/alertifyjs/css/themes/bootstrap.css"/>
+  <link rel="stylesheet" href="../../alertas/build/css/alertify.css"/>
+  <link rel="stylesheet" href="../../alertas/build/css/alertify.min.css"/>
+  <link rel="stylesheet" href="../../alertas/build/css/themes/bootstrap.css"/>
 
     

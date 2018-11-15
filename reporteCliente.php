@@ -42,22 +42,22 @@
 			// 1º Datos del cliente
 			$this->Image('images/Grupo.png', 165, 20, 35 );
 			$this->SetXY(135, 23);
-			$this->SetFont('Arial','B',14);
+			$this->SetFont('times','B',14);
 			$this->Cell(30);
 			$this->Cell(-115,5,utf8_decode("VISIÓN CENTRAL"),0,1,'C');
 			$this->Cell(30);
-			$this->SetFont('Arial','B',8);
+			$this->SetFont('times','B',8);
 			$this->Cell(135,5,utf8_decode(" \"TU VISIÓN, ES NUESTRA MISIÓN\""),0,1,'C');
-			$this->Cell(30);
-			$this->Cell(135,5,'Av. Crescencio Miranda #2, 40mts al Sur del Cuartel, San Vicente.',0,1,'C');
-			$this->Cell(30);
+			$this->SetXY(40, 31);
+	      	$this->Cell(135,5,'Av. Crescencio Miranda #2, 40mts al Sur del Cuartel, San Vicente.',0,1,'C');
+	      	$this->SetXY(40, 34);
 			$this->Cell(130,5,utf8_decode("Teléfono: 2328 - 9312"),0,1,'C');
 			
 			$this->SetFont('times','B',16);
-			$this->Ln(5);
+			$this->Ln(4);
 			$this->Cell(30);
 			$this->Cell(135,10, 'Reporte de clientes',0,1,'C');
-			$this->Ln(5);
+			$this->Ln(4);
 
 			$this->SetFont('times','B',9);
 			$this->Ln(-10);
@@ -112,7 +112,10 @@
 			$this->SetLineWidth(0);
 
 			$y = $this->GetY();
-			$this->SetY($y+4);
+			$this->SetY($y+3);
+
+			$this->SetFillColor(255, 99, 71);
+			$this->Rect(7, 70, 202, 180, '');
 		}
 		
 		function Footer()
@@ -167,8 +170,6 @@
 	
 	
 	while($row=pg_fetch_assoc($query_s)){	
-	 	$pdf->SetFillColor(255, 99, 71);
-		$pdf->Rect(7, 77, 202, 180, '');
 		
 	 	
 			$pdf->SetFont('times','B',9);

@@ -1,104 +1,180 @@
-<?php 
-require 'fpdf/fpdf.php';
+<?php
+require 'Config/conexion.php';
 
-class PDF extends FPDF
-{
-//Cabecera de página
-   function Header()
-   {
-    //Logo
-    
-    //Arial bold 15
-    $this->SetFont('Arial','B',15);
-    //Movernos a la derecha
-    $this->Cell(80);
-    //Título
-    $this->Cell(60,10,'Titulo del archivo',1,0,'C');
-    //Salto de línea
-    $this->Ln(20);
+  require 'fpdf/fpdf.php';
+  
+  class PDF extends FPDF
+  {
+    function vcell($c_ancho,$c_alto,$x_posicion,$texto){ 
+      $altura=$c_alto/3; 
+
+      $primera=$altura+2; 
+
+      $segunda=$primera+$primera+3; 
+
+      $tercera=$segunda+13; 
+
+      $len=strlen($texto); 
+      if($len>=1){ 
+        $w_texto=str_split($texto,40); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$primera,$w_texto[0],0,0,'C',0); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$segunda,$w_texto[1],0,0,'C',0); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$tercera,$w_texto[2],0,0,'C',0); 
+        
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$c_alto,'',1,0,'C',0); 
+      }else{ 
+          $this->SetX($x_posicion); 
+          $this->Cell($c_ancho,$c_alto,$texto, 1,0,'C',0);
+      } 
+    } 
+
+    function vcellT($c_ancho,$c_alto,$x_posicion,$texto){ 
+      $altura=$c_alto/3; 
+
+      $primera=$altura+2; 
+
+      $segunda=$primera+$primera+3; 
+
+
+      $len=strlen($texto); 
+      if($len>=1){ 
+      $w_texto=str_split($texto,11); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$primera,$w_texto[0],0,0,'C',0); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$segunda,$w_texto[1],0,0,'C',0); 
+        $this->SetX($x_posicion); 
+        $this->Cell($c_ancho,$c_alto,'',0,0,'C',0); 
+      } else{ 
+          $this->SetX($x_posicion); 
+          $this->Cell($c_ancho,$c_alto,$texto,0,0,'C',0);
+      } 
+    }
+
+    function Header(){
+      $this->Image('images/Siceom.png', 14, 20, 40 );
+      $this->SetFont('times','B',14);
+      $this->Ln(4);
+      $this->Cell(30);
+      $this->Cell(135,11,utf8_decode("ÓPTICA"),0,0,'C');
+      // 1º Datos del cliente
+      $this->Image('images/Grupo.png', 165, 20, 35 );
+      $this->SetXY(135, 23);
+      $this->SetFont('times','B',14);
+      $this->Cell(30);
+      $this->Cell(-115,5,utf8_decode("VISIÓN CENTRAL"),0,1,'C');
+      $this->Cell(30);
+      $this->SetFont('times','B',8);
+      $this->Cell(135,5,utf8_decode(" \"TU VISIÓN, ES NUESTRA MISIÓN\""),0,1,'C');
       
-   }
-   
-   //Pie de página
-   function Footer()
-   {
-    //Posición: a 1,5 cm del final
-    $this->SetY(-15);
-    //Arial italic 8
-    $this->SetFont('Arial','I',8);
-    //Número de página
-    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-   }
-   //Tabla simple
-   function TablaSimple($header)
-   {
-    //Cabecera
-    foreach($header as $col)
-    $this->Cell(40,7,$col,1);
-    $this->Ln();
+      $this->SetXY(40, 31);
+      $this->Cell(135,5,'Av. Crescencio Miranda #2, 40mts al Sur del Cuartel, San Vicente.',0,1,'C');
+      $this->SetXY(40, 34);
+      $this->Cell(130,5,utf8_decode("Teléfono: 2328 - 9312"),0,1,'C');
+      
+      $this->SetFont('times','B',16);
+      $this->Ln(4);
+      $this->Cell(26);
+      $this->Cell(140,10, utf8_decode('Bitácora'),0,1,'C');
+      $this->Ln(5);
+
+      $this->SetFont('times','B',9);
+      $this->Ln(1);
+      $this->Cell(30); 
+
+      $y = $this->GetY();
+      $this->SetY($y+3);
+
+      $this->SetX(8); 
+      $this->SetFillColor(255, 255, 255);
+      $this->SetTextColor(0,0,0);
+      $this->SetFont('times','B',8);
+      $this->SetDrawColor(25, 25, 112);
+      $this->SetLineWidth(2);
+      $this->Line(10, $this->GetY()+7 , 202 , $this->GetY()+7);
+
+      $x_posicion=$this->getx(); 
+      
+      
+      $this->vcellT(20,6,$x_posicion,'ID BITACORA',0,0,'C',1);
+      $x_posicion=$this->getx(); 
+      $this->vcellT(25,6,$x_posicion,'ID USUARIO',0,0,'C',1);
+      $x_posicion=$this->getx(); 
+      $this->vcellT(110,6,$x_posicion,utf8_decode('ACCIÓN'),0,0,'C',1);
+      $x_posicion=$this->getx();  
+      $this->vcellT(20,6,$x_posicion,'FECHA', 0,1,'C',1);
+      $x_posicion=$this->getx();  
+      $this->vcellT(17,6,$x_posicion,'HORA', 0,1,'C',1);
+      $this->Ln(); 
+      
+      $y = $this->GetY();
+      $this->SetY($y+3);
+
+      $this->SetDrawColor(0, 0, 0);
+      $this->SetLineWidth(0);
+
+      $this->SetFillColor(255, 99, 71);
+      $this->Rect(10, 71, 192, 174, '');
+      
+    }
     
-      $this->Cell(40,5,"hola",1);
-      $this->Cell(40,5,"hola2",1);
-      $this->Cell(40,5,"hola3",1);
-      $this->Cell(40,5,"hola4",1);
-      $this->Ln();
-      $this->Cell(40,5,"linea ",1);
-      $this->Cell(40,5,"linea 2",1);
-      $this->Cell(40,5,"linea 3",1);
-      $this->Cell(40,5,"linea 4",1);
-   }
-   
-   //Tabla coloreada
-function TablaColores($header)
-{
-//Colores, ancho de línea y fuente en negrita
-$this->SetFillColor(255,0,0);
-$this->SetTextColor(255);
-$this->SetDrawColor(128,0,0);
-$this->SetLineWidth(.3);
-$this->SetFont('','B');
-//Cabecera
+    function Footer()
+    {
+      $this->SetY(-15);
+      $this->SetFont('times','B',8);
+      $this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
+      
+      $this->Cell(0,10,utf8_decode('Fecha y hora de impresión: '.date('d/m/Y, h:i:s') ),0,0,'R');
 
-for($i=0;$i<count($header);$i++)
-$this->Cell(40,7,$header[$i],1,0,'C',1);
-$this->Ln();
-//Restauración de colores y fuentes
-$this->SetFillColor(224,235,255);
-$this->SetTextColor(0);
-$this->SetFont('');
-//Datos
-   $fill=false;
-$this->Cell(40,6,"hola",'LR',0,'L',$fill);
-$this->Cell(40,6,"hola2",'LR',0,'L',$fill);
-$this->Cell(40,6,"hola3",'LR',0,'R',$fill);
-$this->Cell(40,6,"hola4",'LR',0,'R',$fill);
-$this->Ln();
-      $fill=!$fill;
-      $this->Cell(40,6,"col",'LR',0,'L',$fill);
-$this->Cell(40,6,"col2",'LR',0,'L',$fill);
-$this->Cell(40,6,"col3",'LR',0,'R',$fill);
-$this->Cell(40,6,"col4",'LR',0,'R',$fill);
-$fill=true;
-   $this->Ln();
-   $this->Cell(160,0,'','T');
-}
+    } 
 
-   
-   
-}
+    
+      
+  }
+  
+  $pdf = new PDF('P','mm','letter');
+  $pdf->AliasNbPages();
 
-$pdf=new PDF();
-//Títulos de las columnas
-$header=array('Columna 1','Columna 2','Columna 3','Columna 4');
-$pdf->AliasNbPages();
-//Primera página
-$pdf->AddPage();
-$pdf->SetY(65);
-//$pdf->AddPage();
-$pdf->TablaSimple($header);
-//Segunda página
-$pdf->AddPage();
-$pdf->SetY(65);
-$pdf->TablaColores($header);
-$pdf->Output();
+  $pdf->AddPage();
+  
+    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha, 
+      bitacora.hora FROM bitacora ");
+  
+  
+
+  
+  
+  while($row=pg_fetch_assoc($query_s)){ 
+    
+    
+    
+    $pdf->SetFont('times','B',9);
+    $pdf->SetX(10); 
+    $x_posicion=$pdf->getx(); 
+    $pdf->SetFillColor(255, 255, 255);
+    $pdf->SetTextColor(0,0,0);
+    $pdf->cell(20,6,$row['eid_bitacora'], 1,0,'C',1);// pass all values inside the cell
+    
+    
+    $x_posicion=$pdf->getx();   
+    $pdf->cell(25,6,$row['cid_usuario'] ,1,0,'C',1);
+    $x_posicion=$pdf->getx(); 
+    $pdf->cell(110,6,utf8_decode($row['accion']),1,0,'C',1);
+    
+    $x_posicion=$pdf->getx(); 
+    $pdf->cell(20,6,$row['ffecha'], 1,0,'C',1);
+    $x_posicion=$pdf->getx();   
+    $pdf->cell(17,6,$row['hora'] ,1,1,'C',1);
+      
+  }
+
+  
+  
+
+  $pdf->Output();
+  
 ?>

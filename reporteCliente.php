@@ -80,7 +80,7 @@
 				$this->Cell(135,10, "Del Mes de " . $meses[$mes] . " del ".$anio ,0,1,'C');
 			} if($diaIni == date('d')-6 && $diaFini == date('d') && $anio == $aniofini){
 				$this->Cell(135,10, utf8_decode("Del los ultimos 7 días ") ,0,1,'C');
-			} if($diaIni == 01 && $diaFini == 29 || $diaFini == 30 || $diaFini == 31 || $diaFini == date('d') && $mes == $mesFini && $anio == $aniofini){
+			} else if($diaIni == 01 && $diaFini == 29 || $diaFini == 30 || $diaFini == 31 || $diaFini == date('d') && $mes == $mesFini && $anio == $aniofini){
 				$this->Cell(135,10, utf8_decode("Del mes actual (" . $meses[$mes] . ") año ".$anio) ,0,1,'C');
 			} if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == '2015' && $aniofini= date('Y')){
 				$this->Cell(135,10, "Todos los registros" ,0,1,'C');

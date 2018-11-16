@@ -76,6 +76,14 @@ if(isset($_REQUEST["id"])){
                   </div>
               </div>
             </div>
+            <div class="form-group" style="float: right;">
+              <div class="btn-group" >
+                <button float-right class="btn btn-info btn-icon left-icon "  onclick="RepP('baja')">
+                  <i class="fa fa-th-list"></i>
+                  <span>Reporte</span>
+                </button>
+              </div>  
+            </div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">

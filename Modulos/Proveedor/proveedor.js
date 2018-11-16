@@ -241,3 +241,11 @@
         xmlhttp.open("post", "existeEmpresa.php?codigo=" + modelo + "&opcion=" + opcion, true);
         xmlhttp.send();
 }
+
+function RepP(opcion){
+    if(opcion === 'activo'){
+          window.open("../../reporteProveedores.php?estado=t");
+    } else if(opcion === 'baja'){
+          window.open("../../reporteProveedores.php?estado=f");
+    }
+}

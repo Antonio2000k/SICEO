@@ -315,20 +315,23 @@ function RepEdad(){
 
 
 }
-$("#e1").click(function(){
-    var valor=$("input:radio[name=estActi]:checked").val();
-    if(valor){
-        $("input:radio[name=estActi]").filter("[value="+valor+"]").prop("checked", false);
-        // ejecutamos el evento change()
-        $("input:radio[name=estActi]").change();
-    }
-});
+
  
 function mostrarFormularios(opcion){
     if(opcion==="prov"){
         $("#divPro").show();
-        $("#divEstado").hide();  
+        $("#divEstado").hide(); 
+        $(document).ready(function () {
+        $('e1').click(function () {
+            $('input:not(:checked)').parent().removeClass("active");
+            
+            }); 
+        });
+        //$("#estActi" ).remove( ".checked" );
+        $( "#estDes" ).removeClass( ".checked" );
         $("#divTip").hide();
+        $( "#tipoLen" ).removeClass( ".checked" );
+        $( "#tipoAc" ).removeClass( ".checked" );
         $("#divMar").hide();
         $("#divGar").hide();
     }

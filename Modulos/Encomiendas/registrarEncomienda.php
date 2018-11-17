@@ -1,4 +1,25 @@
 <?php
+include '../../Config/conexion.php';
+
+function obtenerValorSQL($consulta, $opcion, $id) {
+  if($consulta != null) {
+    while($fila_new = pg_fetch_array($consulta)) {
+      switch ($opcion) {
+        case 'cliente':
+          return "$fila_new[1]"." "."$fila_new[2]";
+          break;
+
+        case 'modelo':
+          return "algo";
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+}
+
 //error_reporting(0);
 session_start();
 $t=$_SESSION["nivelUsuario"];
@@ -30,6 +51,24 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
       function verEstado(id) {
         $('#myEstado').modal();
+      }
+
+      function alertaSweet(titulo,texto,tipo){
+        swal(titulo,texto,tipo);
+      }
+
+      function cambiarEstado() {
+        if(document.getElementById('estado').checked) {
+          <?php
+          ?>
+          if(true) {
+            swal('Hecho', 'Encomienda actualizada con exito', 'success');
+            $("#myEstado").modal('toggle');
+          }
+        }
+        else {
+          swal('Error', 'Debe seleccionar que fue recibida la encomienda', 'error');
+        }
       }
     </script>
 
@@ -149,22 +188,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                     </div>
 
-                                    <a href="../Cliente/registrarCliente.php?nuevo_cliente=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Desea registrar alguno?</b></h4></a>
+                                    <a href="../Encomendero/registrarEncomendero.php?nuevo_encomendero=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Desea registrar alguno?</b></h4></a>
                                   </div>
-
-                                  <!-- <div class="item form-group">
-                                    <label class="control-label col-sm-5 col-md-5 col-xs-12">Fecha de envio (*) </label>
-                                    <div class="col-sm-4 col-md-4 col-xs-12">
-                                      <input type="text" class="form-control has-feedback-left text-center" id="single_cal1" aria-describedby="inputSuccess2Status" data-validate-length-range="6" data-validate-words="2" disabled>
-                                      <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
-                                  </div> -->
 
                                   <div class="item form-group">
                                     <label class="control-label col-sm-2 col-md-2 col-xs-12">Detalles (*) </label>
                                     <div class="col-sm-10 col-md-10 col-xs-12">
                                       <textarea class="form-control" id="detalle"  placeholder="El vehiculo es de color verde, el numero del motorista es 7777-7777, seran llevado a tal laboratorio, etc."></textarea>
-                                      <!-- <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span> -->
                                     </div>
                                   </div>
 
@@ -188,19 +218,44 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr>
-                                          <td class="text-center">
-                                            <div class="checkbox">
-                                              <label>
-                                               <input type="checkbox" value="" onclick="checkado(1)">
-                                               <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                                               </label>
-                                            </div>
-                                          </td>
-                                          <td>Francisco Antonio</td>
-                                          <td>Lacoste</td>
-                                          <td class="text-center"><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
-                                        </tr>
+                                        <?php
+                                        $cliente = "";
+                                        $modelo = "";
+
+                                        $result = pg_query($conexion, "SELECT * FROM examen");
+
+                                        //Es para todos los examenes.
+                                        while($fila = pg_fetch_array($result)) {
+                                          $result_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE cid_expediente='$fila[9]'");
+
+                                          //Es para obtener expediente.
+                                          while($expediente = pg_fetch_array($result_expediente)) {
+                                            //Es para obtener cliente.
+                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
+                                            $cliente = obtenerValorSQL($consulta, "cliente", "");
+
+                                            $modelo = obtenerValorSQL($consulta, "modelo", "");
+                                          }
+                                          ?>
+
+                                          <tr>
+                                            <td class="text-center">
+                                              <div class="checkbox">
+                                                <label>
+                                                 <input type="checkbox" value="" onclick="checkado(1)">
+                                                 <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                 </label>
+                                              </div>
+                                            </td>
+
+                                            <td><?php echo $cliente ?></td>
+
+                                            <td><?php echo $modelo ?></td>
+                                            <td class="text-center"><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
+                                          </tr>
+                                          <?php
+                                        }
+                                        ?>
                                       </tbody>
                                     </table>
                                   </div>
@@ -235,7 +290,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <thead>
                                     <tr>
                                       <th>Cod</th>
-                                      <th>Fecha</th>
+                                      <th>Fecha de envio</th>
+                                      <th>Fecha de recibido</th>
                                       <th>Encomendero</th>
                                       <th>Estado</th>
                                       <th>Reporte</th>
@@ -245,6 +301,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                     <tr>
                                       <td>1</td>
                                       <td>Hoy</td>
+                                      <td>Ayer</td>
                                       <td>Francisco Antonio</td>
                                       <td class="text-center"><button type="button" class="btn btn-success" onclick="verEstado(1)"><i class="fa fa-info"></i> <span>Ver</span></button></td>
                                       <td class="text-center"><button type="button" class="btn btn-warning"><i class="fa fa-book"></i> <span></span></button></td>
@@ -272,14 +329,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <br>
                                         <label style="font-size:medium" class="control-label col-md-6 col-sm-6 col-xs-12">Actualizar estado</label>
                                         <input type="radio" class="flat col-md-6 col-sm-6 col-xs-12" name="estado" id="estado" value="true" /> <label>RECIBIDA</label>
-                                        <!-- <br><br>
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                          <label class="control-label col-sm-5 col-md-5 col-xs-12">Fecha de entrega (*) </label>
-                                          <div class="col-sm-5 col-md-5 col-xs-12">
-                                            <input type="text" class="form-control has-feedback-left text-center" id="single_cal1" aria-describedby="inputSuccess2Status" data-validate-length-range="6" data-validate-words="2" disabled>
-                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                          </div>
-                                        </div> -->
                                       </div>
                                       <!-- <br>
                                       <br> -->
@@ -292,7 +341,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 </div>
                                 <div class="modal-footer">
                                   <center>
-                                    <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save"></i> Actualizar</button>
+                                    <button type="button" class="btn btn-success" onclick="cambiarEstado()"><i class="fa fa-save"></i> Guardar</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
                                   </center>
                                 </div>

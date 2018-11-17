@@ -86,36 +86,56 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a href="index.php"><i class="fa fa-home"></i><span> Inicio </span></a></li>
+                  <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
                   <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="Modulos/Empleado/registrarEmpleado.php">Registrar Empleado</a></li>
                       <li><a href="Modulos/Empleado/listaEmpleado.php">Lista de Empleados</a></li>
+                      <li><a href="Modulos/Empleado/listaEmpleadoi.php">Empleados de Baja</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="Modulos/Cliente/registrarCliente.php">Registrar</a></li>
+                      <li><a href="Modulos/Cliente/registrarCliente.php">Registrar Cliente</a></li>
                       <li><a href="Modulos/Cliente/listaCliente.php">Listado de clientes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="Modulos/Producto/producto.php">Registar</a></li>
+                      <li><a href="Modulos/Producto/producto.php">Registar Producto</a></li>
+                      <li><a href="Modulos/Producto/listaProducto.php">Lista de Producto</a></li>
+                      <li><a href="Modulos/Producto/listaProductoi.php">Producto de Baja</a></li>
+                      <li><a href="Modulos/Producto/stock.php">Stock</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-line-chart"></i> Servicios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="ventas.php">Venta</a></li>
-                      <li><a href="examen.php">Examen</a></li>
-                      <li><a href="ventas.php">Reparaciones</a></li>
-                      <li><a href="empleados.php">Control de garantias</a></li>
+                      <li><a href="Modulos/Ventas/ventas.php">Registrar Venta</a></li>
+                      <li><a href="Modulos/Ventas/listaVentas.php">Lista de Ventas</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="proveedor.php">Proveedores</a></li>
-                      <li><a href="Modulos/Compra/RegistraCompra.php">Compras</a></li>
+                      <li><a>Proveedores<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="Modulos/Proveedor/proveedor.php">Registrar Proveedor</a>
+                            </li>
+                            <li class="sub_menu"><a href="Modulos/Proveedor/proveedora.php">Lista de Proveedores</a>
+                            </li>
+                            <li class="sub_menu"><a href="Modulos/Proveedor/proveedori.php">Proveedores de Baja</a>
+                            </li>
+                          </ul>
+                      </li>
+                      <li><a>Compras<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="Modulos/Compra/RegistraCompra.php">Registrar Compras</a>
+                            </li>
+                            <li class="sub_menu"><a href="Modulos/Compra/Comprac.php">Compras al contado</a>
+                            </li>
+                            <li class="sub_menu"><a href="Modulos/Compra/Compracd.php">Compras al credito</a>
+                            </li>
+                          </ul>
+                      </li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>
@@ -231,10 +251,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 <?php 
                   ini_set('date.timezone', 'America/El_Salvador');
                   include("Config/conexion.php");
-                  $query = pg_query($conexion, "SELECT eid_bitacora, accion, ffecha, hora FROM bitacora");
+                  $query = pg_query($conexion, "SELECT eid_bitacora, accion, ffecha FROM bitacora");
                   
                   while ($filas = pg_fetch_array($query)) {
-                      echo $filas[0] . " " . $filas[1] ." ". $filas[2] . " " . $filas[3] . " " . "\n";
+                  $dia = date_create($filas[2]);
+                  $dia1 = date_format($dia, 'd-m-Y');
+                  $hora = date_create($filas[2]);
+                  $hora2 = date_format($hora, 'h:i:s a'); 
+
+                      echo $filas[0] . " " . $filas[1] ." ". $dia1 . " "  .  $hora2 ;
                   }
                 ?>  
                 </div>

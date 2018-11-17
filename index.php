@@ -51,12 +51,35 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
    <link rel="stylesheet" href="vendors/sweetalert2-7.26.12/archivitos/sweetalert2.min.css">
    
    <!-- -->
-   <link rel="stylesheet" href="../../vendors/notifit-2-master/dist/notifit.min.css">
+   <link rel="stylesheet" href="vendors/notifit-2-master/dist/notifit.min.css">
+
+      <!-- Librerias de Alertify -->
+  <link rel="stylesheet" href="alertas/build/css/alertify.css"/>
+  <link rel="stylesheet" href="alertas/build/css/alertify.min.css"/>
+  <link rel="stylesheet" href="alertas/build/css/themes/bootstrap.css"/>
 
    <script type="text/javascript">
       function llamarpreguntas(id){
         window.open("Modulos/Seguridad/recuperarP.php?id="+id, '_parent');
-      }      
+      }     
+      
+      function Salir(){
+        alertify.defaults.theme.ok = "btn btn-primary";
+        alertify.defaults.theme.cancel = "btn btn-danger";
+        alertify.confirm("<center>ATENCI&Oacute;N!</center>",
+        "<center><img src='images/warning.png' width='150' height='150'></center>"+
+        "<center><h1>Desea cerrar la sesión?</h1></center>", function(){ alertify.success('Ok')
+            document.location.href="ComponentesForm/fin.php";
+            }, function(){
+              alertify.error('No ha cerrado la sesión').dismissOthers()}).set('labels', {ok:'si', cancel:'no'});;
+        }
+
+      function ayuda(){
+            $(document).ready(function () {
+          $("#ayuda").modal();
+            });
+        }
+ 
   </script>
   </head>
 
@@ -179,10 +202,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     <span class=" fa fa-angle-down"></span></h7>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
+
                     <li><a data-toggle="modal" href="#myModall" > Perfil</a></li>
 
-                    <li><a href="javascript:;">Ayuda</a></li>
-                    <li><a href="ComponentesForm/fin.php"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
+                    <li onClick="ayuda()" data-placement="bottom"><a >Ayuda</a></li>
+                    <li onClick="Salir()" data-placement="bottom"><a ><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a></li>
                   </ul>
                 </li>
 
@@ -466,6 +490,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- include alertify script -->
+    
+    <script src="alertas/build/alertify.js"></script>
+    <script src="alertas/build/alertify.min.js"></script>
 
 <!-- Initialize datetimepicker -->
     <script>

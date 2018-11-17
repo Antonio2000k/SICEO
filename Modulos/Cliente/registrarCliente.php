@@ -5,10 +5,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
   header("Location: ../../index.php");
   exit();
   }
- else if($_SESSION['autenticado2']!="yeah2" && $t!=2){
-    header("Location: ../../index2.php");
-    exit();
-  }
 ?>
 <?php
 if(isset($_REQUEST["id"])){

@@ -79,7 +79,7 @@ require 'Config/conexion.php';
       $this->SetFont('times','B',16);
       $this->Ln(4);
       $this->Cell(26);
-      $this->Cell(140,10, utf8_decode('Bitácora'),0,1,'C');
+      $this->Cell(140,10, utf8_decode('Bitácora de Sistema'),0,1,'C');
       $this->Ln(5);
 
       $this->SetFont('times','B',9);
@@ -106,9 +106,9 @@ require 'Config/conexion.php';
       $x_posicion=$this->getx(); 
       $this->vcellT(110,6,$x_posicion,utf8_decode('ACCIÓN'),0,0,'C',1);
       $x_posicion=$this->getx();  
-      $this->vcellT(20,6,$x_posicion,'FECHA', 0,1,'C',1);
+      $this->vcellT(18,6,$x_posicion,'FECHA', 0,1,'C',1);
       $x_posicion=$this->getx();  
-      $this->vcellT(17,6,$x_posicion,'HORA', 0,1,'C',1);
+      $this->vcellT(19,6,$x_posicion,'HORA', 0,1,'C',1);
       $this->Ln(); 
       
       $y = $this->GetY();
@@ -141,15 +141,14 @@ require 'Config/conexion.php';
 
   $pdf->AddPage();
   
-    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha, 
-      bitacora.hora FROM bitacora ");
-  
-  
-
-  
+    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha FROM bitacora order by  bitacora.ffecha ");
   
   while($row=pg_fetch_assoc($query_s)){ 
-    
+    ini_set('date.timezone', 'America/El_Salvador');
+    $dia = date_create($row['ffecha']);
+    $dia1 = date_format($dia, 'd-m-Y');
+    $hora = date_create($row['ffecha']);
+    $hora2 = date_format($hora, 'h:i:s a'); 
     
     
     $pdf->SetFont('times','B',9);
@@ -157,7 +156,7 @@ require 'Config/conexion.php';
     $x_posicion=$pdf->getx(); 
     $pdf->SetFillColor(255, 255, 255);
     $pdf->SetTextColor(0,0,0);
-    $pdf->cell(20,6,$row['eid_bitacora'], 1,0,'C',1);// pass all values inside the cell
+    $pdf->cell(20,6,$row['eid_bitacora'], 1,0,'C',1);
     
     
     $x_posicion=$pdf->getx();   
@@ -166,9 +165,9 @@ require 'Config/conexion.php';
     $pdf->cell(110,6,utf8_decode($row['accion']),1,0,'C',1);
     
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(20,6,$row['ffecha'], 1,0,'C',1);
+    $pdf->cell(18,6,$dia1, 1,0,'C',1);
     $x_posicion=$pdf->getx();   
-    $pdf->cell(17,6,$row['hora'] ,1,1,'C',1);
+    $pdf->cell(19,6,$hora2 ,1,1,'C',1);
       
   }
 

@@ -82,7 +82,7 @@ require 'Config/conexion.php';
 			$this->SetFont('times','B',16);
 			$this->Ln(5);
 			$this->Cell(30);
-			$this->Cell(140,10, 'Reporte de productos',0,1,'C');
+			$this->Cell(140,10, 'Lista de productos',0,1,'C');
 			$this->Ln(5);
 
 			$this->SetFont('times','B',9);
@@ -125,7 +125,7 @@ require 'Config/conexion.php';
 			$this->SetLineWidth(0);
 
 			$this->SetFillColor(255, 99, 71);
-			$this->Rect(7, 80, 202, 176, '');
+			$this->Rect(7, 76, 202, 176, '');
 			
 		}
 		
@@ -215,16 +215,16 @@ require 'Config/conexion.php';
 		$pdf->SetX(7); 
 		$x_posicion=$pdf->getx(); 
 		
-		$pdf->vcell(20,16,$x_posicion,$row['cmodelo'], 0,0,'C',1);// pass all values inside the cell
+		$pdf->vcell(20,18,$x_posicion,$row['cmodelo'], 0,0,'C',1);// pass all values inside the cell
 		
 		$pdf->SetFillColor(255, 255, 255);
 		$pdf->SetTextColor(0,0,0);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(25,16,$x_posicion,$row['cnombre'] ,0,0,'C',1);
+		$pdf->vcell(25,18,$x_posicion,$row['cnombre'] ,0,0,'C',1);
 		$x_posicion=$pdf->getx(); 
-		$pdf->vcell(20,16,$x_posicion,utf8_decode("$ ".$row['rprecio_compra']),0,0,'C',1);
+		$pdf->vcell(20,18,$x_posicion,utf8_decode("$ ".$row['rprecio_compra']),0,0,'C',1);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(20,16,$x_posicion,utf8_decode("$ ".$row['rprecio_venta']),0,0,'C',1);
+		$pdf->vcell(20,18,$x_posicion,utf8_decode("$ ".$row['rprecio_venta']),0,0,'C',1);
 		$x=$pdf->getX(); 
 		$pdf->SetX($x);	
 		$pdf->GetY();
@@ -240,13 +240,13 @@ require 'Config/conexion.php';
 		$pdf->SetX($x+82);
 		$pdf->cell(65,6,"Tiempo de Garantia: " .$row['etiempo'] . " meses" ,1,0,'L',1);
 		$y = $pdf->GetY();
-		$pdf->SetY($y-10);
+		$pdf->SetY($y-12);
 		$x=$pdf->getX(); 
 		$pdf->SetX($x+147);
 		$x_posicion=$pdf->getx(); 
-		$pdf->vcell(12,16,$x_posicion,$row['estock'], 0,0,'C',1);
+		$pdf->vcell(12,18,$x_posicion,$row['estock'], 0,0,'C',1);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(40,16,$x_posicion,$row['cempresa'] ,0,0,'C',1);
+		$pdf->vcell(40,18,$x_posicion,$row['cempresa'] ,0,0,'C',1);
 		$pdf->Ln();  	
 		
 			

@@ -68,9 +68,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           if(parseFloat(total)>0) {
             $("#myAbonoActualizado").modal({backdrop: 'static', keyboard: false});
             //Paso de parametros.
-            $('#total_abono_actualizar').text("Total $"+total);
-            $('#diferencia_abono_actualizar').text("Restante $"+total);
-            $('#total_abono_actualizar').val(total);
+            $('#total_abono_actualizar').text("Total $"+parseFloat(total).toFixed(2));
+            $('#diferencia_abono_actualizar').text("Restante $"+parseFloat(total).toFixed(2));
+            $('#total_abono_actualizar').val(parseFloat(total).toFixed(2));
             document.getElementById('id_ordenCompra').value=id;
           }
           else {
@@ -193,17 +193,16 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           $.post("buscar.php",{
             "texto":obj,"opcion":2},function(respuesta) {
               var producto=document.getElementsByName("productos[]");
-              var existe=false;
 
-              for (var j = 0; j < (producto.length-1); j++) {
-                if(producto[j].value==obj) {
-                  Notificacion('error', 'No pueden haber 2 productos iguales');
-                  existe=true;
-                  break;
-                }
-              }
+              // for (var j = 0; j < (producto.length-1); j++) {
+              //   if(producto[j].value==obj) {
+              //     Notificacion('error', 'No pueden haber 2 productos iguales');
+              //     existe=true;
+              //     break;
+              //   }
+              // }
 
-              if(!existe && respuesta!="" && !isNaN(respuesta)) {
+              if(respuesta!="" && !isNaN(respuesta)) {
                 precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
                 precio[i-1].value=parseFloat(respuesta).toFixed(2);
                 cantidad[i-1].disabled=false;
@@ -391,7 +390,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 $cont = pg_num_rows($query_s);
 
                 while($fila=pg_fetch_array($query_s)) {
-                  echo "<option value=$fila[0]>$fila[1] - $fila[0]</option>";
+                  echo "<option value='$fila[0]'>$fila[1] - $fila[0]</option>";
                 }
                 if($cont==0) {
                   echo "<option value=''>No hay registros</option>";
@@ -938,6 +937,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 if ($_POST) {
   //Variables.
   //Para la orden de compra.
+  $idEmpleado = $_SESSION["cid_empleado"];
   $cliente = $_POST['nombre_clienteID'];
   $total_final = $_POST['total_final'];
   ini_set('date.timezone','America/El_Salvador');
@@ -967,7 +967,7 @@ if ($_POST) {
     }
     $contado++;
 
-    $query_compra=pg_query($conexion, "INSERT INTO ordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, 'AO1', '$cliente') RETURNING eid_compra");
+    $query_compra=pg_query($conexion, "INSERT INTO ordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, '$idEmpleado', '$cliente') RETURNING eid_compra");
     $id_compra=pg_fetch_array($query_compra);
 
     //Insersion de la nota de abono.
@@ -978,7 +978,7 @@ if ($_POST) {
     }
     $contado++;
 
-    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', 'AO1', $id_compra[0]) RETURNING eid_nota");
+    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra[0]) RETURNING eid_nota");
     $id_nota_abono=pg_fetch_array($query_nota_abono);
 
     //Esto es del detalle nota de abono.
@@ -1053,7 +1053,7 @@ if ($_POST) {
       $id_compra=$fila[0];
     }
 
-    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', 'AO1', $id_compra)");
+    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
 
     echo pg_last_error($conexion);
 

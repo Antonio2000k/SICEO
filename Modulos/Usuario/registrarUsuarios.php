@@ -1,4 +1,30 @@
 <?php
+
+//Prueba de encriptar y desencriptar.
+function encrypt($string, $key) {
+   $result = '';
+   for($i=0; $i<strlen($string); $i++) {
+      $char = substr($string, $i, 1);
+      $keychar = substr($key, ($i % strlen($key))-1, 1);
+      $char = chr(ord($char)+ord($keychar));
+      $result.=$char;
+   }
+   return base64_encode($result);
+}
+
+function decrypt($string, $key) {
+   $result = '';
+   $string = base64_decode($string);
+   for($i=0; $i<strlen($string); $i++) {
+      $char = substr($string, $i, 1);
+      $keychar = substr($key, ($i % strlen($key))-1, 1);
+      $char = chr(ord($char)-ord($keychar));
+      $result.=$char;
+   }
+   return $result;
+}
+
+error_reporting(0);
 session_start();
 $t=$_SESSION["nivelUsuario"];
 //$iddatos=$_SESSION["idUsuario"];
@@ -6,13 +32,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
   header("Location: ../../login.php");
   exit();
   }
-  date_default_timezone_set('America/El_Salvador');
-?>
-<?php
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from usuarios where cid_usuario=$iddatos");
+
+    //Desencriptacion.
+    $cadena_desencriptada = decrypt($iddatos,"fran2");
+
+    $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$cadena_desencriptada");
     while ($fila = pg_fetch_array($query_s)) {
         $cid_usuario = $fila[0];
         $cusuario = $fila[1];
@@ -20,12 +47,19 @@ if(isset($_REQUEST["id"])){
         $eprivilegio = $fila[3];
         $cid_empleado = $fila[4];
     }
+
+    $existe=pg_query($conexion,"SELECT * FROM pre_us WHERE cid_usuario=$cid_usuario");
+    while ($fila = pg_fetch_array($existe)) {
+      $id_pregunta = $fila[1];
+    }
+
 }else{
         $cid_usuario = null;
         $cusuario = null;
         $cpassword = null;
         $eprivilegio = null;
         $cid_empleado = null;
+        $id_pregunta = null;
 }
 ?>
 <!DOCTYPE html>
@@ -42,41 +76,267 @@ if(isset($_REQUEST["id"])){
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
     <script type="text/javascript">
+    // var pass, repass, user_igual;
+    // var id;
+
+      // function darID(val) {
+      //   if(val==1) {
+      //     id="#user";
+      //   }
+      //   if(val==2) {
+      //     id="#pass";
+      //   }
+      //   if(val==3) {
+      //     id="#repass";
+      //   }
+      //
+      //   try {
+      //       $(id).on('keyup', function() {
+      //         //Proceso para verificar el usuario.
+      //         var value = $(id).val();
+      //
+      //         // //Procesos...
+      //         if(id=="#user") {
+      //           $.post("user.php",{
+      //             "texto":value},function(respuesta) {
+      //               //Lo muestra.
+      //               compararUsuarios(respuesta);
+      //           });
+      //         }
+      //
+      //         if(id=="#pass") {
+      //           pass=value;
+      //           compararPassword();
+      //         }
+      //
+      //         if(id=="#repass") {
+      //           repass=value;
+      //           compararPassword();
+      //         }
+      //
+      //       }).keyup();
+      //     }
+      //     catch(e){
+      //   }
+      // }
+
+      function existeUsuario(obj) {
+        $.post("user.php",{
+          "texto":obj},function(respuesta) {
+            if(respuesta=="no") {
+              document.getElementById('user').style.borderColor="#21df2c";
+            }
+            else {
+              document.getElementById('user').style.borderColor="#C70039";
+            }
+        });
+      }
+
+      function comprobarPass(pass) {
+        var numeros = "0123456789";
+        var letras = "áéíóúabcdefghijklmnñopqrstuvwxyz";
+
+        var existe_letras=0;
+        var existe_numeros=0;
+
+        for (var i = 0; i < pass.length; i++) {
+          if(letras.indexOf(pass.charAt(i)) != -1) {
+            existe_letras++;
+          }
+          if(numeros.indexOf(pass.charAt(i)) != -1) {
+            existe_numeros++;
+          }
+        }
+
+        if(existe_letras==0 || existe_numeros==0) {
+          if(pass.length>0) {
+            document.getElementById('pass').style.borderColor="#C70039";
+            $("#repass").prop("disabled", true);
+          }
+          else {
+            document.getElementById('pass').style.borderColor="#C70039";
+          }
+        }
+        else {
+          if(pass.length<5 || pass.length>30) {
+            document.getElementById('pass').style.borderColor="#C70039";
+            $("#repass").prop("disabled", true);
+          }
+          else if(pass.length>=5 && pass.length<=8) {
+            document.getElementById('pass').style.borderColor="#FFB037";
+            $("#repass").prop("disabled", false);
+          }
+          else if(pass.length>8 && pass.length<=30) {
+            document.getElementById('pass').style.borderColor="#21df2c";
+            $("#repass").prop("disabled", false);
+          }
+        }
+      }
+
+      function comprobarRePass(pass) {
+        var coinciden=document.getElementById('pass_coincide');
+        if(pass==document.getElementById('pass').value) {
+          coinciden.value="si";
+          document.getElementById('repass').style.borderColor="#21df2c";
+        }
+        else {
+          coinciden.value="no";
+          //document.getElementById('pass').style.borderColor="#C70039";
+          document.getElementById('repass').style.borderColor="#C70039";
+        }
+      }
+
+      function limpiarCampos() {
+        document.getElementById('user').disabled=enabled;
+        document.getElementById('pass').value="";
+        document.getElementById('repass').value="";
+        document.getElementById('pregunta').disabled=enabled;
+        document.getElementById('idempelado').disabled=enabled;
+        document.getElementById('respuesta').disabled=enabled;
+      }
+
+      // function compararUsuarios(existe) {
+      //   var user_igual = document.getElementById('comparacionUser');
+      //
+      //   if(document.frmUsuario.user.value!="") {
+      //     if(existe=='si') {
+      //       //Si encuentra algo lo cambia.
+      //       user_igual.innerText = 'El usuario ya existe';
+      //       user_igual.style.color = "#d9534f";
+      //       user_igual.style.fontWeight='bold';
+      //     }
+      //     else {
+      //       //Valor por defecto
+      //       user_igual.innerText = 'Usuario disponible';
+      //       user_igual.style.color = "#26B99A";
+      //       user_igual.style.fontWeight='bold';
+      //     }
+      //   }
+      //   else {
+      //     user_igual.innerText = '';
+      //   }
+      //
+      //     //Lo muestra al final.
+      //     user_igual.style.display = 'block';
+      // }
+
+      // function compararPassword() {
+      //   //Esta funcion sirve tanto para contraseñas iguales, como seguridad de contraseñas.
+      //   var comparacion = document.getElementById('comparacionPass');
+      //   var cantidad = document.getElementById('cantidadPass');
+      //
+      //   if(pass!="" && repass!="") {
+      //     if(pass==repass) {
+      //       comparacion.innerText = 'Las contraseñas coinciden';
+      //       comparacion.style.color = "#26B99A";
+      //       comparacion.style.display = 'block';
+      //       comparacion.style.fontWeight='bold';
+      //     }
+      //     else {
+      //       comparacion.innerText = 'Las contraseñas no coinciden';
+      //       comparacion.style.color = "#d9534f";
+      //       comparacion.style.display = 'block';
+      //       comparacion.style.fontWeight='bold';
+      //     }
+      //   }
+      //   else {
+      //     comparacion.style.fontWeight='bold';
+      //     comparacion.innerText = '';
+      //   }
+      //
+      //   //Validaciones para contraseña.
+      //
+      //   var numeros = "0123456789";
+      //   var letras = "áéíóúabcdefghijklmnñopqrstuvwxyz";
+      //
+      //   var existe_letras=0;
+      //   var existe_numeros=0;
+      //
+      //   for (var i = 0; i < pass.length; i++) {
+      //     if(letras.indexOf(pass.charAt(i)) != -1) {
+      //       existe_letras++;
+      //     }
+      //     if(numeros.indexOf(pass.charAt(i)) != -1) {
+      //       existe_numeros++;
+      //     }
+      //   }
+      //
+      //   if(existe_letras==0 || existe_numeros==0) {
+      //     if(pass.length>0) {
+      //       cantidad.innerText = 'Debe contener numeros y letras';
+      //       cantidad.style.color = "#d9534f";
+      //       cantidad.style.display = 'block';
+      //       cantidad.style.fontWeight='bold';
+      //
+      //       $("#repass").prop("disabled", true);
+      //     }
+      //     else {
+      //       cantidad.innerText = '';
+      //     }
+      //   }
+      //   else {
+      //     if(pass.length<5) {
+      //       cantidad.innerText = 'Contraseña muy debil';
+      //       cantidad.style.color = "#d9534f";
+      //       cantidad.style.fontWeight='bold';
+      //       $("#repass").prop("disabled", true);
+      //     }
+      //     else if(pass.length>=5 && pass.length<8) {
+      //       cantidad.innerText = 'Contraseña regular';
+      //       cantidad.style.color = "#FFB037";
+      //       cantidad.style.fontWeight='bold';
+      //       $("#repass").prop("disabled", false);
+      //     }
+      //     else if(pass.length>8) {
+      //       cantidad.innerText = 'Contraseña buena';
+      //       cantidad.style.color = "#26B99A";
+      //       cantidad.style.fontWeight='bold';
+      //       $("#repass").prop("disabled", false);
+      //     }
+      //   }
+      // }
 
       function ajax_act(str){
         if (window.XMLHttpRequest) {
-              xmlhttp = new XMLHttpRequest();
-            } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-              xmlhttp.onreadystatechange = function() {
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                document.getElementById("recargarUsuarios").innerHTML = xmlhttp.responseText;
-          }
-      }
-      xmlhttp.open("post", "usuariosTabla.php", true);
-      xmlhttp.send();
+          xmlhttp = new XMLHttpRequest();
+        } else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("recargarUsuarios").innerHTML = xmlhttp.responseText;
+          }
+        }
+        xmlhttp.open("post", "usuariosTabla.php", true);
+        xmlhttp.send();
+      }
 
         function personalizar(obj) {
           var valorSeleccionado = obj.options[obj.selectedIndex].value;
 
           if(valorSeleccionado=="personalizada") {
             //alertaSweet('Informacion','Digite su pregunta', 'info');
-            $("#myModal").modal()
+
+            $("#myModal").modal({backdrop: 'static', keyboard: false});
           }
           else {
             var elemento = document.getElementById('pre_personalizada');
-            elemento.style.display = 'none';
+            pre_personalizada.style.fontWeight='bold';
+            pre_personalizada.innerText = '';
+            var pregunta_usuario = document.getElementById('pregunta_usuario');
+            pregunta_usuario.value="";
           }
         }
 
         function colocarPregunta() {
-          var elemento = document.getElementById('pre_personalizada');
-          elemento.style.display = 'block';
-
+          var pregunta_usuario = document.getElementById('pregunta_usuario');
+          var pre_personalizada = document.getElementById('pre_personalizada');
+          pregunta_usuario.value="";
+          pre_personalizada.style.fontWeight='bold';
+          pre_personalizada.innerText = "No ingreso ninguna pregunta";
         }
 
         function alertaSweet(titulo,texto,tipo){
@@ -84,27 +344,41 @@ if(isset($_REQUEST["id"])){
         }
 
         function agregarPregunta() {
-          if(document.getElementById('pregunta_usuario').value!="") {
-            document.querySelector('#pre_personalizada').innerText = 'Pregunta ingresada';
-            document.getElementById('pre_personalizada').style.color = "#26B99A";
-            document.getElementById('pre_personalizada').style.display = 'block';
-            document.getElementById('pre_personalizada').style.fontWeight='bold';
+          var pregunta_usuario = document.getElementById('pregunta_usuario');
+          var pre_personalizada = document.getElementById('pre_personalizada');
+          var pregunta = document.getElementById('pregunta_hidden');
+
+          if(pregunta_usuario.value!="") {
+            pre_personalizada.innerText = 'Pregunta ingresada';
+            pre_personalizada.style.color = "#26B99A";
+            pre_personalizada.style.fontWeight='bold';
             //swal('Informacion','Pregunta agregada','success');
+            //esto deberia transferir los valores
+            pre_personalizada.value=pregunta_usuario.value;
+            pregunta.value=pregunta_usuario.value;
+            //document.getElementById('pregunta').value=pregunta_usuario.value;
           }
           else {
+            pregunta_usuario.value="";
+            pre_personalizada.style.fontWeight='bold';
+            pre_personalizada.innerText = "No ingreso ninguna pregunta";
             swal('Error','Debe ingresar una pregunta','error');
           }
         }
 
       function validar(opcion) {
-        var opc=true;
+        var opc=false;
 
-        if(document.getElementById('user').value=="" || document.getElementById('pass').value==""
+        var campos_vacios=document.getElementById('user').value=="" || document.getElementById('pass').value==""
           || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="Seleccionar"
           || document.getElementById('pregunta').value=="Seleccionar" || document.getElementById('respuesta').value==""
-          || document.getElementById('privilegio').value=="Seleccionar")
+          || document.getElementById('privilegio').value=="Seleccionar";
+
+        var campos_especiales=document.getElementById('pass_coincide').value=="si";
+
+        if(campos_vacios && campos_especiales)
         {
-          swal('Error','Verifique que la información este completa y correcta','error');
+          swal('Error','Verifique los campos y que la informacion sea la correcta','error');
           opc=false;
         }
         else {
@@ -112,22 +386,22 @@ if(isset($_REQUEST["id"])){
           if(document.getElementById('pregunta').value!="Seleccionar" || document.getElementById('pregunta_usuario').value!="")
           {
             if(document.getElementById('pregunta').value=="personalizada" && document.getElementById('pregunta_usuario').value!="") {
-              document.getElementById('pregunta').value=="";
+              document.getElementById('pregunta').value=document.getElementById('pregunta_usuario').value;
               opc=true;
             }
-            else if(document.getElementById('pregunta').value!="Seleccionar" && document.getElementById('pregunta').value!="personalizada") {
-              document.getElementById('pregunta_usuario').value=="";
+            else if(document.getElementById('pregunta').value!="Seleccionar" && document.getElementById('pregunta').value!="personalizada" && document.getElementById('pregunta').value!="") {
               opc=true;
             }
             if(document.getElementById('pregunta_usuario').value=="" && document.getElementById('pregunta').value=="personalizada") {
               opc=false;
             }
 
-            if(opcion=="Guardar")
+            if(opcion=='Guardar') {
               document.getElementById('bandera').value="add";
-            else
+            }
+            else {
               document.getElementById('bandera').value="modif";
-
+            }
           }
           else {
             swal('Error','No ingreso su pregunta','error');
@@ -137,10 +411,10 @@ if(isset($_REQUEST["id"])){
 
         $(document).ready(function(){
           $("#frmUsuario").submit(function() {
-              if (opc!=true) {    
+              if (opc!=true) {
                 return false;
-              } else 
-                  return true;      
+              } else
+                  return true;
             });
         });
       }
@@ -177,7 +451,19 @@ if(isset($_REQUEST["id"])){
                                 </div>
                                 <div align="center">
                                     <p>
-                                        Bienvenido en esta sección aquí puede registrar usuarios en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un usuario en el sistema.
+                                        Bienvenido, en esta sección aquí puede registrar, modificar o ver los usuarios en el sistema.
+                                    </p>
+                                    <p>
+                                      <b>Debe de llenar todos los campos obligatorios (*) para poder
+                                        <?php
+                                        if(isset($cid_usuario) || $cid_usuario!=null) {
+                                          echo "modificar el usuario";
+                                        }
+                                        else {
+                                          echo "registrar un usuario";
+                                        }
+                                        ?>
+                                         en el sistema.</b>
                                     </p>
                                 </div>
                             </div>
@@ -190,7 +476,14 @@ if(isset($_REQUEST["id"])){
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                        <li class="active" role="presentation">
                           <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                            NUEVO USUARIO
+                            <?php
+                            if(isset($cid_usuario) || $cid_usuario!=null) {
+                              echo "MODIFICAR USUARIO";
+                            }
+                            else {
+                              echo "NUEVO USUARIO";
+                            }
+                            ?>
                           </a>
                         </li>
                         <li class="" role="presentation">
@@ -213,12 +506,31 @@ if(isset($_REQUEST["id"])){
                                 <!--Codigos-->
                                 <input type="hidden" name="bandera" id="bandera">
                                 <input type="hidden" name="id_usuario" id="id_usuario" value="<?php echo "$cid_usuario"?>">
+                                <input type="hidden" name="pregunta_hidden" id="pregunta_hidden">
 
                                 <div class="item form-group">
                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Usuario (*)</label>
+                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Usuario
+                                       <?php
+                                       //Para solo los campos que si lo requiere.
+                                       if(isset($cid_usuario) || $cid_usuario!=null) {
+                                         echo "";
+                                       }
+                                       else {
+                                         echo "(*)";
+                                       }
+                                       ?>
+                                     </label>
                                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                         <input type="text" class="form-control has-feedback-left"  id="user" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" required="required" autocomplete="off" maxlength="20" value="<?php echo "$cusuario"?>">
+                                         <input type="text" class="form-control has-feedback-left" id="user" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="user" placeholder="Usuario" autocomplete="off" maxlength="20" value="<?php echo "$cusuario"?>" oninput="existeUsuario(this.value);"
+                                         <?php
+                                         //Para colocar habilitado o no.
+                                         if(isset($cid_usuario) || $cid_usuario!=null) {
+                                           echo "disabled='disabled'";
+                                         }
+                                          ?>
+                                          >
+                                          <p></p>
                                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                        </div>
                                    </div>
@@ -226,7 +538,7 @@ if(isset($_REQUEST["id"])){
                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña (*)</label>
                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                         <input type="password" class="form-control has-feedback-left"  id="pass" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" required="required" autocomplete="off">
+                                         <input type="password" class="form-control has-feedback-left"  id="pass" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" autocomplete="off" oninput="comprobarPass(this.value);">
                                          <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                       </div>
                                    </div>
@@ -234,54 +546,110 @@ if(isset($_REQUEST["id"])){
                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Verificar Contraseña (*)</label>
                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                         <input type="password" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Repita la contraseña" required="required" autocomplete="off">
+                                         <input type="password" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Repita la contraseña" autocomplete="off" disabled="disabled" oninput="comprobarRePass(this.value);">
                                          <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                       </div>
                                    </div>
                                 </div>
 
-                                <div class="item form-group">
-                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" id="comparacionUser" style="display: none">El usuario ya existe</label>
-                                  </div>
-                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" id="comparacionPass" style="display: none">Las contraseñas no coinciden</label>
-                                  </div>
+                                <div class="text-center">
+                                    <small id="passwordHelpBlock" class="form-text text-muted">La contraseña debe ser entre 5-30 caracteres y contener letras y números</small>
                                 </div>
+                                <br>
+
+                                <!-- Validar si el usuario y contraseña son correctos -->
+
+                                <input type="hidden" name="pass_coincide" id="pass_coincide" value="no">
 
                                 <div class="item form-group">
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Privilegios (*)</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Privilegios
+                                          <?php
+                                          //Para solo los campos que si lo requiere.
+                                          if(isset($cid_usuario) || $cid_usuario!=null) {
+                                            echo "";
+                                          }
+                                          else {
+                                            echo "(*)";
+                                          }
+                                          ?>
+                                        </label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
-                                           <select class="form-control" id="privilegio" name="privilegio">
+                                           <select class="form-control" id="privilegio" name="privilegio"
+                                           <?php
+                                           //Para colocar habilitado o no.
+                                           if(isset($eprivilegio) || $eprivilegio!=null) {
+                                             echo "disabled='disabled'";
+                                           }
+                                            ?>
+                                           >
                                               <option value="Seleccionar">Seleccionar</option>
-                                              <option value="1">Administrador</option>
-                                              <option value="2">Empleado</option>
+                                              <option value="1"
+                                              <?php
+                                              if(isset($eprivilegio) || $eprivilegio==1) {
+                                                echo "selected";
+                                              }
+                                              ?>
+                                              >Administrador</option>
+                                              <option value="2"
+                                              <?php
+                                              if(isset($eprivilegio) || $eprivilegio==2) {
+                                                echo "selected";
+                                              }
+                                              ?>
+                                              >Empleado</option>
                                            </select>
                                         </div>
                                      </div>
                                   </div>
                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Empleado (*)</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Empleado
+                                          <?php
+                                          //Para solo los campos que si lo requiere.
+                                          if(isset($cid_usuario) || $cid_usuario!=null) {
+                                            echo "";
+                                          }
+                                          else {
+                                            echo "(*)";
+                                          }
+                                          ?>
+                                        </label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
-                                           <select class="form-control" id="idempleado" name="idempleado">
+                                           <select class="form-control" id="idempleado" name="idempleado"
+                                           <?php
+                                           //Para colocar habilitado o no.
+                                           if(isset($cid_empleado) || $cid_empleado!=null) {
+                                             echo "disabled='disabled'";
+                                           }
+                                            ?>
+                                           >
 
-                                              <option value="Seleccionar">Seleccione Empleado</option>
+                                            <option value="Seleccionar">Seleccione Empleado</option>
                                             <?php
                                              include("../../Config/conexion.php");
                                              $query_s=pg_query($conexion,"select * from empleados ");
 
                                             while ($fila = pg_fetch_array($query_s)) {
-                                              ?>
-                                             <option value="<?php echo "$fila[0]"; ?>"><?php echo "$fila[1]" ;?></option>
-                                              <?php
+                                              $query_usuario=pg_query($conexion, "SELECT * FROM usuarios WHERE cid_empleado='$fila[0]'");
 
-
-                                             } 
-                                              
-                                            ?>
+                                              if(pg_num_rows($query_usuario)==0) {
+                                                ?>
+                                                <option value="<?php echo "$fila[0]"; ?>"
+                                                  <?php
+                                                  if($cid_empleado==$fila[0]) {
+                                                    echo "selected";
+                                                  }
+                                                  ?>
+                                                  >
+                                                  <!-- Esto es para agregar el nombre del empleado, el anterior para el codigo-->
+                                                  <?php echo "$fila[1]" ;?>
+                                                </option>
+                                                <?php
+                                              }
+                                             }
+                                             ?>
                                            </select>
                                         </div>
                                      </div>
@@ -291,25 +659,47 @@ if(isset($_REQUEST["id"])){
                                 <div class="item form-group">
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                      <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pregunta (*)</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pregunta
+                                          <?php
+                                          //Para solo los campos que si lo requiere.
+                                          if(isset($cid_usuario) || $cid_usuario!=null) {
+                                            echo "";
+                                          }
+                                          else {
+                                            echo "(*)";
+                                          }
+                                          ?>
+                                        </label>
                                         <div class="col-md-9 col-sm-9 col-xs-12">
-                                           <select class="form-control" id="pregunta" name="pregunta" onchange="personalizar(this);">
+                                           <select class="form-control" id="pregunta" name="pregunta" onchange="personalizar(this);"
+                                           <?php
+                                           //Para solo los campos que si lo requiere.
+                                           if(isset($cid_usuario) || $cid_usuario!=null) {
+                                             echo "disabled='disabled'";
+                                           }
+                                           else {
+                                             echo "(*)";
+                                           }
+                                           ?>
+                                           >
 
                                             <option value="Seleccionar">Seleccione Pregunta</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"select * from pregunta ");
+                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta");
 
                                             while ($fila = pg_fetch_array($query_s)) {
                                               ?>
-                                             <option value="<?php echo "$fila[0]"; ?>"><?php echo "$fila[1]" ;?></option>
-
-
+                                             <option value="<?php echo "$fila[0]"; ?>"
+                                               <?php
+                                               if($id_pregunta==$fila[0]) {
+                                                 echo "selected";
+                                               }
+                                               ?>
+                                               >
+                                               <?php echo "$fila[1]" ;?></option>
                                               <?php
-
-
-                                             } 
-                                              
+                                             }
                                             ?>
                                             <option value="personalizada">Pregunta personalizada</option>
                                            </select>
@@ -319,7 +709,17 @@ if(isset($_REQUEST["id"])){
 
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                     <div class="form-group">
-                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Respuesta (*)</label>
+                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Respuesta
+                                        <?php
+                                        //Para solo los campos que si lo requiere.
+                                        if(isset($cid_usuario) || $cid_usuario!=null) {
+                                          echo "";
+                                        }
+                                        else {
+                                          echo "(*)";
+                                        }
+                                        ?>
+                                      </label>
                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
 
                                         <?php
@@ -336,7 +736,17 @@ if(isset($_REQUEST["id"])){
                                         else
                                           $crespuesta=null;
                                         ?>
-                                         <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" required="required" autocomplete="off" maxlength="50" value="<?php echo "$crespuesta"; ?>">
+                                         <input type="text" class="form-control has-feedback-left"  id="respuesta" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="respuesta" placeholder="Respuesta" autocomplete="off" maxlength="50" value="<?php echo "$crespuesta"; ?>"
+                                         <?php
+                                         //Para solo los campos que si lo requiere.
+                                         if(isset($cid_usuario) || $cid_usuario!=null) {
+                                           echo "disabled='disabled'";
+                                         }
+                                         else {
+                                           echo "(*)";
+                                         }
+                                         ?>
+                                         >
                                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
                                     </div>
@@ -345,7 +755,7 @@ if(isset($_REQUEST["id"])){
 
                                 <div class="form-group">
                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                    <h4 class="control-label col-md-12 col-sm-12 col-xs-12" id="pre_personalizada" style="display: none; color: #d9534f; text-align: center"><b>No ingreso ninguna pregunta</b></h4>
+                                    <h4 class="control-label col-md-12 col-sm-12 col-xs-12" id="pre_personalizada" style="color: #d9534f; text-align: center"></h4>
                                   </div>
                                 </div>
 
@@ -367,7 +777,7 @@ if(isset($_REQUEST["id"])){
                                                 if(isset($_REQUEST["id"])) {
                                                   ?>
                                                     Modificar
-                                                  <?php 
+                                                  <?php
                                               }
                                                 else {
                                                   ?>
@@ -375,10 +785,10 @@ if(isset($_REQUEST["id"])){
                                                   <?php
                                                 }
                                                ?>
-                                              
+
                                             </span></button>
 
-                                            <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                            <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " > <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                       </div>
                                     </center>
@@ -417,11 +827,15 @@ if(isset($_REQUEST["id"])){
                                       <tr>
                                       <td><?php echo $fila[0]; ?></td>
                                       <td><?php echo $fila[1]; ?></td>
-                                      <td><?php echo $fila[4]; ?></td>
                                       <td><?php echo $fila[3]; ?></td>
+                                      <td><?php echo $fila[4]; ?></td>
 
                                       <td class="text-center">
-                                        <button class="btn btn-info btn-icon left-icon" onclick="location='registrarUsuarios.php?id=<?php echo $fila[0]; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                        <?php
+                                        //Encriptacion
+                                        $cadena_encriptada = encrypt($fila[0],"fran2");
+                                        ?>
+                                        <button class="btn btn-info btn-icon left-icon" onclick="location='registrarUsuarios.php?id=<?php echo $cadena_encriptada; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
                                       <?php } ?>
                                       </td>
                                     </tr>
@@ -446,7 +860,6 @@ if(isset($_REQUEST["id"])){
           <!-- Modal -->
           <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
-              Modal content
               <div class="modal-content">
                 <div class="modal-header">
                   <h4 class="modal-title">Ingrese una pregunta</h4>
@@ -457,7 +870,7 @@ if(isset($_REQUEST["id"])){
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Pregunta</label>
                           <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="text" class="form-control has-feedback-left"  id="pregunta_usuario" class="form-control col-md-6 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pregunta_usuario" placeholder="Pregunta" autocomplete="off" maxlength="60"><span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                            <input type="text" class="form-control has-feedback-left"  id="pregunta_usuario" class="form-control col-md-6 col-xs-12" name="pregunta_usuario" placeholder="Pregunta" autocomplete="off" maxlength="60"><span class="fa fa-user form-control-feedback left"></span>
                           </div>
                       </div>
                     </div>
@@ -492,7 +905,7 @@ if(isset($_REQUEST["id"])){
     </body>
 </html>
 
-<?php 
+<?php
 include "../../Config/conexion.php";
 
 if(isset($_REQUEST['bandera'])) {
@@ -502,62 +915,62 @@ if(isset($_REQUEST['bandera'])) {
   $repass=($_REQUEST['repass']);
   $privilegio=($_REQUEST['privilegio']);
   $idempleado=($_REQUEST['idempleado']);
-  $pregunta="";
-
-
-
-  if(isset($_REQUEST['pregunta']) && $_REQUEST['pregunta']!="") {
-    $pregunta=($_REQUEST['pregunta']);
-  }
-  else if(isset($_REQUEST['pregunta_usuario']) && $_REQUEST['pregunta_usuario']!="") {
-    $pregunta=($_REQUEST['pregunta_usuario']);
-  }
+  $pregunta=($_REQUEST['pregunta_hidden']);
 
   $respuesta=$_REQUEST['respuesta'];
 
+  // if(isset($_REQUEST['pregunta']) && $_REQUEST['pregunta']!="") {
+  //   echo "<script type='text/javascript'>";
+  //   echo "alert('Entra pregunta normal');";
+  //   echo "</script>";
+  //   $pregunta=($_REQUEST['pregunta']);
+  // }
+  // else if(isset($_REQUEST['pregunta_usuario']) && $_REQUEST['pregunta_usuario']!="") {
+  //   echo "<script type='text/javascript'>";
+  //   echo "alert('Entra pregunta personalizada');";
+  //   echo "</script>";
+  //   $pregunta=($_REQUEST['pregunta_usuario']);
+  // }
+
   include("../../Config/conexion.php");
   $existe=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario='$user'");
-
-  $aux=false;
+  $aux_existe=false;
 
   while($fila=pg_fetch_array($existe)) {
-    $aux=true;
+    $aux_existe=true;
   }
 
-  if(!$aux) {
+  if(!$aux_existe && strlen($pass)>=5 && strlen($repass).length>=5) {
     if($pass==$repass) {
-      $pass= base64_encode($pass);
       if($bandera=="add") {
         pg_query("BEGIN");
-        /*Create procedure insert
-        $user;
-        $pass;
-        $privilegio;
-        $idempleado;
-        $pregunta;
-        $respuesta
-          @IdVeterinaria int,
-          @Nom_Veterinaria varchar (20),
-          @Direccion varchar (20),
-          @IdMasota int,
-          @Nom_Mascota varchar (10)
-          As
-          Begin
-          Insert into Veterinaria (IdVeterinaria, Nom_Veterinaria, Direccion)
-          Values (@IdVeterinaria, @Nom_Veterinaria, @Direccion)
-          Insert into Mascota (IdMascota,IdVeterinaria, Nom_Mascota)
-          Values (@IdMascota,@IdVeterinaria, @Nom_Mascota)
-          End*/
-          $result=pg_query($conexion,"INSERT INTO usuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') ");
-          //$result=pg_query($conexion,"INSERT INTO pre_us (id_pregunta, cid_usuario, respuesta) VALUES ('$user','$pass',$privilegio,'$respuesta') ");
-            
-        if(!$result){
+        $result=pg_query($conexion,"INSERT INTO usuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
+        $id_usuario=pg_fetch_array($result);
+
+        $resultado=pg_query($conexion,"select MAX(pregunta.eid_pregunta) from pregunta");
+        $contado=0;
+        while ($fila = pg_fetch_array($resultado)) {
+          $contado=$fila[0];
+        }
+        $contado++;
+
+        $result_pregunta=pg_query($conexion,"INSERT INTO pregunta (eid_pregunta, cpregunta) VALUES ($contado, '$pregunta') RETURNING eid_pregunta");
+        $id_pregunta=pg_fetch_array($result_pregunta);
+
+        $resultado=pg_query($conexion,"select MAX(pre_us.id_preus) from pre_us");
+        $contado=0;
+        while ($fila = pg_fetch_array($resultado)) {
+          $contado=$fila[0];
+        }
+        $contado++;
+
+        $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
+
+        if(!$result || !$result_pregunta || !$result_pre_usuario) {
           pg_query("rollback");
           echo "<script type='text/javascript'>";
-          echo pg_result_error($conexion);
           echo "alertaSweet('Error','Datos no almacenados', 'error');";
           echo "document.getElementById('bandera').value='';";
-          echo "ajax_act('');";
           echo "</script>";
         }
         else{
@@ -573,14 +986,13 @@ if(isset($_REQUEST['bandera'])) {
       if($bandera=="modif") {
         pg_query("BEGIN");
         $id=$_REQUEST["id_usuario"];
-        $result=pg_query($conexion,"UPDATE usuarios SET cusuario='$user', cpassword='$pass', eprivilegio=$privilegio, cid_empleado='$idempleado' WHERE cid_usuario=$id");
-            
+        $result=pg_query($conexion,"UPDATE usuarios SET cpassword='$pass' WHERE cid_usuario=$id");
+
         if(!$result){
           pg_query("rollback");
           echo "<script type='text/javascript'>";
           echo "alertaSweet('Error','Datos no modificados', 'error');";
           echo "document.getElementById('bandera').value='';";
-          echo "ajax_act('');";
           echo "</script>";
         }
         else{
@@ -598,17 +1010,24 @@ if(isset($_REQUEST['bandera'])) {
       echo "<script type='text/javascript'>";
       echo "alertaSweet('Error','Las contraseñas deben coincidir', 'error');";
       echo "document.getElementById('bandera').value='';";
-      echo "ajax_act('');";
       echo "</script>";
     }
   }
   else {
-    pg_query("rollback");
-    echo "<script type='text/javascript'>";
-    echo "alertaSweet('Error','No pueden haber dos usuarios iguales', 'error');";
-    echo "document.getElementById('bandera').value='';";
-    echo "ajax_act('');";
-    echo "</script>";
+    if($aux_existe) {
+      pg_query("rollback");
+      echo "<script type='text/javascript'>";
+      echo "alertaSweet('Error','No pueden haber dos usuarios iguales.', 'error');";
+      echo "document.getElementById('bandera').value='';";
+      echo "</script>";
+    }
+    if($pass.length<5 || $repass.length<5) {
+      pg_query("rollback");
+      echo "<script type='text/javascript'>";
+      echo "alertaSweet('Error','La contraseña debe tener un minimo de 5 caracteres o numeros.', 'error');";
+      echo "document.getElementById('bandera').value='';";
+      echo "</script>";
+    }
   }
 }
 ?>

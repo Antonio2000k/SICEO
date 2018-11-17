@@ -44,7 +44,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         var filas=document.getElementById("datatable-ventas");
         var id;
 
-        function ajax_act(str){
+        function mostrarOrdenCompra() {
+          alert('Imprimira orden de compra, ID: ');
+        }
+
+        function ajax_act(str) {
           if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
           } else {
@@ -55,16 +59,23 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               document.getElementById("recargarListaVentas").innerHTML = xmlhttp.responseText;
             }
           }
+
           xmlhttp.open("post", "ventasTabla.php", true);
           xmlhttp.send();
         }
 
-        function abonarCuenta(total) {
-          $("#myAbonoActualizado").modal({backdrop: 'static', keyboard: false});
-          //Paso de parametros.
-          $('#total_abono_actualizar').text("Total $"+total);
-          $('#diferencia_abono_actualizar').text("Restante $"+total);
-          $('#total_abono_actualizar').val(total);
+        function abonarCuenta(total, id) {
+          if(parseFloat(total)>0) {
+            $("#myAbonoActualizado").modal({backdrop: 'static', keyboard: false});
+            //Paso de parametros.
+            $('#total_abono_actualizar').text("Total $"+total);
+            $('#diferencia_abono_actualizar').text("Restante $"+total);
+            $('#total_abono_actualizar').val(total);
+            document.getElementById('id_ordenCompra').value=id;
+          }
+          else {
+            swal('Informacion', 'El cliente ya no tiene pagos pendientes', 'info');
+          }
         }
 
         function obtenerPrecioRestante(obj, id) {
@@ -181,7 +192,18 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           $.post("buscar.php",{
             "texto":obj,"opcion":2},function(respuesta) {
-              if(respuesta!="" && !isNaN(respuesta)) {
+              var producto=document.getElementsByName("productos[]");
+              var existe=false;
+
+              for (var j = 0; j < (producto.length-1); j++) {
+                if(producto[j].value==obj) {
+                  Notificacion('error', 'No pueden haber 2 productos iguales');
+                  existe=true;
+                  break;
+                }
+              }
+
+              if(!existe && respuesta!="" && !isNaN(respuesta)) {
                 precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
                 precio[i-1].value=parseFloat(respuesta).toFixed(2);
                 cantidad[i-1].disabled=false;
@@ -238,6 +260,23 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         function limpiarAbono() {
           $('#myAbono').modal('hide');
           document.getElementById('abono').value="";
+        }
+
+        function reporteAbono(id) {
+          if (window.XMLHttpRequest) {
+              xmlhttp = new XMLHttpRequest();
+          }
+          else {
+              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange = function () {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("datatable-abono-cuentas").innerHTML = xmlhttp.responseText;
+              }
+          }
+          xmlhttp.open("post", "Modals/reporteAbono.php?id_comprac=" + id, true);
+          xmlhttp.send();
+          $('#myReporteAbonos').modal();
         }
 
         function descuentoProducto(fila) {
@@ -299,7 +338,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           if(valorSeleccionado=="lentes" || valorSeleccionado=="accesorios") {
             cantidad[i-1].value="";
             cantidadFinal[i-1].value="";
-
             cantidad[i-1].disabled=true;
             producto[i-1].disabled=false;
             precio[i-1].innerText="$0.00";
@@ -349,7 +387,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               "<?php
                 include('../../Config/conexion.php');
 
-                $query_s=pg_query($conexion,'select * from productos');
+                $query_s=pg_query($conexion,"select * from productos");
                 $cont = pg_num_rows($query_s);
 
                 while($fila=pg_fetch_array($query_s)) {
@@ -429,10 +467,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   break;
               }
           }
-          if(numeros.indexOf(tecla) == -1 && !tecla_especial || parseFloat(cantidad)>parseFloat(document.getElementById("total_abono"+id).value)) {
-            Notificacion('error',"<b>Error: </b>La cantidad abonada debe ser menor o igual al total");
-            return false;
 
+          var mayor=false;
+          if(key!=190) {
+            mayor=parseFloat(cantidad)>parseFloat(document.getElementById("total_abono"+id).value);
+
+            if(numeros.indexOf(tecla) == -1 && !tecla_especial || mayor) {
+              Notificacion('error',"<b>Error: </b>La cantidad abonada debe ser menor o igual al total");
+              return false;
+            }
           }
         }
 
@@ -557,7 +600,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             $('#total_abono').text("Total $"+document.getElementById('total_pago').value);
             $('#diferencia_abono').text("Restante $"+document.getElementById('total_pago').value);
             $('#total_abono').val(document.getElementById('total_pago').value);
-            document.getElementById('id_ordenCompra').value="";
           }
           else {
             swal('Error', 'Los campos no deben estar vacios', 'error');
@@ -582,8 +624,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             if(opcion=="vender") {
               document.getElementById('bandera').value="vender";
             }
-            else if("abonar") {
+            else if(opcion=="abonar") {
               document.getElementById('bandera').value="abonar";
+              document.getElementById('abono_final_actualizar').value=document.getElementById('abono_actualizar').value;
             }
           }
 
@@ -684,11 +727,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
                        <li class="active" role="presentation">
                           <a aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab">
-                            REGISTRAR VENTA
+                            NUEVA VENTA
                           </a>
                         </li>
                         <li class="" role="presentation">
-                          <a aria-expanded="false"  href="listaVentas.php" id="profile-tab">
+                          <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">
                             LISTA DE VENTAS
                           </a>
                         </li>
@@ -707,6 +750,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               <input type="hidden" id="bandera" name="bandera" value="">
                               <input type="hidden" id="total_final" name="total_final" value="">
                               <input type="hidden" id="nombre_clienteID" name="nombre_clienteID" value="">
+                              <input type="hidden" id="abono_final_actualizar" name="abono_final_actualizar" value="">
                               <input type="hidden" id="id_ordenCompra" name="id_ordenCompra" value="">
                               <!--fin codigos-->
 
@@ -775,101 +819,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               <!--Aqui termina la tabla-->
                             </div>
 
-                            <!--Modal incia cliente-->
-                            <div class="modal fade" id="myCliente" role="dialog">
-                              <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h4 class="modal-title">Registro de cliente</h4>
-                                  </div>
-                                  <div class="modal-body">
-
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="registrarCliente()"><i class="fa fa-save"></i> Registrar</button>
-                                    <button type="button" class="btn btn-danger" onclick="verificarCamposCliente()"><i class="fa fa-close"></i> Cerrar</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <!--Modal termina cliente-->
-
-                            <!-- Modal incia descuento-->
-                            <div class="modal fade" id="myDescuento" role="dialog">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h4 class="modal-title">Ingrese el % de descuento</h4>
-                                  </div>
-                                  <div class="modal-body">
-                                    <input type="hidden" name="index_descuento" id="index_descuento" value="">
-                                    <div class="item form-group">
-                                      <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                        <div class="form-group">
-                                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Descuento</label>
-                                          <div class="col-md-9 col-sm-9 col-xs-12">
-                                            <select class="form-control" id="porcentaje_descuento" name="porcentaje_descuento">
-                                              <option value="Seleccione">Seleccione</option>
-                                              <?php
-                                              for ($i=10; $i <= 70; $i+=10) {
-                                                ?><option value=<?php echo $i?>><?php echo $i."%"?></option><?php
-                                              }
-                                              ?>
-                                            </select>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-info" data-dismiss="modal" onclick="aplicarDescuento()"><i class="fa fa-plus"></i> Aplicar</button>
-                                    <button type="button" class="btn btn-danger" onclick="verificarCamposDescuento()" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- fin del modal descuento-->
-
-                            <!--Aqui inicia pago-->
-                              <div class="modal fade" id="myAbono" role="dialog">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h4 class="modal-title">Ingrese el abono por la compra</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <div class="item form-group">
-                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                          <div class="form-group">
-                                            <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Cantidad abonada</label>
-                                            <div class="col-md-8 col-sm-8 col-xs-12">
-                                              <input type="text" class="form-control has-feedback-left" id="abono" name="abono" placeholder="$$$" autocomplete="off" maxlength="5" onkeydown="return validarNumerosVenta(event, '');" oninput="obtenerPrecioRestante(this.value, '');"><span class="fa fa-money form-control-feedback left"></span>
-                                            </div>
-                                          </div>
-                                          <!-- <br>
-                                          <br> -->
-                                          <div class="form-group">
-                                            <label style="font-size:medium;text-align:left" class="control-label col-md-6 col-sm-6 col-xs-12" id="total_abono" name="total_abono">Total $$$</label>
-                                            <label style="font-size:medium;text-align:right" class="control-label col-md-6 col-sm-6 col-xs-12" id="diferencia_abono" name="diferencia_abono">Restante $0.00</label>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <!-- <br>
-                                      <br>
-                                      <br>
-                                      <br> -->
-                                    </div>
-                                    <div class="modal-footer">
-                                      <center>
-                                        <button type="submit" class="btn btn-success" onclick="registrarVenta('', 'vender')" form="frmVenta"><i class="fa fa-save"></i> Guardar</button>
-                                        <button type="button" class="btn btn-danger" onclick="limpiarAbono()"><i class="fa fa-close"></i> Cancelar</button>
-                                      </center>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                            <?php include 'Modals/ventasModals.php'; ?>
                               <!--Aqui finaliza-->
                           </form>
                         </div>
@@ -882,18 +832,19 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             <h2>VENTAS </h2>
                             <div class="clearfix"></div>
                           </div>
-                          <div class="x_content">
+                          <div class="x_content" id="recargarListaVentas">
                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                               <thead>
                                 <tr>
                                   <th>Cod</th>
                                   <th>Fecha</th>
                                   <th>Cliente</th>
-                                  <th>Total</th>
+                                  <th>Total de la venta</th>
+                                  <th>Saldo pendiente</th>
                                   <th>Acciones</th>
                                 </tr>
                               </thead>
-                              <tbody id="recargarListaVentas">
+                              <tbody>
                                 <?php
                                 $query_s= pg_query($conexion, "SELECT * FROM ordenc order by eid_compra asc");
                                 while ($fila=pg_fetch_array($query_s)) {
@@ -902,11 +853,18 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <?php $newDate = date("d/m/Y", strtotime($fila[1])); ?>
                                   <td><?php echo $fila[0]; ?></td>
                                   <td><?php echo $newDate ?></td>
-                                  <td><?php echo $fila[4]; ?></td>
-                                  <td>$<?php echo $fila[2]; ?></td>
-                                  <td class="text-center">
+                                  <td>
                                     <?php
-                                    $restante;
+                                      $query_cliente=pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[4]'");
+
+                                      while ($result=pg_fetch_array($query_cliente)) {
+                                        echo $result[1]." ".$result[2];
+                                      }
+                                    ?>
+                                  </td>
+                                  <td>$<?php echo $fila[2]; ?></td>
+                                  <?php
+                                    $restante=0.00;
                                     $id_abono;
                                     $abonado=0;
                                     $query=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$fila[0]");
@@ -915,55 +873,32 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       $abonado+=$result[1];
                                     }
 
-                                    $restante=$fila[2]-$abonado;
+                                    if($query) {
+                                      $restante=$fila[2]-$abonado;
+                                    }
+                                  ?>
+                                  <td>$<?php echo $restante; ?></td>
+                                  <td class="text-center">
+                                    <?php
+                                    if($restante==0) {
+                                      ?>
+                                      <button class="btn btn-danger btn-icon left-icon" onclick="abonarCuenta(<?php echo $restante ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
+                                      <?php
+                                    }
+                                    else {
+                                      ?>
+                                      <button class="btn btn-success btn-icon left-icon" onclick="abonarCuenta(<?php echo $restante ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
+                                      <?php
+                                    }
                                     ?>
-                                    <button class="btn btn-info btn-icon left-icon" onclick="abonarCuenta(<?php echo $restante ?>)"> <i class="fa fa-money"></i> <span>Abonar</span></button>
-                                    <button class="btn btn-info btn-icon left-icon"> <i class="fa fa-book"></i> <span>Reporte</span></button>
+                                    <button class="btn btn-warning btn-icon left-icon" onclick="reporteAbono(<?php echo $fila[0]; ?>)"> <i class="fa fa-book"></i> <span></span></button>
                                   <?php } ?>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
 
-                            <!--Aqui inicia-->
-                            <div class="modal fade" id="myAbonoActualizado" role="dialog">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h4 class="modal-title">Ingrese el abono que hara</h4>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="item form-group">
-                                      <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                        <div class="form-group">
-                                          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Cantidad abonada</label>
-                                          <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <input type="text" class="form-control has-feedback-left" id="abono_actualizar" name="abono_actualizar" placeholder="$$$" autocomplete="off" maxlength="5" onkeydown="return validarNumerosVenta(event, '_actualizar');" oninput="obtenerPrecioRestante(this.value, '_actualizar');"><span class="fa fa-money form-control-feedback left"></span>
-                                          </div>
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <div class="form-group">
-                                          <label style="font-size:medium;text-align:left" class="control-label col-md-6 col-sm-6 col-xs-12" id="total_abono_actualizar" name="total_abono_actualizar">Total $$$</label>
-                                          <label style="font-size:medium;text-align:right" class="control-label col-md-6 col-sm-6 col-xs-12" id="diferencia_abono_actualizar" name="diferencia_abono_actualizar">Restante $0.00</label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <br>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <center>
-                                      <button type="submit" class="btn btn-success" onclick="registrarVenta('_actualizar', 'abonar')" form="frmVenta"><i class="fa fa-save"></i> Guardar</button>
-                                      <button type="reset" class="btn btn-danger" onclick="limpiarAbono()" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                                    </center>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!---->
+                            <?php include 'Modals/listaVentasModals.php'; ?>
 
                           </div>
                         </div>
@@ -1035,10 +970,6 @@ if ($_POST) {
     $query_compra=pg_query($conexion, "INSERT INTO ordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, 'AO1', '$cliente') RETURNING eid_compra");
     $id_compra=pg_fetch_array($query_compra);
 
-    //Muestra error.
-    echo pg_last_error($conexion);
-    echo "<br>";
-
     //Insersion de la nota de abono.
     $resultado=pg_query($conexion,"select MAX(notab.eid_nota) from notab");
     $contado=0;
@@ -1049,10 +980,6 @@ if ($_POST) {
 
     $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', 'AO1', $id_compra[0]) RETURNING eid_nota");
     $id_nota_abono=pg_fetch_array($query_nota_abono);
-
-    //Muestra error.
-    echo pg_last_error($conexion);
-    echo "<br>";
 
     //Esto es del detalle nota de abono.
     $productoAux="";
@@ -1086,7 +1013,7 @@ if ($_POST) {
       //Muestra error.
       if(!$query_detalle_nota) {
         $inserto_detalle++;
-        echo pg_last_error($conexion);
+        //echo pg_last_error($conexion);
       }
     }
 
@@ -1105,7 +1032,8 @@ if ($_POST) {
     }
   }
   else if($opcion=="abonar") {
-    $abono = $_POST['abono_actualizar'];
+    $abono = $_POST['abono_final_actualizar'];
+    $id_ordenc=$_POST['id_ordenCompra'];
 
     pg_query("BEGIN");
 
@@ -1119,13 +1047,15 @@ if ($_POST) {
 
     $id_compra;
 
-    $query=pg_query($conexion,"SELECT * FROM ordenc WHERE eid_compra=");
+    $query=pg_query($conexion,"SELECT * FROM ordenc WHERE eid_compra=$id_ordenc");
 
     while($fila=pg_fetch_array($query)) {
       $id_compra=$fila[0];
     }
 
     $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', 'AO1', $id_compra)");
+
+    echo pg_last_error($conexion);
 
     if($query_nota_abono) {
       pg_query("COMMIT");

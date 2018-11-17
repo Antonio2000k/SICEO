@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                 <label class="control-label col-md-5 col-sm-5 col-xs-12">Periodo: </label>
-                                <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[1];?></label>
+                                <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[1];?> (dias)</label>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                 <label class="control-label col-md-5 col-sm-5 col-xs-12">Abonado: </label>

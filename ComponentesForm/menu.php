@@ -95,6 +95,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             </li>
                             <li class="sub_menu"><a href="../../Modulos/Compra/Compracd.php">Compras al credito</a>
                             </li>
+                            <li class="sub_menu"><a href="../../Modulos/Compra/pagoProveedores.php">Pago a proveedores</a>
+                            </li>
                           </ul>
                       </li>
                     </ul>

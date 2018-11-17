@@ -248,7 +248,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="tile-stats">
                   <div class="icon"><i class="fa fa-line-chart"></i></div>
-                  <div class="count" style="font-size: 30px;">Ingresos</div>
+                    <div class="count" style="font-size: 30px;"><a href="Modulos/IngresosEgresos/ingresos.php">Ingresos</a></div>
                   <p>Grafica de ingresos mensuales.</p>
                 </div>
               </div>
@@ -266,7 +266,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     <div class="tile-stats">
                       <div class="icon"><i class="fa fa-pie-chart"></i></div>
-                      <div class="count"  style="font-size: 30px;">Compras</div>
+                        <div class="count"  style="font-size: 30px;"><a href="Modulos/IngresosEgresos/egresos.php">Compras</a></div>
                       <p>Grafica de compras mensuales</p>
                     </div>
                   </div>

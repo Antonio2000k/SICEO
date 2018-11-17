@@ -344,6 +344,21 @@ function verMas(str, opcion,tipo) {
                 xmlhttp.open("post", "ajax/cargaModalDetalleCompra.php?idd=" + opcion+"&tipo="+tipo, true);
             xmlhttp.send();
         }
+function pago(str, opcion) {
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("cargarDetalleCompraPago").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("post", "ajax/detallePago.php?idd=" + opcion, true);
+            xmlhttp.send();
+        }
 function modificarLista(cantidad,modelo,proveedor){
     swal({
                 title: 'Confirmaci&oacuten'
@@ -404,9 +419,47 @@ function modificarPreciosProducto(){
                        }else{
                   $('#editarProducto').modal('hide');              
                   var ajax2=nuevoAjax2();
-                  ajax2.open("post", "ajax/editarProducto.php", true);
+                  ajax2.open("post", "ajax/editarProductoGuardarAbono.php", true);
                   ajax2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                  ajax2.send("precioCompra="+precioCompra+"&precioVenta="+precioVenta+"&modelo="+modelo);
+                  ajax2.send("precioCompra="+precioCompra+"&precioVenta="+precioVenta+"&modelo="+modelo+"&opcion=producto");
+                  ajax2.onreadystatechange=function() {
+                      if (ajax2.readyState==4) {
+                          if(ajax2.status==200) {
+                              var respuesta=ajax2.responseXML;
+                          }else{
+                              alert("Estado: " + ajax2.status + "\nMotivo: " + ajax2.statusText);
+                          }
+                      }
+                  }
+                swal( 'Exito!', 'Proceso Completado!', 'success' );
+              }
+              
+          }
+function saldoRestante(){
+    var saldoPendiente=document.getElementById("saldoPendiente").value;
+    var abono=document.getElementById("abono").value;
+    var resultado=saldoPendiente-abono;
+    if(parseInt(abono)>parseInt(saldoPendiente)){
+      var tama=abono.length;
+      document.getElementById("abono").value=abono.substr(0,(tama-1));
+        saldoRestante();
+    }else
+        document.getElementById('abonoRestante').value=resultado;
+}
+function guardarAbonoCompra(){
+              var abono=document.getElementById('abono').value; 
+              var id=document.getElementById('idCompra').value;
+              var saldoPendiente=document.getElementById("saldoPendiente").value;
+              alert("Que Paso Amiguito  "+saldoPendiente);
+              if(abono==""){
+                  alertaDetener("Error","Complete los campos",'error');
+              }else if(parseInt(abono)==0){
+                  alertaDetener("informacion","El abono debe ser mayor a cero",'warning');
+              }else {           
+                  var ajax2=nuevoAjax2();
+                  ajax2.open("post", "ajax/editarProductoGuardarAbono.php", true);
+                  ajax2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                  ajax2.send("abono="+abono+"&id="+id+"&opcion=abono");
                   ajax2.onreadystatechange=function() {
                       if (ajax2.readyState==4) {
                           if(ajax2.status==200) {

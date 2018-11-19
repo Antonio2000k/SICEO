@@ -11,8 +11,7 @@
     <title>SICEO | Compras </title>
     <?php include "../../ComponentesForm/estilos.php";  ?>
     <link href="css/propio.css" rel="stylesheet">
-    <script src="js/compra.js"></script>
-    <script src="js/nuevoProducto.js"></script>
+    <script src="js/ingresos.js"></script>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -37,53 +36,82 @@
         <div class="x_content">
         <div class="" data-example-id="togglable-tabs" role="tabpanel">
             <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                <li class="" role="presentation"> <a aria-expanded="true" href="ingresosEgresos.php" id="home-tab">INGRESOS Y EGRESOS</a> </li>
                 <li class="" role="presentation">
-                    <a aria-expanded="true" data-toggle="tab" href="ingresosEgresos.php" id="home-tab" role="tab">INGRESOS Y EGRESOS</a>
+                    <a aria-expanded="true"  href="egresos.php" id="home-tab">EGRESOS</a>
                 </li>
                 <li class="active" role="presentation">
                     <a aria-expanded="true"  href="ingresos.php" id="home-tab">INGRESOS</a>
                 </li>
-                <li class="" role="presentation">
-                    <a aria-expanded="true"  href="egresos.php" id="home-tab">EGRESOS</a>
-                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
+               <div role="tabpanel" class="tab-pane fade active in" id="tab_content3" aria-labelledby="profile-tab">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                <div class="x_title"><h2>INGRESOS</h2><div class="clearfix"></div></div>
-                <div class="x_content">
-            <div class="row">
-                     
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Ventas Mensuales</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <div id="primerGrafica" style="height:350px;"></div>
-
-                  </div>
-                </div>
-              </div>
-
-             
-
-             
-             
-           
-
-            
-
-          
-            </div>
-          
-                </div>
+                    <div class="x_panel">
+                        <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)"><h2 style="text-indent: 400px; color: white">Ingresos</h2>
+                            <ul class="nav navbar-right panel_toolbox"><li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                        <div class="row">
+                           <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                           <div class="col-md-3 col-sm-3 col-xs-12 text-center">
+                           <select onChange="mostrarResultados(this.value);" class="SYear" style="width: 100%" id="year">
+                                <?php
+                                   $year=date("Y");
+                                    for($i=2015;$i<=$year;$i++){
+                                        if($i ==$year){
+                                            echo '<option value="'.$i.'" selected>'.$i.'</option>';
+                                        }else{
+                                            echo '<option value="'.$i.'">'.$i.'</option>';
+                                        }
+                                    }
+                                ?>
+                            </select>
+                               </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">
+                           <select onChange="mostrarResultadosNetos('','','');" class="SMes" style="width: 100%" id="mes">
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                            </div>
+                            
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                              
+                                <button type="button" class="btn btn-round btn-primary" data-toggle="modal" data-target="#impresion" onclick="consultaPorMes()">Cargar</button>
+                            </div>
+                              <div class="resultados"> <div id="container"></div></div>
+                               
+                               <div id="sliders">
+    <table>
+        <tr>
+        	<td>Alpha Angle</td>
+        	<td><input id="alpha" type="range" min="0" max="45" value="15"/> <span id="alpha-value" class="value"></span></td>
+        </tr>
+        <tr>
+        	<td>Beta Angle</td>
+        	<td><input id="beta" type="range" min="-45" max="45" value="15"/> <span id="beta-value" class="value"></span></td>
+        </tr>
+        <tr>
+        	<td>Depth</td>
+        	<td><input id="depth" type="range" min="20" max="100" value="50"/> <span id="depth-value" class="value"></span></td>
+        </tr>
+    </table>
+</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,6 +144,57 @@
         </div>
         <!-- Fin Modal -->
         
+         <!-- Modal Impresion para los rangos de fecha -->
+          <div class="modal fade" id="impresion" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros</h3> </center>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group" > 
+                  <button type="button" class="btn btn-info " id="daterange-btn" style="float: right;">
+                    <i class="fa fa-calendar"></i> Rango
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango3" id="rango3"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  
+                        
+                </div>
+                <br><br>
+                <div class="item form-group"> 
+
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango4" id="rango4" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+                        
+                </div>
+                              
+               <br><br><br>
+              </div>
+              
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-icon left-icon pull-left" data-dismiss="modal"> <i class="fa fa-bar-chart"></i>  Actualizar Grafica</button>                  
+                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- fin Modal Impresion -->
+        
         <div id="cambiaso">
             
         </div>
@@ -123,88 +202,35 @@
 </div>        
 </div>
 </div>
-   
-    <script>
-        var chart = document.getElementById('primerGrafica');
-    		var myChart = echarts.init(chart);
-    		option = {
-    title : {
-        text: '某地区蒸发量和降水量',
-        subtext: '纯属虚构'
-    },
-    tooltip : {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['蒸发量','降水量']
-    },
-    toolbox: {
-        show : true,
-        feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-            magicType : {show: true, type: ['line', 'bar']},
-            restore : {show: true},
-            saveAsImage : {show: true}
-        }
-    },
-    calculable : true,
-    xAxis : [
-        {
-            type : 'category',
-            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-        }
-    ],
-    yAxis : [
-        {
-            type : 'value'
-        }
-    ],
-    series : [
-        {
-            name:'蒸发量',
-            type:'bar',
-            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-            markPoint : {
-                data : [
-                    {type : 'max', name: '最大值'},
-                    {type : 'min', name: '最小值'}
-                ]
-            },
-            markLine : {
-                data : [
-                    {type : 'average', name: '平均值'}
-                ]
-            }
-        },
-        {
-            name:'降水量',
-            type:'bar',
-            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-            markPoint : {
-                data : [
-                    {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-                    {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
-                ]
-            },
-            markLine : {
-                data : [
-                    {type : 'average', name : '平均值'}
-                ]
-            }
-        }
-    ]
-};
-    		myChart.setOption(option);
-    </script>
-   
-   
-   
     <?php include "../../ComponentesForm/scripts.php";    ?>
-    <!-- FastClick -->
-    <script src="../../vendors/fastclick/lib/fastclick.js"></script>
-    <!-- ECharts -->
-    <script src="../../vendors/echarts/dist/echarts.min.js"></script>
-    <script src="../../vendors/echarts/map/js/world.js"></script>
+<script src="../../vendors//Highcharts-6.2.0/code/highcharts.js"></script>
+<script src="../../vendors/Highcharts-6.2.0/code/highcharts-3d.js"></script>
+<script src="../../vendors//Highcharts-6.2.0/code/modules/exporting.js"></script>
+<script src="../../vendors//Highcharts-6.2.0/code/modules/export-data.js"></script>
+    <script type="text/javascript">
+     $(function () {
+            $('.SYear').select2()
+            $('.SMes').select2()
+        });
+var fecha = new Date();
+var year = fecha.getFullYear();
+$(document).ready(mostrarResultados(year));  
+function showValues() {
+    $('#alpha-value').html(chart.options.chart.options3d.alpha);
+    $('#beta-value').html(chart.options.chart.options3d.beta);
+    $('#depth-value').html(chart.options.chart.options3d.depth);
+}
+
+$(document).ready(function() {
+// Activate the sliders
+$('#sliders input').on('input change', function () {
+    chart.options.chart.options3d[this.id] = parseFloat(this.value);
+    showValues();
+    chart.redraw(false);
+});
+    });
+
+showValues();
+</script>
 </body>
 </html>

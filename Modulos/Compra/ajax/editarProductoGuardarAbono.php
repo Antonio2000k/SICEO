@@ -16,9 +16,12 @@ $baccion=$_REQUEST["modelo"];
 				}
 }else if($op="abono"){
     $abono=$_REQUEST["abono"];
-$id=$_REQUEST["id"];
-            pg_query("BEGIN");
-          $result=pg_query($conexion,"update compra set  rabono='$abono' where eid_compra='$id'");
+    $id=$_REQUEST["id"];
+          pg_query("BEGIN");
+            
+             $resultado=pg_fetch_array(pg_query($conexion, "select rabono from compra where eid_compra=".$id));
+              $abonoN=$abono+$resultado[0];
+          $result=pg_query($conexion,"update compra set  rabono='$abonoN' where eid_compra='$id'");
             if(!$result){
 				pg_query("rollback");
 				//mensajeInformacion('Error','Datos no almacenados','error');

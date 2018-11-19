@@ -61,20 +61,22 @@ if(isset($_SESSION["acumulador"])){
                                         <th>Empleado</th>
                                         <th>Fecha</th>
                                         <th>Total Compra</th>
-                                        <th>Ver Mas</th>
+                                        <th>Saldo Pendiente</th>
+                                        <th>Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                           include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra where eperiodo>0 order by ffecha_compra");
+                          $query_s= pg_query($conexion, "SELECT c.eid_compra,c.cid_empleado,c.ffecha_compra,c.rtotal_compra,c.ecuotas,c.eperiodo,c.rabono,empleados.cnombre,empleados.capellido FROM compra as c INNER JOIN empleados  ON c.cid_empleado = empleados.cid_empleado WHERE c.eperiodo > 0 ORDER BY c.ffecha_compra asc");
                           while($fila=pg_fetch_array($query_s)){
                       ?>
                                 <tr>
                                     <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
+                                    <td><?php echo $fila[7].' '.$fila[8]; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
                                     <td>$<?php echo $fila[3]; ?></td>
+                                    <td>$<?php echo $fila[3]-$fila[6]; ?></td>
                             <td class="text-center">
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','credito')"> <i class="fa fa-list-ul"></i></button>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalPago" onclick="pago('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-money"></i></button>
@@ -128,7 +130,7 @@ if(isset($_SESSION["acumulador"])){
                     <div class="modal-body" id="cargarDetalleCompraPago"> <br><br><br><br><br><br><br><br></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                        
-			            <button type="submit" class="btn btn-primary" id="actualizar_datos" onclick="guardarAbonoCompra();">Actualizar datos</button>
+			            <button type="button" class="btn btn-primary" id="actualizar_datos" onclick="guardarAbonoCompra();">Actualizar datos</button>
                     </div>
                 </div>
             </div>
@@ -146,15 +148,5 @@ if(isset($_SESSION["acumulador"])){
 </div>
 </div>
     <?php include "../../ComponentesForm/scripts.php";    ?>
-     <script>
-        $(function () {
-            $('.SProveedor').select2()
-            $('.SProducto').select2()
-            $('.STipo').select2()
-            $('.SProveedorP').select2()
-            $('.SMarca').select2()
-            $('.SGarantia').select2()
-        });
-    </script>
 </body>
 </html>

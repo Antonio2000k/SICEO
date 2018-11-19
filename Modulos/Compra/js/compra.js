@@ -450,7 +450,6 @@ function guardarAbonoCompra(){
               var abono=document.getElementById('abono').value; 
               var id=document.getElementById('idCompra').value;
               var saldoPendiente=document.getElementById("saldoPendiente").value;
-              alert("Que Paso Amiguito  "+saldoPendiente);
               if(abono==""){
                   alertaDetener("Error","Complete los campos",'error');
               }else if(parseInt(abono)==0){
@@ -469,6 +468,7 @@ function guardarAbonoCompra(){
                           }
                       }
                   }
+                 $('#modalPago').modal('hide');
                 swal( 'Exito!', 'Proceso Completado!', 'success' );
               }
               

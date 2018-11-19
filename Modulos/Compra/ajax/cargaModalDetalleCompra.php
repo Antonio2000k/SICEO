@@ -1,6 +1,3 @@
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_content">
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -23,18 +20,20 @@
                             while ($fila = pg_fetch_array($resultado)) {
                                 echo '<div class="text-center infoCompleto"><strong><h5><i class="fa fa-info-circle"></i> Detalle Credito</strong></h5></div>';
                                 ?>
-                                <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                                <label class="control-label col-md-5 col-sm-5 col-xs-12">Cuotas: </label>
-                                <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[0];?></label>
+                                <div align='center'>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback">
+                                    <label class="control-label col-md-5 col-sm-5 col-xs-12">Cuotas: </label>
+                                    <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[0];?></label>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
+                                    <label class="control-label col-md-5 col-sm-5 col-xs-12">Periodo: </label>
+                                    <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[1];?> (dias)</label>
+                                    </div>
+                                    <div class="col-md-5 col-sm-5 col-xs-12 form-group has-feedback">
+                                    <label class="control-label col-md-5 col-sm-5 col-xs-12">Abonado: </label>
+                                    <label class="control-label col-md-7 col-sm-7 col-xs-12">$ <?php echo $fila[2];?></label>
+                                    </div> 
                                 </div>
-                                <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                                <label class="control-label col-md-5 col-sm-5 col-xs-12">Periodo: </label>
-                                <label class="control-label col-md-7 col-sm-7 col-xs-12"><?php echo $fila[1];?> (dias)</label>
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                                <label class="control-label col-md-5 col-sm-5 col-xs-12">Abonado: </label>
-                                <label class="control-label col-md-7 col-sm-7 col-xs-12">$ <?php echo $fila[2];?></label>
-                                </div> 
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback text-center">
                                 <label class="control-label col-md-7 col-sm-7 col-xs-12 text-right">Saldo pendiente: </label>
                                 <label class="control-label col-md-5 col-sm-5 col-xs-12 text-left">$ <?php echo $fila[3]-$fila[2];?></label>
@@ -61,6 +60,3 @@
                       ?>
                         </tbody>
                     </table>
-                  </div>
-                </div>
-              </div>

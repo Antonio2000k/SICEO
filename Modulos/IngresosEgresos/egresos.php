@@ -10,7 +10,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>SICEO | Compras </title>
     <?php include "../../ComponentesForm/estilos.php";  ?>
-    <link href="css/propio.css" rel="stylesheet">
+    <link href="../Compra/css/propio.css" rel="stylesheet">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -84,7 +84,8 @@
                             
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 text-center">
-                              
+                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','egreso','neto');"> <i class="fa fa-bar-chart"></i>Egresos Netos</button> 
+                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','egreso','totales');"> <i class="fa fa-bar-chart"></i>Egresos Totales</button> 
                                 <button type="button" class="btn btn-round btn-primary" data-toggle="modal" data-target="#impresion" onclick="actualizaTabla()">Cargar</button>
                             </div>
                               <div class="resultados"> <div id="container"></div></div>
@@ -101,36 +102,8 @@
                             <div class="clearfix"></div>
                         </div>
                     <div class="x_content" id="cargala">
-                       <table id="datatable-fixed-header" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>N°</th>
-                                        <th>Empleado</th>
-                                        <th>Fecha</th>
-                                        <th>Total Compra</th>
-                                        <th>Ver Mas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra where eperiodo>0 order by ffecha_compra");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                                <tr>
-                                    <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
-                                    <td>$<?php echo $fila[3]; ?></td>
-                            <td class="text-center">
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','credito')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                <?php
-                      }
-                        ?>
-                            </tbody>
-                        </table>
+                       
+
                     </div>
                 </div>
             </div>
@@ -152,7 +125,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <center>
-                            <h3 class="modal-title" id="exampleModalLabel">Detalle Compra</h3> </center>
+                            <h3 class="modal-title" id="exampleModalLabel">Egreso</h3> </center>
                     </div>
                     <div class="modal-body" id="cargaDetalle"> </div>
                     <div class="modal-footer">
@@ -206,7 +179,7 @@
               </div>
               
                 <div class="modal-footer">
-                  <button class="btn btn-info btn-icon left-icon pull-left" data-dismiss="modal"> <i class="fa fa-bar-chart"></i>  Actualizar Grafica</button>                  
+                  <button class="btn btn-info btn-icon left-icon pull-left" data-dismiss="modal"> <i class="fa fa-bar-chart"></i>  Actualizar Grafica</button>            
                   <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>

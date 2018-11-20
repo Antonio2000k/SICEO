@@ -62,14 +62,41 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         alert("Mostrara el reporte del examen");
       }
 
+      function cambiar() {
+        //Parametros de lente
+        var fila = document.getElementById('filaLenteModal').value-1;
+
+        for (x = 0; x < frmEncomiendas.tipo_lente.length; x++) {
+          if (frmEncomiendas.tipo_lente[x].value==tipoLentes[fila]) {
+            frmEncomiendas.tipo_lente[x].checked=1;
+          }
+        }
+        for (x = 0; x < frmEncomiendas.material_lente.length; x++) {
+          if (frmEncomiendas.material_lente[x].value==materialLentes[fila]) {
+            frmEncomiendas.material_lente[x].checked=1;
+          }
+        }
+
+        $('#myLentes').modal({backdrop: 'static', keyboard: false});
+      }
+
       function especificaciones(fila) {
         for (var i = 0; i < filaLentes.length; i++) {
           if(filaLentes[i]==fila) {
             $('#myEspecificaciones').modal();
             $('#material_lente_carac').text("Material del lente: "+materialLentes[i]);
             $('#tipo_lente_carac').text("Tipo de lente: "+tipoLentes[i]);
+            $("#filaLenteModal").val(fila);
           }
         }
+      }
+
+      function verDetalle() {
+        alert("Mostrara un detalle de todo lo que contiene la encomienda");
+      }
+
+      function verReporteEncomienda() {
+        alert("Mostrara un reporte de la encomienda");
       }
 
       function checkado(id) {
@@ -96,6 +123,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               swal("Informacion", "Encomienda eliminada", "info");
               document.getElementById('idCheckbox').value="";
               $("#especificaciones"+id).prop("disabled", true);
+              filaLentes[id] = -1;
+              materialLentes[id] = "";
+              tipoLentes[id] = "";
             }
             else {
               document.getElementById("examen"+id).checked=1;
@@ -249,7 +279,12 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             </li>
                             <li class="" role="presentation">
                               <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">
-                                LISTA DE ENCOMIENDAS
+                                LISTA DE ENCOMIENDAS POR ENVIAR
+                              </a>
+                            </li>
+                            <li class="" role="presentation">
+                              <a aria-expanded="false" data-toggle="tab" href="#tab_content3" id="profile-tab" role="tab">
+                                LISTA DE ENCOMIENDAS HECHAS
                               </a>
                             </li>
                         </ul>
@@ -496,6 +531,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <h4 class="modal-title">Detalle del aro</h4>
                                       </div>
                                       <div class="modal-body">
+                                        <input type="hidden" id="filaLenteModal">
                                         <div class="item form-group">
                                           <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div style="text-align: center">
@@ -511,6 +547,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       </div>
                                       <div class="modal-footer">
                                         <center>
+                                          <button type="button" class="btn btn-info" data-dismiss="modal" onclick="cambiar()"><i class="fa fa-refresh"></i> Hacer cambios</button>
                                           <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
                                         </center>
                                       </div>
@@ -527,11 +564,46 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                               <div class="x_title">
-                                <h2>ENCOMIENDAS </h2>
+                                <h2>ENCOMIENDAS LISTAS PARA SER ENVIADAS</h2>
                                 <div class="clearfix"></div>
                               </div>
                               <div class="x_content" id="recargarEncomiendas">
                                 <table id="datatable-fixed-header" class="table table-striped table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th width="5%">#</th>
+                                      <th width="25%">Encomendero</th>
+                                      <th width="45%">Detalles del encomendero</th>
+                                      <th width="25%">Detalles de la encomienda</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>1</td>
+                                      <td>Francisco Antonio</td>
+                                      <td>El vehiculo es color azul y pequeño</td>
+                                      <td class="text-center">
+                                        <button type="button" class="btn btn-success" onclick="verDetalle()"><i class="fa fa-book"></i> <span></span></button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <!--3 pestaña-->
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                              <div class="x_title">
+                                <h2>ENCOMIENDAS </h2>
+                                <div class="clearfix"></div>
+                              </div>
+                              <div class="x_content">
+                                <table class="table table-striped table-bordered">
                                   <thead>
                                     <tr>
                                       <th>Cod</th>
@@ -548,54 +620,59 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <td>Hoy</td>
                                       <td>Ayer</td>
                                       <td>Francisco Antonio</td>
-                                      <td class="text-center"><button type="button" class="btn btn-success" onclick="verEstado(1)"><i class="fa fa-info"></i> <span>Ver</span></button></td>
-                                      <td class="text-center"><button type="button" class="btn btn-warning"><i class="fa fa-book"></i> <span></span></button></td>
+                                      <td class="text-center">
+                                        <button type="button" class="btn btn-success" onclick="verEstado(1)"><i class="fa fa-info"></i> <span></span></button>
+                                      </td>
+                                      <td class="text-center">
+                                        <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
+                                      </td>
                                     </tr>
                                   </tbody>
                                 </table>
                               </div>
                             </div>
                           </div>
+                        </div>
 
-                          <!--Inicio modal-->
-                          <div class="modal fade" id="myEstado" role="dialog">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h4 class="modal-title">Estado de la encomienda</h4>
-                                </div>
-                                <div class="modal-body">
-                                  <div class="item form-group">
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                      <div class="form-group" style="text-align: center">
-                                        <label style="font-size:medium; color: red" class="control-label col-md-12 col-sm-12 col-xs-12">PENDIENTE</label>
-                                      </div>
-                                      <div class="form-group" style="text-align: center">
-                                        <br>
-                                        <label style="font-size:medium" class="control-label col-md-6 col-sm-6 col-xs-12">Actualizar estado</label>
-                                        <input type="radio" class="flat col-md-6 col-sm-6 col-xs-12" name="estado" id="estado" value="true" /> <label>RECIBIDA</label>
-                                      </div>
-                                      <!-- <br>
-                                      <br> -->
+                        <!--Inicio modal-->
+                        <div class="modal fade" id="myEstado" role="dialog">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Estado de la encomienda</h4>
+                              </div>
+                              <div class="modal-body">
+                                <div class="item form-group">
+                                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                    <div class="form-group" style="text-align: center">
+                                      <label style="font-size:medium; color: red" class="control-label col-md-12 col-sm-12 col-xs-12">PENDIENTE</label>
                                     </div>
+                                    <div class="form-group" style="text-align: center">
+                                      <br>
+                                      <label style="font-size:medium" class="control-label col-md-6 col-sm-6 col-xs-12">Actualizar estado</label>
+                                      <input type="radio" class="flat col-md-6 col-sm-6 col-xs-12" name="estado" id="estado" value="true" /> <label>RECIBIDA</label>
+                                    </div>
+                                    <!-- <br>
+                                    <br> -->
                                   </div>
-                                  <!-- <br>
-                                  <br>
-                                  <br>
-                                  <br> -->
                                 </div>
-                                <div class="modal-footer">
-                                  <center>
-                                    <button type="button" class="btn btn-success" onclick="cambiarEstado()"><i class="fa fa-save"></i> Guardar</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
-                                  </center>
-                                </div>
+                                <!-- <br>
+                                <br>
+                                <br>
+                                <br> -->
+                              </div>
+                              <div class="modal-footer">
+                                <center>
+                                  <button type="button" class="btn btn-success" onclick="cambiarEstado()"><i class="fa fa-save"></i> Guardar</button>
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+                                </center>
                               </div>
                             </div>
                           </div>
-                          <!--Fin modal-->
-
                         </div>
+                        <!--Fin modal-->
+                        <!--fin 3 pestaña-->
+
                       </div>
                     </div>
                   </div>

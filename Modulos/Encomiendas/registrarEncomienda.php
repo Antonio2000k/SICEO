@@ -79,6 +79,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             if(isConfirm.value!=true) {
               //Codigo de confimacion.
               swal("Informacion", "Encomienda eliminada", "info");
+              document.getElementById('idCheckbox').value="";
             }
             else {
               document.getElementById("examen"+id).checked=1;

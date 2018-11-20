@@ -54,13 +54,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     ?>
 
     <script type="text/javascript">
+      var filaLentes = new Array();
+      var materialLentes = new Array();
+      var tipoLentes = new Array();
 
       function verExamen() {
         alert("Mostrara el reporte del examen");
       }
 
       function especificaciones(fila) {
-        alert("Mostrara las especificaciones");
+        for (var i = 0; i < filaLentes.length; i++) {
+          if(filaLentes[i]==fila) {
+            $('#myEspecificaciones').modal();
+            $('#material_lente_carac').text("Material del lente: "+materialLentes[i]);
+            $('#tipo_lente_carac').text("Tipo de lente: "+tipoLentes[i]);
+          }
+        }
       }
 
       function checkado(id) {
@@ -145,6 +154,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           for (x = 0; x < objForm.material_lente.length; x++) {
             objForm.material_lente[x].checked=0;
           }
+
+          filaLentes.push(fila);
+          materialLentes.push(material);
+          tipoLentes.push(tipo);
 
           $('#myLentes').modal('toggle');
           $("#especificaciones"+fila).prop("disabled", false);
@@ -469,6 +482,35 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <div class="modal-footer">
                                         <center>
                                           <button type="button" class="btn btn-success" onclick="caracteristicasAro(this.form)"><i class="fa fa-save"></i> Guardar</button>
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
+                                        </center>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="modal fade" id="myEspecificaciones" role="dialog">
+                                  <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Detalle del aro</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class="item form-group">
+                                          <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div style="text-align: center">
+                                              <div class="form-group">
+                                                <label class="control-label" id="material_lente_carac" style="font-size: medium">Material: ....</label>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="control-label" id="tipo_lente_carac" style="font-size: medium">Tipo: ....</label>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <center>
                                           <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
                                         </center>
                                       </div>

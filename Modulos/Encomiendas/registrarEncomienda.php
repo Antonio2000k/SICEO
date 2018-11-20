@@ -4,18 +4,30 @@ include '../../Config/conexion.php';
 function obtenerValorSQL($consulta, $opcion, $id) {
   if($consulta != null) {
     while($fila_new = pg_fetch_array($consulta)) {
-      switch ($opcion) {
-        case 'cliente':
-          return "$fila_new[1]"." "."$fila_new[2]";
-          break;
-
-        case 'modelo':
-          return "algo";
-          break;
-
-        default:
-          break;
+      if($opcion=="cliente") {
+        return "$fila_new[1]"." "."$fila_new[2]";
       }
+      else if($opcion=="id") {
+        return $fila_new[0];
+      }
+
+      // switch ($opcion) {
+      //   case "cliente":
+      //     return "$fila_new[1]"." "."$fila_new[2]";
+      //     break;
+      //
+      //   case "id":
+      //     return $fila_new[0];
+      //     break;
+      //
+      //   case "modelo":
+      //     return "modelo";
+      //     break;
+      //
+      //   default:
+      //   return "algo xd";
+      //     break;
+      // }
     }
   }
 }
@@ -46,7 +58,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <script type="text/javascript">
       function checkado(id) {
-        alert("Se checko el examen, fila: "+id);
+        $('#myLentes').modal({backdrop: 'static', keyboard: false});
+        document.getElementById('idCheckbox').value=id;
+      }
+
+      function activarOtroTipo(valor) {
+        alert(valor);
+      }
+
+      function tipoAro() {
+        document.getElementById("otro_tipo_lente").value="algo";
+      }
+
+      function cancelar() {
+        var id=document.getElementById('idCheckbox').value;
+        document.getElementById('examen'+id).checked=0;
+        document.getElementById('idCheckbox').value="";
       }
 
       function verEstado(id) {
@@ -177,6 +204,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 <div class="row">
                                   <!--Codigos-->
                                   <input type="hidden" id="bandera" name="bandera" value="">
+                                  <input type="hidden" id="idCheckbox" name="idCheckbox" value="">
                                   <!--fin codigos-->
 
                                   <div class="item form-group">
@@ -221,6 +249,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <?php
                                         $cliente = "";
                                         $modelo = "";
+                                        $cont = 1;
 
                                         $result = pg_query($conexion, "SELECT * FROM examen");
 
@@ -234,7 +263,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
                                             $cliente = obtenerValorSQL($consulta, "cliente", "");
 
-                                            $modelo = obtenerValorSQL($consulta, "modelo", "");
+                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
+                                            $modelo = obtenerValorSQL($consulta, "id", "");
                                           }
                                           ?>
 
@@ -242,7 +272,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td class="text-center">
                                               <div class="checkbox">
                                                 <label>
-                                                 <input type="checkbox" value="" onclick="checkado(1)">
+                                                 <input type="checkbox" onclick="checkado(<?php echo $cont ?>)" id="<?php echo "examen".$cont ?>">
                                                  <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                                  </label>
                                               </div>
@@ -254,6 +284,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td class="text-center"><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
                                           </tr>
                                           <?php
+                                          $cont++;
                                         }
                                         ?>
                                       </tbody>
@@ -264,7 +295,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <center>
                                         <div class="col-md-12 col-sm-6 col-xs-12">
                                           <div class="form-group">
-                                            <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registarEncomiendas()"> <i  class="fa fa-save"></i> <span >Registrar</span></button>
+                                            <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registarEncomiendas()"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
                                             <button type="button" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="limpiarDatos()"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                         </div>
@@ -273,6 +304,128 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                   <!--Aqui termina la tabla-->
                                 </div>
+                                <!--Inicio modal-->
+                                <div class="modal fade" id="myLentes" role="dialog">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Detalle del aro</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class="item form-group">
+                                          <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div style="text-align: center">
+                                              <div class="form-group" style="text-align: center">
+                                                <table class="table table-striped table-bordered">
+                                                  <thead>
+                                                    <tr>
+                                                      <th colspan="2" style="text-align: center">Material</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="CR 39">
+                                                      </td>
+                                                      <td>CR 39</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="PLOY">
+                                                      </td>
+                                                      <td>PLOY</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="VIDRIO">
+                                                      </td>
+                                                      <td>VIDRIO</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="HI INDEX">
+                                                      </td>
+                                                      <td>HI INDEX</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="HI LITE">
+                                                      </td>
+                                                      <td>HI LITE</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="otro" onclick="activarOtroTipo()">
+                                                      </td>
+                                                      <td>
+                                                        <input type="text" class="form-control" id="otro_material_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div style="text-align: center">
+                                              <div class="form-group" style="text-align: center">
+                                                <table class="table table-striped table-bordered">
+                                                  <thead>
+                                                    <tr>
+                                                      <th colspan="2" style="text-align: center">Tipo</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="VISION SENCILLA">
+                                                      </td>
+                                                      <td>VISION SENCILLA</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="FLAP TOP">
+                                                      </td>
+                                                      <td>FLAP TOP</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="PROGRESIVO">
+                                                      </td>
+                                                      <td>PROGRESIVO</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="KRIP-TOP">
+                                                      </td>
+                                                      <td>KRIP-TOP</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td class="text-center">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="otro" onclick="activarOtroTipo()">
+                                                      </td>
+                                                      <td>
+                                                        <input type="text" class="form-control" id="otro_tipo_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <center>
+                                          <button type="button" class="btn btn-success" onclick="tipoAro()"><i class="fa fa-save"></i> Guardar</button>
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
+                                        </center>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!--Fin modal-->
+
                                   <!--Aqui finaliza-->
                               </form>
                             </div>

@@ -58,22 +58,71 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <script type="text/javascript">
       function checkado(id) {
-        $('#myLentes').modal({backdrop: 'static', keyboard: false});
-        document.getElementById('idCheckbox').value=id;
+        if(document.getElementById('idCheckbox').value=="") {
+          $('#myLentes').modal({backdrop: 'static', keyboard: false});
+          document.getElementById('idCheckbox').value=id;
+        }
+        else {
+          swal({
+            title: "¿Seguro quiere eliminar esta encomienda?",
+            text: "No podrás deshacer este paso.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5CBDD9",
+            cancelButtonColor: "#D9534F",
+            confirmButtonText: "No",
+            cancelButtonText: "Si",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true
+          }).then(function(isConfirm) {
+            if(isConfirm.value!=true) {
+              //Codigo de confimacion.
+              swal("Informacion", "Encomienda eliminada", "info");
+            }
+            else {
+              document.getElementById("examen"+id).checked=1;
+            }
+          })
+        }
       }
 
-      function activarOtroTipo(valor) {
-        alert(valor);
+      function activarOtro(valor) {
       }
 
-      function tipoAro() {
-        document.getElementById("otro_tipo_lente").value="algo";
+      function caracteristicasAro(objForm) {
+        var tipo = "";
+        var material = "";
+
+        for (x = 0; x < objForm.tipo_lente.length; x++) {
+          if (objForm.tipo_lente[x].checked) {
+            tipo = objForm.tipo_lente[x].value;
+            break;
+          }
+        }
+
+        for (x = 0; x < objForm.material_lente.length; x++) {
+          if (objForm.material_lente[x].checked) {
+            material = objForm.material_lente[x].value;
+            break;
+          }
+        }
+
+        if(tipo!="" && material!="") {
+          $('#myLentes').modal('toggle');
+        }
+        else {
+          swal("Error", "Debe seleccionar un tipo y material", "error");
+        }
       }
 
       function cancelar() {
         var id=document.getElementById('idCheckbox').value;
         document.getElementById('examen'+id).checked=0;
         document.getElementById('idCheckbox').value="";
+      }
+
+      function registarEncomiendas() {
       }
 
       function verEstado(id) {
@@ -200,7 +249,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                              <form class="form-horizontal form-label-left" id="frmVenta" name="frmVenta" method="post">
+                              <form class="form-horizontal form-label-left" id="frmEncomiendas" name="frmEncomiendas" method="post">
                                 <div class="row">
                                   <!--Codigos-->
                                   <input type="hidden" id="bandera" name="bandera" value="">
@@ -234,7 +283,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <br>
                                   <!--Fin boton-->
 
-                                  <!--Aqui va la tabla de la venta-->
+                                  <!--Aqui va la tabla de la encomienda-->
                                   <div class="item form-group">
                                     <table id="datatable" class="table table-striped table-bordered">
                                       <thead>
@@ -296,7 +345,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <div class="col-md-12 col-sm-6 col-xs-12">
                                           <div class="form-group">
                                             <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registarEncomiendas()"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
-                                            <button type="button" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="limpiarDatos()"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                            <button type="button" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                         </div>
                                       </center>
@@ -355,10 +404,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="otro" onclick="activarOtroTipo()">
+                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="otro" onchange="activarOtro(1)">
                                                       </td>
                                                       <td>
-                                                        <input type="text" class="form-control" id="otro_material_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
+                                                        <input type="text" class="form-control" id="otro_material_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" >
                                                       </td>
                                                     </tr>
                                                   </tbody>
@@ -402,10 +451,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="otro" onclick="activarOtroTipo()">
+                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="otro">
                                                       </td>
                                                       <td>
-                                                        <input type="text" class="form-control" id="otro_tipo_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
+                                                        <input type="text" class="form-control" id="otro_tipo_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" >
                                                       </td>
                                                     </tr>
                                                   </tbody>
@@ -417,7 +466,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       </div>
                                       <div class="modal-footer">
                                         <center>
-                                          <button type="button" class="btn btn-success" onclick="tipoAro()"><i class="fa fa-save"></i> Guardar</button>
+                                          <button type="button" class="btn btn-success" onclick="caracteristicasAro(this.form)"><i class="fa fa-save"></i> Guardar</button>
                                           <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
                                         </center>
                                       </div>

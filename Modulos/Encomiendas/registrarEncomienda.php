@@ -4,30 +4,24 @@ include '../../Config/conexion.php';
 function obtenerValorSQL($consulta, $opcion, $id) {
   if($consulta != null) {
     while($fila_new = pg_fetch_array($consulta)) {
-      if($opcion=="cliente") {
-        return "$fila_new[1]"." "."$fila_new[2]";
-      }
-      else if($opcion=="id") {
-        return $fila_new[0];
-      }
 
-      // switch ($opcion) {
-      //   case "cliente":
-      //     return "$fila_new[1]"." "."$fila_new[2]";
-      //     break;
-      //
-      //   case "id":
-      //     return $fila_new[0];
-      //     break;
-      //
-      //   case "modelo":
-      //     return "modelo";
-      //     break;
-      //
-      //   default:
-      //   return "algo xd";
-      //     break;
-      // }
+      switch ($opcion) {
+        case "cliente":
+          return "$fila_new[1]"." "."$fila_new[2]";
+          break;
+
+        case "id":
+          return $fila_new[0];
+          break;
+
+        case "modelo":
+          return "modelo";
+          break;
+
+        default:
+        return "algo xd";
+          break;
+      }
     }
   }
 }
@@ -50,6 +44,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="Estilos/checkbox.css">
+    <link rel="stylesheet" href="Estilos/radio.css">
+
     <title>SICEO | Encomiendas</title>
 
     <?php
@@ -57,8 +54,17 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     ?>
 
     <script type="text/javascript">
+
+      function verExamen() {
+        alert("Mostrara el reporte del examen");
+      }
+
+      function especificaciones(fila) {
+        alert("Mostrara las especificaciones");
+      }
+
       function checkado(id) {
-        if(document.getElementById('idCheckbox').value=="") {
+        if(document.getElementById("examen"+id).checked) {
           $('#myLentes').modal({backdrop: 'static', keyboard: false});
           document.getElementById('idCheckbox').value=id;
         }
@@ -80,6 +86,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               //Codigo de confimacion.
               swal("Informacion", "Encomienda eliminada", "info");
               document.getElementById('idCheckbox').value="";
+              $("#especificaciones"+id).prop("disabled", true);
             }
             else {
               document.getElementById("examen"+id).checked=1;
@@ -88,7 +95,25 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
       }
 
-      function activarOtro(valor) {
+      function activarOtro(opcion, checkado) {
+        if(opcion==1) {
+          if(checkado=="si") {
+            $("#otro_material_lente").prop("disabled", false);
+          }
+          else {
+            $("#otro_material_lente").prop("disabled", true);
+            document.getElementById("otro_material_lente").value="";
+          }
+        }
+        else {
+          if(checkado=="si") {
+            $("#otro_tipo_lente").prop("disabled", false);
+          }
+          else {
+            $("#otro_tipo_lente").prop("disabled", true);
+            document.getElementById("otro_tipo_lente").value="";
+          }
+        }
       }
 
       function caracteristicasAro(objForm) {
@@ -110,7 +135,19 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
 
         if(tipo!="" && material!="") {
+          var fila = document.getElementById('idCheckbox').value;
+          document.getElementById('idCheckbox').value = "";
+
+          for (x = 0; x < objForm.tipo_lente.length; x++) {
+            objForm.tipo_lente[x].checked=0;
+          }
+
+          for (x = 0; x < objForm.material_lente.length; x++) {
+            objForm.material_lente[x].checked=0;
+          }
+
           $('#myLentes').modal('toggle');
+          $("#especificaciones"+fila).prop("disabled", false);
         }
         else {
           swal("Error", "Debe seleccionar un tipo y material", "error");
@@ -150,46 +187,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     </script>
 
     <style type="text/css">
-    .checkbox label:after {
-      content: '';
-      display: table;
-      clear: both;
-    }
 
-    .checkbox .cr {
-      position: relative;
-      display: inline-block;
-      border: 1px solid #a9a9a9;
-      border-radius: .25em;
-      width: 1.3em;
-      height: 1.3em;
-      float: left;
-      margin-right: .5em;
-    }
-
-    .checkbox .cr .cr-icon {
-      position: absolute;
-      font-size: .8em;
-      line-height: 0;
-      top: 50%;
-      left: 15%;
-    }
-
-    .checkbox label input[type="checkbox"] {
-      display: none;
-    }
-
-    .checkbox label input[type="checkbox"]+.cr>.cr-icon {
-      opacity: 0;
-    }
-
-    .checkbox label input[type="checkbox"]:checked+.cr>.cr-icon {
-      opacity: 1;
-    }
-
-    .checkbox label input[type="checkbox"]:disabled+.cr {
-      opacity: .5;
-    }
     </style>
   </head>
 
@@ -292,7 +290,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                           <th width="10%">Seleccionar</th>
                                           <th width="40%">Nombre del Cliente</th>
                                           <th width="25%">Modelo de los lentes</th>
-                                          <th width="15%">Examen</th>
+                                          <th width="15%" colspan="2">Acciones</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -314,7 +312,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             $cliente = obtenerValorSQL($consulta, "cliente", "");
 
                                             $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
-                                            $modelo = obtenerValorSQL($consulta, "id", "");
+                                            $modelo = obtenerValorSQL($consulta, "modelo", "");
                                           }
                                           ?>
 
@@ -331,7 +329,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td><?php echo $cliente ?></td>
 
                                             <td><?php echo $modelo ?></td>
-                                            <td class="text-center"><button type="button" class="btn btn-success"><i class="fa fa-th-list"></i> <span>Ver</span></button></td>
+                                            <td class="text-center">
+                                              <button type="button" class="btn btn-warning" onclick="verExamen()"><i class="fa fa-book"></i></button>
+                                              <button id="<?php echo "especificaciones".$cont ?>" type="button" class="btn btn-info" onclick="especificaciones(<?php echo $cont ?>)" disabled><i class="fa fa-th-list"></i></button>
+                                            </td>
                                           </tr>
                                           <?php
                                           $cont++;
@@ -375,40 +376,40 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                   <tbody>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="CR 39">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="CR 39" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>CR 39</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="PLOY">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="PLOY" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>PLOY</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="VIDRIO">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="VIDRIO" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>VIDRIO</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="HI INDEX">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="HI INDEX" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>HI INDEX</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="HI LITE">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="HI LITE" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>HI LITE</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="material_lente" id="material_lente" value="otro" onchange="activarOtro(1)">
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="otro" onclick="activarOtro(1, 'si')">
                                                       </td>
                                                       <td>
-                                                        <input type="text" class="form-control" id="otro_material_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" >
+                                                        <input type="text" class="form-control" id="otro_material_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
                                                       </td>
                                                     </tr>
                                                   </tbody>
@@ -428,34 +429,34 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                   <tbody>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="VISION SENCILLA">
+                                                        <input class="medium" id="tipo_lente" name="tipo_lente" type="radio" value="VISION SENCILLA" onclick="activarOtro(2, 'no')">
                                                       </td>
                                                       <td>VISION SENCILLA</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="FLAP TOP">
+                                                        <input class="medium" id="tipo_lente" name="tipo_lente" type="radio" value="FLAP TOP" onclick="activarOtro(2, 'no')">
                                                       </td>
                                                       <td>FLAP TOP</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="PROGRESIVO">
+                                                        <input class="medium" id="tipo_lente" name="tipo_lente" type="radio" value="PROGRESIVO" onclick="activarOtro(2, 'no')">
                                                       </td>
                                                       <td>PROGRESIVO</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="KRIP-TOP">
+                                                        <input class="medium" id="tipo_lente" name="tipo_lente" type="radio" value="KRIP-TOP" onclick="activarOtro(2, 'no')">
                                                       </td>
                                                       <td>KRIP-TOP</td>
                                                     </tr>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" class="flat" name="tipo_lente" id="tipo_lente" value="otro">
+                                                        <input class="medium" id="tipo_lente" name="tipo_lente" type="radio" value="otro" onclick="activarOtro(2, 'si')">
                                                       </td>
                                                       <td>
-                                                        <input type="text" class="form-control" id="otro_tipo_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" >
+                                                        <input type="text" class="form-control" id="otro_tipo_lente" class="form-control col-md-9 col-xs-12" placeholder="Otro (especifique)" disabled>
                                                       </td>
                                                     </tr>
                                                   </tbody>
@@ -475,8 +476,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   </div>
                                 </div>
                                 <!--Fin modal-->
-
-                                  <!--Aqui finaliza-->
+                                <!--Aqui finaliza-->
                               </form>
                             </div>
                           </div>

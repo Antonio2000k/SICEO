@@ -222,6 +222,14 @@ if(isset($_SESSION["acumulador"])){
                     <div class="x_panel">
                         <div class="x_title">
                             <h2>COMPRAS AL CREDITO</h2>
+                            <div class="form-group" style="float: right;">
+                                <div class="btn-group" >
+                                    <button float-right class="btn btn-info btn-icon left-icon "  onclick="RepCompra('credito')">
+                                      <i class="fa fa-th-list"></i>
+                                      <span style="color: white">Reporte</span>
+                                    </button>
+                                </div>  
+                            </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">

@@ -375,3 +375,11 @@ function mostrarFormularios(opcion){
     $("#divTip").hide();
     
   }
+
+function RepPro(opcion){
+    if(opcion === 'activo'){
+          window.open("../../reporteProducto.php?estado=t");
+    } else if(opcion === 'baja'){
+          window.open("../../reporteProducto.php?estado=f");
+    }
+}

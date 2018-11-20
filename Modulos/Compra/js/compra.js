@@ -505,6 +505,12 @@ function showResponse(responseText, statusText, xhr, $form)  {
         alertaDetener("Informacion","Producto no agregado","error"); 
 }
 
-
+function RepCompra(opcion){
+    if(opcion === 'contado'){
+          window.open("../../reporteCompras.php?compratipo=contado");
+    } else if(opcion === 'credito'){
+          window.open("../../reporteCompras.php?compratipo=credito");
+    }
+}
 
 

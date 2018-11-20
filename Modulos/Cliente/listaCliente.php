@@ -80,23 +80,7 @@ if(isset($_REQUEST["id"])){
               </div>
             </div>
             
-            <div class="form-group" style="float: right;">
-              <div class="btn-group" >
-                
-                <button float-right class="btn btn-info btn-icon left-icon dropdown-toggle"  data-toggle="dropdown" >
-                  <i class="fa fa-th-list"></i>
-                  <span>Reportes</span>
-                </button>
-                <ul class="dropdown-menu " role="menu">
-                  <li><a href="#" data-toggle="modal" data-target="#impresion"> FECHA</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#sexo"> SEXO</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#fesexo"> FECHA Y SEXO</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#edad"> EDAD</a></li>
-                </ul>
-              </div> 
-              
-                      
-            </div>
+            
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -120,8 +104,26 @@ if(isset($_REQUEST["id"])){
                              <div class="x_panel">
                               <div class="x_title">
                                 <h2>CLIENTES </h2>
+                                
+                                <div class="form-group" style="float: right;">
+                                  <div class="btn-group" >
+                                    
+                                    <button float-right class="btn btn-info btn-icon left-icon dropdown-toggle"  data-toggle="dropdown" >
+                                      <i class="fa fa-th-list"></i>
+                                      <span style="color: white">Reportes</span>
+                                    </button>
+                                    <ul class="dropdown-menu " role="menu">
+                                      <li><a href="#" data-toggle="modal" data-target="#impresion"> FECHA</a></li>
+                                      <li><a href="#" data-toggle="modal" data-target="#sexo"> SEXO</a></li>
+                                      <li><a href="#" data-toggle="modal" data-target="#fesexo"> FECHA Y SEXO</a></li>
+                                      <li><a href="#" data-toggle="modal" data-target="#edad"> EDAD</a></li>
+                                    </ul>
+                                  </div> 
+                                  
+                                          
+                                </div>
                                 <div class="clearfix"></div>
-                            </div>
+                              </div>
                                 <div class="x_content">
                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                   <thead>
@@ -477,7 +479,7 @@ if(isset($_REQUEST["id"])){
                       <button class='btn btn-info btn-icon left-icon pull-left' id='impri' data-dismiss='modal' onclick='RepEdad()' > <i class='fa fa-print'></i> Imprimir</button>
                     
                     
-                    <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-round btn-warning pull-right" onclick='limpiarFormulario()' data-dismiss="modal">Cancelar</button>
                   </div>
                 </div>
             </div>

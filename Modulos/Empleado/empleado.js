@@ -218,4 +218,11 @@ function verificarCodigo(opcion) {
     xmlhttp.send();
 }
 
+function RepEmp(opcion){
+    if(opcion === 'activo'){
+          window.open("../../reporteEmpleados.php?estado=t");
+    } else if(opcion === 'baja'){
+          window.open("../../reporteEmpleados.php?estado=f");
+    }
+}
     

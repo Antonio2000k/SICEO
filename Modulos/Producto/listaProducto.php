@@ -68,17 +68,7 @@ if(isset($_REQUEST["id"])){
                                 </div>
                             </div>
 
-        <div class="form-group" style="float: right;">
-              <div class="btn-group" >
-                
-                <button float-right class="btn btn-info btn-icon left-icon "  data-toggle="modal" data-target="#edad">
-                  <i class="fa fa-th-list"></i>
-                  <span>Reportes</span>
-                </button>
-              </div> 
-              
-                      
-            </div>
+            
          <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -309,8 +299,17 @@ if(isset($_REQUEST["id"])){
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>PRODUCTOS </h2>
+                        <div class="form-group" style="float: right;">
+                          <div class="btn-group" >
+                            <button float-right class="btn btn-info btn-icon left-icon "  data-toggle="modal" data-target="#edad">
+                              <i class="fa fa-th-list"></i>
+                              <span style="color: white">Reportes</span>
+                            </button>
+                          </div>    
+                        </div>
                         <div class="clearfix"></div>
                     </div>
+                    
                     <div class="btn-group" style="margin-left: 50%;">
 							<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i>  Exportar Tabla</button>
 							<ul class="dropdown-menu " role="menu">
@@ -521,7 +520,7 @@ if(isset($_REQUEST["id"])){
               <br>
                 <center>
                   <button class="btn btn-info btn-icon left-icon " id="e1" onclick="mostrarFormularios('prov');"> <i class="fa fa-print"></i> Proveedor</button> 
-                  <button class="btn btn-info btn-icon left-icon " id="e2" onclick="mostrarFormularios('est');"> <i class="fa fa-print"></i> Estado</button> 
+                  <button class="btn btn-info btn-icon left-icon " id="e2" onclick="RepPro('activo');"> <i class="fa fa-print"></i> Activos</button> 
                   <button class="btn btn-info btn-icon left-icon " id="e3" onclick="mostrarFormularios('tipo');"> <i class="fa fa-print"></i> Tipo</button> 
                   <button class="btn btn-info btn-icon left-icon " id="e4" onclick="mostrarFormularios('marca');"> <i class="fa fa-print"></i> Marca</button> 
                   <button class="btn btn-info btn-icon left-icon " id="e5" onclick="mostrarFormularios('garantia');"> <i class="fa fa-print"></i> Garantia</button> 

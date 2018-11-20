@@ -76,14 +76,7 @@ if(isset($_REQUEST["id"])){
                   </div>
               </div>
             </div>
-            <div class="form-group" style="float: right;">
-              <div class="btn-group" >
-                <button float-right class="btn btn-info btn-icon left-icon "  onclick="RepP('activo')">
-                  <i class="fa fa-th-list"></i>
-                  <span>Reporte</span>
-                </button>
-              </div>  
-            </div>
+            
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -217,6 +210,18 @@ if(isset($_REQUEST["id"])){
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
+                              <div class="x_title">
+                                <h2>PROVEEDORES ACTIVOS </h2>
+                                <div class="form-group" style="float: right;">
+                                  <div class="btn-group" >
+                                    <button float-right class="btn btn-info btn-icon left-icon "  onclick="RepP('activo')">
+                                      <i class="fa fa-th-list"></i>
+                                      <span style="color: white">Reporte</span>
+                                    </button>
+                                  </div>  
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
                               <div class="x_content">
                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                   <thead>

@@ -10,7 +10,6 @@
     </thead>
     <tbody>
         <?php
-        $array = array (0=>'Enero',1=>'Febrero',2=>'Marzo',3=>'Abril',4=>'Mayo',5=>'Junio',6=>'Julio',7=>'Agosto',8=>'Septiembre',9=>'Octubre',10=>'Noviembre',11=>'Diciembre');
         include("../../../Config/conexion.php");
         //echo '<label>'.$conexion.'</label>';
         $tipo=$_REQUEST['tipo'];
@@ -26,7 +25,7 @@
         ?>
             <tr class="text-center">
                 <td hidden><?php echo $i;?></td>
-                <th><?php  echo $array[($i-1)];?></th>
+                <th><?php  echo ucwords(nombremes($i));?></th>
                 <td><?php if($resultado[0]===null)
                                 echo '$ 0.00';
                             else
@@ -39,8 +38,21 @@
                                 echo '$'.$resultado[1];        
                     ?>
                 </td>
-                <td class="text-center"><button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $i; ?>','egreso')"> <i class="fa fa-list-ul"></i></button></td>              
+                <?php if($resultado[1]===null){
+                echo '<td class="text-center"><button class="btn btn-success btn-icon left-icon" disabled> <i class="fa fa-list-ul"></i></button></td>';
+                    }
+                  else{
+                ?>
+                <td class="text-center"><button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('','<?php echo $i;?>','egreso')"> <i class="fa fa-list-ul"></i></button></td>
+               <?php } ?>                          
             </tr>
             <?php } ?>
     </tbody>
 </table>
+<?php
+    function nombremes($mes){
+        setlocale(LC_TIME, 'spanish');  
+        $nombre=strftime("%B",mktime(0, 0, 0, $mes, 1, 2000)); 
+        return $nombre;
+    } 
+?>

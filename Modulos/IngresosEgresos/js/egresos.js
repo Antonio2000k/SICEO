@@ -165,6 +165,8 @@ function actualizaTabla(){
             xmlhttp.send();
         }
 function verMas(str, opcion,tipo) {
+    alert('Opcion  '+opcion);
+    alert('Tipo  '+tipo);
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }

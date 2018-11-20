@@ -8,6 +8,9 @@ if($mes<=9)
 
   pg_query("BEGIN");
 if($tipo==='egreso'){
+            $número = cal_days_in_month(CAL_GREGORIAN, $mes, $year); // 31
+            //echo "Hubo {$número} días en agosto del 2003";
+    
             $consulta="select c.rabono, c.ffecha_compra, rtotal_compra from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."' order by c.ffecha_compra";
             $query_s=pg_query($conexion,$consulta);
             $cont=0;

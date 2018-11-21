@@ -1,14 +1,13 @@
-function mostrarResultados(year){
+function mostrarResultados(year,tipo){
     //alert('Entre');
                     $('.resultados').html('<div id="container"></div>');
                     $.ajax({
                         type: 'POST',
                         url: 'ajax/consultaYear.php',
-                        data: 'year='+year+'&tipo=egreso',
+                        data: 'year='+year+'&tipo='+tipo,
                         dataType: 'JSON',
                         success:function(response){
-                            //alert(response);
-                            actualizaTabla();
+                            actualizaTabla("anual",tipo);
                            Highcharts.chart('container', {
                 chart: {
                     type: 'spline'
@@ -53,8 +52,7 @@ function mostrarResultados(year){
                     return false;
                 }
 
-function mostrarResultadosMes(year,mesNumero, mesNombre){
-   // alert('Entre');
+function mostrarResultadosMes(year,mesNumero, mesNombre,tipo){
     if(year===''){
         year=document.getElementById('year').value;
         mesNumero=document.getElementById('mes').value;
@@ -65,90 +63,59 @@ function mostrarResultadosMes(year,mesNumero, mesNombre){
                     $.ajax({
                         type: 'POST',
                         url: 'ajax/consultaMes.php',
-                        data: 'year='+year+'&mes='+mesNumero+'&tipo=egreso',
+                        data: 'year='+year+'&mes='+mesNumero+'&tipo='+tipo,
                         dataType: 'JSON',
                         success:function(response){
-                            alert(response);
-                            Highcharts.chart('container', {
-                chart: {
-                    type: 'spline'
-                },
-                title: {
-                    text: 'Egresos Mensuales por el Mes '+mesNombre
-                },
-                subtitle: {
-                    text: 'Ventas'
-                },
-                xAxis: {
-                    categories: response[1]
+                            actualizaTabla("mensual",tipo);
+            var chart = new Highcharts.Chart({
+    chart: {
+        renderTo: 'container',
+        type: 'column',
+        options3d: {
+            enabled: true,
+            alpha: 15,
+            beta: 15,
+            depth: 50,
+            viewDistance: 25
+        }
+    },
+    title: {
+        text: 'Egresos Mensuales por el Mes '+mesNombre
+    },
+    subtitle: {
+        text: 'Egresos'
+    },
+    xAxis: {
+                    categories: response[2]
                 },
                 yAxis: {
                     title: {
                         text: 'Egresos ($)'
                     }
                 },
-                tooltip: {
-                    crosshairs: true,
-                    shared: true
-                },
-                plotOptions: {
-                    spline: {
-                        marker: {
-                            radius: 4,
-                            lineColor: '#666666',
-                            lineWidth: 1
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Compras',
-                    data: response[2]
+    plotOptions: {
+        column: {
+            depth: 25
+        }
+    },
+     series: [{
+                    name: 'Egresos Netos',
+                    data: response[0]
                 }, {
-            name: 'London',
-            data: response[0]
+            name: 'Egresos Totales',
+            data: response[1]
         }]
-            });
-                        }
-                    });
-                    return false;
-                }
+});
+                          
+            }
+        });
+        return false;
+    }
 
-function consultaPorYear(){
-    alert("entrar");
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("cargala").innerHTML = xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("post", "ajax/consultaYear.php?year=2018", true);
-            xmlhttp.send();
-        }
-function consultaPorMes(mes){
-    //lert("entrar");
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("cargala").innerHTML = xmlhttp.responseText;                     
-                }
-            }
-            xmlhttp.open("post", "ajax/consultaMes.php?year=2018&mes="+mes, true);
-            xmlhttp.send();
-        }
-
-function actualizaTabla(){
-    //alert(conjunto);
-    //alert('Entre');
+function actualizaTabla(rango,tipo){
+    var year=document.getElementById('year').value;
+    var mes=document.getElementById('mes').value;
+    //alert("tipo   "+tipo);
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }
@@ -161,12 +128,15 @@ function actualizaTabla(){
                     $('.tblDatos').DataTable();
                 }
             }
-            xmlhttp.open("post", "ajax/actualizarTablaDatos.php?tipo=egreso"+"&year="+document.getElementById('year').value, true);
+            xmlhttp.open("post", "ajax/actualizarTablaDatos.php?tipo="+tipo+"&year="+year+"&mes="+mes+"&rango="+rango, true);
             xmlhttp.send();
         }
-function verMas(str, opcion,tipo) {
-    alert('Opcion  '+opcion);
-    alert('Tipo  '+tipo);
+function verMas(str, opcion,tipo,rango,tiempo) {
+    alert("Opcion  "+opcion);
+    alert('Rango '+rango);
+    alert('Tipo '+tipo);
+    alert('Tiempo '+tiempo);
+   var year=document.getElementById("year").value;
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
             }
@@ -179,11 +149,10 @@ function verMas(str, opcion,tipo) {
                     $('.tablaDetalle').DataTable();
                 }
             }
-            xmlhttp.open("post", "ajax/cargarDetalle.php?mes=" + opcion+"&tipo="+tipo+"&year="+document.getElementById("year").value, true);
+            xmlhttp.open("post", "ajax/cargarDetalle.php?mes=" + opcion+"&tipo="+tipo+"&year="+year+"&rango="+rango+"&tiempo="+tiempo, true);
             xmlhttp.send();
 }
 function mostrarResultadosNetos(year,mesNumero, mesNombre,tipo,tipoFlujo){
-    alert('Entre');
     var indice;
     if(year===''){
         year=document.getElementById('year').value;
@@ -194,15 +163,15 @@ function mostrarResultadosNetos(year,mesNumero, mesNombre,tipo,tipoFlujo){
     if(tipoFlujo==="neto")
         indice=0;
     else 
-        indice=2;//Egresos Netos
+        indice=1;//Egresos Netos
         
-                    $('.resultados').html('<div id="container"></div>');
-                    $.ajax({
-                        type: 'POST',
-                        url: 'ajax/consultaMes.php',
-                        data: 'year='+year+'&mes='+mesNumero+"&tipo="+tipo+"&flujo="+tipoFlujo,
-                        dataType: 'JSON',
-                        success:function(response){
+$('.resultados').html('<div id="container"></div>');
+$.ajax({
+    type: 'POST',
+    url: 'ajax/consultaMes.php',
+    data: 'year='+year+'&mes='+mesNumero+"&tipo="+tipo+"&flujo="+tipoFlujo,
+    dataType: 'JSON',
+    success:function(response){
 
 var chart = new Highcharts.Chart({
     chart: {
@@ -223,7 +192,7 @@ var chart = new Highcharts.Chart({
         text: 'Egresos'
     },
     xAxis: {
-                    categories: response[1]
+                    categories: response[2]
                 },
                 yAxis: {
                     title: {

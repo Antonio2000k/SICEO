@@ -10,8 +10,9 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>SICEO | Compras </title>
     <?php include "../../ComponentesForm/estilos.php";  ?>
-    <link href="css/propio.css" rel="stylesheet">
-    <script src="js/ingresos.js"></script>
+    <link href="../Compra/css/propio.css" rel="stylesheet">    
+    <link href="css/estiloModal.css" rel="stylesheet">
+    <script src="js/egresosIngreso.js"></script>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -55,9 +56,9 @@
                         </div>
                         <div class="x_content">
                         <div class="row">
-                           <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                           <div class="col-md-8 col-sm-8 col-xs-12 text-center">
                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultados(this.value);" class="SYear" style="width: 100%" id="year">
+                           <select onChange="mostrarResultados(this.value,'ingreso');" class="SYear" style="width: 100%" id="year">
                                 <?php
                                    $year=date("Y");
                                     for($i=2015;$i<=$year;$i++){
@@ -71,7 +72,7 @@
                             </select>
                                </div>
                             <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultadosNetos('','','');" class="SMes" style="width: 100%" id="mes">
+                           <select onChange="mostrarResultadosMes('','','','ingreso');" class="SMes" style="width: 100%" id="mes">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
                                 <option value="3">Marzo</option>
@@ -88,32 +89,33 @@
                             </div>
                             
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12 text-center">
-                              
-                                <button type="button" class="btn btn-round btn-primary" data-toggle="modal" data-target="#impresion" onclick="consultaPorMes()">Cargar</button>
+                            <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','ingreso','neto');"> <i class="fa fa-bar-chart"></i>Ingresos Netos</button> 
+                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','ingreso','totales');"> <i class="fa fa-bar-chart"></i>Ingresos Totales</button> 
+                            
                             </div>
                               <div class="resultados"> <div id="container"></div></div>
                                
-                               <div id="sliders">
-    <table>
-        <tr>
-        	<td>Alpha Angle</td>
-        	<td><input id="alpha" type="range" min="0" max="45" value="15"/> <span id="alpha-value" class="value"></span></td>
-        </tr>
-        <tr>
-        	<td>Beta Angle</td>
-        	<td><input id="beta" type="range" min="-45" max="45" value="15"/> <span id="beta-value" class="value"></span></td>
-        </tr>
-        <tr>
-        	<td>Depth</td>
-        	<td><input id="depth" type="range" min="20" max="100" value="50"/> <span id="depth-value" class="value"></span></td>
-        </tr>
-    </table>
-</div>
+                               
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title text-center" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)"><h2 style="text-indent: 400px; color: white">Datos</h2>
+                            <ul class="nav navbar-right panel_toolbox"><li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                    <div class="x_content" id="cargala">
+                       
+
+                    </div>
+                </div>
+            </div>
+            
         </div>
                                                                                                 
                                                                                             
@@ -128,12 +130,12 @@
 
         
         <!--- Modal Detalle Compra-->
-        <div class="modal fade" id="modalDetalleCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade fullscreen-modal" id="modalDetalleCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <center>
-                            <h3 class="modal-title" id="exampleModalLabel">Detalle Compra</h3> </center>
+                            <h3 class="modal-title" id="exampleModalLabel">Ingreso</h3> </center>
                     </div>
                     <div class="modal-body" id="cargaDetalle"> </div>
                     <div class="modal-footer">
@@ -204,7 +206,6 @@
 </div>
     <?php include "../../ComponentesForm/scripts.php";    ?>
 <script src="../../vendors//Highcharts-6.2.0/code/highcharts.js"></script>
-<script src="../../vendors/Highcharts-6.2.0/code/highcharts-3d.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/exporting.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/export-data.js"></script>
     <script type="text/javascript">
@@ -214,23 +215,7 @@
         });
 var fecha = new Date();
 var year = fecha.getFullYear();
-$(document).ready(mostrarResultados(year));  
-function showValues() {
-    $('#alpha-value').html(chart.options.chart.options3d.alpha);
-    $('#beta-value').html(chart.options.chart.options3d.beta);
-    $('#depth-value').html(chart.options.chart.options3d.depth);
-}
-
-$(document).ready(function() {
-// Activate the sliders
-$('#sliders input').on('input change', function () {
-    chart.options.chart.options3d[this.id] = parseFloat(this.value);
-    showValues();
-    chart.redraw(false);
-});
-    });
-
-showValues();
+$(document).ready(mostrarResultados(year,'ingreso'));  
 </script>
 </body>
 </html>

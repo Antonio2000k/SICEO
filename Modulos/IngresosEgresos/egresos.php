@@ -51,9 +51,9 @@
                         </div>
                     <div class="x_content">
                         <div class="row">
-                           <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                           <div class="col-md-8 col-sm-8 col-xs-12 text-center">
                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultados(this.value);" class="SYear" style="width: 100%" id="year">
+                           <select onChange="mostrarResultados(this.value,'egreso');" class="SYear" style="width: 100%" id="year">
                                 <?php
                                    $year=date("Y");
                                     for($i=2015;$i<=$year;$i++){
@@ -67,7 +67,7 @@
                             </select>
                                </div>
                             <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultadosMes('','','');" class="SMes" style="width: 100%" id="mes">
+                           <select onChange="mostrarResultadosMes('','','','egreso');" class="SMes" style="width: 100%" id="mes">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
                                 <option value="3">Marzo</option>
@@ -84,10 +84,10 @@
                             </div>
                             
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12 text-center">
+                            <div class="col-md-4 col-sm-4 col-xs-12 text-right">
                                 <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','egreso','neto');"> <i class="fa fa-bar-chart"></i>Egresos Netos</button> 
                                 <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','egreso','totales');"> <i class="fa fa-bar-chart"></i>Egresos Totales</button> 
-                                <button type="button" class="btn btn-round btn-primary" data-toggle="modal" data-target="#impresion" onclick="actualizaTabla()">Cargar</button>
+                            
                             </div>
                               <div class="resultados"> <div id="container"></div></div>
                            
@@ -203,7 +203,7 @@
    <script src="../../vendors//Highcharts-6.2.0/code/highcharts.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/exporting.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/export-data.js"></script>
-<script src="js/egresos.js"></script>
+<script src="js/egresosIngreso.js"></script>
 <script type="text/javascript">
      $(function () {
             $('.SYear').select2()
@@ -211,7 +211,7 @@
         });
 var fecha = new Date();
 var year = fecha.getFullYear();
-$(document).ready(mostrarResultados(year));  
+$(document).ready(mostrarResultados(year,"egreso"));  
 
 </script>
 		

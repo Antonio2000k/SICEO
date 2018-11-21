@@ -3,37 +3,37 @@ $year=$_REQUEST['year'];
 $mes=$_REQUEST['mes'];
 $tipo=$_REQUEST["tipo"];
 include("../../../Config/conexion.php");
+$numero = cal_days_in_month(CAL_GREGORIAN, $mes, $year);
 if($mes<=9)
     $mes='0'.$mes;
-
+$array;
   pg_query("BEGIN");
-if($tipo==='egreso'){
-            $número = cal_days_in_month(CAL_GREGORIAN, $mes, $year); // 31
-            //echo "Hubo {$número} días en agosto del 2003";
-    
-            $consulta="select c.rabono, c.ffecha_compra, rtotal_compra from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."' order by c.ffecha_compra";
-            $query_s=pg_query($conexion,$consulta);
-            $cont=0;
-            $matriz;
-                while($fila=pg_fetch_array($query_s)){
-                $matriz[0][$cont]=round($fila[0]);
-                $matriz[1][$cont]=$fila[1];
-                $matriz[2][$cont]=round($fila[2]);
-                    $cont++;
-                }
-        echo json_encode($matriz);
+if($tipo==='egreso'){  
+            pg_query("BEGIN");
+            for($i=1 ; $i<=$numero; $i++){
+                if($i<10)
+                    $dia='0'.$i;
+                else
+                    $dia=$i;
+                $resultado=pg_fetch_array(pg_query($conexion,"select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$dia."'"));
+                $array[0][($i-1)]=round($resultado[0]);
+                $array[1][($i-1)]=round($resultado[1]);
+                $array[2][($i-1)]=round($i);
+            }
 }
 if($tipo==='ingreso'){
-    $consulta="SELECT o.rtotal, o.ffecha, notab.rsaldo FROM ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') = '".$year."-".$mes."'";
-            $query_s=pg_query($conexion,$consulta);
-            $cont=0;
-            $matriz;
-                while($fila=pg_fetch_array($query_s)){
-                $matriz[0][$cont]=round($fila[0]);
-                $matriz[1][$cont]=$fila[1];
-                $matriz[2][$cont]=round($fila[2]);
-                    $cont++;
-                }
-        echo json_encode($matriz);
+    
+    for($i=1 ; $i<=$numero; $i++){
+        if($i<10)
+                    $dia='0'.$i;
+                else
+                    $dia=$i;
+    $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) FROM ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') = '".$year."-".$mes."-".$dia."'";
+            $resultado=pg_fetch_array(pg_query($conexion,$consulta));
+                $array[0][($i-1)]=round($resultado[0]);
+                $array[1][($i-1)]=round($resultado[1]);
+                $array[2][($i-1)]=round($i);
+                }    
 }
+echo json_encode($array);
 ?>

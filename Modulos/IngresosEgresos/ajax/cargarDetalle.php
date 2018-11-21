@@ -12,11 +12,29 @@
                         $mes=$_REQUEST["mes"];
                         $year=$_REQUEST["year"];
                         $tipo=$_REQUEST["tipo"];
-                          if($mes<10)
-                              $mes='0'.$mes;
-                        if($tipo==="egreso"){
+                        $rango=$_REQUEST['rango'];
+                        $tiempo=$_REQUEST['tiempo'];
                              pg_query("BEGIN");
-                            $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
+                        
+                        if($tipo==="egreso"){
+                            if($rango==='anual'){
+                                if($mes<10)
+                                    $mes='0'.$mes;
+                                $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
+                            }
+                            if($rango==='mensual')
+                                $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."'";
+                        }
+                        if($tipo==="ingreso"){
+                            if($rango==='anual'){
+                                if($mes<10)
+                                    $mes='0'.$mes;
+                                $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM')='".$year."-".$mes."'";
+                            }
+                            if($rango==='mensual')
+                                $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."'";
+                        }
+                            //echo '<label>'.$consulta.'</label>';
                             $resultado=pg_query($conexion,$consulta);
                             $nue=pg_num_rows($resultado);
                             if($nue>0){
@@ -36,9 +54,21 @@
                                 echo '<br><br><div class="text-center infoCompleto"><strong><h5><i class="fa fa-info-circle"></i> Detalle </strong></h5></div><br>';
                                 }
                             }
-                        }
+                        
                         pg_query("BEGIN");
-                        $consulta="select c.rabono, c.ffecha_compra, rtotal_compra from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."' order by c.ffecha_compra";
+                        if($tipo==="egreso"){
+                            if($rango==='anual')
+                            $consulta="select sum(c.rabono), c.ffecha_compra, sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."' GROUP BY c.ffecha_compra order by c.ffecha_compra";
+                            if($rango==="mensual")
+                            $consulta="select c.rabono, c.ffecha_compra, rtotal_compra from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."' order by c.ffecha_compra";
+                        }
+                        if($tipo==="ingreso"){
+                            if($rango==='anual'){
+                                $consulta="SELECT  sum(notab.rsaldo), o.ffecha, sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM')='".$year."-".$mes."' group by o.ffecha order by o.ffecha";
+                            }
+                            if($rango==='mensual')
+                                $consulta="SELECT notab.rsaldo, o.ffecha, o.rtotal from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."' order by o.ffecha";
+                        }
                         $resultado=pg_query($conexion,$consulta);
                         $nue=pg_num_rows($resultado);
                         if($nue>0){

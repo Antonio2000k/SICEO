@@ -41,24 +41,24 @@
         }
 
         if($query) {
-          $restante=$fila[2]-$abonado;
+          $restante=round($fila[2], 2)-round($abonado, 2);
         }
       ?>
-      <td>$<?php echo $restante; ?></td>
+      <td>$<?php echo round($restante, 2); ?></td>
       <td class="text-center">
         <?php
-        if($restante==0) {
+        if(round($restante, 2)==0) {
           ?>
-          <button class="btn btn-danger btn-icon left-icon" onclick="abonarCuenta(<?php echo $restante ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
+          <button class="btn btn-danger btn-icon left-icon" onclick="abonarCuenta(<?php echo round($restante, 2) ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
           <?php
         }
         else {
           ?>
-          <button class="btn btn-success btn-icon left-icon" onclick="abonarCuenta(<?php echo $restante ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
+          <button class="btn btn-success btn-icon left-icon" onclick="abonarCuenta(<?php echo round($restante, 2) ?>, <?php echo $fila[0] ?>)"> <i class="fa fa-money"></i> <span></span></button>
           <?php
         }
         ?>
-        <button class="btn btn-warning btn-icon left-icon" onclick="reporteAbono(<?php echo $fila[0] ?>)"> <i class="fa fa-book"></i> <span></span></button>
+        <button class="btn btn-warning btn-icon left-icon" onclick="reporteAbono(<?php echo $fila[0]; ?>)"> <i class="fa fa-book"></i> <span></span></button>
       <?php } ?>
       </td>
     </tr>

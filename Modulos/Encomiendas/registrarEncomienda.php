@@ -1,5 +1,6 @@
 <?php
 include '../../Config/conexion.php';
+$cantidad = 0;
 
 function obtenerValorSQL($consulta, $opcion, $id) {
   if($consulta != null) {
@@ -62,6 +63,23 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         alert("Mostrara el reporte del examen");
       }
 
+      function obtenerDatosEncomendero(obj) {
+        if(obj!="") {
+          $.post("buscar.php",{
+            "texto":obj},function(respuesta) {
+              if(respuesta!="") {
+                document.getElementById('nombre_encomendero').style.borderColor="#21df2c";
+                document.getElementById('nombre_encomendero').value=obj;
+                document.getElementById("idEncomendero").value = respuesta;
+              }
+              else {
+                document.getElementById('nombre_encomendero').style.borderColor="#C70039";
+                document.getElementById('nombre_encomendero').value="";
+              }
+          });
+        }
+      }
+
       function cambiar() {
         //Parametros de lente
         var fila = document.getElementById('filaLenteModal').value-1;
@@ -100,7 +118,41 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       }
 
       function mostrarListado() {
-        alert("Mostrara un listado de las encomiendas que se han agregado");
+        //Borrar tabla
+        document.getElementById("datatable-listado").innerHTML = "";
+
+        //Empezar con el llenado.
+        var table=document.getElementById("datatable-listado");
+
+        var table_len=table.rows.length;
+        var row;
+
+        //Encabezado...
+        row = table.insertRow(table_len).outerHTML = "<tr>"+
+        "<th>#</th>"+
+        "<th>Material del lente</th>"+
+        "<th>Tipo de lente</th>"+
+        "</tr>";
+
+        table_len=table.rows.length;
+
+        while((table_len-1)<filaLentes.length) {
+          row = table.insertRow(table_len).outerHTML = "<tr>"+
+          "<td>"+
+          ""+table_len+""+
+          "</td>"+
+          "<td>"+
+          ""+materialLentes[table_len-1]+""+
+          "</td>"+
+          "<td>"+
+          ""+tipoLentes[table_len-1]+""+
+          "</td>"+
+          "</tr>";
+
+          table_len++;
+        }
+
+        $('#myListadoLentes').modal();
       }
 
       function checkado(id) {
@@ -127,9 +179,12 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               swal("Informacion", "Encomienda eliminada", "info");
               document.getElementById('idCheckbox').value="";
               $("#especificaciones"+id).prop("disabled", true);
-              filaLentes[id] = -1;
-              materialLentes[id] = "";
-              tipoLentes[id] = "";
+
+              filaLentes.splice(id-1,id);
+              materialLentes.splice(id-1,id);
+              tipoLentes.splice(id-1,id);
+
+              <?php $cantidad--; ?>
             }
             else {
               document.getElementById("examen"+id).checked=1;
@@ -205,6 +260,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           filaLentes.push(fila);
           materialLentes.push(material);
           tipoLentes.push(tipo);
+          <?php $cantidad++; ?>
 
           $('#myLentes').modal('toggle');
           $("#especificaciones"+fila).prop("disabled", false);
@@ -313,14 +369,30 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <!--Codigos-->
                                   <input type="hidden" id="bandera" name="bandera" value="">
                                   <input type="hidden" id="idCheckbox" name="idCheckbox" value="">
+                                  <input type="hidden" id="idEncomendero" name="idEncomendero" value="">
                                   <!--fin codigos-->
 
                                   <div class="item form-group">
                                     <label class="control-label col-sm-2 col-md-2 col-xs-12">Encomendero (*) </label>
                                     <div class="col-sm-7 col-md-7 col-xs-12">
-                                      <select class="form-control text-center" id="nombre_encomendero" style="font-size:medium">
-                                        <option value="">Seleccione</option>
-                                      </select>
+                                      <input type="text" class="form-control text-center" id="nombre_encomendero" style="font-size:medium" list="listaEncomenderos" oninput="obtenerDatosEncomendero(this.value);" placeholder="Nombre del encomendero">
+                                      <datalist id="listaEncomenderos">
+                                        <?php
+                                        $consulta = pg_query($conexion, "SELECT * FROM encomendero");
+                                        $cont = pg_num_rows($consulta);
+
+                                        while ($fila = pg_fetch_array($consulta)) {
+                                          ?>
+                                          <option value="<?php echo $fila[1]." ".$fila[2] ?>"><?php echo $fila[1]." ".$fila[2] ?></option>
+                                          <?php
+                                        }
+
+                                        if($cont==0) {
+                                          echo " <option value=''>No hay registros</option>";
+                                        }
+                                        ?>
+                                      </datalist>
+                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
 
                                     </div>
 
@@ -385,6 +457,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td class="text-center">
                                               <div class="checkbox">
                                                 <label>
+
                                                  <input type="checkbox" onclick="checkado(<?php echo $cont ?>)" id="<?php echo "examen".$cont ?>">
                                                  <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                                  </label>
@@ -566,6 +639,35 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <center>
                                           <button type="button" class="btn btn-info" data-dismiss="modal" onclick="cambiar()"><i class="fa fa-refresh"></i> Hacer cambios</button>
                                           <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cancelar()"><i class="fa fa-close"></i> Cancelar</button>
+                                        </center>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="modal fade" id="myListadoLentes" role="dialog">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Listado de lentes por enviar</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <table id="datatable-listado" class="table table-striped table-bordered">
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Material del lente</th>
+                                              <th>Tipo de lente</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <center>
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
                                         </center>
                                       </div>
                                     </div>

@@ -45,8 +45,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="Estilos/checkbox.css">
-    <link rel="stylesheet" href="Estilos/radio.css">
+    <link rel="stylesheet" href="css/checkbox.css">
+    <link rel="stylesheet" href="css/radio.css">
 
     <title>SICEO | Encomiendas</title>
 
@@ -61,6 +61,28 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
       function verExamen() {
         alert("Mostrara el reporte del examen");
+      }
+
+      function registarEncomiendas() {
+        var opc = false;
+
+        if(document.getElementById("idEncomendero").value=="" && document.getElementById("detalle").value=="" && filaLentes.length==0) {
+          swal("Error", "Debe completar los campos obligatorios", "error");
+        }
+        else {
+          opc = true;
+        }
+
+        $(document).ready(function(){
+          $("#frmEncomiendas").submit(function() {
+              if(opc) {
+                return true;
+              }
+              else {
+                return false;
+              }
+            });
+        });
       }
 
       function obtenerDatosEncomendero(obj) {
@@ -80,7 +102,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
       }
 
-      function cambiar() {
+      function cambiar(posicion) {
         //Parametros de lente
         var fila = document.getElementById('filaLenteModal').value-1;
 
@@ -96,6 +118,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
 
         $('#myLentes').modal({backdrop: 'static', keyboard: false});
+        document.getElementById("hayCambioLentes").value="si";
+        document.getElementById("idCambioLentes").value=fila;
       }
 
       function especificaciones(fila) {
@@ -180,9 +204,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               document.getElementById('idCheckbox').value="";
               $("#especificaciones"+id).prop("disabled", true);
 
-              filaLentes.splice(id-1,id);
-              materialLentes.splice(id-1,id);
-              tipoLentes.splice(id-1,id);
+              filaLentes.splice(id-1,1);
+              materialLentes.splice(id-1,1);
+              tipoLentes.splice(id-1,1);
 
               <?php $cantidad--; ?>
             }
@@ -251,16 +275,24 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
 
           if(tipo=="otro") {
-            document.getElementById("otro_tipo_lente").value
+            tipo = document.getElementById("otro_tipo_lente").value;
           }
           if(material=="otro") {
-            document.getElementById("otro_material_lente").value
+            material = document.getElementById("otro_material_lente").value;
           }
 
-          filaLentes.push(fila);
-          materialLentes.push(material);
-          tipoLentes.push(tipo);
-          <?php $cantidad++; ?>
+          if(document.getElementById("hayCambioLentes").value=="si") {
+            materialLentes[document.getElementById("idCambioLentes").value] = material;
+            tipoLentes[document.getElementById("idCambioLentes").value] = tipo;
+            swal("Informacion", "Se actualizo las especificaciones del lente", "info");
+          }
+          else {
+            filaLentes.push(fila);
+            materialLentes.push(material);
+            tipoLentes.push(tipo);
+            swal("Hecho", "Se agregaron las especificaciones del lente", "success");
+            <?php $cantidad++; ?>
+          }
 
           $('#myLentes').modal('toggle');
           $("#especificaciones"+fila).prop("disabled", false);
@@ -301,10 +333,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
       }
     </script>
-
-    <style type="text/css">
-
-    </style>
   </head>
 
   <body class="nav-md">
@@ -485,7 +513,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <div class="col-md-12 col-sm-6 col-xs-12">
                                           <div class="form-group">
                                             <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registarEncomiendas()"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
-                                            <button type="button" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                            <button type="reset" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                         </div>
                                       </center>
@@ -501,6 +529,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <h4 class="modal-title">Detalle del aro</h4>
                                       </div>
                                       <div class="modal-body">
+                                        <input type="hidden" id="hayCambioLentes" value="">
+                                        <input type="hidden" id="idCambioLentes" value="">
+
                                         <div class="item form-group">
                                           <div class="col-md-6 col-sm-6 col-xs-12">
                                             <div style="text-align: center">

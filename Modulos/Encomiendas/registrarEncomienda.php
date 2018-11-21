@@ -99,6 +99,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         alert("Mostrara un reporte de la encomienda");
       }
 
+      function mostrarListado() {
+        alert("Mostrara un listado de las encomiendas que se han agregado");
+      }
+
       function checkado(id) {
         if(document.getElementById("examen"+id).checked) {
           $('#myLentes').modal({backdrop: 'static', keyboard: false});
@@ -173,7 +177,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
         }
 
-        if(tipo!="" && material!="") {
+        var existeOtro =  false;
+
+        if((tipo=="otro" && document.getElementById("otro_tipo_lente").value=="") || (material=="otro" && document.getElementById("otro_material_lente").value=="")) {
+          existeOtro = true;
+        }
+
+        if(tipo!="" && material!="" && !existeOtro) {
           var fila = document.getElementById('idCheckbox').value;
           document.getElementById('idCheckbox').value = "";
 
@@ -183,6 +193,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           for (x = 0; x < objForm.material_lente.length; x++) {
             objForm.material_lente[x].checked=0;
+          }
+
+          if(tipo=="otro") {
+            document.getElementById("otro_tipo_lente").value
+          }
+          if(material=="otro") {
+            document.getElementById("otro_material_lente").value
           }
 
           filaLentes.push(fila);
@@ -279,12 +296,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             </li>
                             <li class="" role="presentation">
                               <a aria-expanded="false" data-toggle="tab" href="#tab_content2" id="profile-tab" role="tab">
-                                LISTA DE ENCOMIENDAS POR ENVIAR
-                              </a>
-                            </li>
-                            <li class="" role="presentation">
-                              <a aria-expanded="false" data-toggle="tab" href="#tab_content3" id="profile-tab" role="tab">
-                                LISTA DE ENCOMIENDAS HECHAS
+                                LISTA DE ENCOMIENDAS
                               </a>
                             </li>
                         </ul>
@@ -324,8 +336,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                   <!--Inicio boton-->
                                   <br>
-                                  <div class="item form-group text-center">
-                                    <h4 class="label label-default pull-center" id="total_pago"><b>Resultado de examenes</b></h4>
+                                  <div class="form-group col-sm-12 col-md-12 col-xs-12">
+                                    <div class="text-center">
+                                      <h4 class="label label-default pull-center" id="total_pago"><b>Resultado de examenes</b></h4>
+                                    </div>
+                                    <div class="text-right">
+                                      <button type="button" class="btn btn-info" onclick="mostrarListado()"><i class="fa fa-th-list"></i> Ver encomiendas</button>
+                                    </div>
                                   </div>
                                   <br>
                                   <!--Fin boton-->
@@ -560,42 +577,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             </div>
                           </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                          <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                              <div class="x_title">
-                                <h2>ENCOMIENDAS LISTAS PARA SER ENVIADAS</h2>
-                                <div class="clearfix"></div>
-                              </div>
-                              <div class="x_content" id="recargarEncomiendas">
-                                <table id="datatable-fixed-header" class="table table-striped table-bordered">
-                                  <thead>
-                                    <tr>
-                                      <th width="5%">#</th>
-                                      <th width="25%">Encomendero</th>
-                                      <th width="45%">Detalles del encomendero</th>
-                                      <th width="25%">Detalles de la encomienda</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>1</td>
-                                      <td>Francisco Antonio</td>
-                                      <td>El vehiculo es color azul y pequeño</td>
-                                      <td class="text-center">
-                                        <button type="button" class="btn btn-success" onclick="verDetalle()"><i class="fa fa-book"></i> <span></span></button>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
 
                         <!--3 pestaña-->
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                               <div class="x_title">

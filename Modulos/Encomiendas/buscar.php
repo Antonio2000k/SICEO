@@ -1,9 +1,27 @@
 <?php
 $text = isset($_POST['texto']) ? $_POST['texto']:null;
+$id = isset($_POST['id']) ? $_POST['id']:null;
 
-if($text) {
+include '../../Config/conexion.php';
 
-	include '../../Config/conexion.php';
+if($text || $id) {
+
+	if(isset($id)) {
+		pg_query("BEGIN");
+		ini_set('date.timezone','America/El_Salvador');
+	  $fecha = date("d-m-Y");
+
+		$consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true AND ffecha_recibido = '$fecha' WHERE eid_encomienda = $id");
+		if($consulta) {
+			echo "exito";
+			pg_query("COMMIT");
+		}
+		else {
+			echo "";
+			pg_query("ROLLBACK");
+		}
+	}
+
 	if(isset($_POST['texto'])) {
     $nombres = explode(" ", $text);
     $nombre="";

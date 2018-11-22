@@ -48,40 +48,63 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <link rel="stylesheet" href="css/checkbox.css">
     <link rel="stylesheet" href="css/radio.css">
 
+    <title>SICEO | Encomiendas</title>
+
+    <?php
+      include "../../ComponentesForm/estilos.php";
+    ?>
+
     <script type="text/javascript">
-      var filaLentes = new Array();
-      var materialLentes = new Array();
-      var tipoLentes = new Array();
+      cancelar = function() {
+        var id=document.getElementById('idCheckbox').value;
+        document.getElementById('examen'+id).checked=0;
+        document.getElementById('idCheckbox').value="";
+      };
 
-      function verExamen(id, idex) {
-        window.open("../../reporteExamen.php?id="+id+"&idexam="+idex);
-      }
-
-      function registrarEncomienda() {
-        var opc = false;
-
-        if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="" || filaLentes.length==0) {
-          if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="") {
-            swal("Error", "Debe completar los campos obligatorios", "error");
-          }
-          else if(filaLentes.length==0) {
-            swal("Error", "Debe seleccionar algun examen", "error");
-          }
-
-          opc = false;
+      verEstado = function(valor, fila) {
+        document.getElementById("id_estado").value = fila;
+        $('#myEstado').modal();
+        if(valor==true) {
+          $("#estado_encomienda").text("RECIBIDA");
+          document.getElementById("estado_encomienda").style.color = "green";
+          document.getElementById("estado").checked=1;
+          document.getElementById("estado").disabled="disabled";
+          document.getElementById("guardar_estado").disabled="disabled";
         }
         else {
-          opc = true;
-          document.getElementById("bandera").value = "si";
-          var filas = document.getElementsByName('fila_lentes_final[]');
+          $("#estado_encomienda").val("PENDIENTE");
+          document.getElementById("estado_encomienda").style.color = "red";
         }
+      };
 
-        if(opc) {
-          document.getElementById("frmEncomiendas").submit();
+      cambiarEstado = function() {
+        if(document.getElementById('estado').checked) {
+          alert(document.getElementById("id_estado").value);
+          //$id_estado
+          $.post("buscar.php",{
+            "id":document.getElementById("id_estado").value},function(respuesta) {
+              alert(respuesta);
+              if(respuesta!="") {
+                document.getElementById("id_estado").value="";
+                swal('Hecho', 'Encomienda actualizada con exito', 'success');
+                $("#myEstado").modal('toggle');
+              }
+              else {
+                swal('Error', 'Hubo un error al actualizar el estado', 'error');
+                $("#myEstado").modal('toggle');
+              }
+          });
         }
-      }
+        else {
+          swal('Error', 'Debe seleccionar que fue recibida la encomienda', 'error');
+        }
+      };
 
-      function ajax_act(str) {
+      alertaSweet = function(titulo,texto,tipo){
+        swal(titulo,texto,tipo);
+      };
+
+      ajax_act = function(str) {
         if (window.XMLHttpRequest) {
           xmlhttp = new XMLHttpRequest();
         } else {
@@ -92,12 +115,18 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             document.getElementById("myTabContent").innerHTML = xmlhttp.responseText;
           }
         }
-
         xmlhttp.open("post", "encomiendasAjax.php", true);
         xmlhttp.send();
-      }
+      };
 
-      function obtenerDatosEncomendero(obj) {
+    </script>
+
+    <script type="text/javascript">
+      var filaLentes = new Array();
+      var materialLentes = new Array();
+      var tipoLentes = new Array();
+
+      obtenerDatosEncomendero = function(obj) {
         if(obj!="") {
           $.post("buscar.php",{
             "texto":obj},function(respuesta) {
@@ -113,154 +142,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               }
           });
         }
-      }
+      };
 
-      function cambiar(posicion) {
-        //Parametros de lente
-        var fila = document.getElementById('filaLenteModal').value-1;
+      verExamen = function(id, idex) {
+        window.open("../../reporteExamen.php?id="+id+"&idexam="+idex);
+      };
 
-        for (x = 0; x < frmEncomiendas.tipo_lente.length; x++) {
-          if (frmEncomiendas.tipo_lente[x].value==tipoLentes[fila]) {
-            frmEncomiendas.tipo_lente[x].checked=1;
-          }
-        }
-        for (x = 0; x < frmEncomiendas.material_lente.length; x++) {
-          if (frmEncomiendas.material_lente[x].value==materialLentes[fila]) {
-            frmEncomiendas.material_lente[x].checked=1;
-          }
-        }
-
-        $('#myLentes').modal({backdrop: 'static', keyboard: false});
-        document.getElementById("hayCambioLentes").value="si";
-        document.getElementById("idCambioLentes").value=fila;
-      }
-
-      function especificaciones(fila) {
-        for (var i = 0; i < filaLentes.length; i++) {
-          if(filaLentes[i]==fila) {
-            $('#myEspecificaciones').modal();
-            $('#material_lente_carac').text("Material del lente: "+materialLentes[i]);
-            $('#tipo_lente_carac').text("Tipo de lente: "+tipoLentes[i]);
-            $("#filaLenteModal").val(fila);
-          }
-        }
-      }
-
-      function verDetalle() {
-        alert("Mostrara un detalle de todo lo que contiene la encomienda");
-      }
-
-      function verReporteEncomienda() {
-        alert("Mostrara un reporte de la encomienda");
-      }
-
-      function mostrarListado() {
-        //Borrar tabla
-        document.getElementById("datatable-listado").innerHTML = "";
-
-        //Empezar con el llenado.
-        var table=document.getElementById("datatable-listado");
-
-        var table_len=table.rows.length;
-        var row;
-
-        //Encabezado...
-        row = table.insertRow(table_len).outerHTML = "<tr>"+
-        "<th>#</th>"+
-        "<th>Material del lente</th>"+
-        "<th>Tipo de lente</th>"+
-        "</tr>";
-
-        table_len=table.rows.length;
-
-        while((table_len-1)<filaLentes.length) {
-          row = table.insertRow(table_len).outerHTML = "<tr>"+
-          "<td>"+
-          ""+table_len+""+
-          "</td>"+
-          "<td>"+
-          ""+materialLentes[table_len-1]+""+
-          "</td>"+
-          "<td>"+
-          ""+tipoLentes[table_len-1]+""+
-          "</td>"+
-          "</tr>";
-
-          table_len++;
-        }
-
-        $('#myListadoLentes').modal();
-      }
-
-      function checkado(id) {
-        if(document.getElementById("examen"+id).checked) {
-          $('#myLentes').modal({backdrop: 'static', keyboard: false});
-          document.getElementById('idCheckbox').value=id;
-        }
-        else {
-          swal({
-            title: "¿Seguro quiere eliminar esta encomienda?",
-            text: "No podrás deshacer este paso.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#5CBDD9",
-            cancelButtonColor: "#D9534F",
-            confirmButtonText: "No",
-            cancelButtonText: "Si",
-            closeOnConfirm: false,
-            closeOnCancel: false,
-            showLoaderOnConfirm: true
-          }).then(function(isConfirm) {
-            if(isConfirm.value!=true) {
-              //Codigo de confimacion.
-              swal("Informacion", "Encomienda eliminada", "info");
-              document.getElementById('idCheckbox').value="";
-              $("#especificaciones"+id).prop("disabled", true);
-
-              filaLentes.splice(id-1,1);
-              materialLentes.splice(id-1,1);
-              tipoLentes.splice(id-1,1);
-
-              //Eliminar de los inputs escondidos.
-              var filas = document.getElementsByName('fila_lentes_final[]');
-              var materiales = document.getElementsByName('material_lentes_final[]');
-              var tipos = document.getElementsByName('tipo_lentes_final[]');
-
-              filas[id-1].value = "";
-              materiales[id-1].value = "";
-              tipos[id-1].value = "";
-
-              <?php $cantidad--; ?>
-            }
-            else {
-              document.getElementById("examen"+id).checked=1;
-            }
-          })
-        }
-      }
-
-      function activarOtro(opcion, checkado) {
-        if(opcion==1) {
-          if(checkado=="si") {
-            $("#otro_material_lente").prop("disabled", false);
-          }
-          else {
-            $("#otro_material_lente").prop("disabled", true);
-            document.getElementById("otro_material_lente").value="";
-          }
-        }
-        else {
-          if(checkado=="si") {
-            $("#otro_tipo_lente").prop("disabled", false);
-          }
-          else {
-            $("#otro_tipo_lente").prop("disabled", true);
-            document.getElementById("otro_tipo_lente").value="";
-          }
-        }
-      }
-
-      function caracteristicasAro(objForm) {
+      caracteristicasAro = function(objForm) {
         var tipo = "";
         var material = "";
 
@@ -324,7 +212,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             tipos[fila-1].value = tipo;
 
             swal("Hecho", "Se agregaron las especificaciones del lente", "success");
-            <?php $cantidad++; ?>
           }
 
           $('#myLentes').modal('toggle');
@@ -333,69 +220,169 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         else {
           swal("Error", "Debe seleccionar un tipo y material", "error");
         }
-      }
+      };
 
-      function cancelar() {
-        var id=document.getElementById('idCheckbox').value;
-        document.getElementById('examen'+id).checked=0;
-        document.getElementById('idCheckbox').value="";
-      }
+      registrarEncomienda = function() {
+        var opc = false;
 
-      function registarEncomiendas() {
-      }
+        if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="" || filaLentes.length==0) {
+          if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="") {
+            swal("Error", "Debe completar los campos obligatorios", "error");
+          }
+          else if(filaLentes.length==0) {
+            swal("Error", "Debe seleccionar algun examen", "error");
+          }
 
-      function verEstado(valor) {
-        $('#myEstado').modal();
-
-        //Parametro
-        //Solo un texto mas.
-        if(valor) {
-          $("#estado_encomienda").innerText("RECIBIDA");
-          document.getElementById("estado_encomienda").style.backgroundColor = green;
-          document.getElementById("estado_encomienda").style.fontWeight = medium;
+          opc = false;
         }
         else {
-          $("#estado_encomienda").innerText("PENDIENTE");
-          document.getElementById("estado_encomienda").style.backgroundColor = red;
-          document.getElementById("estado_encomienda").style.fontWeight = medium;
+          opc = true;
+          document.getElementById("bandera").value = "si";
+          var filas = document.getElementsByName('fila_lentes_final[]');
         }
-      }
 
-      function alertaSweet(titulo,texto,tipo){
-        swal(titulo,texto,tipo);
-      }
+        if(opc) {
+          document.getElementById("frmEncomiendas").submit();
+        }
+      };
 
-      function cambiarEstado() {
-        if(document.getElementById('estado').checked) {
-          <?php
-          $consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true WHERE eid_encomienda = ");
+      cambiar = function(posicion) {
+        //Parametros de lente
+        var fila = document.getElementById('filaLenteModal').value-1;
 
-          if($consulta) {
-            ?>
-            swal('Hecho', 'Encomienda actualizada con exito', 'success');
-            $("#myEstado").modal('toggle');
-            <?php
+        for (x = 0; x < frmEncomiendas.tipo_lente.length; x++) {
+          if (frmEncomiendas.tipo_lente[x].value==tipoLentes[fila]) {
+            frmEncomiendas.tipo_lente[x].checked=1;
+          }
+        }
+        for (x = 0; x < frmEncomiendas.material_lente.length; x++) {
+          if (frmEncomiendas.material_lente[x].value==materialLentes[fila]) {
+            frmEncomiendas.material_lente[x].checked=1;
+          }
+        }
+
+        $('#myLentes').modal({backdrop: 'static', keyboard: false});
+        document.getElementById("hayCambioLentes").value="si";
+        document.getElementById("idCambioLentes").value=fila;
+      };
+
+      especificaciones = function(fila) {
+        for (var i = 0; i < filaLentes.length; i++) {
+          if(filaLentes[i]==fila) {
+            $('#myEspecificaciones').modal();
+            $('#material_lente_carac').text("Material del lente: "+materialLentes[i]);
+            $('#tipo_lente_carac').text("Tipo de lente: "+tipoLentes[i]);
+            $("#filaLenteModal").val(fila);
+          }
+        }
+      };
+
+      verReporteEncomienda = function() {
+        alert("Aqui va el reporte");
+      };
+
+      mostrarListado = function() {
+        document.getElementById("datatable-listado").innerHTML = "";
+
+        var table=document.getElementById("datatable-listado");
+
+        var table_len=table.rows.length;
+        var row;
+
+        //Encabezado...
+        row = table.insertRow(table_len).outerHTML = "<tr>"+
+        "<th>#</th>"+
+        "<th>Material del lente</th>"+
+        "<th>Tipo de lente</th>"+
+        "</tr>";
+
+        table_len=table.rows.length;
+
+        while((table_len-1)<filaLentes.length) {
+          row = table.insertRow(table_len).outerHTML = "<tr>"+
+          "<td>"+
+          ""+table_len+""+
+          "</td>"+
+          "<td>"+
+          ""+materialLentes[table_len-1]+""+
+          "</td>"+
+          "<td>"+
+          ""+tipoLentes[table_len-1]+""+
+          "</td>"+
+          "</tr>";
+
+          table_len++;
+        }
+
+        $('#myListadoLentes').modal();
+      };
+
+      checkado = function(id) {
+        if(document.getElementById("examen"+id).checked) {
+          $('#myLentes').modal({backdrop: 'static', keyboard: false});
+          document.getElementById('idCheckbox').value=id;
+        }
+        else {
+          swal({
+            title: "¿Seguro quiere eliminar esta encomienda?",
+            text: "No podrás deshacer este paso.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#5CBDD9",
+            cancelButtonColor: "#D9534F",
+            confirmButtonText: "No",
+            cancelButtonText: "Si",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true
+          }).then(function(isConfirm) {
+            if(isConfirm.value!=true) {
+              //Codigo de confimacion.
+              swal("Informacion", "Encomienda eliminada", "info");
+              document.getElementById('idCheckbox').value="";
+              $("#especificaciones"+id).prop("disabled", true);
+
+              filaLentes.splice(id-1,1);
+              materialLentes.splice(id-1,1);
+              tipoLentes.splice(id-1,1);
+
+              //Eliminar de los inputs escondidos.
+              var filas = document.getElementsByName('fila_lentes_final[]');
+              var materiales = document.getElementsByName('material_lentes_final[]');
+              var tipos = document.getElementsByName('tipo_lentes_final[]');
+
+              filas[id-1].value = "";
+              materiales[id-1].value = "";
+              tipos[id-1].value = "";
+            }
+            else {
+              document.getElementById("examen"+id).checked=1;
+            }
+          })
+        }
+      };
+
+      activarOtro = function(opcion, checkado) {
+        if(opcion==1) {
+          if(checkado=="si") {
+            $("#otro_material_lente").prop("disabled", false);
           }
           else {
-            ?>
-            swal('Error', 'Hubo un error al actualizar el estado', 'error');
-            $("#myEstado").modal('toggle');
-            <?php
+            $("#otro_material_lente").prop("disabled", true);
+            document.getElementById("otro_material_lente").value="";
           }
-          ?>
         }
         else {
-          swal('Error', 'Debe seleccionar que fue recibida la encomienda', 'error');
+          if(checkado=="si") {
+            $("#otro_tipo_lente").prop("disabled", false);
+          }
+          else {
+            $("#otro_tipo_lente").prop("disabled", true);
+            document.getElementById("otro_tipo_lente").value="";
+          }
         }
-      }
+      };
     </script>
-
-    <title>SICEO | Encomiendas</title>
-
-    <?php
-      include "../../ComponentesForm/estilos.php";
-    ?>
-
 
   </head>
 
@@ -822,7 +809,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         <td><?php echo $fila[5] ?></td>
                                         <td><?php echo $encomendero ?></td>
                                         <td class="text-center">
-                                          <button type="button" class="btn btn-success" onclick="verEstado(<?php echo $fila[2] ?>)"><i class="fa fa-info"></i> <span></span></button>
+                                          <button type="button" class="btn btn-success"  onclick="verEstado('<?php echo $fila[2] ?>', <?php echo $fila[0] ?>);"><i class="fa fa-info"></i> <span></span></button>
                                         </td>
                                         <td class="text-center">
                                           <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
@@ -846,6 +833,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 <h4 class="modal-title">Estado de la encomienda</h4>
                               </div>
                               <div class="modal-body">
+                                <input type="hidden" id="id_estado" value="">
                                 <div class="item form-group">
                                   <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                     <div class="form-group" style="text-align: center">
@@ -867,7 +855,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               </div>
                               <div class="modal-footer">
                                 <center>
-                                  <button type="button" class="btn btn-success" onclick="cambiarEstado()"><i class="fa fa-save"></i> Guardar</button>
+                                  <button type="button" class="btn btn-success" onclick="cambiarEstado()" id="guardar_estado"><i class="fa fa-save"></i> Guardar</button>
                                   <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
                                 </center>
                               </div>
@@ -957,11 +945,11 @@ if(isset($_REQUEST["bandera"])) {
         //echo pg_last_error($conexion);
       }
 
-      $query_detalle_encomienda = pg_query($conexion, "UPDATE detalle_examen SET bestado=true WHERE eid_detalle_examen = $filaValores[$i]");
+      $query_detalle = pg_query($conexion, "UPDATE detalle_examen SET bestado = true WHERE eid_detalle_examen = $filaValores[$i]");
     }
   }
 
-  if($query_encomienda && !$error_detalle) {
+  if($query_encomienda && !$error_detalle && $query_detalle) {
     pg_query("COMMIT");
     echo "<script type='text/javascript'>";
     echo "swal('Hecho', 'Se registro la encomienda exitosamente', 'success');";

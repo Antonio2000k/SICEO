@@ -1,4 +1,31 @@
-<?php include '../../Config/conexion.php'; ?>
+<?php
+include '../../Config/conexion.php';
+
+function obtenerValorSQL($consulta, $opcion, $id) {
+  if($consulta != null) {
+    while($fila_new = pg_fetch_array($consulta)) {
+
+      switch ($opcion) {
+        case "cliente":
+          return "$fila_new[1]"." "."$fila_new[2]";
+          break;
+
+        case "id":
+          return $fila_new[0];
+          break;
+
+        case "modelo":
+          return "$fila_new[0]"." (".$fila_new[1].")";
+          break;
+
+        default:
+        return "";
+          break;
+      }
+    }
+  }
+}
+?>
 
 <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
   <div class="x_content">
@@ -110,8 +137,7 @@
                     <td class="text-center">
                       <div class="checkbox">
                         <label>
-
-                         <input type="checkbox" onclick="checkado(<?php echo $cont ?>)" id="<?php echo "examen".$cont ?>">
+                         <input type="checkbox" onclick="checkado(<?php echo $cont ?>);" id="<?php echo "examen".$cont ?>">
                          <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                          </label>
                       </div>
@@ -374,7 +400,7 @@
                 <td><?php echo $fila[5] ?></td>
                 <td><?php echo $encomendero ?></td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-success" onclick="verEstado(<?php echo $fila[2] ?>)"><i class="fa fa-info"></i> <span></span></button>
+                  <button type="button" class="btn btn-success"  onclick="verEstado('<?php echo $fila[2] ?>', <?php echo $fila[0] ?>);"><i class="fa fa-info"></i> <span></span></button>
                 </td>
                 <td class="text-center">
                   <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
@@ -398,6 +424,7 @@
         <h4 class="modal-title">Estado de la encomienda</h4>
       </div>
       <div class="modal-body">
+        <input type="hidden" id="id_estado" value="">
         <div class="item form-group">
           <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
             <div class="form-group" style="text-align: center">
@@ -419,7 +446,7 @@
       </div>
       <div class="modal-footer">
         <center>
-          <button type="button" class="btn btn-success" onclick="cambiarEstado()"><i class="fa fa-save"></i> Guardar</button>
+          <button type="button" class="btn btn-success" onclick="cambiarEstado()" id="guardar_estado"><i class="fa fa-save"></i> Guardar</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
         </center>
       </div>

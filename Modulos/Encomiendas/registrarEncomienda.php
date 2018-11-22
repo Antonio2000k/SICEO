@@ -335,8 +335,20 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       function registarEncomiendas() {
       }
 
-      function verEstado(id) {
+      function verEstado(valor) {
         $('#myEstado').modal();
+
+        //Parametro
+        if(valor) {
+          $("#estado_encomienda").innerText("RECIBIDA");
+          document.getElementById("estado_encomienda").style.backgroundColor = green;
+          document.getElementById("estado_encomienda").style.fontWeight = medium;
+        }
+        else {
+          $("#estado_encomienda").innerText("PENDIENTE");
+          document.getElementById("estado_encomienda").style.backgroundColor = red;
+          document.getElementById("estado_encomienda").style.fontWeight = medium;
+        }
       }
 
       function alertaSweet(titulo,texto,tipo){
@@ -427,10 +439,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <div class="item form-group">
                                     <label class="control-label col-sm-2 col-md-2 col-xs-12">Encomendero (*) </label>
                                     <div class="col-sm-7 col-md-7 col-xs-12">
-                                      <input type="text" class="form-control text-center" id="nombre_encomendero" style="font-size:medium" list="listaEncomenderos" oninput="obtenerDatosEncomendero(this.value);" placeholder="Nombre del encomendero">
+                                      <input type="text" class="form-control text-center" id="nombre_encomendero" style="font-size:medium" list="listaEncomenderos" oninput="obtenerDatosEncomendero(this.value);" placeholder="Nombre del encomendero" autocomplete="off">
                                       <datalist id="listaEncomenderos">
                                         <?php
-                                        $consulta = pg_query($conexion, "SELECT * FROM encomendero");
+                                        $consulta = pg_query($conexion, "SELECT * FROM encomendero WHERE bestado = true");
                                         $cont = pg_num_rows($consulta);
 
                                         while ($fila = pg_fetch_array($consulta)) {
@@ -454,7 +466,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <div class="item form-group">
                                     <label class="control-label col-sm-2 col-md-2 col-xs-12">Detalles (*) </label>
                                     <div class="col-sm-10 col-md-10 col-xs-12">
-                                      <textarea class="form-control" id="detalle"  placeholder="El vehiculo es de color verde, el numero del motorista es 7777-7777, seran llevado a tal laboratorio, etc."></textarea>
+                                      <textarea class="form-control" id="detalle" name="detalle" placeholder="El vehiculo es de color verde, el numero del motorista es 7777-7777, seran llevado a tal laboratorio, etc."></textarea>
                                     </div>
                                   </div>
 
@@ -761,18 +773,32 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td>1</td>
-                                      <td>Hoy</td>
-                                      <td>Ayer</td>
-                                      <td>Francisco Antonio</td>
-                                      <td class="text-center">
-                                        <button type="button" class="btn btn-success" onclick="verEstado(1)"><i class="fa fa-info"></i> <span></span></button>
-                                      </td>
-                                      <td class="text-center">
-                                        <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
-                                      </td>
-                                    </tr>
+                                    <?php
+                                    $consulta = pg_query($conexion, "SELECT * FROM encomienda");
+
+                                    while($fila = pg_fetch_array($consulta)) {
+                                      $consulta_encomendero = pg_query($conexion, "SELECT * FROM encomendero");
+                                      $encomendero = "";
+
+                                      while ($fila_encomendero = pg_fetch_array($consulta_encomendero)) {
+                                        $encomendero = $fila_encomendero[1]." ".$fila_encomendero[2];
+                                      }
+                                      ?>
+                                      <tr>
+                                        <td><?php echo $fila[0] ?></td>
+                                        <td><?php echo $fila[1] ?></td>
+                                        <td><?php echo $fila[5] ?></td>
+                                        <td><?php echo $encomendero ?></td>
+                                        <td class="text-center">
+                                          <button type="button" class="btn btn-success" onclick="verEstado(<?php echo $fila[2] ?>)"><i class="fa fa-info"></i> <span></span></button>
+                                        </td>
+                                        <td class="text-center">
+                                          <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
+                                        </td>
+                                      </tr>
+                                      <?php
+                                    }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>
@@ -791,12 +817,12 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 <div class="item form-group">
                                   <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                     <div class="form-group" style="text-align: center">
-                                      <label style="font-size:medium; color: red" class="control-label col-md-12 col-sm-12 col-xs-12">PENDIENTE</label>
+                                      <label style="font-size:medium; color: red" class="control-label col-md-12 col-sm-12 col-xs-12" id="estado_encomienda">PENDIENTE</label>
                                     </div>
                                     <div class="form-group" style="text-align: center">
                                       <br>
                                       <label style="font-size:medium" class="control-label col-md-6 col-sm-6 col-xs-12">Actualizar estado</label>
-                                      <input type="radio" class="flat col-md-6 col-sm-6 col-xs-12" name="estado" id="estado" value="true" /> <label>RECIBIDA</label>
+                                      <input type="radio" class="flat col-md-6 col-sm-6 col-xs-12" id="estado" value="true" /> <label>RECIBIDA</label>
                                     </div>
                                     <!-- <br>
                                     <br> -->
@@ -857,6 +883,33 @@ if(isset($_REQUEST["bandera"])) {
   $id_encomendero = $_REQUEST['idEncomendero'];
   $detalle_encomienda = $_REQUEST['detalle'];
 
-  echo "Hola";
+  $longitud = count($filaValores);
+  $cont = 0;
+  for ($i=0; $i < $longitud; $i++) {
+    if($filaValores[$i]!="") {
+      $cont++;
+    }
+  }
+
+  pg_query("BEGIN");
+
+  if(true) {
+    pg_query("COMMIT");
+    echo "<script type='text/javascript'>";
+    echo "swal('Hecho', 'Se registro la encomienda exitosamente', 'success');";
+    echo "</script>";
+  }
+  else {
+    pg_query("ROLLBACK");
+    echo "<script type='text/javascript'>";
+    echo "swal('Error', 'No se pudo completar el registro', 'error');";
+    echo "</script>";
+  }
+
+  echo "Id encomendero: ".$id_encomendero;
+  echo "<br>";
+  echo "Detalle encomienda: ".$detalle_encomienda;
+  echo "<br>";
+  echo "Cantidad de lentes a llevar: ".$cont;
 }
 ?>

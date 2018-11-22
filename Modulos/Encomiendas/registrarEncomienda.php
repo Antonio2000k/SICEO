@@ -45,7 +45,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="css/checkbox.css">
+    <style type="text/css">
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+    </style>
     <link rel="stylesheet" href="css/radio.css">
 
     <title>SICEO | Encomiendas</title>
@@ -59,6 +63,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         var id=document.getElementById('idCheckbox').value;
         document.getElementById('examen'+id).checked=0;
         document.getElementById('idCheckbox').value="";
+        document.getElementById("id_fila").value="";
       };
 
       verEstado = function(valor, fila) {
@@ -123,6 +128,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <script type="text/javascript">
       var filaLentes = new Array();
+      var idsLentes = new Array();
       var materialLentes = new Array();
       var tipoLentes = new Array();
 
@@ -176,6 +182,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var fila = document.getElementById('idCheckbox').value;
           document.getElementById('idCheckbox').value = "";
 
+          var id_fila = document.getElementById("id_fila").value;
+          document.getElementById("id_fila").value="";
+
           for (x = 0; x < objForm.tipo_lente.length; x++) {
             objForm.tipo_lente[x].checked=0;
           }
@@ -201,6 +210,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             filaLentes.push(fila);
             materialLentes.push(material);
             tipoLentes.push(tipo);
+            idsLentes.push(id_fila);
 
             //Agregar a los inputs escondidos.
             var filas = document.getElementsByName('fila_lentes_final[]');
@@ -238,7 +248,49 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         else {
           opc = true;
           document.getElementById("bandera").value = "si";
-          var filas = document.getElementsByName('fila_lentes_final[]');
+
+          var ids = document.getElementsByName('ids_lentes_final[]');
+          var modelo = document.getElementsByName('modelo_lentes_aux[]');
+          var cliente = document.getElementsByName('cliente_lentes_aux[]');
+
+          //Valores finales.
+          var modelo_final = document.getElementsByName('modelo_lentes_final[]');
+          var cliente_final = document.getElementsByName('cliente_lentes_final[]');
+
+          for (var i = 0; i < idsLentes.length; i++) {
+            ids[i].value = idsLentes[i]; //Para los id, no fila.
+          }
+
+          var cont = 0;
+
+          for (var i = 0; i < filaLentes.length; i++) {
+            for (var j = 0; j < modelo.length; j++) {
+              if((filaLentes[i]-1)==j) {
+                modelo_final[i].value = modelo[j].value;
+              }
+            }
+          }
+
+          for (var i = 0; i < modelo_final.length; i++) {
+            alert(modelo_final[i].value);
+          }
+
+          cont = 0;
+          for (var i = 0; i < filaLentes.length; i++) {
+            for (var j = 0; j < cliente.length; j++) {
+              if((filaLentes[i]-1)==j) {
+                cliente_final[i].value = cliente[j].value;
+              }
+            }
+          }
+
+          for (var i = 0; i < cliente_final.length; i++) {
+            alert(cliente_final[i].value);
+          }
+
+          // document.getElementsByName('modelo_lentes_aux[]')=modelo_final;
+          // document.getElementsByName('cliente_lentes_aux[]')=cliente_final;
+
         }
 
         if(opc) {
@@ -266,7 +318,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         document.getElementById("idCambioLentes").value=fila;
       };
 
-      especificaciones = function(fila) {
+      especificaciones = function(r) {
+        var fila = r.parentNode.parentNode.rowIndex;
+
         for (var i = 0; i < filaLentes.length; i++) {
           if(filaLentes[i]==fila) {
             $('#myEspecificaciones').modal();
@@ -317,10 +371,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         $('#myListadoLentes').modal();
       };
 
-      checkado = function(id) {
-        if(document.getElementById("examen"+id).checked) {
+      checkado = function(r, id) {
+        var fila = r.parentNode.parentNode.rowIndex;
+
+        if(document.getElementById("examen"+fila).checked) {
           $('#myLentes').modal({backdrop: 'static', keyboard: false});
-          document.getElementById('idCheckbox').value=id;
+          document.getElementById('idCheckbox').value=fila;
+          document.getElementById('id_fila').value=id;
         }
         else {
           swal({
@@ -340,23 +397,25 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               //Codigo de confimacion.
               swal("Informacion", "Encomienda eliminada", "info");
               document.getElementById('idCheckbox').value="";
-              $("#especificaciones"+id).prop("disabled", true);
+              document.getElementById("id_fila").value="";
+              $("#especificaciones"+fila).prop("disabled", true);
 
-              filaLentes.splice(id-1,1);
-              materialLentes.splice(id-1,1);
-              tipoLentes.splice(id-1,1);
+              filaLentes.splice(fila-1,1);
+              materialLentes.splice(fila-1,1);
+              tipoLentes.splice(fila-1,1);
+              idsLentes.splice(fila-1,1);
 
               //Eliminar de los inputs escondidos.
               var filas = document.getElementsByName('fila_lentes_final[]');
               var materiales = document.getElementsByName('material_lentes_final[]');
               var tipos = document.getElementsByName('tipo_lentes_final[]');
 
-              filas[id-1].value = "";
-              materiales[id-1].value = "";
-              tipos[id-1].value = "";
+              filas[fila-1].value = "";
+              materiales[fila-1].value = "";
+              tipos[fila-1].value = "";
             }
             else {
-              document.getElementById("examen"+id).checked=1;
+              document.getElementById("examen"+fila).checked=1;
             }
           })
         }
@@ -448,6 +507,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <!--Codigos-->
                                   <input type="hidden" id="bandera" name="bandera" value="">
                                   <input type="hidden" id="idCheckbox" name="idCheckbox" value="">
+                                  <input type="hidden" id="id_fila" value="">
                                   <input type="hidden" id="idEncomendero" name="idEncomendero" value="">
                                   <!--fin codigos-->
 
@@ -537,19 +597,24 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                           <tr>
                                             <!--Para las tablas dinamicas.-->
+                                            <input type="hidden" name="ids_lentes_final[]">
                                             <input type="hidden" name="fila_lentes_final[]">
                                             <input type="hidden" name="material_lentes_final[]">
                                             <input type="hidden" name="tipo_lentes_final[]">
-                                            <input type="hidden" name="modelo_lentes_final[]" value="<?php echo $fila[3] ?>">
-                                            <input type="hidden" name="cliente_lentes_final[]" value="<?php echo $fila[1] ?>">
+                                            <input type="hidden" name="modelo_lentes_aux[]" value="<?php echo $fila[3] ?>">
+                                            <input type="hidden" name="cliente_lentes_aux[]" value="<?php echo $fila[1] ?>">
+                                            <input type="hidden" name="modelo_lentes_final[]">
+                                            <input type="hidden" name="cliente_lentes_final[]">
 
                                             <td class="text-center">
-                                              <div class="checkbox">
+                                              <!-- <div class="checkbox">
                                                 <label>
-                                                 <input type="checkbox" onclick="checkado(<?php echo $cont ?>);" id="<?php echo "examen".$cont ?>">
+                                                 <input type="checkbox" id="<?php echo "examen".$cont ?>">
                                                  <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                                  </label>
-                                              </div>
+                                              </div> -->
+
+                                              <input type="checkbox" class="form-check-input" onclick="checkado(this, <?php echo $fila[0] ?>);" id="<?php echo "examen".$cont ?>">
                                             </td>
 
                                             <td><?php echo $cliente ?></td>
@@ -557,7 +622,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td><?php echo $modelo ?></td>
                                             <td class="text-center">
                                               <button type="button" class="btn btn-warning" onclick="verExamen('<?php echo $examen; ?>', '<?php echo $id; ?>')"><i class="fa fa-book"></i></button>
-                                              <button id="<?php echo "especificaciones".$cont ?>" type="button" class="btn btn-info" onclick="especificaciones(<?php echo $cont ?>)" disabled><i class="fa fa-th-list"></i></button>
+                                              <button id="<?php echo "especificaciones".$cont ?>" type="button" class="btn btn-info" onclick="especificaciones(this);" disabled><i class="fa fa-th-list"></i></button>
                                             </td>
                                           </tr>
                                           <?php
@@ -898,14 +963,41 @@ if(isset($_REQUEST["bandera"])) {
   $filaValores = $_REQUEST['fila_lentes_final'];
   $materialValores = $_REQUEST['material_lentes_final'];
   $tipoValores = $_REQUEST['tipo_lentes_final'];
-  $modelo_lentes = $_REQUEST['modelo_lentes_final'];
-  $cliente_lentes = $_REQUEST['cliente_lentes_final'];
+  $modelo_lentes = $_REQUEST['modelo_lentes_aux'];
+  $cliente_lentes = $_REQUEST['cliente_lentes_aux'];
+  $id_lentes = $_REQUEST["ids_lentes_final"];
+
+  //Quitando valores vacios.
+  $filaValores = array_filter($filaValores);
+  $materialValores = array_filter($materialValores);
+  $tipoValores = array_filter($tipoValores);
+  $modelo_lentes = array_filter($modelo_lentes);
+  $cliente_lentes = array_filter($cliente_lentes);
+  $id_lentes = array_filter($id_lentes);
 
   //Para la encomienda.
   $id_encomendero = $_REQUEST['idEncomendero'];
   $detalle_encomienda = $_REQUEST['detalle'];
   ini_set('date.timezone','America/El_Salvador');
   $fecha_envio = date("d-m-Y");
+
+  print_r($filaValores);
+  echo "<br>";
+  print_r($materialValores);
+  echo "<br>";
+  print_r($tipoValores);
+  echo "<br>";
+  print_r("Modelo: ".$modelo_lentes);
+  echo "<br>";
+  print_r("Cliente: ".$cliente_lentes);
+  echo "<br>";
+  print_r($id_lentes);
+  echo "<br>";
+  echo $id_encomendero;
+  echo "<br>";
+  echo $detalle_encomienda;
+  echo "<br>";
+  echo $fecha_envio;
 
   $longitud = count($filaValores);
   $cont = 0;
@@ -945,7 +1037,7 @@ if(isset($_REQUEST["bandera"])) {
         //echo pg_last_error($conexion);
       }
 
-      $query_detalle = pg_query($conexion, "UPDATE detalle_examen SET bestado = true WHERE eid_detalle_examen = $filaValores[$i]");
+      $query_detalle = pg_query($conexion, "UPDATE detalle_examen SET bestado = true WHERE eid_detalle_examen = $id_lentes[$i]");
     }
   }
 
@@ -961,6 +1053,8 @@ if(isset($_REQUEST["bandera"])) {
     echo "<script type='text/javascript'>";
     echo "swal('Error', 'No se pudo completar el registro', 'error');";
     echo "</script>";
+
+    echo pg_last_error($conexion);
   }
 }
 ?>

@@ -24,10 +24,10 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div>
-                    <img align="left" src="../../production/images/compra.png" width="120" height="120"><h1 align="center">Compras</h1>
+                    <img align="left" src="../../production/images/grafica.png" width="120" height="120"><h1 align="center">Ingresos - Egresos</h1>
                 </div>
                 <div align="center">
-                    <p>Formulario el cual servira para poder registrar las compras que se hacen al proveedor. La pestaña de listado de compras muestra todas las compras realizadas.</p>
+                    <p>Pantalla que muestra el comportamiento de los ingresos y egresos.</p>
                 </div>
             </div>
         </div>
@@ -59,9 +59,9 @@
                         </div>
                         <div class="x_content">
                         <div class="row">
-                           <div class="col-md-9 col-sm-9 col-xs-12 text-center">
+                           <div class="col-md-7 col-sm-7 col-xs-12 text-center">
                            <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultados(this.value,'ingreso');" class="SYear" style="width: 100%" id="year">
+                           <select onChange="mostrarResultadosTodos(this.value,'todo','Netos');" class="SYear" style="width: 100%" id="year">
                                 <?php
                                    $year=date("Y");
                                     for($i=2015;$i<=$year;$i++){
@@ -75,7 +75,7 @@
                             </select>
                                </div>
                             <div class="col-md-3 col-sm-3 col-xs-12 text-center">
-                           <select onChange="mostrarResultadosMes('','','','ingreso');" class="SMes" style="width: 100%" id="mes">
+                           <select onChange="mostrarResultadosMesTodos('','','','todo','Netos');" class="SMes" style="width: 100%" id="mes">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
                                 <option value="3">Marzo</option>
@@ -92,9 +92,19 @@
                             </div>
                             
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12 text-right">
-                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','ingreso','neto');"> <i class="fa fa-bar-chart"></i>Netos</button> 
-                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="mostrarResultadosNetos('','','','ingreso','totales');"> <i class="fa fa-bar-chart"></i>Totales</button> 
+                            <div class="col-md-5 col-sm-5 col-xs-12 text-center">
+                              <div class="col-md-5">
+                                   <select  class="SSeleccion" style="width: 50%" id="seleccion">
+                                <option value="0">Mes</option>
+                                <option value="1">Año</option>
+                                </select>
+                              </div>
+                              <div class="col-md-6">
+                                  <button class="btn btn-default btn-icon left-icon pull-left" onclick="cambioTipoFlujo('Netos');"> <i class="fa fa-bar-chart"></i>Netos</button> 
+                                <button class="btn btn-default btn-icon left-icon pull-left" onclick="cambioTipoFlujo('Totales');"> <i class="fa fa-bar-chart"></i>Totales</button> 
+                              </div>
+                              
+                                
                             
                             </div>                         
                         </div>
@@ -145,10 +155,11 @@
      $(function () {
             $('.SYear').select2()
             $('.SMes').select2()
+            $('.SSeleccion').select2()
         });
 var fecha = new Date();
 var year = fecha.getFullYear();
-$(document).ready(mostrarResultados(year,'ingreso'));  
+$(document).ready(mostrarResultadosTodos(year,'todo','Netos'));  
 </script>
 </body>
 </html>

@@ -356,8 +356,12 @@ function pago(str, opcion) {
                     document.getElementById("cargarDetalleCompraPago").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("post", "ajax/detallePago.php?idd=" + opcion, true);
-            xmlhttp.send();
+            if(str===''){
+                xmlhttp.open("post", "ajax/detallePago.php?idd=" + opcion, true);
+                xmlhttp.send();
+            }else{
+                swal("Información",'Compra Cancelada','info');
+            }
         }
 function modificarLista(cantidad,modelo,proveedor){
     swal({
@@ -436,12 +440,19 @@ function modificarPreciosProducto(){
               
           }
 function saldoRestante(){
+    var restar=1;
     var saldoPendiente=document.getElementById("saldoPendiente").value;
     var abono=document.getElementById("abono").value;
     var resultado=saldoPendiente-abono;
-    if(parseInt(abono)>parseInt(saldoPendiente)){
+    if(parseFloat(abono)>parseFloat(saldoPendiente)){
+     //alert("Abono  "+abono);
       var tama=abono.length;
-      document.getElementById("abono").value=abono.substr(0,(tama-1));
+     //alert('Tamano  '+tama);
+      if(abono.endsWith('.',(tama-1))){
+          //alert('Entre');
+          restar=2;
+      }
+      document.getElementById("abono").value=abono.substr(0,(tama-restar));
         saldoRestante();
     }else
         document.getElementById('abonoRestante').value=resultado;
@@ -471,7 +482,7 @@ function guardarAbonoCompra(){
                  $('#modalPago').modal('hide');
                 swal( 'Exito!', 'Proceso Completado!', 'success' );
               }
-              
+             actualizarTabla(); 
           }
 function cargarC(){   
     //document.getElementById("btnguardarcredito").style.display = "block";  
@@ -513,4 +524,19 @@ function RepCompra(opcion){
     }
 }
 
-
+function actualizarTabla() {
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("cargaDetallePago").innerHTML = xmlhttp.responseText;
+            $('.tablaDetallePago').DataTable();
+                }
+            }
+            xmlhttp.open("post", "ajax/actualizaTablaDetallePago.php", true);
+            xmlhttp.send();
+        }

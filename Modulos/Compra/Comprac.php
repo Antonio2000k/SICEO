@@ -204,12 +204,12 @@ if(isset($_SESSION["acumulador"])){
                                 <tbody>
                                     <?php
                           include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra where eperiodo<=0 order by ffecha_compra");
+                          $query_s= pg_query($conexion, "SELECT c.eid_compra,c.cid_empleado,c.ffecha_compra,c.rtotal_compra,c.ecuotas,c.eperiodo,c.rabono,empleados.cnombre,empleados.capellido FROM compra as c INNER JOIN empleados  ON c.cid_empleado = empleados.cid_empleado WHERE c.eperiodo <= 0 ORDER BY c.ffecha_compra asc");
                           while($fila=pg_fetch_array($query_s)){
                       ?>
                                 <tr>
                                     <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
+                                    <td><?php echo $fila[7]; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
                                     <td>$<?php echo $fila[3]; ?></td>
                             <td class="text-center">

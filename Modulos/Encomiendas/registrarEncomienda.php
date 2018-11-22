@@ -59,30 +59,33 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       var materialLentes = new Array();
       var tipoLentes = new Array();
 
-      function verExamen() {
-        alert("Mostrara el reporte del examen");
+      function verExamen(id, idex) {
+        window.open("../../reporteExamen.php?id="+id+"&idexam="+idex);
       }
 
-      function registarEncomiendas() {
+      function registrarEncomienda() {
         var opc = false;
 
-        if(document.getElementById("idEncomendero").value=="" && document.getElementById("detalle").value=="" && filaLentes.length==0) {
-          swal("Error", "Debe completar los campos obligatorios", "error");
+        if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="" || filaLentes.length==0) {
+          if(document.getElementById("idEncomendero").value=="" || document.getElementById("detalle").value=="") {
+            swal("Error", "Debe completar los campos obligatorios", "error");
+          }
+          else if(filaLentes.length==0) {
+            swal("Error", "Debe seleccionar algun examen", "error");
+          }
+
+          opc = false;
         }
         else {
           opc = true;
+          document.getElementById("bandera").value = "si";
+          var filas = document.getElementsByName('fila_lentes_final[]');
         }
 
-        $(document).ready(function(){
-          $("#frmEncomiendas").submit(function() {
-              if(opc) {
-                return true;
-              }
-              else {
-                return false;
-              }
-            });
-        });
+        //Submit
+        if(opc) {
+          document.getElementById("frmEncomiendas").submit();
+        }
       }
 
       function obtenerDatosEncomendero(obj) {
@@ -97,6 +100,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               else {
                 document.getElementById('nombre_encomendero').style.borderColor="#C70039";
                 document.getElementById('nombre_encomendero').value="";
+                document.getElementById("idEncomendero").value = "";
               }
           });
         }
@@ -208,6 +212,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               materialLentes.splice(id-1,1);
               tipoLentes.splice(id-1,1);
 
+              //Eliminar de los inputs escondidos.
+              var filas = document.getElementsByName('fila_lentes_final[]');
+              var materiales = document.getElementsByName('material_lentes_final[]');
+              var tipos = document.getElementsByName('tipo_lentes_final[]');
+
+              filas[id-1].value = "";
+              materiales[id-1].value = "";
+              tipos[id-1].value = "";
+
               <?php $cantidad--; ?>
             }
             else {
@@ -285,11 +298,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             materialLentes[document.getElementById("idCambioLentes").value] = material;
             tipoLentes[document.getElementById("idCambioLentes").value] = tipo;
             swal("Informacion", "Se actualizo las especificaciones del lente", "info");
+            document.getElementById("hayCambioLentes").value="";
           }
           else {
             filaLentes.push(fila);
             materialLentes.push(material);
             tipoLentes.push(tipo);
+
+            //Agregar a los inputs escondidos.
+            var filas = document.getElementsByName('fila_lentes_final[]');
+            var materiales = document.getElementsByName('material_lentes_final[]');
+            var tipos = document.getElementsByName('tipo_lentes_final[]');
+
+            filas[fila-1].value = fila;
+            materiales[fila-1].value = material;
+            tipos[fila-1].value = tipo;
+
             swal("Hecho", "Se agregaron las especificaciones del lente", "success");
             <?php $cantidad++; ?>
           }
@@ -441,7 +465,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <h4 class="label label-default pull-center" id="total_pago"><b>Resultado de examenes</b></h4>
                                     </div>
                                     <div class="text-right">
-                                      <button type="button" class="btn btn-info" onclick="mostrarListado()"><i class="fa fa-th-list"></i> Ver encomiendas</button>
+                                      <button type="button" class="btn btn-round btn-primary" onclick="mostrarListado()">Ver encomiendas</button>
                                     </div>
                                   </div>
                                   <br>
@@ -464,7 +488,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         $modelo = "";
                                         $cont = 1;
 
-                                        $result = pg_query($conexion, "SELECT * FROM examen");
+                                        $result = pg_query($conexion, "SELECT * FROM examen WHERE bestado = false ");
 
                                         //Es para todos los examenes.
                                         while($fila = pg_fetch_array($result)) {
@@ -482,6 +506,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                           ?>
 
                                           <tr>
+                                            <!--Para las tablas dinamicas.-->
+                                            <input type="hidden" name="fila_lentes_final[]">
+                                            <input type="hidden" name="material_lentes_final[]">
+                                            <input type="hidden" name="tipo_lentes_final[]">
+
                                             <td class="text-center">
                                               <div class="checkbox">
                                                 <label>
@@ -496,7 +525,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                             <td><?php echo $modelo ?></td>
                                             <td class="text-center">
-                                              <button type="button" class="btn btn-warning" onclick="verExamen()"><i class="fa fa-book"></i></button>
+                                              <button type="button" class="btn btn-warning" onclick="verExamen('<?php echo $fila[9]; ?>', '<?php echo $fila[0]; ?>')"><i class="fa fa-book"></i></button>
                                               <button id="<?php echo "especificaciones".$cont ?>" type="button" class="btn btn-info" onclick="especificaciones(<?php echo $cont ?>)" disabled><i class="fa fa-th-list"></i></button>
                                             </td>
                                           </tr>
@@ -512,7 +541,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <center>
                                         <div class="col-md-12 col-sm-6 col-xs-12">
                                           <div class="form-group">
-                                            <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registarEncomiendas()"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
+                                            <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registrarEncomienda();"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
                                             <button type="reset" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px "> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                         </div>
@@ -817,3 +846,17 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     ?>
   </body>
 </html>
+<?php
+if(isset($_REQUEST["bandera"])) {
+  //Para el detalle de la encomienda.
+  $filaValores = $_REQUEST['fila_lentes_final'];
+  $materialValores = $_REQUEST['material_lentes_final'];
+  $tipoValores = $_REQUEST['tipo_lentes_final'];
+
+  //Para la encomienda.
+  $id_encomendero = $_REQUEST['idEncomendero'];
+  $detalle_encomienda = $_REQUEST['detalle'];
+
+  echo "Hola";
+}
+?>

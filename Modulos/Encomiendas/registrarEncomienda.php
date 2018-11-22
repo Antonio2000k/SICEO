@@ -16,11 +16,11 @@ function obtenerValorSQL($consulta, $opcion, $id) {
           break;
 
         case "modelo":
-          return "modelo";
+          return "$fila_new[0]"." (".$fila_new[1].")";
           break;
 
         default:
-        return "algo xd";
+        return "";
           break;
       }
     }
@@ -86,6 +86,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         if(opc) {
           document.getElementById("frmEncomiendas").submit();
         }
+      }
+
+      function ajax_act(str) {
+        if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+        } else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("myTabContent").innerHTML = xmlhttp.responseText;
+          }
+        }
+
+        xmlhttp.open("post", "encomiendasAjax.php", true);
+        xmlhttp.send();
       }
 
       function obtenerDatosEncomendero(obj) {
@@ -494,27 +510,30 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                           <th width="15%" colspan="2">Acciones</th>
                                         </tr>
                                       </thead>
-                                      <tbody>
+                                      <tbody id="recargarListaPrincipal">
                                         <?php
                                         $cliente = "";
                                         $modelo = "";
                                         $cont = 1;
 
-                                        $result = pg_query($conexion, "SELECT * FROM examen WHERE bestado = false ");
+                                        $result = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = false ");
 
                                         //Es para todos los examenes.
                                         while($fila = pg_fetch_array($result)) {
-                                          $result_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE cid_expediente='$fila[9]'");
 
-                                          //Es para obtener expediente.
-                                          while($expediente = pg_fetch_array($result_expediente)) {
-                                            //Es para obtener cliente.
-                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
+                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[1]'");
                                             $cliente = obtenerValorSQL($consulta, "cliente", "");
 
-                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$expediente[1]'");
+                                            $consulta = pg_query($conexion, "SELECT * FROM productos WHERE cmodelo='$fila[3]'");
                                             $modelo = obtenerValorSQL($consulta, "modelo", "");
-                                          }
+
+                                            $result_examen = pg_query($conexion, "SELECT * FROM examen WHERE eid_examen=$fila[2]");
+                                            $examen;
+                                            $id;
+                                            while ($fila_examen = pg_fetch_array($result_examen)) {
+                                              $id = $fila_examen[0];
+                                              $examen = $fila_examen[9];
+                                            }
                                           ?>
 
                                           <tr>
@@ -522,6 +541,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <input type="hidden" name="fila_lentes_final[]">
                                             <input type="hidden" name="material_lentes_final[]">
                                             <input type="hidden" name="tipo_lentes_final[]">
+                                            <input type="hidden" name="modelo_lentes_final[]" value="<?php echo $fila[3] ?>">
+                                            <input type="hidden" name="cliente_lentes_final[]" value="<?php echo $fila[1] ?>">
 
                                             <td class="text-center">
                                               <div class="checkbox">
@@ -537,7 +558,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                             <td><?php echo $modelo ?></td>
                                             <td class="text-center">
-                                              <button type="button" class="btn btn-warning" onclick="verExamen('<?php echo $fila[9]; ?>', '<?php echo $fila[0]; ?>')"><i class="fa fa-book"></i></button>
+                                              <button type="button" class="btn btn-warning" onclick="verExamen('<?php echo $examen; ?>', '<?php echo $id; ?>')"><i class="fa fa-book"></i></button>
                                               <button id="<?php echo "especificaciones".$cont ?>" type="button" class="btn btn-info" onclick="especificaciones(<?php echo $cont ?>)" disabled><i class="fa fa-th-list"></i></button>
                                             </td>
                                           </tr>
@@ -772,7 +793,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <th>Reporte</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody id="recargarListaEncomiendas">
                                     <?php
                                     $consulta = pg_query($conexion, "SELECT * FROM encomienda");
 
@@ -878,25 +899,62 @@ if(isset($_REQUEST["bandera"])) {
   $filaValores = $_REQUEST['fila_lentes_final'];
   $materialValores = $_REQUEST['material_lentes_final'];
   $tipoValores = $_REQUEST['tipo_lentes_final'];
+  $modelo_lentes = $_REQUEST['modelo_lentes_final'];
+  $cliente_lentes = $_REQUEST['cliente_lentes_final'];
 
   //Para la encomienda.
   $id_encomendero = $_REQUEST['idEncomendero'];
   $detalle_encomienda = $_REQUEST['detalle'];
+  ini_set('date.timezone','America/El_Salvador');
+  $fecha_envio = date("d-m-Y");
 
   $longitud = count($filaValores);
   $cont = 0;
-  for ($i=0; $i < $longitud; $i++) {
-    if($filaValores[$i]!="") {
-      $cont++;
-    }
-  }
 
   pg_query("BEGIN");
 
-  if(true) {
+  //Insersion de la encomienda.
+  $resultado = pg_query($conexion,"SELECT MAX(encomienda.eid_encomienda) FROM encomienda");
+  $contado = 0;
+  while ($fila = pg_fetch_array($resultado)) {
+    $contado = $fila[0];
+  }
+  $contado++;
+
+  $query_encomienda = pg_query($conexion, "INSERT INTO encomienda (eid_encomienda, ffecha_envio, bestado, eid_encomendero, cdetalle, ffecha_recibido) VALUES ($contado, '$fecha_envio', false, $id_encomendero, '$detalle_encomienda', null) RETURNING eid_encomienda");
+  $id_encomienda = pg_fetch_array($query_encomienda);
+
+  $error_detalle= false;
+
+  for ($i=0; $i < $longitud; $i++) {
+    if($filaValores[$i] != "") {
+      //Insersion del detalle de la encomienda.
+      $resultado = pg_query($conexion,"SELECT MAX(detalle_encomienda.eid_detalle_encomienda) FROM detalle_encomienda");
+      $contado = 0;
+      while ($fila = pg_fetch_array($resultado)) {
+        $contado = $fila[0];
+      }
+      $contado++;
+
+      $query_detalle_encomienda = pg_query($conexion, "INSERT INTO detalle_encomienda (eid_detalle_encomienda, eid_encomienda, cmodelo, cid_cliente, cmaterial, ctipo) VALUES ($contado, $id_encomienda[0], '$modelo_lentes[$i]', '$cliente_lentes[$i]', '$materialValores[$i]', '$tipoValores[$i]')");
+
+      //Muestra error.
+      if(!$query_detalle_encomienda) {
+        $error_detalle = true;
+        $i = $longitud;
+        break;
+        //echo pg_last_error($conexion);
+      }
+
+      $query_detalle_encomienda = pg_query($conexion, "UPDATE detalle_examen SET bestado=true WHERE eid_detalle_examen = $filaValores[$i]");
+    }
+  }
+
+  if($query_encomienda && !$error_detalle) {
     pg_query("COMMIT");
     echo "<script type='text/javascript'>";
     echo "swal('Hecho', 'Se registro la encomienda exitosamente', 'success');";
+    echo "ajax_act('');";
     echo "</script>";
   }
   else {
@@ -905,11 +963,5 @@ if(isset($_REQUEST["bandera"])) {
     echo "swal('Error', 'No se pudo completar el registro', 'error');";
     echo "</script>";
   }
-
-  echo "Id encomendero: ".$id_encomendero;
-  echo "<br>";
-  echo "Detalle encomienda: ".$detalle_encomienda;
-  echo "<br>";
-  echo "Cantidad de lentes a llevar: ".$cont;
 }
 ?>

@@ -246,12 +246,20 @@ include "../../ComponentesForm/menu.php";
                                     </div>
                                    </div>
                                  </div>
-                    </div>-->
+                    </div>
                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content3" aria-labelledby="profile-tab">
                          <div class="col-md-12 col-sm-12 col-xs-12">
                              <div class="x_panel">
                                 <div class="x_title">
                                   <h2 >EMPLEADOS </h2>
+                                  <div class="form-group" style="float: right;">
+                                    <div class="btn-group" >
+                                        <button float-right class="btn btn-info btn-icon left-icon "  onclick="RepEmp('baja')">
+                                          <i class="fa fa-th-list"></i>
+                                          <span style="color: white">Reporte</span>
+                                        </button>
+                                    </div>  
+                                  </div>
                                 <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">

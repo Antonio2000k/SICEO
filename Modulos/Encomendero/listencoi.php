@@ -3,28 +3,27 @@
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from proveedor where eid_proveedor=$iddatos");
+    $query_s = pg_query($conexion, "select * from encomendero where eid_encomendero=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
-        $Rid_proveedor = $fila[0];
+        $Rid_encomendero = $fila[0];
         $Rnombre = $fila[1];
         $Rapellido = $fila[2];
-        $Rempresa = $fila[3];
-        $Rtelefonof = $fila[4];
-        $Rcelular = $fila[5];
-        $Rdireccion = $fila[6];
-        $Restado = $fila[7];
-        $Remail = $fila[8];
+        
+        $Rtelefonof = $fila[3];
+        $Rcelular = $fila[4];
+        
+        $Restado = $fila[5];
       }
 }else{
-  $Rid_proveedor = null;
+  $Rid_encomendero = null;
         $Rnombre =  null;
         $Rapellido =  null;
-        $Rempresa =  null;
+        
         $Rtelefonof =  null;
         $Rcelular =  null;
-        $Rdireccion =  null;
+        
         $Restado = null;
-        $Remail =  null; 
+         
       }
 ?>
 <!DOCTYPE html>
@@ -36,12 +35,12 @@ if(isset($_REQUEST["id"])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SICEO |  Lista de Proveedores Inactivos </title>
+    <title>SICEO |  Lista de Encomenderos Inactivos </title>
 
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
-    <script src="proveedor.js"></script>
+    <script src="encomendero.js"></script>
   </head>
 
   <body class="nav-md">
@@ -65,13 +64,13 @@ if(isset($_REQUEST["id"])){
                  <div>
                      <img align="left" src="../../production/images/man.png">
                         <h1 align="center">
-                            Lista de Proveedores Inactivos
+                            Lista de Encomenderos Inactivos
                         </h1>
                       </img>
                   </div>
                   <div align="center">
                       <p>
-                        Bienvenido en esta sección aquí puede registrar proveedores en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un proveedor. La segunda pestaña muestra todos los proveedores registrados que estan activos y la tercera pestaña todos los proveedores que estan inactivos.
+                        Bienvenido en esta sección, aquí puede registrar las personas encargadas de llevar las encomiendas, en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un encomendero. La segunda pestaña muestra todos los encomenderos registrados que estan activos y la tercera pestaña todos los encomenderos que estan inactivos.
                       </p>
                   </div>
               </div>
@@ -81,9 +80,9 @@ if(isset($_REQUEST["id"])){
                 <div class="x_panel">
                   <div class="" role="tabpanel" data-example-id="togglable-tabs">
                   <ul id="myTab" class="nav nav-tabs bar_tabs " role="tablist" >
-                        <li role="presentation" class=" col-md-3 col-sm-3 col-xs-3"><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedor.php" id="home-tab"  aria-expanded="false">NUEVO PROVEEDOR</a>
+                        <li role="presentation" class=" col-md-3 col-sm-3 col-xs-3"><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="encomendero.php" id="home-tab"  aria-expanded="false">NUEVO ENCOMENDERO</a>
                         </li>
-                        <li class="col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedora.php"  id="profile-tab"  aria-expanded="false">LISTA DE PROVEEDORES ACTIVOS</a>
+                        <li class="col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="listenco.php"  id="profile-tab"  aria-expanded="false">LISTA DE ENCOMENDERO ACTIVOS</a>
                         </li>
                         <li class="active col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="#tab_content3"  id="profile-tab"  aria-expanded="true">LISTA DE PROVEEDORES INACTIVOS</a>
                         </li>
@@ -97,9 +96,9 @@ if(isset($_REQUEST["id"])){
                                <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                  <form class="form-horizontal form-label-left" id="formProveedor" name="formProveedor" method="post">
+                                  <form class="form-horizontal form-label-left" id="formEncomendero" name="formEncomendero" method="post">
                             <input type="hidden" name="bandera" id="bandera"/>
-                            <input type="hidden" name="baccion" id="baccion" value="<?php echo $Rid_proveedor;?>"/>
+                            <input type="hidden" name="baccion" id="baccion" value="<?php echo $Rid_encomendero;?>"/>
                                     <div class="row">
                                       
                                       <div class="item form-group">
@@ -259,27 +258,27 @@ if(isset($_REQUEST["id"])){
                                       <th>Nombre</th>
                                       <th>Apellidos</th>
                                       <th>Telefono</th>
-                                      <th>Empresa</th>
+                                      <th>Celular</th>
                                       <th>Ver</th>
                                     </tr>
                                   </thead>
                                   <tbody >
                                     <?php
                                           include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from proveedor where bestado='f'  order  by cnombre");
+                                          $query_s= pg_query($conexion, "select * from encomendero where bestado='f'  order  by cnombre");
                                           while($fila=pg_fetch_array($query_s)){
                                       ?>
                                     <tr>
                                       <td><?php echo $fila[0]; ?></td>
                                       <td><?php echo $fila[1]; ?></td>
                                       <td><?php echo $fila[2]; ?></td>
-                                      <td><?php echo $fila[4]; ?></td>
-                                      <td> <?php echo $fila[3]; ?> </td>
+                                      <td><?php echo $fila[3]; ?></td>
+                                      <td> <?php echo $fila[4]; ?> </td>
                                       <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
-                                      <?php if($fila[7]=='t'){ ?>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al proveedor '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
-                                      <?php }if($fila[7]=='f'){?>
-                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al proveedor '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
+                                      <?php if($fila[5]=='t'){ ?>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al encomendero '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
+                                      <?php }if($fila[5]=='f'){?>
+                                        <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al encomendero '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
                                       <?php }?>
                                       </td>
                                     </tr>
@@ -326,9 +325,6 @@ $nombre=($_REQUEST["nombre"]);
 $apellido=($_REQUEST["apellido"]);
 $telefono=($_REQUEST["telefono"]);
 $celular=($_REQUEST["celular"]);
-$empresa=$_REQUEST["empresa"];
-$direccion=($_REQUEST["direccion"]);
-$email=$_REQUEST["email"];
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
@@ -393,7 +389,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
         }else{
           pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Succes!','Datos actualizados !','success');";
+                    echo "alertaSweet('Informacion!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('listenco.php');

@@ -297,19 +297,11 @@ function RepEdad(){
           limpiarFormulario();
     }
 
-    if(tipoL && estadoA){
-          window.open("../../reporteProducto.php?tipo=Lente"+"&estado=t");
+    if(tipoL ){
+          window.open("../../reporteProducto.php?tipo=Lente");
           limpiarFormulario();
-    } else if(tipoA && estadoA){
-          window.open("../../reporteProducto.php?tipo=Accesorio"+"&estado=t");
-          limpiarFormulario();
-    }
-
-    if(tipoL && estadoD){
-          window.open("../../reporteProducto.php?tipo=Lente"+"&estado=f");
-          limpiarFormulario();
-    } else if(tipoA && estadoD){
-          window.open("../../reporteProducto.php?tipo=Accesorio"+"&estado=f");
+    } else if(tipoA ){
+          window.open("../../reporteProducto.php?tipo=Accesorio");
           limpiarFormulario();
     }
 

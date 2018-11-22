@@ -310,13 +310,7 @@ if(isset($_REQUEST["id"])){
                         <div class="clearfix"></div>
                     </div>
                     
-                    <div class="btn-group" style="margin-left: 50%;">
-							<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i>  Exportar Tabla</button>
-							<ul class="dropdown-menu " role="menu">
-								<li><a href="#" onclick="$('#datatable-fixed-header').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});"> <img src="../../images/pdf.png" width="24px"> PDF</a></li>
-								<li><a href="#" onclick="$('#datatable-fixed-header').tableExport({type:'excel',escape:'false'});"> <img src="../../images/excel.png" width="24px"> EXCEL</a></li>
-							</ul>
-						</div>
+                    
                    
                     <div class="x_content" id="imprimirTablaActivados">
                         <table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">

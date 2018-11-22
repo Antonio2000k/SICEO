@@ -24,13 +24,13 @@
 			$meses = array("0","Enero", "Febrero", "Marzo", "Abril","Mayo", "Junio", "Julio", "Agosto","Septiembre", "Octubre", "Noviembre", "Diciembre");
 			$diaIni=substr($fechaini, 0, 2);
 			$anio=substr($fechaini, 6, 4);
-			$mes=substr($fechaini, 2, 3);
+			$mes=substr($fechaini, 3, 2);
 			if($mes<10){
 				$mes=substr($mes,1);
 			}
 			$diaFini=substr($fechafini,  0, 2);
 			$aniofini=substr($fechafini, 6, 4);
-			$mesFini=substr($fechafini, 2, 3);
+			$mesFini=substr($fechafini, 3, 2);
 			if($mesFini<10){
 				$mesFini=substr($mesFini,1);
 			}
@@ -56,7 +56,7 @@
 			$this->SetFont('times','B',16);
 			$this->Ln(4);
 			$this->Cell(30);
-			$this->Cell(135,10, 'Reporte de clientes',0,1,'C');
+			$this->Cell(135,10, 'Lista de clientes',0,1,'C');
 			$this->Ln(4);
 
 			$this->SetFont('times','B',9);
@@ -74,16 +74,19 @@
 				$this->Cell(135,10, utf8_decode("Mayores a ". $edadMa . " años" ),0,1,'C');
 			}  else if($edad!= "" ){
 				$this->Cell(135,10, "De la edad de ". $edad ,0,1,'C');
-			} else if($diaIni == $diaFini && $mes == $mesFini && $anio == $aniofini){
+			}
+
+			if($diaIni == $diaFini && $mes == $mesFini && $anio == $aniofini){
 				$this->Cell(135,10, utf8_decode("Del día ". $diaIni." de " . $meses[$mes] . " del ".$anio) ,0,1,'C');
-			} if($diaIni == 01 && $diaFini == 29 || $diaFini == 30 || $diaFini == 31 && $diaFini == date('d') && $mes == $mesFini && $anio == $aniofini){
-				$this->Cell(135,10, "Del Mes de " . $meses[$mes] . " del ".$anio ,0,1,'C');
-			} if($diaIni == date('d')-6 && $diaFini == date('d') && $anio == $aniofini){
-				$this->Cell(135,10, utf8_decode("Del los ultimos 7 días ") ,0,1,'C');
 			} else if($diaIni == 01 && $diaFini == 29 || $diaFini == 30 || $diaFini == 31 || $diaFini == date('d') && $mes == $mesFini && $anio == $aniofini){
-				$this->Cell(135,10, utf8_decode("Del mes actual (" . $meses[$mes] . ") año ".$anio) ,0,1,'C');
-			} if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == '2015' && $aniofini= date('Y')){
+				$this->Cell(135,10, "Del Mes de " . $meses[$mes] . " del ".$anio ,0,1,'C');
+			} else if($diaIni == date('d')-6 && $diaFini == date('d') && $anio == $aniofini){
+				$this->Cell(135,10, utf8_decode("Del los ultimos 7 días ") ,0,1,'C');
+			}   if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == '2015' && $aniofini= date('Y')){
 				$this->Cell(135,10, "Todos los registros" ,0,1,'C');
+			} 
+			if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == date('Y') && $aniofini= date('Y')){
+				$this->Cell(135,10, utf8_decode("De este año ".$anio) ,0,1,'C');
 			} 
 			//$this->Cell(135,10, "Fecha Inicio ". $diaIni." de " . $meses[$mes] . " del ".$anio ." - " .  "Fecha Final ". $fechafini,0,1,'C');
 			//Del  echo $diaIni." de ".$meses[$mes]." del ".$aniofini;  al  echo $diaFini." de ".$meses[$mesFini]." del ".$anio; 
@@ -120,7 +123,7 @@
 		
 		function Footer()
 		{
-			$this->SetY(-15);
+			$this->SetY(-30);
 			$this->SetFont('times','B',8);
 			$this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
 			

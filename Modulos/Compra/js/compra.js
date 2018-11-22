@@ -48,10 +48,7 @@ var dDigitado=parseInt(fecha.substr(0, 2));
               Notificacion('error', "<b>Error: </b>Año menor al actual");
               document.getElementById('fecha').value="";
           }
-            if (dActual<dDigitado) {
-              Notificacion('error', "<b>Error: </b>Dia mayor al actual");
-              document.getElementById('fecha').value="";
-          }
+          
 }
 function Notificacion(tipo,msg){
         notif({
@@ -540,3 +537,15 @@ function actualizarTabla() {
             xmlhttp.open("post", "ajax/actualizaTablaDetallePago.php", true);
             xmlhttp.send();
         }
+
+function RepCompra(opcion){
+    var fechaini = document.getElementById("rango3").value;
+    var fechafini = document.getElementById("rango4").value;
+
+
+    if(opcion === 'contado' && fechaini != "" && fechafini != ""){
+          window.open("../../reporteCompras.php?compratipo=contado&fechaini="+fechaini+"&fechafini="+fechafini);
+    } else if(opcion === 'credito' && fechaini != "" && fechafini != ""){
+          window.open("../../reporteCompras.php?compratipo=credito&fechaini="+fechaini+"&fechafini="+fechafini);
+    }
+}

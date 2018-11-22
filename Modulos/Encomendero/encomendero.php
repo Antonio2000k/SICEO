@@ -66,7 +66,7 @@ if(isset($_REQUEST["id"])){
                   </div>
                   <div align="center">
                       <p>
-                        Bienvenido en esta sección aquí puede registrar proveedores en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un proveedor. La segunda pestaña muestra todos los proveedores registrados que estan activos y la tercera pestaña todos los proveedores que estan inactivos.
+                        Bienvenido en esta sección, aquí puede registrar las personas encargadas de llevar las encomiendas, en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un encomendero. La segunda pestaña muestra todos los encomenderos registrados que estan activos y la tercera pestaña todos los encomenderos que estan inactivos.
                       </p>
                   </div>
               </div>

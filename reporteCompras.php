@@ -3,6 +3,8 @@ require 'Config/conexion.php';
 
   require 'fpdf/fpdf.php';
   $tipo = $_REQUEST['compratipo'];
+  $fechaini=$_REQUEST['fechaini'];
+  $fechafini=$_REQUEST['fechafini'];
   class PDF extends FPDF
   {
     function vcell($c_ancho,$c_alto,$x_posicion,$texto){ 
@@ -57,6 +59,8 @@ require 'Config/conexion.php';
 
     function Header(){
       $tipo = $_REQUEST['compratipo'];
+      $fechaini=$_REQUEST['fechaini'];
+      $fechafini=$_REQUEST['fechafini'];
       $this->Image('images/Siceom.png', 14, 20, 40 );
       $this->SetFont('times','B',14);
       $this->Ln(4);
@@ -81,7 +85,7 @@ require 'Config/conexion.php';
         $this->SetFont('times','B',16);
         $this->Ln(4);
         $this->Cell(26);
-        $this->Cell(140,10, utf8_decode('Listado de Compras al contado'),0,1,'C');
+        $this->Cell(140,10, utf8_decode('Lista de Compras al contado'),0,1,'C');
         $this->Ln(5);
 
         $this->SetFont('times','B',9);
@@ -127,7 +131,7 @@ require 'Config/conexion.php';
         $this->SetFont('times','B',16);
         $this->Ln(4);
         $this->Cell(26);
-        $this->Cell(140,10, utf8_decode('Listado de Compras al credito'),0,1,'C');
+        $this->Cell(140,10, utf8_decode('Lista de Compras al credito'),0,1,'C');
         $this->Ln(5);
 
         $this->SetFont('times','B',9);
@@ -196,7 +200,9 @@ require 'Config/conexion.php';
 
   $pdf->AddPage();
   if($tipo === "credito"){
-    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, productos.cnombre, detalle_compra.rprecio_compradetalle, compra.ffecha_compra, compra.rabono, compra.rtotal_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo where compra.eperiodo>0 ");
+    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, detalle_compra.id_producto, productos.cnombre, detalle_compra.rprecio_compradetalle, compra.ffecha_compra, compra.rabono, proveedor.cempresa, compra.rtotal_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor
+      where compra.eperiodo>0 AND compra.ffecha_compra BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
+
 
     while($row=pg_fetch_assoc($query_s)){ 
       ini_set('date.timezone', 'America/El_Salvador');
@@ -214,22 +220,23 @@ require 'Config/conexion.php';
       $x_posicion=$pdf->getx();   
       $pdf->cell(15,6, $row['ecantidad'] ,1,0,'C',1);
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(42,6,$row['cnombre'],1,0,'C',1);
+      $pdf->cell(42,6,$row['id_producto'],1,0,'C',1);
       
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(18,6, utf8_decode($row['rprecio_compradetalle']) , 1,0,'C',1);
+      $pdf->cell(18,6, utf8_decode("$ ".$row['rprecio_compradetalle']) , 1,0,'C',1);
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(40,6, utf8_decode($row['rprecio_compradetalle']) , 1,0,'C',1);
+      $pdf->cell(40,6, utf8_decode($row['cempresa']) , 1,0,'C',1);
       $x_posicion=$pdf->getx();   
       $pdf->cell(19,6,"$ ".$row['rtotal_compra'] ,1,0,'C',1);
       $x_posicion=$pdf->getx();   
       $pdf->cell(19,6,"$ ".$row['rabono'] ,1,0,'C',1);
       $x_posicion=$pdf->getx();   
-      $pdf->cell(19,6,"$ ".$saldo ,1,0,'C',1);
+      $pdf->cell(19,6,"$ ".$saldo ,1,1,'C',1);
+    
         
     }
   }else if ($tipo === "contado"){
-    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, productos.cnombre, detalle_compra.rprecio_compradetalle, compra.ffecha_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo where compra.eperiodo<=0 ");
+    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, compra.rtotal_compra, productos.cnombre, detalle_compra.rprecio_compradetalle, proveedor.cempresa, compra.ffecha_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor where compra.ffecha_compra BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) AND compra.eperiodo<=0");
 
     while($row=pg_fetch_assoc($query_s)){ 
       ini_set('date.timezone', 'America/El_Salvador');
@@ -250,11 +257,11 @@ require 'Config/conexion.php';
       $pdf->cell(72,6,$row['cnombre'],1,0,'C',1);
       
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(18,6, utf8_decode($row['rprecio_compradetalle']) , 1,0,'C',1);
+      $pdf->cell(18,6, utf8_decode("$ ".$row['rprecio_compradetalle']) , 1,0,'C',1);
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(38,6, utf8_decode($row['rprecio_compradetalle']) , 1,0,'C',1);
+      $pdf->cell(38,6, utf8_decode($row['cempresa']) , 1,0,'C',1);
       $x_posicion=$pdf->getx();   
-      $pdf->cell(19,6,"$ ".$row['ecantidad']*$row['rprecio_compradetalle'] ,1,1,'C',1);
+      $pdf->cell(19,6,"$ ".$row['rtotal_compra'] ,1,1,'C',1);
         
     }
   }

@@ -115,7 +115,6 @@ if(isset($_REQUEST["id"])){
                                     <ul class="dropdown-menu " role="menu">
                                       <li><a href="#" data-toggle="modal" data-target="#impresion"> FECHA</a></li>
                                       <li><a href="#" data-toggle="modal" data-target="#sexo"> SEXO</a></li>
-                                      <li><a href="#" data-toggle="modal" data-target="#fesexo"> FECHA Y SEXO</a></li>
                                       <li><a href="#" data-toggle="modal" data-target="#edad"> EDAD</a></li>
                                     </ul>
                                   </div> 
@@ -346,68 +345,7 @@ if(isset($_REQUEST["id"])){
           </div>
         </div>
 
-        <div class="modal fade" id="fesexo" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-md " role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <center>
-                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
-              </div>
-              <div class="modal-body">
-                <div class="item form-group" > 
-                  <button type="button" class="btn btn-info " id="daterange-btn2" style="float: right;">
-                    <i class="fa fa-calendar"></i> Rango
-                    <i class="fa fa-caret-down"></i>
-                  </button>
-                  
-                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
-                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                    <input type="text" name="rango1" id="rango1"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
-                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-
-                  
-                        
-                </div>
-                <br><br>
-                <div class="item form-group"> 
-
-                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
-                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                    <input type="text" name="rango2" id="rango2" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
-                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-                        
-                </div>
-                <br><br><br>
-                <div class="item form-group" > 
-                  <label class="control-label col-md-1 col-sm-2 col-xs-12">Sexo*</label>
-                  <div class="col-md-10 col-sm-4 col-xs-12 form-group has-feedback">
-                    <div class="col-md-4 col-xs-12 col-sm-4">
-                      <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoMM" value="M"/>
-                    </div>
-                    <div class="col-md-4 col-xs-12 col-sm-4">
-                      <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoFF" value="F" />
-                    </div>
-                  </div>
-                </div>
-                            
-                            
-                                
-                 <br>
-              </div>
-              
-                <div class="modal-footer">
-                  <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="RepBoth()"> <i class="fa fa-print"></i> Imprimir</button>
-                  
-                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-          </div>
-        </div>
+        
 
         <div class="modal fade" id="edad" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog modal-md " role="document">
@@ -458,15 +396,15 @@ if(isset($_REQUEST["id"])){
                     </div>
 
                     <div class="item form-group" id="divER" hidden > 
-                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Menor a*</label>
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Limite Inferior*</label>
                       <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback" >
-                        <input type="text" name="edadR1" id="edadR1"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Menor a"  autocomplete="off" >
+                        <input type="text" name="edadR1" id="edadR1"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Limite Inferior"  autocomplete="off" >
                         <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                       </div>
                       <br><br><br>
-                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Mayor a*</label>
+                      <label class="control-label col-md-3 col-sm-2 col-xs-12">Limite Superior*</label>
                       <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback" >
-                        <input type="text" name="edadR2" id="edadR2"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Mayor a"  autocomplete="off" >
+                        <input type="text" name="edadR2" id="edadR2"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Limite superior"  autocomplete="off" >
                         <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                       </div>
                       <br><br>

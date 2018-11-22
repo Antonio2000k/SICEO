@@ -64,7 +64,7 @@ if(isset($_REQUEST["id"])){
                   </div>
                   <div align="center">
                       <p>
-                        Bienvenido en esta sección aquí puede registrar proveedores en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un proveedor. La segunda pestaña muestra todos los proveedores registrados que estan activos y la tercera pestaña todos los proveedores que estan inactivos.
+                        Bienvenido en esta sección, aquí puede registrar las personas encargadas de llevar las encomiendas, en el sistema debe de llenar todos los campos obligatorios (*) para poder registrar un encomendero. La segunda pestaña muestra todos los encomenderos registrados que estan activos y la tercera pestaña todos los encomenderos que estan inactivos.
                       </p>
                   </div>
               </div>
@@ -80,27 +80,90 @@ if(isset($_REQUEST["id"])){
                         <li class="active col-md-4 col-sm-3 col-xs-3" role="presentation" class=""><a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="true">LISTA DE ENCOMENDEROS ACTIVOS</a>
                         </li>
                          <li class="col-md-4 col-sm-3 col-xs-3" role="presentation" class="">
-                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="proveedori.php"  id="profile-tab"  aria-expanded="false">LISTA DE ENCOMENDEROS INACTIVOS</a>
+                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" href="listencoi.php"  id="profile-tab"  aria-expanded="false">LISTA DE ENCOMENDEROS INACTIVOS</a>
                         </li>
                   </ul>
                       <div id="myTabContent" class="tab-content">
-                      <div role="tabpanel" class="tab-pane fade " id="tab_content1" aria-labelledby="home-tab">
+                        <div role="tabpanel" class="tab-pane fade " id="tab_content1" aria-labelledby="home-tab">
                           <div class="x_content">
-                            <div class="x_title" style="background: #2A3F54">
-                              <h3 align="center" style=" color: white">Datos Proveedor
+                            <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                              <h3 align="center" style=" color: white">Datos Encomendero
                             </h3>
                                <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                  <form class="form-horizontal form-label-left" id="formProveedor" name="formProveedor" method="post">
+                                  <form class="form-horizontal form-label-left" id="formEncomendero" name="formEncomendero" method="post">
                             <input type="hidden" name="bandera" id="bandera"/>
-                            <input type="hidden" name="baccion" id="baccion" value="<?php echo $Rid_proveedor;?>"/>
-                                    
-                                    
+                            <input type="hidden" name="baccion" id="baccion" value="<?php echo $Rid_encomendero;?>"/>
+                            <div id="validaso"><input type="hidden" id="baccionVer" value="1" /> </div>
+                                    <div class="row">
+                                      
+                                      <div class="item form-group">
+                                        <h2>Datos de Encomendero</h2>
+                                      </div>
+                                      <div class="ln_solid"></div>
+
+                                      <div class="item form-group">
+                                        <label class="control-label col-md-1 col-sm-1 col-xs-12">Nombre*</label>
+                                        <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
+                                              <input type="tel" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="nombre" placeholder="Nombre de Encomendero" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
+                                              <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        <label class="control-label col-md-1 col-sm-12 col-xs-2">
+                                                                                        Apellidos*
+                                                                                    </label>
+                                            <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                                              <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos del Encomendero" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
+                                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            
+                                            </div>
+
+                                        <label class="control-label col-md-1 col-sm-2 col-xs-12">Telefono*</label>
+                                        <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
+                                          <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefonof; ?>" autocomplete="off" onblur="vali('tele');">
+                                          <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        <label class="control-label col-md-1 col-sm-12 col-xs-2">Celular*</label>
+                                        <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
+                                          <input type="tel" class="form-control has-feedback-left"  id="telefonoc" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>" autocomplete="off" onblur="vali('celular');">
+                                          <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        </div >      
+                                       
+                                        
+                                         <div class="ln_solid"></div>
+                                         
+
+                                    </div>
+                                    <div class="form-group">
+                                      <center>
+                                        <div class="col-md-12 col-sm-6 col-xs-12 ">
+                                              <?php
+                                                if(!isset($iddatos)){
+                                                    ?>
+                                                    <button class="btn btn-success btn-icon left-icon;" onClick="verificar('guardar');"> <i  class="fa fa-save"  name="btnGuardar" id="btnGuardar"></i> <span >Guardar</span></button>
+
+                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiar');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                                    <?php
+                                                }else{
+                                                    ?>
+                                                    <button class="btn btn-info btn-icon left-icon;" onClick="verificar('modificar');"> <i  class="fa fa-save"  name="btnModificar" id="btnModificar"></i> <span >Modificar</span></button>
+                                                    <button class="btn btn-danger  btn-icon left-icon" id="limpiar" onclick="return limpiarIn('limpiarM');"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                                    <?php
+                                                }
+                                           ?>
+                                        </div>
+                                      </center>
+                                    </div>
                                   </form>
                               </div>
                           </div>
-                        </div> 
+                        </div>
+                     
+                      </div>
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
                           <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
@@ -286,10 +349,10 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
         }else{
           pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Succes!','Datos actualizados !','success');";
+                    echo "alertaSweet('Informacion!','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
-                                      location.href=('encomendero.php');
+                                      location.href=('listencoi.php');
                                     }, 2000);";
                       echo "</script>";
         }

@@ -52,6 +52,7 @@
                     <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
+                        
                         <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)"><h2 style="text-indent: 400px; color: white">Ingresos-Egresos</h2>
                             <ul class="nav navbar-right panel_toolbox"><li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                             </ul>
@@ -102,6 +103,10 @@
                               <div class="col-md-6">
                                   <button class="btn btn-default btn-icon left-icon pull-left" onclick="cambioTipoFlujo('Netos');"> <i class="fa fa-bar-chart"></i>Netos</button> 
                                 <button class="btn btn-default btn-icon left-icon pull-left" onclick="cambioTipoFlujo('Totales');"> <i class="fa fa-bar-chart"></i>Totales</button> 
+                                <button class="btn btn-default btn-icon left-icon pull-left"  onclick="RepIE('')">
+                                    <i class="fa fa-th-list"></i>
+                                    <span >Reporte</span>
+                                </button>
                               </div>
                               
                                 

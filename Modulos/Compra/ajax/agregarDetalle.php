@@ -6,17 +6,17 @@
     $matriz=$_SESSION["matriz"];
     $total=total();
     $quepaso=1;
-    $fechita=date("m-d-Y", strtotime($_REQUEST["fecha"]));
+    $fechita= $_REQUEST["fecha"];
     $id_empleado=$_SESSION["cid_empleado"];
       include '../../../Config/conexion.php';
       pg_query("BEGIN");
       if($opcion==="guardarTodo"){
-          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."','".$fechita."','".$total."','0','0','0')");
+          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','0','0','0')");
       }else if($opcion==="guardarTodoCredito"){
           $abono=$_REQUEST["abono"];
           $cuotas=$_REQUEST["cuota"];
           $periodo=$_REQUEST["periodo"];
-          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."','".$fechita."','".$total."','".$cuotas."','".$periodo."','".$abono."')");
+          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','".$cuotas."','".$periodo."','".$abono."')");
       }      
       if(!$result){
                 pg_query("rollback");

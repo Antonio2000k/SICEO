@@ -133,7 +133,7 @@ require 'Config/conexion.php';
 		
 		function Footer()
 		{
-			$this->SetY(-15);
+			$this->SetY(-30);
 			$this->SetFont('times','B',8);
 			$this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
 			

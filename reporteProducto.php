@@ -60,6 +60,11 @@ require 'Config/conexion.php';
 		}
 
 		function Header(){
+			$proveedor =$_REQUEST['proveedor'];
+			$estado =$_REQUEST['estado'];
+			$tipo =$_REQUEST['tipo'];
+			$marca =$_REQUEST['marca'];
+			$garantia =$_REQUEST['garantia'];
 			$this->Image('images/Siceom.png', 14, 20, 40 );
 			$this->SetFont('times','B',14);
 			$this->Ln(4);
@@ -79,11 +84,61 @@ require 'Config/conexion.php';
       		$this->SetXY(40, 34);
 			$this->Cell(130,5,utf8_decode("Teléfono: 2328 - 9312"),0,1,'C');
 			
-			$this->SetFont('times','B',16);
-			$this->Ln(5);
-			$this->Cell(30);
-			$this->Cell(140,10, 'Lista de productos',0,1,'C');
-			$this->Ln(5);
+			if($proveedor!= ""){
+				$this->SetFont('times','B',16);
+				$this->Ln(5);
+				$this->Cell(30);
+				$this->Cell(140,10, 'Lista de productos por proveedor: '. $proveedor,0,1,'C');
+				$this->Ln(5);
+			} 
+			if($tipo!= ""){
+				$this->SetFont('times','B',16);
+				$this->Ln(5);
+				$this->Cell(30);
+				$this->Cell(140,10, 'Lista de productos tipo: '. $tipo,0,1,'C');
+				$this->Ln(5);
+			} 
+
+			if($estado!= ""){
+				if($estado === "t"){
+					$this->SetFont('times','B',16);
+					$this->Ln(5);
+					$this->Cell(30);
+					$this->Cell(140,10, 'Lista de productos activos ',0,1,'C');
+					$this->Ln(5);
+				}
+				if($estado === "f"){
+					$this->SetFont('times','B',16);
+					$this->Ln(5);
+					$this->Cell(30);
+					$this->Cell(140,10, 'Lista de productos dados de baja',0,1,'C');
+					$this->Ln(5);
+				}
+			}
+
+			if($marca!= ""){
+				$this->SetFont('times','B',16);
+				$this->Ln(5);
+				$this->Cell(30);
+				$this->Cell(140,10, 'Lista de productos de la marca: '. $marca,0,1,'C');
+				$this->Ln(5);
+			}
+			if($garantia!= ""){
+				if($garantia === "Sin garantia"){
+					$this->SetFont('times','B',16);
+					$this->Ln(5);
+					$this->Cell(30);
+					$this->Cell(140,10, 'Lista de productos '. $garantia,0,1,'C');
+					$this->Ln(5);
+				}else {
+					$this->SetFont('times','B',16);
+					$this->Ln(5);
+					$this->Cell(30);
+					$this->Cell(140,10, 'Lista de productos con Garantia: '. $garantia,0,1,'C');
+					$this->Ln(5);
+			}
+			}
+			
 
 			$this->SetFont('times','B',9);
 			$this->Ln(1);
@@ -125,13 +180,13 @@ require 'Config/conexion.php';
 			$this->SetLineWidth(0);
 
 			$this->SetFillColor(255, 99, 71);
-			$this->Rect(7, 76, 202, 176, '');
+			$this->Rect(7, 76, 202, 175, '');
 			
 		}
 		
 		function Footer()
 		{
-			$this->SetY(-15);
+			$this->SetY(-30);
 			$this->SetFont('times','B',8);
 			$this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
 			
@@ -156,15 +211,7 @@ require 'Config/conexion.php';
 			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE proveedors.eid_proveedor = '$proveedor'  ");
 	} 
-	 if($tipo!= "" && $estado!= ""){
-		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
-			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
-			WHERE producto.ctipo = '$tipo' AND producto.bestado = '$estado'  ");
-	}
+	
 	if($estado!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
@@ -211,42 +258,47 @@ require 'Config/conexion.php';
 	 	
 		
 	 	
-		$pdf->SetFont('times','B',9);
+		$pdf->SetFont('times','B',10);
 		$pdf->SetX(7); 
 		$x_posicion=$pdf->getx(); 
 		
-		$pdf->vcell(20,18,$x_posicion,$row['cmodelo'], 0,0,'C',1);// pass all values inside the cell
+		$pdf->vcell(25,35,$x_posicion,$row['cmodelo'], 0,0,'C',1);// pass all values inside the cell
 		
 		$pdf->SetFillColor(255, 255, 255);
 		$pdf->SetTextColor(0,0,0);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(25,18,$x_posicion,$row['cnombre'] ,0,0,'C',1);
+		$pdf->vcell(30,35,$x_posicion,$row['cnombre'] ,0,0,'C',1);
 		$x_posicion=$pdf->getx(); 
-		$pdf->vcell(20,18,$x_posicion,utf8_decode("$ ".$row['rprecio_compra']),0,0,'C',1);
+		$pdf->vcell(20,35,$x_posicion,utf8_decode("$ ".$row['rprecio_compra']),0,0,'C',1);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(20,18,$x_posicion,utf8_decode("$ ".$row['rprecio_venta']),0,0,'C',1);
+		$pdf->vcell(20,35,$x_posicion,utf8_decode("$ ".$row['rprecio_venta']),0,0,'C',1);
 		$x=$pdf->getX(); 
 		$pdf->SetX($x);	
 		$pdf->GetY();
-		$pdf->cell(65,6,"Marca: ". $row['marcas'] . "      Color: " . $row['ccolor'],1,0,'L',1);
+		$pdf->cell(55,9,"Marca: ". $row['marcas'],1,0,'L',1);
 		$y = $pdf->GetY();
-		$pdf->SetY($y+6);
+		$pdf->SetY($y+9);
 		$x=$pdf->getX(); 
-		$pdf->SetX($x+82);
-		$pdf->cell(65,6,"Tipo Garantia: ".$row['cdenominacion'] ,1,0,'L',1);
+		$pdf->SetX($x+92);
+		$pdf->cell(55,9,"Color: " . $row['ccolor'] ,1,0,'L',1);
 		$y = $pdf->GetY();
-		$pdf->SetY($y+6);
+		$pdf->SetY($y+8.5);
 		$x=$pdf->getX(); 
-		$pdf->SetX($x+82);
-		$pdf->cell(65,6,"Tiempo de Garantia: " .$row['etiempo'] . " meses" ,1,0,'L',1);
+		$pdf->SetX($x+92);
+		$pdf->cell(55,9,"Tipo Garantia: ".$row['cdenominacion'] ,1,0,'L',1);
 		$y = $pdf->GetY();
-		$pdf->SetY($y-12);
+		$pdf->SetY($y+8.4);
+		$x=$pdf->getX(); 
+		$pdf->SetX($x+92);
+		$pdf->cell(55,9,"Tiempo de Garantia: " .$row['etiempo'] . " meses" ,1,0,'L',1);
+		$y = $pdf->GetY();
+		$pdf->SetY($y-26);
 		$x=$pdf->getX(); 
 		$pdf->SetX($x+147);
 		$x_posicion=$pdf->getx(); 
-		$pdf->vcell(12,18,$x_posicion,$row['estock'], 0,0,'C',1);
+		$pdf->vcell(12,35,$x_posicion,$row['estock'], 0,0,'C',1);
 		$x_posicion=$pdf->getx(); 	
-		$pdf->vcell(40,18,$x_posicion,$row['cempresa'] ,0,0,'C',1);
+		$pdf->vcell(40,35,$x_posicion,$row['cempresa'] ,0,0,'C',1);
 		$pdf->Ln();  	
 		
 			

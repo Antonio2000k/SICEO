@@ -215,7 +215,10 @@ function Expediente(id){
 
         if(fechaini != "" && fechafini != ""){
           window.open("../../reporteCliente.php?fechaini="+fechaini+"&fechafini="+fechafini);
+          $("#rango3").val('');
+          $("#rango4").val('');
         }
+        
       }
 
       function RepS(){
@@ -260,18 +263,7 @@ function Expediente(id){
 
       }
 
-      function RepBoth(){
-        var sexoM = document.getElementById("generoMM").checked;
-        var sexoF = document.getElementById("generoFF").checked;
-        var fechaini = document.getElementById("rango1").value;
-        var fechafini = document.getElementById("rango2").value;
-
-        if(sexoM){
-          window.open("../../reporteCliente.php?fechaini="+fechaini+"&fechafini="+fechafini +"&sexo=M");
-        } else if(sexoF){
-          window.open("../../reporteCliente.php?fechaini="+fechaini+"&fechafini="+fechafini + "&sexo=F");
-        }
-      }
+      
       function calcula(str){
         var cambio = document.getElementById('fecha').value;
 

@@ -293,6 +293,13 @@ function actualizaTabla(rango,tipo){
             xmlhttp.open("post", "ajax/actualizarTablaDatos.php?tipo="+tipo+"&year="+year+"&mes="+mes+"&rango="+rango, true);
             xmlhttp.send();
         }
+
+function RepIE(){
+    var year=document.getElementById('year').value;
+    
+    window.open("../../reporteFlujoefectivo.php?tipo=egreso&year="+year+"&rango=anual&tipos=ingreso");
+    
+}
 function verMas(str, opcion,tipo,rango,tiempo) {
     //alert("Opcion  "+opcion);
    // alert('Rango '+rango);

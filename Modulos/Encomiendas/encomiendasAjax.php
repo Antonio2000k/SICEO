@@ -7,7 +7,7 @@
        <div class="clearfix"></div>
     </div>
     <div class="x_content">
-      <form class="form-horizontal form-label-left" id="frmEncomiendas" name="frmEncomiendas" method="get">
+      <form class="form-horizontal form-label-left" id="frmEncomiendas" name="frmEncomiendas" method="post">
         <div class="row">
           <!--Codigos-->
           <input type="hidden" id="bandera" name="bandera" value="">

@@ -48,12 +48,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <link rel="stylesheet" href="css/checkbox.css">
     <link rel="stylesheet" href="css/radio.css">
 
-    <title>SICEO | Encomiendas</title>
-
-    <?php
-      include "../../ComponentesForm/estilos.php";
-    ?>
-
     <script type="text/javascript">
       var filaLentes = new Array();
       var materialLentes = new Array();
@@ -82,7 +76,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var filas = document.getElementsByName('fila_lentes_final[]');
         }
 
-        //Submit
         if(opc) {
           document.getElementById("frmEncomiendas").submit();
         }
@@ -355,6 +348,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         $('#myEstado').modal();
 
         //Parametro
+        //Solo un texto mas.
         if(valor) {
           $("#estado_encomienda").innerText("RECIBIDA");
           document.getElementById("estado_encomienda").style.backgroundColor = green;
@@ -374,17 +368,35 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       function cambiarEstado() {
         if(document.getElementById('estado').checked) {
           <?php
-          ?>
-          if(true) {
+          $consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true WHERE eid_encomienda = ");
+
+          if($consulta) {
+            ?>
             swal('Hecho', 'Encomienda actualizada con exito', 'success');
             $("#myEstado").modal('toggle');
+            <?php
           }
+          else {
+            ?>
+            swal('Error', 'Hubo un error al actualizar el estado', 'error');
+            $("#myEstado").modal('toggle');
+            <?php
+          }
+          ?>
         }
         else {
           swal('Error', 'Debe seleccionar que fue recibida la encomienda', 'error');
         }
       }
     </script>
+
+    <title>SICEO | Encomiendas</title>
+
+    <?php
+      include "../../ComponentesForm/estilos.php";
+    ?>
+
+
   </head>
 
   <body class="nav-md">
@@ -547,8 +559,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                             <td class="text-center">
                                               <div class="checkbox">
                                                 <label>
-
-                                                 <input type="checkbox" onclick="checkado(<?php echo $cont ?>)" id="<?php echo "examen".$cont ?>">
+                                                 <input type="checkbox" onclick="checkado(<?php echo $cont ?>);" id="<?php echo "examen".$cont ?>">
                                                  <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                                  </label>
                                               </div>

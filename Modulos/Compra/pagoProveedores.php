@@ -30,7 +30,7 @@ if(isset($_SESSION["acumulador"])){
                     <img align="left" src="../../production/images/compra.png" width="120" height="120"><h1 align="center">Compras</h1>
                 </div>
                 <div align="center">
-                    <p>Formulario el cual servira para poder registrar las compras que se hacen al proveedor. La pestaña de listado de compras muestra todas las compras realizadas.</p>
+                    <p>Pantalla que muestra el listado de compras realizadas al credito, con la opcion de poder observar el detalle de compra y poder abonarla.</p>
                 </div>
             </div>
         </div>
@@ -53,13 +53,13 @@ if(isset($_SESSION["acumulador"])){
                             <h2>COMPRAS AL CREDITO</h2>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="x_content">
+                        <div class="x_content" id="cargaDetallePago">
                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>N°</th>
                                         <th>Empleado</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha de Compra</th>
                                         <th>Total Compra</th>
                                         <th>Saldo Pendiente</th>
                                         <th>Opciones</th>
@@ -79,7 +79,16 @@ if(isset($_SESSION["acumulador"])){
                                     <td>$<?php echo $fila[3]-$fila[6]; ?></td>
                             <td class="text-center">
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','credito')"> <i class="fa fa-list-ul"></i></button>
+                            
+                            <?php
+                              if($fila[3]===($fila[6])){
+                            ?>
+                            <button class="btn btn-dark btn-icon left-icon" onclick="pago('si', '<?php echo $fila[0]; ?>')"> <i class="fa fa-money"></i></button>
+                            <?php }else{ ?>
                             <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalPago" onclick="pago('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-money"></i></button>
+                            <?php } ?>
+                            
+                            
                         </td>
                 </tr>
                 <?php

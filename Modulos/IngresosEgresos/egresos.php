@@ -23,10 +23,10 @@
         <div class="col-md-12 col-xs-12">
             <div class="x_panel">
                 <div>
-                    <img align="left" src="../../production/images/compra.png" width="120" height="120"><h1 align="center">Compras</h1>
+                    <img align="left" src="../../production/images/grafica.png" width="120" height="120"><h1 align="center">Egresos</h1>
                 </div>
                 <div align="center">
-                    <p>Formulario el cual servira para poder registrar las compras que se hacen al proveedor. La pestaña de listado de compras muestra todas las compras realizadas.</p>
+                    <p>Pantalla que muestra el comportamiento de los egresos (Compras).</p>
                 </div>
             </div>
         </div>

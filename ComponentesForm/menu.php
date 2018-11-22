@@ -103,8 +103,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   </li>
                   <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Encomiendas/registrarEncomienda.php">Registrar</a></li>
-                      <li><a href="empleados.php">Listado de encomiendas</a></li>
+                      <li><a>Encomenderos<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="../../Modulos/Encomendero/encomendero.php">Registrar Encomendero</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Encomendero/listenco.php">Lista de Encomenderos</a>
+                            </li>
+                            <li class="sub_menu"><a href="../../Modulos/Encomendero/listencoi.php">Encomenderos de Baja</a>
+                            </li>
+                          </ul>
+                      </li>
+                      <li><a>Encomiendas<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a href="../../Modulos/Encomiendas/registrarEncomienda.php">Registrar</a></li>
+                          <li><a href="empleados.php">Listado de encomiendas</a></li>
+                        </ul>
+                      </li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>

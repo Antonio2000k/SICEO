@@ -125,7 +125,7 @@ if(isset($_REQUEST["id"])){
             document.getElementById('pass').style.borderColor="#FFB037";
             $("#repass").prop("disabled", false);
           }
-          else if(pass.length>8 && pass.length<=30) {
+          else if(pass.length>8 && pass.length<=15) {
             document.getElementById('pass').style.borderColor="#21df2c";
             $("#repass").prop("disabled", false);
           }
@@ -136,7 +136,12 @@ if(isset($_REQUEST["id"])){
         var coinciden=document.getElementById('pass_coincide');
         if(pass==document.getElementById('pass').value) {
           coinciden.value="si";
-          document.getElementById('repass').style.borderColor="#21df2c";
+          if(pass.length>=5 && pass.length<=8) {
+            document.getElementById('repass').style.borderColor="#FFB037";
+          }
+          else if(pass.length>8 && pass.length<=15) {
+            document.getElementById('repass').style.borderColor="#21df2c";
+          }
         }
         else {
           coinciden.value="no";
@@ -393,7 +398,7 @@ if(isset($_REQUEST["id"])){
                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña (*)</label>
                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                         <input type="password" class="form-control has-feedback-left"  id="pass" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="pass" placeholder="Contraseña" autocomplete="off" oninput="comprobarPass(this.value);">
+                                         <input type="password" class="form-control has-feedback-left"  id="pass" class="form-control col-md-9 col-xs-12" data-validate-length-range="6" data-validate-words="2" maxlength="15" name="pass" placeholder="Contraseña" autocomplete="off" oninput="comprobarPass(this.value);">
                                          <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                       </div>
                                    </div>
@@ -401,14 +406,14 @@ if(isset($_REQUEST["id"])){
                                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                                      <label class="control-label col-md-3 col-sm-3 col-xs-12">Verificar Contraseña (*)</label>
                                       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-                                         <input type="password" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="repass" placeholder="Repita la contraseña" autocomplete="off" disabled="disabled" oninput="comprobarRePass(this.value);">
+                                         <input type="password" class="form-control has-feedback-left"  id="repass" class="form-control col-md-7 col-xs-12" maxlength="15" data-validate-words="2" name="repass" placeholder="Repita la contraseña" autocomplete="off" disabled="disabled" oninput="comprobarRePass(this.value);">
                                          <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
                                       </div>
                                    </div>
                                 </div>
 
                                 <div class="text-center">
-                                    <small id="passwordHelpBlock" class="form-text text-muted">La contraseña debe ser entre 5-30 caracteres y contener letras y números</small>
+                                    <small id="passwordHelpBlock" class="form-text text-muted">La contraseña debe ser entre 5-15 caracteres y contener letras y números</small>
                                 </div>
                                 <br>
 
@@ -678,12 +683,28 @@ if(isset($_REQUEST["id"])){
                                           include("../../Config/conexion.php");
                                           $query_s= pg_query($conexion, "SELECT * FROM usuarios order by cid_usuario asc");
                                           while($fila=pg_fetch_array($query_s)){
+
+                                            $empleado = "";
+                                            $privilegio = "";
+
+                                            $query_emp= pg_query($conexion, "SELECT * FROM empleados where cid_empleado='$fila[4]'");
+
+                                            while($fila_emp=pg_fetch_array($query_emp)) {
+                                              $empleado = $fila_emp[1]." ".$fila_emp[2];
+                                            }
+
+                                            if($fila[3]==1) {
+                                              $privilegio = "Administrador";
+                                            }
+                                            else {
+                                              $privilegio = "Empleado";
+                                            }
                                       ?>
                                       <tr>
                                       <td><?php echo $fila[0]; ?></td>
                                       <td><?php echo $fila[1]; ?></td>
-                                      <td><?php echo $fila[3]; ?></td>
-                                      <td><?php echo $fila[4]; ?></td>
+                                      <td><?php echo $empleado; ?></td>
+                                      <td><?php echo $privilegio; ?></td>
 
                                       <td class="text-center">
                                         <?php

@@ -489,12 +489,13 @@ if(isset($_REQUEST["id"])){
                                             <option value="Seleccionar">Seleccione Empleado</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"select * from empleados ");
+                                             $query_s=pg_query($conexion,"SELECT * FROM empleados WHERE bestado = true");
 
                                             while ($fila = pg_fetch_array($query_s)) {
                                               $query_usuario=pg_query($conexion, "SELECT * FROM usuarios WHERE cid_empleado='$fila[0]'");
 
-                                              if(pg_num_rows($query_usuario)==0) {
+                                              //pg_num_rows($query_usuario)==0
+                                              if($cid_empleado!=null) {
                                                 ?>
                                                 <option value="<?php echo "$fila[0]"; ?>"
                                                   <?php
@@ -504,12 +505,22 @@ if(isset($_REQUEST["id"])){
                                                   ?>
                                                   >
                                                   <!-- Esto es para agregar el nombre del empleado, el anterior para el codigo-->
-                                                  <?php echo "$fila[1]" ;?>
+                                                  <?php echo $fila[1]." ".$fila[2] ;?>
                                                 </option>
                                                 <?php
                                               }
-                                             }
-                                             ?>
+                                              else {
+                                                if(pg_num_rows($query_usuario)==0) {
+                                                  ?>
+                                                  <option value="<?php echo "$fila[0]"; ?>">
+                                                    <!-- Esto es para agregar el nombre del empleado, el anterior para el codigo-->
+                                                    <?php echo $fila[1]." ".$fila[2] ;?>
+                                                  </option>
+                                                  <?php
+                                                }
+                                              }
+                                            }
+                                            ?>
                                            </select>
                                         </div>
                                      </div>
@@ -546,7 +557,7 @@ if(isset($_REQUEST["id"])){
                                             <option value="Seleccionar">Seleccione Pregunta</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta");
+                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta WHERE bestatico = true");
 
                                             while ($fila = pg_fetch_array($query_s)) {
                                               ?>
@@ -556,8 +567,7 @@ if(isset($_REQUEST["id"])){
                                                  echo "selected";
                                                }
                                                ?>
-                                               >
-                                               <?php echo "$fila[1]" ;?></option>
+                                               ><?php echo "$fila[1]" ;?></option>
                                               <?php
                                              }
                                             ?>
@@ -671,7 +681,6 @@ if(isset($_REQUEST["id"])){
                                   <table id="datatable-fixed-header" class="table table-striped table-bordered">
                                   <thead>
                                     <tr>
-                                      <th>Cod</th>
                                       <th>Usuario</th>
                                       <th>Empleado</th>
                                       <th>Privilegio</th>
@@ -701,7 +710,6 @@ if(isset($_REQUEST["id"])){
                                             }
                                       ?>
                                       <tr>
-                                      <td><?php echo $fila[0]; ?></td>
                                       <td><?php echo $fila[1]; ?></td>
                                       <td><?php echo $empleado; ?></td>
                                       <td><?php echo $privilegio; ?></td>
@@ -792,8 +800,8 @@ if(isset($_REQUEST['bandera'])) {
   $privilegio=($_REQUEST['privilegio']);
   $idempleado=($_REQUEST['idempleado']);
   $pregunta=($_REQUEST['pregunta_hidden']);
-
   $respuesta=$_REQUEST['respuesta'];
+  $id_pregunta_definida = $_REQUEST['pregunta'];
 
   // if(isset($_REQUEST['pregunta']) && $_REQUEST['pregunta']!="") {
   //   echo "<script type='text/javascript'>";
@@ -823,16 +831,12 @@ if(isset($_REQUEST['bandera'])) {
         $result=pg_query($conexion,"INSERT INTO usuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
         $id_usuario=pg_fetch_array($result);
 
-        $resultado=pg_query($conexion,"select MAX(pregunta.eid_pregunta) from pregunta");
-        $contado=0;
-        while ($fila = pg_fetch_array($resultado)) {
-          $contado=$fila[0];
-        }
-        $contado++;
+        $result_pregunta = null;
+        $id_pregunta = null;
+        $result_pre_usuario = null;
+        $registro_pregunta = false;
 
-        $result_pregunta=pg_query($conexion,"INSERT INTO pregunta (eid_pregunta, cpregunta) VALUES ($contado, '$pregunta') RETURNING eid_pregunta");
-        $id_pregunta=pg_fetch_array($result_pregunta);
-
+        //Para la pregunta de usuario.
         $resultado=pg_query($conexion,"select MAX(pre_us.id_preus) from pre_us");
         $contado=0;
         while ($fila = pg_fetch_array($resultado)) {
@@ -840,9 +844,32 @@ if(isset($_REQUEST['bandera'])) {
         }
         $contado++;
 
-        $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
+        if($pregunta!="") {
+          $resultado=pg_query($conexion,"select MAX(pregunta.eid_pregunta) from pregunta");
+          $contado=0;
+          while ($fila = pg_fetch_array($resultado)) {
+            $contado=$fila[0];
+          }
+          $contado++;
 
-        if(!$result || !$result_pregunta || !$result_pre_usuario) {
+          $result_pregunta=pg_query($conexion,"INSERT INTO pregunta (eid_pregunta, cpregunta, bestatico) VALUES ($contado, '$pregunta', false) RETURNING eid_pregunta");
+          $id_pregunta=pg_fetch_array($result_pregunta);
+
+          if($result_pregunta) {
+            $registro_pregunta = true;
+          }
+
+          $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
+        }
+        else {
+          $id_pregunta = $id_pregunta_definida;
+
+          $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta,$id_usuario[0],'$respuesta')");
+
+          $registro_pregunta = true;
+        }
+
+        if(!$result || !$registro_pregunta || !$result_pre_usuario) {
           pg_query("rollback");
           echo "<script type='text/javascript'>";
           echo "alertaSweet('Error','Datos no almacenados', 'error');";

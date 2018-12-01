@@ -46,11 +46,19 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style type="text/css">
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+
       input[type="checkbox"] {
         cursor: pointer;
       }
     </style>
     <link rel="stylesheet" href="css/radio.css">
+
+    <script src="../Encomendero/encomendero.js"></script>
 
     <title>SICEO | Encomiendas</title>
 
@@ -59,6 +67,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     ?>
 
     <script type="text/javascript">
+      registrarEncomendero = function() {
+        alert("Registrara al encomendero");
+      };
+
+      modalEncomendero = function() {
+        $("#myEncomendero").modal();
+      };
+
       cancelar = function() {
         var id=document.getElementById('idCheckbox').value;
         document.getElementById('examen'+id).checked=0;
@@ -122,6 +138,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
         xmlhttp.open("post", "encomiendasAjax.php", true);
         xmlhttp.send();
+      };
+
+      cerrarEncomendero = function () {
+        $("#myEncomendero").modal('toggle');
       };
 
     </script>
@@ -535,7 +555,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                     </div>
 
-                                    <a href="../Encomendero/registrarEncomendero.php?nuevo_encomendero=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Desea registrar alguno?</b></h4></a>
+                                    <a href="#registrar" onclick="modalEncomendero();" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Desea registrar alguno?</b></h4></a>
                                   </div>
 
                                   <div class="item form-group">
@@ -579,7 +599,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                         //Es para todos los examenes.
                                         while($fila = pg_fetch_array($result)) {
-
                                             $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[1]'");
                                             $cliente = obtenerValorSQL($consulta, "cliente", "");
 
@@ -670,7 +689,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                   <tbody>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="CR 39" onclick="activarOtro(1, 'no')">
+                                                        <input type="radio" >
                                                       </td>
                                                       <td>CR 39</td>
                                                     </tr>
@@ -829,6 +848,27 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                     </div>
                                   </div>
                                 </div>
+
+                                <div class="modal fade" id="myEncomendero" role="dialog">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Registrar Encomendero</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <?php include 'encomendero.php'; ?>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <center>
+                                          <button type="button" class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="registrarEncomendero();"> <i  class="fa fa-save"></i> <span >Guardar</span></button>
+
+                                          <button type="button" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="cerrarEncomendero();"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                        </center>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <!--Fin modal-->
                                 <!--Aqui finaliza-->
                               </form>

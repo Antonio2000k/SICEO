@@ -45,7 +45,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         var id;
 
         function mostrarOrdenCompra() {
-          alert('Imprimira orden de compra, ID: ');
+          window.open("../../reporteOrden.php?id="+document.getElementById("id_reporteOrden").value);
         }
 
         function ajax_act(str) {
@@ -61,6 +61,23 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
 
           xmlhttp.open("post", "ventasTabla.php", true);
+          xmlhttp.send();
+        }
+
+        function ajax_productos(opcion, fila) {
+          if (window.XMLHttpRequest) {
+              xmlhttp = new XMLHttpRequest();
+          }
+          else {
+              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange = function () {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("listaProducto"+fila).innerHTML = xmlhttp.responseText;
+              }
+          }
+
+          xmlhttp.open("post", "listaProductos.php?opcion="+opcion, true);
           xmlhttp.send();
         }
 
@@ -128,13 +145,18 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
           var cantidadFinal=document.getElementsByName('cantidadFinal[]');
 
+          var sub_total=sub_total_valores[i-1];
+
+          if(value=="cambio") {
+            sub_total.value=0.00;
+          }
+
           if(value.charAt(0)!=0) {
             $.post("buscar.php",{
               "texto":value,"opcion":3},function(respuesta) {
                 //Lo muestra.
                 if(i!=0) {
                   if(!isNaN(respuesta) && respuesta!="" && respuesta.charAt(0)!=0) {
-
                     if(servicio[i-1].value=="examen") {
                       precioU="10";
                     }
@@ -142,7 +164,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       precioU=precio[i-1].value;
                     }
 
-                    var sub_total=sub_total_valores[i-1];
                     var valor=(parseFloat(respuesta)*parseFloat(precioU));
 
                     if(!isNaN(valor)) {
@@ -159,6 +180,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                     descuentos[i-1].disabled=true;
                     sub_totalFinal[i-1].value=valor.toFixed(2);
                   }
+
                   sumarValores();
                 }
             });
@@ -178,6 +200,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             else {
               sub_totalFinal[i-1].value=0.00;
             }
+
             sumarValores();
           }
         }
@@ -193,15 +216,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           $.post("buscar.php",{
             "texto":obj,"opcion":2},function(respuesta) {
               var producto=document.getElementsByName("productos[]");
-
-              // for (var j = 0; j < (producto.length-1); j++) {
-              //   if(producto[j].value==obj) {
-              //     Notificacion('error', 'No pueden haber 2 productos iguales');
-              //     existe=true;
-              //     break;
-              //   }
-              // }
-
               if(respuesta!="" && !isNaN(respuesta)) {
                 precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
                 precio[i-1].value=parseFloat(respuesta).toFixed(2);
@@ -273,6 +287,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   document.getElementById("datatable-abono-cuentas").innerHTML = xmlhttp.responseText;
               }
           }
+          document.getElementById("id_reporteOrden").value=id;
           xmlhttp.open("post", "Modals/reporteAbono.php?id_comprac=" + id, true);
           xmlhttp.send();
           $('#myReporteAbonos').modal();
@@ -334,20 +349,29 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var precio = document.getElementsByName("precio[]");
           var cantidadFinal = document.getElementsByName("cantidadFinal[]");
 
-          if(valorSeleccionado=="lentes" || valorSeleccionado=="accesorios") {
+          if(valorSeleccionado=="Lente" || valorSeleccionado=="Accesorio") {
             cantidad[i-1].value="";
             cantidadFinal[i-1].value="";
             cantidad[i-1].disabled=true;
             producto[i-1].disabled=false;
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
+
+            //Para remover los item anteriores.
+            producto[i-1].value="";
+            ajax_productos(valorSeleccionado,i);
           }
-          if(valorSeleccionado=="examen") {
+          if(valorSeleccionado=="Examen") {
+            cantidad[i-1].value="";
             cantidad[i-1].disabled=false;
             producto[i-1].disabled=true;
             producto[i-1].value="";
             precio[i-1].value=10.00;
             precio[i-1].innerText="$10";
+
+            //Para remover los item anteriores.
+            producto[i-1].value="";
+            ajax_productos("",i);
           }
           else if(valorSeleccionado=="seleccione") {
             producto[i-1].disabled=true;
@@ -357,7 +381,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             cantidad[i-1].value="";
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
+
+            //Para remover los item anteriores.
+            producto[i-1].value="";
+            ajax_productos("",i);
           }
+
+          obtenerSubTotal("cambio", obj);
+          sumarValores();
         }
 
         function agregarFila() {
@@ -375,9 +406,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           "<td>"+
           "<select class='form-control' name='servicios[]' onchange='cambiarEstado(this);'>"+
             "<option value='seleccione'>Seleccione</option>"+
-            "<option value='examen'>Examen</option>"+
-            "<option value='lentes'>Lentes</option>"+
-            "<option value='accesorios'>Accesorios</option>"+
+            "<option value='Examen'>Examen</option>"+
+            "<option value='Lente'>Lentes</option>"+
+            "<option value='Accesorio'>Accesorios</option>"+
           "</select>"+
           "</td>"+
           "<td>"+
@@ -499,7 +530,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
         function sumarValores() {
           var total=0.00;
-          var filas=document.getElementById("datatable-ventas").rows.length;
+          //var filas=document.getElementById("datatable-ventas").rows.length;
           var sub_total_valores = document.getElementsByName("sub_total[]");
 
           for (var i = 0; i < sub_total_valores.length; i++) {
@@ -650,7 +681,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var sub_total=document.getElementsByName('sub_total[]');
           var table=document.getElementById("datatable-ventas");
           var table_len=table.rows.length-1;
+
           var vacios=true;
+          var campos_llenos=0;
 
           for (var i = 0; i < table_len; i++) {
             if(servicos[i].value=="seleccione" || cantidad[i].value=="" ||
@@ -659,7 +692,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               vacios=true;
               break;
             }
-            else if((servicos[i].value=="lentes" || servicos[i].value=="accesorios") && productos[i].value=="") {
+            else if((servicos[i].value=="Lente" || servicos[i].value=="Accesorio") && productos[i].value=="") {
               vacios=true;
               break;
             }
@@ -751,6 +784,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               <input type="hidden" id="nombre_clienteID" name="nombre_clienteID" value="">
                               <input type="hidden" id="abono_final_actualizar" name="abono_final_actualizar" value="">
                               <input type="hidden" id="id_ordenCompra" name="id_ordenCompra" value="">
+                              <input type="hidden" id="id_reporteOrden">
                               <!--fin codigos-->
 
                               <div class="item form-group">

@@ -159,7 +159,7 @@ if(isset($_REQUEST["id"])){
         document.getElementById('respuesta').disabled=enabled;
       }
 
-      function ajax_act(str){
+      function ajax_act(){
         if (window.XMLHttpRequest) {
           xmlhttp = new XMLHttpRequest();
         } else {
@@ -224,6 +224,20 @@ if(isset($_REQUEST["id"])){
             pre_personalizada.innerText = "No ingreso ninguna pregunta";
             swal('Error','Debe ingresar una pregunta','error');
           }
+        }
+
+        function redireccionar(titulo, texto, tipo) {
+          swal({
+            title: titulo,
+            text: texto,
+            type: tipo,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+          }).then(function(isConfirm) {
+            if(isConfirm.value) {
+              location.href='registrarUsuarios.php';
+            }
+          })
         }
 
       function validar(opcion) {
@@ -355,12 +369,11 @@ if(isset($_REQUEST["id"])){
                   <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                       <div class="x_content">
-                        <div class="x_title" style="background: #2A3F54">
+                        <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
                            <h3 align="center" style=" color: white">Datos Usuario</h3>
-
                                <div class="clearfix"></div>
                         </div>
-                         <div class="x_content">
+                         <div class="x_content" id="recargarUsuarios">
                            <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="post">
                              <div class="row">
                                 <!--Codigos-->
@@ -541,6 +554,7 @@ if(isset($_REQUEST["id"])){
                                           }
                                           ?>
                                         </label>
+
                                         <div class="col-md-9 col-sm-9 col-xs-12">
                                            <select class="form-control" id="pregunta" name="pregunta" onchange="personalizar(this);"
                                            <?php
@@ -567,7 +581,7 @@ if(isset($_REQUEST["id"])){
                                                  echo "selected";
                                                }
                                                ?>
-                                               ><?php echo "$fila[1]" ;?></option>
+                                               ><?php echo $fila[1];?></option>
                                               <?php
                                              }
                                             ?>
@@ -658,7 +672,7 @@ if(isset($_REQUEST["id"])){
 
                                             </span></button>
 
-                                            <button class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " > <i class="fa fa-close"></i> <span>Cancelar</span></button>
+                                            <button type="reset" class="btn btn-danger  btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="ajax_act();"> <i class="fa fa-close"></i> <span>Cancelar</span></button>
                                           </div>
                                       </div>
                                     </center>
@@ -687,7 +701,7 @@ if(isset($_REQUEST["id"])){
                                       <th>Acciones</th>
                                     </tr>
                                   </thead>
-                                  <tbody id="recargarUsuarios">
+                                  <tbody>
                                     <?php
                                           include("../../Config/conexion.php");
                                           $query_s= pg_query($conexion, "SELECT * FROM usuarios order by cid_usuario asc");
@@ -824,7 +838,7 @@ if(isset($_REQUEST['bandera'])) {
     $aux_existe=true;
   }
 
-  if(!$aux_existe && strlen($pass)>=5 && strlen($repass).length>=5) {
+  if(!$aux_existe && strlen($pass)>=5 && strlen($repass)>=5) {
     if($pass==$repass) {
       if($bandera=="add") {
         pg_query("BEGIN");
@@ -879,9 +893,10 @@ if(isset($_REQUEST['bandera'])) {
         else{
           pg_query("commit");
           echo "<script type='text/javascript'>";
-          echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+          // echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+          echo "redireccionar('Informacion','Datos Almacenados', 'success');";
           echo "document.getElementById('bandera').value='';";
-          echo "ajax_act('');";
+          // echo "ajax_act('');";
           echo "</script>";
         }
       }
@@ -901,9 +916,10 @@ if(isset($_REQUEST['bandera'])) {
         else{
           pg_query("commit");
           echo "<script type='text/javascript'>";
-          echo "alertaSweet('Informacion','Datos modificados', 'success');";
+          // echo "alertaSweet('Informacion','Datos modificados', 'success');";
           echo "document.getElementById('bandera').value='';";
-          echo "ajax_act('');";
+          // echo "ajax_act('');";
+          echo "redireccionar('Informacion','Datos modificados', 'success');";
           echo "</script>";
         }
       }
@@ -917,15 +933,16 @@ if(isset($_REQUEST['bandera'])) {
     }
   }
   else {
+    $rango1 = strlen($pass);
+    $rango2 = strlen($repass);
+
     if($aux_existe) {
-      pg_query("rollback");
       echo "<script type='text/javascript'>";
       echo "alertaSweet('Error','No pueden haber dos usuarios iguales.', 'error');";
       echo "document.getElementById('bandera').value='';";
       echo "</script>";
     }
-    if($pass.length<5 || $repass.length<5) {
-      pg_query("rollback");
+    else if($rango1<5 || $rango2<5) {
       echo "<script type='text/javascript'>";
       echo "alertaSweet('Error','La contraseña debe tener un minimo de 5 caracteres o numeros.', 'error');";
       echo "document.getElementById('bandera').value='';";

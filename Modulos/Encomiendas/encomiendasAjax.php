@@ -397,7 +397,16 @@ function obtenerValorSQL($consulta, $opcion, $id) {
               <tr>
                 <td><?php echo $fila[0] ?></td>
                 <td><?php echo $fila[1] ?></td>
-                <td><?php echo $fila[5] ?></td>
+                <td>
+                  <?php
+                    if($fila[5]) {
+                      echo $fila[5];
+                    }
+                    else {
+                      echo "Sin fecha";
+                    }
+                  ?>
+                </td>
                 <td><?php echo $encomendero ?></td>
                 <td class="text-center">
                   <button type="button" class="btn btn-success"  onclick="verEstado('<?php echo $fila[2] ?>', <?php echo $fila[0] ?>);"><i class="fa fa-info"></i> <span></span></button>

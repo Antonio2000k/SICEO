@@ -273,9 +273,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var modelo = document.getElementsByName('modelo_lentes_aux[]');
           var cliente = document.getElementsByName('cliente_lentes_aux[]');
 
-          //Valores finales.
-          var modelo_final = document.getElementsByName('modelo_lentes_final[]');
-          var cliente_final = document.getElementsByName('cliente_lentes_final[]');
+          var modelo_new = document.getElementsByName('modelo_lentes_final[]');
+          var cliente_new = document.getElementsByName('cliente_lentes_final[]');
 
           for (var i = 0; i < idsLentes.length; i++) {
             ids[i].value = idsLentes[i]; //Para los id, no fila.
@@ -286,31 +285,19 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           for (var i = 0; i < filaLentes.length; i++) {
             for (var j = 0; j < modelo.length; j++) {
               if((filaLentes[i]-1)==j) {
-                modelo_final[i].value = modelo[j].value;
+                modelo_new[i].value = modelo[j].value;
               }
             }
-          }
-
-          for (var i = 0; i < modelo_final.length; i++) {
-            alert(modelo_final[i].value);
           }
 
           cont = 0;
           for (var i = 0; i < filaLentes.length; i++) {
             for (var j = 0; j < cliente.length; j++) {
               if((filaLentes[i]-1)==j) {
-                cliente_final[i].value = cliente[j].value;
+                cliente_new[i].value = cliente[j].value;
               }
             }
           }
-
-          for (var i = 0; i < cliente_final.length; i++) {
-            alert(cliente_final[i].value);
-          }
-
-          // document.getElementsByName('modelo_lentes_aux[]')=modelo_final;
-          // document.getElementsByName('cliente_lentes_aux[]')=cliente_final;
-
         }
 
         if(opc) {
@@ -689,7 +676,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                                   <tbody>
                                                     <tr>
                                                       <td class="text-center">
-                                                        <input type="radio" >
+                                                        <input class="medium" id="material_lente" name="material_lente" type="radio" value="CR 39" onclick="activarOtro(1, 'no')">
                                                       </td>
                                                       <td>CR 39</td>
                                                     </tr>
@@ -911,7 +898,16 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <tr>
                                         <td><?php echo $fila[0] ?></td>
                                         <td><?php echo $fila[1] ?></td>
-                                        <td><?php echo $fila[5] ?></td>
+                                        <td>
+                                          <?php
+                                            if($fila[5]) {
+                                              echo $fila[5];
+                                            }
+                                            else {
+                                              echo "Sin fecha";
+                                            }
+                                          ?>
+                                        </td>
                                         <td><?php echo $encomendero ?></td>
                                         <td class="text-center">
                                           <button type="button" class="btn btn-success"  onclick="verEstado('<?php echo $fila[2] ?>', <?php echo $fila[0] ?>);"><i class="fa fa-info"></i> <span></span></button>
@@ -1020,24 +1016,6 @@ if(isset($_REQUEST["bandera"])) {
   $detalle_encomienda = $_REQUEST['detalle'];
   ini_set('date.timezone','America/El_Salvador');
   $fecha_envio = date("d-m-Y");
-
-  print_r($filaValores);
-  echo "<br>";
-  print_r($materialValores);
-  echo "<br>";
-  print_r($tipoValores);
-  echo "<br>";
-  print_r("Modelo: ".$modelo_lentes);
-  echo "<br>";
-  print_r("Cliente: ".$cliente_lentes);
-  echo "<br>";
-  print_r($id_lentes);
-  echo "<br>";
-  echo $id_encomendero;
-  echo "<br>";
-  echo $detalle_encomienda;
-  echo "<br>";
-  echo $fecha_envio;
 
   $longitud = count($filaValores);
   $cont = 0;

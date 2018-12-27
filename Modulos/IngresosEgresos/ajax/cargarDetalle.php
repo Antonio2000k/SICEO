@@ -1,4 +1,4 @@
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap tablaDetalle" cellspacing="0" width="100%">
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap tablaDetalle text-center" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                             <th>Abono</th>
@@ -29,10 +29,10 @@
                             if($rango==='anual'){
                                 if($mes<10)
                                     $mes='0'.$mes;
-                                $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM')='".$year."-".$mes."'";
+                                $consulta="SELECT sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM')='".$year."-".$mes."'";
                             }
                             if($rango==='mensual')
-                                $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."'";
+                                $consulta="SELECT  sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra where TO_CHAR(o.ffecha,'YYYY-MM-DD')='".$year."-".$mes."-".$tiempo."'";
                         }
                             //echo '<label>'.$consulta.'</label>';
                             $resultado=pg_query($conexion,$consulta);
@@ -40,15 +40,18 @@
                             if($nue>0){
                             while ($fila = pg_fetch_array($resultado)) {
                                 ?>
+						  		<div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback  text-center">
+									<h5><?php echo ucwords(convertirMes($mes))." ".$year;?></h5>
+						  		</div>
                                 <div align='center'>
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                    <label class="control-label">Egresos Netos: </label>
+                                    <label class="control-label"><?php if($tipo==="egreso"){ ?> Egresos Netos:<?php }else if($tipo==="ingreso"){ ?>Ingresos Netos: <?php } ?> </label>
                                     <label class="control-label">    $<?php echo $fila[0];?></label>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                                    <label class="control-label">Egresos Totales: </label>
+                                    <label class="control-label"><?php if($tipo==="egreso"){ ?> Egresos Totales:<?php }else if($tipo==="ingreso"){ ?>Ingresos Totales: <?php } ?> </label>
                                     <label class="control-label">    $<?php echo $fila[1];?></label>
-                                    </div>
+                                    </div><br><br>
                                 </div>
                                 <?php
                                 echo '<br><br><div class="text-center infoCompleto"><strong><h5><i class="fa fa-info-circle"></i> Detalle </strong></h5></div><br>';
@@ -74,12 +77,21 @@
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {
                                 echo '<tr>';
-                                echo '<td>'.$fila[0].'</td>';
+                                echo '<td>$'.$fila[0].'</td>';
                                 echo '<td>$'.$fila[2].'</td>';
-                                echo '<td>'.$fila[1].'</td>';
+                                echo '<td>'.date("d/m/Y", strtotime($fila[1])).'</td>';
                                 echo '</tr>';
                             }
                         }
                       ?>
                         </tbody>
                     </table>
+<?php 
+
+function convertirMes($numero){
+	 setlocale(LC_TIME, 'spanish');  
+ 	$nombre=strftime("%B",mktime(0, 0, 0, $numero, 1, 2000)); 
+ 	return $nombre;
+}
+
+?>

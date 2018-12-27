@@ -26,7 +26,7 @@ if($tipo==='ingreso'){
                     $dia='0'.$i;
                 else
                     $dia=$i;
-    $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) FROM ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') = '".$year."-".$mes."-".$dia."'";
+    $consulta="SELECT  sum(notab.rsaldo),sum(o.rtotal) FROM ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') = '".$year."-".$mes."-".$dia."'";
             $resultado=pg_fetch_array(pg_query($conexion,$consulta));
                 $array[0][($i-1)]=round($resultado[0]);
                 $array[1][($i-1)]=round($resultado[1]);

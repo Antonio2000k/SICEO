@@ -134,6 +134,12 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
         }
 
+        function verificarExamen(fila) {
+          var i = fila.parentNode.parentNode.rowIndex;
+
+          alert("Se obtendra el examen o se registrara uno a la fila: "+i);
+        }
+
         function obtenerSubTotal(value, fila) {
           var i = fila.parentNode.parentNode.rowIndex;
           var precio = document.getElementsByName("precio[]");
@@ -348,6 +354,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var sub_total = document.getElementsByName("sub_total[]");
           var precio = document.getElementsByName("precio[]");
           var cantidadFinal = document.getElementsByName("cantidadFinal[]");
+          var examen = document.getElementsByName("examen_cliente[]");
 
           if(valorSeleccionado=="Lente" || valorSeleccionado=="Accesorio") {
             cantidad[i-1].value="";
@@ -356,6 +363,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             producto[i-1].disabled=false;
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
+
+            if(valorSeleccionado=="Lente") {
+              examen[i-1].style.visibility="visible";
+            }
+            else {
+              examen[i-1].style.visibility="hidden";
+            }
 
             //Para remover los item anteriores.
             producto[i-1].value="";
@@ -368,6 +382,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             producto[i-1].value="";
             precio[i-1].value=10.00;
             precio[i-1].innerText="$10";
+
+            examen[i-1].style.visibility="hidden";
 
             //Para remover los item anteriores.
             producto[i-1].value="";
@@ -437,6 +453,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           "<td class='text-center'>"+
           "<button type='button' class='btn btn-warning btn-icon left-icon' onclick='eliminarProducto(this)'><i class='fa fa-trash'></i> </button>"+
           "<button name='descuento_cliente[]' type='button' class='btn btn-info btn-icon left-icon' onclick='descuentoProducto(this)' disabled='disabled'><i class='fa fa-money'></i> </button>"+
+          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' style='visibility:hidden'><i class='fa fa-book'></i> </button>"+
           "</td>"+
           "</tr>";
         }
@@ -550,7 +567,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           document.getElementById('total_final').value=total.toFixed(2);
         }
 
-        function aplicarDescuento() {
+        aplicarDescuento = function() {
           var valor=document.getElementById('porcentaje_descuento').value;
           var cantidad=document.getElementsByName('cantidad[]');
 
@@ -594,7 +611,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           else {
             swal('Error', 'Debe ingresar el % de descuento', 'error');
           }
-        }
+        };
 
         function verificarCamposCliente() {
           if(document.getElementById('name').value!="" || document.getElementById('lastname').value!="" ||
@@ -679,6 +696,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var cantidad=document.getElementsByName('cantidad[]');
           var precio=document.getElementsByName('precio[]');
           var sub_total=document.getElementsByName('sub_total[]');
+          var examen_cliente=document.getElementsByName('examen_cliente[]');
+
           var table=document.getElementById("datatable-ventas");
           var table_len=table.rows.length-1;
 
@@ -693,6 +712,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               break;
             }
             else if((servicos[i].value=="Lente" || servicos[i].value=="Accesorio") && productos[i].value=="") {
+              vacios=true;
+              break;
+            }
+            else if((servicos[i].value=="Lente" && examen_cliente[i].value=="") || (servicos[i].value=="Lente" && examen_cliente[i].value===undefined)) {
+              //Notificacion('error',"<b>Error: </b>Debe tener un examen antes de vender un lente");
               vacios=true;
               break;
             }

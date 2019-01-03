@@ -1,5 +1,6 @@
 <?php session_start(); 
 
+	setlocale(LC_TIME, 'es_ES');
 ?>
 <!DOCTYPE html>
 <html lang="es">

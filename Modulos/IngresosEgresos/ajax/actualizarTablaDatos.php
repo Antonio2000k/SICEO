@@ -12,8 +12,8 @@
         <tr class="text-center">
           <th hidden>Numero Mes</th>
            <th>Mes</th>
-            <th>Egreso Neto</th>
-            <th>Egreso Total</th>
+            <th><?php if($tipo==="egreso"){ ?> Egreso Neto<?php }else if($tipo==="ingreso"){ ?>Ingreso Neto <?php } ?> </th>
+            <th><?php if($tipo==="egreso"){ ?> Egreso Total<?php }else if($tipo==="ingreso"){ ?>Ingreso Total <?php } ?> </th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -28,7 +28,7 @@
         if($tipo==="egreso")
             $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
         else if($tipo==="ingreso")
-            $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
+            $consulta="SELECT sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         ?>
             <tr class="text-center">
@@ -62,8 +62,8 @@
     <thead>
         <tr class="text-center">
            <th>Fecha</th>
-            <th>Egreso Neto</th>
-            <th>Egreso Total</th>
+            <th><?php if($tipo==="egreso"){ ?> Egreso Neto<?php }else if($tipo==="ingreso"){ ?>Ingreso Neto <?php } ?> </th>
+            <th><?php if($tipo==="egreso"){ ?> Egreso Total<?php }else if($tipo==="ingreso"){ ?>Ingreso Total <?php } ?> </th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -83,11 +83,11 @@
         if($tipo==="egreso")
             $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$dia."'";
         if($tipo==="ingreso")
-            $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') ='".$year."-".$mes."-".$dia."'";
+            $consulta="SELECT  sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') ='".$year."-".$mes."-".$dia."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         ?>
             <tr class="text-center">
-                <th><?php  echo $dia.'-'.$mes.'-'.$year; ?></th>
+                <th><?php  echo $dia.'/'.$mes.'/'.$year; ?></th>
                 <td><?php if($resultado[0]===null)
                                 echo '$ 0.00';
                             else

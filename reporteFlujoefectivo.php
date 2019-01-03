@@ -163,11 +163,14 @@ require 'Config/conexion.php';
 		
 		function Footer()
 		{
+			$fecha = new DateTime(null, new DateTimeZone('America/El_Salvador'));
+			$hora = $fecha->format("d/m/Y, h:i:s");
+
 			$this->SetY(-30);
 			$this->SetFont('times','B',8);
 			$this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
 			
-			$this->Cell(0,10,utf8_decode('Fecha y hora de impresión: '.date('d/m/Y, h:i:s') ),0,0,'R');
+			$this->Cell(0,10,utf8_decode('Fecha y hora de impresión: '. $hora ),0,0,'R');
 
 		}	
 

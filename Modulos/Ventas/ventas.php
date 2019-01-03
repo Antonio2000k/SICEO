@@ -1027,6 +1027,11 @@ if ($_POST) {
   $productoValores = $_POST['productos'];
   $cantidadValores = $_POST['cantidadFinal'];
   $sub_totalValores = $_POST['sub_totalFinal'];
+  $id_detalle_examen = $_POST['id_examen'];
+
+  if($id_detalle_examen=="" || $id_detalle_examen==null) {
+    $id_detalle_examen = -1;
+  }
 
   //Para la nota de abono.
   $abono = $_POST['abono'];
@@ -1085,7 +1090,7 @@ if ($_POST) {
         $productoAux="";
       }
 
-      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]')");
+      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_detalle_examen)");
 
       //Muestra error.
       if(!$query_detalle_nota) {

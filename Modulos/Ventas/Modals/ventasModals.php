@@ -63,6 +63,30 @@
         <h4 class="modal-title">Seleccione su examen</h4>
       </div>
       <div class="modal-body">
+        <div class="item form-group">
+          <input style="font-size:medium" type="text" class="form-control has-feedback-left text-center" id="id_examen" data-validate-length-range="6" data-validate-words="2" name="id_examen" placeholder="Nombre del cliente que se realizo del examen" autocomplete="off" autocomplete="off" list="listaExamenes">
+          <datalist id="listaExamenes">
+            <?php
+            include("../../Config/conexion.php");
+            $query_s = pg_query($conexion,"SELECT * FROM detalle_examen WHERE bestado = true");
+            $cont = pg_num_rows($query_s);
+
+            while($fila=pg_fetch_array($query_s)) {
+              $query_cliente = pg_query($conexion,"SELECT * FROM clientes WHERE eid_cliente = '$fila[1]'");
+              $cliente = "";
+              while($fila_cliente=pg_fetch_array($query_cliente)) {
+                $cliente = $fila_cliente[1]." ".$fila_cliente[2];
+              }
+              echo " <option value='$cliente - $fila[3]'>";
+              //echo "<option value='$fila[0]'>$fila[1] $fila[2]</option>";
+            }
+
+            if($cont==0) {
+              echo " <option value=''>No hay registros</option>";
+            }
+            ?>
+          </datalist>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-plus"></i> Agregar</button>

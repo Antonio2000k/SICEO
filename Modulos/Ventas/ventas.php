@@ -237,6 +237,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           //Obtengo los valores.
           var precio = document.getElementsByName("precio[]");
           var cantidad = document.getElementsByName("cantidad[]");
+          var examen = document.getElementsByName("examen_cliente[]");
 
           $.post("buscar.php",{
             "texto":obj,"opcion":2},function(respuesta) {
@@ -245,6 +246,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
                 precio[i-1].value=parseFloat(respuesta).toFixed(2);
                 cantidad[i-1].disabled=false;
+                examen[i-1].disabled=false;
+              }
+              else {
+                cantidad[i-1].disabled=true;
+                examen[i-1].disabled=true;
               }
           });
         }
@@ -388,6 +394,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             }
             else {
               examen[i-1].style.visibility="hidden";
+              examen[i-1].disabled=true;
             }
 
             //Para remover los item anteriores.
@@ -403,6 +410,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             precio[i-1].innerText="$10";
 
             examen[i-1].style.visibility="hidden";
+            examen[i-1].disabled=true;
 
             //Para remover los item anteriores.
             producto[i-1].value="";
@@ -410,6 +418,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
           else if(valorSeleccionado=="seleccione") {
             producto[i-1].disabled=true;
+            examen[i-1].disabled=true;
             producto[i-1].value="";
             sub_total[i-1].innerText="$0.00";
             cantidad[i-1].disabled=true;
@@ -472,7 +481,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           "<td class='text-center'>"+
           "<button type='button' class='btn btn-warning btn-icon left-icon' onclick='eliminarProducto(this)'><i class='fa fa-trash'></i> </button>"+
           "<button name='descuento_cliente[]' type='button' class='btn btn-info btn-icon left-icon' onclick='descuentoProducto(this)' disabled='disabled'><i class='fa fa-money'></i> </button>"+
-          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' style='visibility:hidden'><i class='fa fa-book'></i> </button>"+
+          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' style='visibility:hidden' disabled='disabled'><i class='fa fa-book'></i> </button>"+
           "</td>"+
           "</tr>";
         }

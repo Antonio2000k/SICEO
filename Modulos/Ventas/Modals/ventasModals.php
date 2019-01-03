@@ -55,6 +55,24 @@
 </div>
 <!-- fin del modal descuento-->
 
+<!-- Modal incia descuento-->
+<div class="modal fade" id="myObtenerExamen" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Seleccione su examen</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-plus"></i> Agregar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin del modal descuento-->
+
 <!--Aqui inicia pago-->
   <div class="modal fade" id="myAbono" role="dialog">
     <div class="modal-dialog">

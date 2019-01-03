@@ -137,7 +137,26 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         function verificarExamen(fila) {
           var i = fila.parentNode.parentNode.rowIndex;
 
-          alert("Se obtendra el examen o se registrara uno a la fila: "+i);
+          swal({
+            title: "¿Cuenta con un examen ya hecho para este tipo de lente?",
+            text: "Si no cuenta con uno, se procedera a registrar.",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#5CBDD9",
+            cancelButtonColor: "#D9534F",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showLoaderOnConfirm: true
+          }).then(function(isConfirm) {
+            if(isConfirm.value!=true) {
+
+            }
+            else {
+              $("#myObtenerExamen").modal();
+            }
+          })
         }
 
         function obtenerSubTotal(value, fila) {

@@ -55,7 +55,7 @@
 </div>
 <!-- fin del modal descuento-->
 
-<!-- Modal incia descuento-->
+<!-- Modal incia examen-->
 <div class="modal fade" id="myObtenerExamen" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -64,28 +64,43 @@
       </div>
       <div class="modal-body">
         <div class="item form-group">
-          <input style="font-size:medium" type="text" class="form-control has-feedback-left text-center" id="id_examen" data-validate-length-range="6" data-validate-words="2" name="id_examen" placeholder="Nombre del cliente que se realizo del examen" autocomplete="off" autocomplete="off" list="listaExamenes">
-          <datalist id="listaExamenes">
-            <?php
-            include("../../Config/conexion.php");
-            $query_s = pg_query($conexion,"SELECT * FROM detalle_examen WHERE bestado = true");
-            $cont = pg_num_rows($query_s);
+          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Nombre del cliente: </label>
+          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Nombre aqui</label>
+        </div>
 
-            while($fila=pg_fetch_array($query_s)) {
-              $query_cliente = pg_query($conexion,"SELECT * FROM clientes WHERE eid_cliente = '$fila[1]'");
-              $cliente = "";
-              while($fila_cliente=pg_fetch_array($query_cliente)) {
-                $cliente = $fila_cliente[1]." ".$fila_cliente[2];
-              }
-              echo " <option value='$cliente - $fila[3]'>";
-              //echo "<option value='$fila[0]'>$fila[1] $fila[2]</option>";
-            }
+        <div class="item form-group">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th style="text-align: center">Modelo de lentes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+                $query = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = true");
 
-            if($cont==0) {
-              echo " <option value=''>No hay registros</option>";
-            }
-            ?>
-          </datalist>
+                while($fila=pg_fetch_array($query)) {
+                  ?>
+                  <tr>
+                    <td class="text-center">
+                      <input class="medium" id="id_examen" name="id_examen" type="radio">
+                    </td>
+                    <?php
+                      // $cliente = "";
+                      //
+                      // $query_cliente = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente = '$fila[1]'");
+                      // while($fila_cliente=pg_fetch_array($query_cliente)) {
+                      //   $cliente = $fila_cliente[1]." ".$fila_cliente[2];
+                      // }
+                    ?>
+                    <td><?php echo $fila[3]; ?></td>
+                  </tr>
+                  <?php
+                }
+              ?>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="modal-footer">
@@ -95,7 +110,7 @@
     </div>
   </div>
 </div>
-<!-- fin del modal descuento-->
+<!-- fin del modal examen-->
 
 <!--Aqui inicia pago-->
   <div class="modal fade" id="myAbono" role="dialog">

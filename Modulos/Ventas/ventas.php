@@ -39,6 +39,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       include "../../ComponentesForm/estilos.php";
     ?>
 
+    <link rel="stylesheet" href="../Encomiendas/css/radio.css">
+
     <script type="text/javascript">
         //Variables globales.
         var filas=document.getElementById("datatable-ventas");

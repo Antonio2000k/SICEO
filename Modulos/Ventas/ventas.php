@@ -157,6 +157,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             }
             else {
               $("#myObtenerExamen").modal();
+              $("#nombre_cliente_modal").text(document.getElementById("nombre_cliente").value);
             }
           })
         }

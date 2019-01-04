@@ -65,7 +65,7 @@
       <div class="modal-body">
         <div class="item form-group">
           <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Nombre del cliente: </label>
-          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Nombre aqui</label>
+          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12" id="nombre_cliente_modal">Nombre aqui</label>
         </div>
 
         <div class="item form-group">

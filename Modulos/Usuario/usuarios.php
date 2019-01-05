@@ -160,18 +160,29 @@ if(isset($_REQUEST["id"])){
       }
 
       function ajax_act(){
-        if (window.XMLHttpRequest) {
-          xmlhttp = new XMLHttpRequest();
-        } else {
-          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("recargarUsuarios").innerHTML = xmlhttp.responseText;
+        <?php
+          if(isset($_REQUEST["id"])) {
+            ?>
+              location.href = 'usuarios.php';
+            <?php
           }
-        }
-        xmlhttp.open("post", "usuariosTabla.php", true);
-        xmlhttp.send();
+          else {
+            ?>
+              if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+              } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+              }
+              xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("recargarUsuarios").innerHTML = xmlhttp.responseText;
+                }
+              }
+              xmlhttp.open("post", "usuariosTabla.php", true);
+              xmlhttp.send();
+            <?php
+          }
+        ?>
       }
 
         function personalizar(obj) {
@@ -235,7 +246,7 @@ if(isset($_REQUEST["id"])){
             showLoaderOnConfirm: true
           }).then(function(isConfirm) {
             if(isConfirm.value) {
-              location.href='registrarUsuarios.php';
+              location.href='usuarios.php';
             }
           })
         }
@@ -656,7 +667,17 @@ if(isset($_REQUEST["id"])){
                                             else
                                               $estado="Guardar";
                                             ?>
-                                            <button class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="validar(<?php echo "'$estado'"; ?>)"> <i  class="fa fa-save"></i> <span >
+                                            <button class="btn btn-success btn-icon left-icon" style="padding-left: 70px; padding-right: 70px " onclick="validar(<?php echo "'$estado'"; ?>)">
+                                              <i
+                                              <?php
+                                                if(!isset($_REQUEST["id"])) {
+                                                  echo "class='fa fa-save'";
+                                                }
+                                                else {
+                                                  echo "class='fa fa-edit'";
+                                                }
+                                              ?>
+                                              ></i> <span >
                                               <?php
                                                 if(isset($_REQUEST["id"])) {
                                                   ?>
@@ -733,7 +754,7 @@ if(isset($_REQUEST["id"])){
                                         //Encriptacion
                                         $cadena_encriptada = encrypt($fila[0],"fran2");
                                         ?>
-                                        <button class="btn btn-info btn-icon left-icon" onclick="location='registrarUsuarios.php?id=<?php echo $cadena_encriptada; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                        <button class="btn btn-info btn-icon left-icon" onclick="location='usuarios.php?id=<?php echo $cadena_encriptada; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
                                       <?php } ?>
                                       </td>
                                     </tr>
@@ -850,15 +871,7 @@ if(isset($_REQUEST['bandera'])) {
         $result_pre_usuario = null;
         $registro_pregunta = false;
 
-        //Para la pregunta de usuario.
-        $resultado=pg_query($conexion,"select MAX(pre_us.id_preus) from pre_us");
-        $contado=0;
-        while ($fila = pg_fetch_array($resultado)) {
-          $contado=$fila[0];
-        }
-        $contado++;
-
-        if($pregunta!="") {
+        if(isset($_REQUEST['pregunta_hidden'])) {
           $resultado=pg_query($conexion,"select MAX(pregunta.eid_pregunta) from pregunta");
           $contado=0;
           while ($fila = pg_fetch_array($resultado)) {
@@ -872,6 +885,14 @@ if(isset($_REQUEST['bandera'])) {
           if($result_pregunta) {
             $registro_pregunta = true;
           }
+
+          //Para la pregunta de usuario.
+          $resultado=pg_query($conexion,"select MAX(pre_us.id_preus) from pre_us");
+          $contado=0;
+          while ($fila = pg_fetch_array($resultado)) {
+            $contado=$fila[0];
+          }
+          $contado++;
 
           $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
         }

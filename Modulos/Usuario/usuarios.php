@@ -582,18 +582,24 @@ if(isset($_REQUEST["id"])){
                                             <option value="Seleccionar">Seleccione Pregunta</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta WHERE bestatico = true");
+                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta");
 
                                             while ($fila = pg_fetch_array($query_s)) {
-                                              ?>
-                                             <option value="<?php echo "$fila[0]"; ?>"
-                                               <?php
-                                               if($id_pregunta==$fila[0]) {
-                                                 echo "selected";
-                                               }
-                                               ?>
-                                               ><?php echo $fila[1];?></option>
-                                              <?php
+                                              if($id_pregunta==$fila[0]) {
+                                                ?>
+                                                <option value="<?php echo "$fila[0]"; ?>"
+                                                  <?php echo "selected"; ?>>
+                                                  <?php echo $fila[1];?>
+                                                </option>
+                                                <?php
+                                              }
+                                              else if($fila[2]==t) {
+                                                ?>
+                                                <option value="<?php echo "$fila[0]"; ?>">
+                                                  <?php echo $fila[1];?>
+                                                </option>
+                                                <?php
+                                              }
                                              }
                                             ?>
                                             <option value="personalizada">Pregunta personalizada</option>

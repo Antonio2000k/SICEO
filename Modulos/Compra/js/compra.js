@@ -542,7 +542,6 @@ function RepCompra(opcion){
     var fechaini = document.getElementById("rango3").value;
     var fechafini = document.getElementById("rango4").value;
 
-
     if(opcion === 'contado' && fechaini != "" && fechafini != ""){
           window.open("../../reporteCompras.php?compratipo=contado&fechaini="+fechaini+"&fechafini="+fechafini);
     } else if(opcion === 'credito' && fechaini != "" && fechafini != ""){

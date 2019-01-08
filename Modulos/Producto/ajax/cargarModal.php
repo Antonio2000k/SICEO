@@ -1,5 +1,5 @@
     <?php
-                include '../../Config/conexion.php';
+                include '../../../Config/conexion.php';
    ?>
     <style>
         th{

@@ -19,19 +19,14 @@ function soloNumeros(e,opcion) {
             }       
         }
 function valiFecha(){
-    //alert('entre');
 var fecha = document.getElementById('fecha').value;
 var date = new Date();
-//alert("Fecha    "+fecha.substr(6, 9));
 var yActual = parseInt(date.getFullYear());
 var yDigitado=parseInt(fecha.substr(6, 9));
 var mesActual = parseInt(date.getMonth() + 1);
 var mesDigitado = parseInt(fecha.substr(3, 2));
 var dActual= parseInt(date.getDate());
 var dDigitado=parseInt(fecha.substr(0, 2));
-      
-        //alert("Actual   "+dActual);
-        //alert("Ingreado  "+dDigitado);
           if (mesActual<mesDigitado) {
               Notificacion('error', "<b>Error: </b>Mes mayor al actual");
               document.getElementById('fecha').value="";
@@ -512,7 +507,6 @@ function showResponse(responseText, statusText, xhr, $form)  {
     else if(responseText==="0")
         alertaDetener("Informacion","Producto no agregado","error"); 
 }
-
 function RepCompra(opcion){
     if(opcion === 'contado'){
           window.open("../../reporteCompras.php?compratipo=contado");
@@ -520,7 +514,6 @@ function RepCompra(opcion){
           window.open("../../reporteCompras.php?compratipo=credito");
     }
 }
-
 function actualizarTabla() {
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
@@ -537,7 +530,6 @@ function actualizarTabla() {
             xmlhttp.open("post", "ajax/actualizaTablaDetallePago.php", true);
             xmlhttp.send();
         }
-
 function RepCompra(opcion){
     var fechaini = document.getElementById("rango3").value;
     var fechafini = document.getElementById("rango4").value;

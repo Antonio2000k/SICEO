@@ -174,93 +174,7 @@ if(isset($_SESSION["acumulador"])){
                         </div>      
                         </div>
                     </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>COMPRAS AL CONTADO</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table id="datatable" class="table table-striped table-bordered" id="tblBajaProducto">
-                                <thead>
-                                    <tr>
-                                        <th>N°</th>
-                                        <th>Empleado</th>
-                                        <th>Fecha</th>
-                                        <th>Total Compra</th>
-                                        <th>Ver Mas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra where eperiodo<=0 order by ffecha_compra");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                                <tr>
-                                    <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
-                                    <td>$<?php echo $fila[3]; ?></td>
-                            <td class="text-center">
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','contado')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                <?php
-                      }
-                        ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-                 <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>COMPRAS AL CREDITO</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table id="datatable-fixed-header" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>N°</th>
-                                        <th>Empleado</th>
-                                        <th>Fecha</th>
-                                        <th>Total Compra</th>
-                                        <th>Ver Mas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from compra where eperiodo>0 order by ffecha_compra");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                                <tr>
-                                    <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo date("d/m/Y", strtotime($fila[2])); ?></td>
-                                    <td>$<?php echo $fila[3]; ?></td>
-                            <td class="text-center">
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#modalDetalleCompra" onclick="verMas('', '<?php echo $fila[0]; ?>','credito')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                <?php
-                      }
-                        ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-                                                                                                
-                                                                                            
+                </div>                                                                                
             </div>
         </div>
         </div>
@@ -400,11 +314,7 @@ if(isset($_SESSION["acumulador"])){
             </div>
         </div>
         <!-- Fin Modal -->
-        
-        <div id="cambiaso">
-            
-        </div>
-        <!-- fin iziModal-->
+    
         
         <?php include'Modal/modificacionProducto.php'; ?>
     <!--Aqui va fin el contenido-->

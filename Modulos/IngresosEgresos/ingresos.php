@@ -115,10 +115,7 @@
                     </div>
                 </div>
             </div>
-            
-        </div>
-                                                                                                
-                                                                                            
+        </div>                                                                                 
             </div>
         </div>
         </div>
@@ -146,57 +143,6 @@
         </div>
         <!-- Fin Modal -->
         
-         <!-- Modal Impresion para los rangos de fecha -->
-          <div class="modal fade" id="impresion" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-md " role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <center>
-                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros</h3> </center>
-              </div>
-              <div class="modal-body">
-                <div class="item form-group" > 
-                  <button type="button" class="btn btn-info " id="daterange-btn" style="float: right;">
-                    <i class="fa fa-calendar"></i> Rango
-                    <i class="fa fa-caret-down"></i>
-                  </button>
-                  
-                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
-                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                    <input type="text" name="rango3" id="rango3"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
-                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-
-                  
-                        
-                </div>
-                <br><br>
-                <div class="item form-group"> 
-
-                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
-                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                    <input type="text" name="rango4" id="rango4" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
-                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-                        
-                </div>
-                              
-               <br><br><br>
-              </div>
-              
-                <div class="modal-footer">
-                  <button class="btn btn-info btn-icon left-icon pull-left" data-dismiss="modal"> <i class="fa fa-bar-chart"></i>  Actualizar Grafica</button>                  
-                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- fin Modal Impresion -->
-        
         <div id="cambiaso">
             
         </div>
@@ -204,7 +150,7 @@
 </div>        
 </div>
 </div>
-    <?php include "../../ComponentesForm/scripts.php";    ?>
+<?php include "../../ComponentesForm/scripts.php";    ?>
 <script src="../../vendors//Highcharts-6.2.0/code/highcharts.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/exporting.js"></script>
 <script src="../../vendors//Highcharts-6.2.0/code/modules/export-data.js"></script>

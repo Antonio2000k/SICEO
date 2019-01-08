@@ -2,7 +2,7 @@
 	 $codigo=$_REQUEST['codigo'];
      $opcion=$_REQUEST['opcion'];
 	 //echo '<input type="text" name="esta" value="'.$codigo.'">';
-	 include '../../Config/conexion.php';
+	 include '../../../Config/conexion.php';
     if($opcion==="codigo"){
         pg_query("BEGIN");
 				 $result=pg_query($conexion,"select * from productos where cmodelo='".$codigo."'");

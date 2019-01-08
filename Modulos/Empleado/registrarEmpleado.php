@@ -32,7 +32,6 @@ if(isset($_REQUEST["id"])){
 <html lang="es">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,10 +39,9 @@ if(isset($_REQUEST["id"])){
 <?php
   include "../../ComponentesForm/estilos.php";
 ?>
-<script src="empleado.js"></script>
+<script src="js/empleado.js"></script>
 </head>
 <body class="nav-md">
-        <!--Aqui va inicio la barra arriba-->
 <div class="container body">
 <div class="main_container">
 <div class="col-md-3 left_col">
@@ -54,7 +52,6 @@ if(isset($_REQUEST["id"])){
 include "../../ComponentesForm/menu.php";
 ?>
 </div>
-        <!-- page content -->
     <div class="right_col" role="main">
           <div class="">
             <div class="col-md-12 col-xs-12">
@@ -102,81 +99,76 @@ include "../../ComponentesForm/menu.php";
                             <input type="hidden" name="bandera" id="bandera"/>
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidEmpleado;?>"/>
                             <div id="cambiaso"><input type="hidden" id="baccionVer" value="1" /> </div>
-                             <div class="row">
-                                <!--Codigos-->
+                             
                                   <div class="ln_solid"></div>
-                                <div class="item form-group">
+                                  <div class="row">
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Nombres*</label>
-                                   <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
-                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
+                                   <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
+                                     <input type="text" class="form-control has-feedback-left"  id="nombre" class="form-control col-md-3 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="nombre" placeholder="Nombres" value="<?php echo $Rnombre; ?>" onkeypress="return soloLetras(event);" autocomplete="off">
                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                    </div>
                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Apellidos*</label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                        <input type="text" class="form-control has-feedback-left"  id="apellido" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="apellido" placeholder="Apellidos" value="<?php echo $Rapellido; ?>" onkeypress="return soloLetras(event)" autocomplete="off">
                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
-                                </div>
-                                <div class="item form-group">
-                                    <div class="col-md-6 col-sm-3 col-xs-12 form-group has-feedback" style="padding-left: 80px;">
-                                       <div class="col-sm-2">
-                                           <label>Sexo*</label>
-                                       </div>
-                                       <div class="col-sm-3">
-                                          <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" <?php if ($Rsexo == "M") echo "checked"; ?>/>
-                                       </div>
-                                       <div class="col-sm-3">
-                                           <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
-                                       </div>
-                                    </div>
-                                    <div class="col-md-5 col-sm-5 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-5 col-sm-2 col-xs-12">Fecha de Nacimiento*</label>
-                                            <div class="form-group">
-                                                <div class='input-group date' id='myDatepicker2'>
-                                                    <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'" onclick="showHint(this.value)" onkeyup="showHint(this.value)" onchange="showHint(this.value)" autocomplete="off" />
-                                                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-                                                </div>
-                                                <span id="txtHint"></span>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                 
-                                  <div class="item form-group">
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">DUI*</label>
                                     <div class="col-md-3 col-sm-10 col-xs-12 form-group has-feedback">
                                        <input type="text" class="form-control has-feedback-left"  id="dui" class="form-control col-md-7 col-xs-12" name="dui" placeholder="DUI" data-inputmask="'mask': '99999999-9'" value="<?php echo $Rdui; ?>" autocomplete="off" onblur="vali('dui');">
                                        <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
+                                    </div>  
                                     </div>
-
+                                    
+                                    <div class="row">
+                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Sexo*</label>
+                                    <div class="col-md-3 col-sm-3 col-xs-12 form-group" style="padding-top:5px; padding-right:0px; margin-right:0px;">
+                                       <div class="col-sm-6">
+                                          <label>Masculino</label>  <input type="radio" class="flat" name="genero" id="generoM" value="M" checked="" <?php if ($Rsexo == "M") echo "checked"; ?>/>
+                                       </div>
+                                       <div class="col-sm-6">
+                                           <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
+                                       </div>
+                                    </div>
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                       <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off" onblur="vali('telefono');">
                                       <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
+                                    
                                     <label class="control-label col-md-1 col-sm-3 col-xs-12">Celular*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                        <input type="telc" class="form-control has-feedback-left"  id="celular" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="celular" placeholder="Celular" data-inputmask="'mask': '9999-9999'" value="<?php echo $Rcelular; ?>" autocomplete="off" onblur="vali('celular');">
                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                     </div>
+                                    </div>
                                     
-                                       <label class="control-label col-md-1 col-sm-3 col-xs-12">Direcci&oacuten*</label>
-                                            <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <div class="row">
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Fecha de Nacimiento*</label>
+                                    <div class="col-md-3 col-sm-10 col-xs-12 form-group has-feedback">
+                                        <div class='input-group date' id='myDatepicker2'>
+                                            <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'" onclick="showHint(this.value)" onkeyup="showHint(this.value)" onchange="showHint(this.value)" autocomplete="off" />
+                                            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Correo Electrónico*</label>
+                                    <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
+                                        <input type="telc" class="form-control has-feedback-left" id="correo" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="correo" placeholder="Correo Electrónico" value="<?php echo $Rcorreo; ?>" autocomplete="off" onblur="validarEmail();">
+                                        <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                    </div>
+                                    
+                                    <div class="row">                                
+                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Dirección*</label>
+                                    <div class="col-md-11 col-sm-6 col-xs-12 form-group has-feedback">
                                                 <input type="tel" class="form-control has-feedback-left" id="direccion" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="direccion" placeholder="Direccion" value="<?php echo $Rdireccion; ?>" autocomplete="off">
                                                 <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                             </div>
-                                        <label class="control-label col-md-2 col-sm-3 col-xs-12">Correo Electronico*</label>
-                                            <div class="col-md-5 col-sm-4 col-xs-12 form-group has-feedback">
-                                                <input type="telc" class="form-control has-feedback-left" id="correo" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="correo" placeholder="Correo Electronico" value="<?php echo $Rcorreo; ?>" autocomplete="off" onblur="validarEmail();">
-                                                <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
-                                            </div>
+                                    </div>
+                                  
                                             
                                         
-                                    
-                                  </div>
-                                  <div class="ln_solid"></div>
-                                  <div class="item form-group">
+                              <div class="ln_solid"></div>
+                              <div class="item form-group">
                                     <center>
                                        <div class="col-md-12 col-sm-6 col-xs-12 " >
                                          <?php
@@ -195,103 +187,10 @@ include "../../ComponentesForm/menu.php";
                                       </div>
                                     </center>
                                   </div>
-                              </div>
-                              
                             </form>
-                        
                           </div>
                         </div>
                       </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                         <div class="col-md-12 col-sm-12 col-xs-12">
-                             <div class="x_panel">
-                                <div class="x_title">
-                                  <h2 >EMPLEADOS </h2>
-                                <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                  <table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">
-                                  <thead>
-                                    <tr>
-                                      <th>Cod</th>
-                                      <th>Nombres</th>
-                                      <th>Apellidos</th>
-                                      <th>Telefono</th>
-                                      <th>Correo</th>
-                                      <th>Acciones</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <?php
-                                          include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from empleados where bestado='t' order by cnombre");
-                                          while($fila=pg_fetch_array($query_s)){
-                                      ?>
-                                    <tr>
-                                      <td><?php echo $fila[0]; ?></td>
-                                      <td><?php echo $fila[1]; ?></td>
-                                      <td><?php echo $fila[2]; ?></td>
-                                      <td><?php echo $fila[3]; ?></td>
-                                      <td> <?php echo $fila[10]; ?> </td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i></button>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al empleado '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i></button>
-                                      
-                                      </td>
-                                    </tr>
-                                    <?php
-                                      }
-                                        ?>
-                                  </tbody>
-                                </table>
-                                    </div>
-                                   </div>
-                                 </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                         <div class="col-md-12 col-sm-12 col-xs-12">
-                             <div class="x_panel">
-                                <div class="x_title">
-                                  <h2 >EMPLEADOS </h2>
-                                <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                  <table id="datatable" class="table table-striped table-bordered" id="tblEmpleados">
-                                  <thead>
-                                    <tr>
-                                      <th>Cod</th>
-                                      <th>Nombres</th>
-                                      <th>Apellidos</th>
-                                      <th>Telefono</th>
-                                      <th>Correo</th>
-                                      <th>Acciones</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <?php
-                                          include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from empleados where bestado='f' order by cnombre");
-                                          while($fila=pg_fetch_array($query_s)){
-                                      ?>
-                                    <tr>
-                                      <td><?php echo $fila[0]; ?></td>
-                                      <td><?php echo $fila[1]; ?></td>
-                                      <td><?php echo $fila[2]; ?></td>
-                                      <td><?php echo $fila[3]; ?></td>
-                                      <td> <?php echo $fila[10]; ?> </td>
-                                      <td class="text-center">
-                                        <button class="btn btn-primary btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al empleado '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-arrow-circle-up"></i></button> 
-                                      </td>
-                                    </tr>
-                                    <?php
-                                      }
-                                        ?>
-                                  </tbody>
-                                </table>
-                                    </div>
-                                   </div>
-                                 </div>
-                    </div> 
-                 
                 </div>
             </div>
             </div>
@@ -304,8 +203,6 @@ include "../../ComponentesForm/menu.php";
 include "../../ComponentesForm/footer.php";
 ?>
 </footer>
-
-<!--Aqui va fin el contenido-->
 </div>
 </div>
 </div>
@@ -363,23 +260,7 @@ if($bandera=='modificar'){
                     mensajeInformacion('Informacion','Datos almacenados','info');
 				}
       }
-}
-if($bandera=="Dbajar" || $bandera=='Dactivar'){
-    if($bandera=="Dbajar")
-        $estado=0;
-    else
-        $estado=1;
-     pg_query("BEGIN");
-      $result=pg_query($conexion,"update empleados set bestado='$estado' where cid_empleado='$baccion'");      
-      if(!$result){
-				pg_query("rollback");
-				mensajeInformacion('Error','Datos no almacenados','error');
-				}else{
-					pg_query("commit");
-                    mensajeInformacion('Informacion','Datos almacenados','info');
-				}
-}
-     
+}   
 }
 
 
@@ -391,22 +272,6 @@ function generar($nombree,$apellidos){
 		}
 		return strtoupper($cad);
 	}
-
-
-function validaCorreo($correo,$baccion,$dui){
-    $valor=0;
-    include("../../Config/conexion.php");
-    $query_s= pg_query($conexion, "select * from empleados order by cnombre");
-        while($fila=pg_fetch_array($query_s)){
-            if(strcmp($fila[10],$correo)===0 || strcmp($fila[5],$dui)===0){
-                $valor=1;
-            }
-            if(strcmp($fila[0],$baccion)===0){
-                $valor=0;
-            }
-        }
-    return $valor;
-}
 
 
 function mensajeInformacion($titulo,$mensaje,$tipo){

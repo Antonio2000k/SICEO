@@ -40,7 +40,7 @@ if(isset($_REQUEST["id"])){
         <?php
       include "../../ComponentesForm/estilos.php";
     ?>
-            <script src="producto.js"></script>
+            <script src="js/producto.js"></script>
     </head>
 
     <body class="nav-md">
@@ -293,187 +293,7 @@ if(isset($_REQUEST["id"])){
         </div>
     </div>
 </div>
-        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>PRODUCTOS </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    
-                    
-                    
-                    
-                    <div class="x_content" id="imprimirTablaActivados">
-                       
-                       
-                   
-							
-							
-					
-                       
-                       
-                        <table id="datatable-fixed-header" class="table table-striped table-bordered" id="tblEmpleados">
-                            <thead>
-                                <tr>
-                                    <th>Modelo</th>
-                                    <th>Nombre</th>
-                                    <th>Tipo</th>
-                                    <th>Precio Venta</th>
-                                    <th>Existencia</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from productos where bestado='t' order by cmodelo");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                        <tr>
-                            <td><?php echo $fila[0]; ?></td>
-                            <td><?php echo $fila[1]; ?></td>
-                            <td><?php echo $fila[10]; ?></td>
-                            <td>$<?php echo $fila[5]; ?></td>
-                            <?php
-                              if($fila[2]<=3){
-                                  echo '<td class="p-3 mb-2 bg-danger text-white">'.$fila[2].'</td>';
-                              }else{
-                                 echo '<td>'.$fila[2].'</td>';
-                              }
-                        ?>
-                        <td class="text-center">
-                            <button class="btn btn-info btn-icon left-icon" onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i></button>
-                            <?php 
-                                if($fila[2]==0){
-                            ?>
-                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!');"> <i class="fa fa-arrow-circle-down"></i></button>
-                            <?php
-                                }
-                            ?>
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                        <?php
-                      }
-                        ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>PRODUCTOS DADOS DE BAJA</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table id="datatable" class="table table-striped table-bordered" id="tblBajaProducto">
-                                <thead>
-                                    <tr>
-                                        <th>Modelo</th>
-                                        <th>Nombre</th>
-                                        <th>Tipo</th>
-                                        <th>Precio Venta</th>
-                                        <th>Existencia</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="imprimirTablaDesactivados">
-                                    <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from productos where bestado='f' order by cmodelo ");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                                <tr>
-                                    <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo $fila[10]; ?></td>
-                                    <td>$<?php echo $fila[5]; ?></td>
-                                    <?php
-                              if($fila[2]<=3){
-                                  echo '<td class="p-3 mb-2 bg-danger text-white">'.$fila[2].'</td>';
-                              }else{
-                                 echo '<td>'.$fila[2].'</td>';
-                              }
-                        ?>
-                        <td class="text-center">
-                            <button class="btn btn-primary btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer dar de alta al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Alta!')"> <i class="fa fa-arrow-circle-up"></i></button>
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                <?php
-                      }
-                        ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-         <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>STOCK PRODUCTOS </h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table id="datatable-keytable" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Modelo</th>
-                                        <th>Nombre</th>
-                                        <th>Tipo</th>
-                                        <th>Precio Venta</th>
-                                        <th>Existencia</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="imprimirTablaDesactivados">
-                                    <?php
-                          include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "select * from productos where bestado='t' and estock<3 order by cmodelo");
-                          while($fila=pg_fetch_array($query_s)){
-                      ?>
-                                <tr>
-                                    <td><?php echo $fila[0]; ?></td>
-                                    <td><?php echo $fila[1]; ?></td>
-                                    <td><?php echo $fila[10]; ?></td>
-                                    <td>$<?php echo $fila[5]; ?></td>
-                                    <?php
-                              if($fila[2]<=3){
-                                  echo '<td class="p-3 mb-2 bg-danger text-white">'.$fila[2].'</td>';
-                              }else{
-                                 echo '<td>'.$fila[2].'</td>';
-                              }
-                        ?>
-                        <td class="text-center">
-                           <?php
-                              if($fila[2]==0){
-                            ?>
-                            <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al producto '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i></button>
-                            <?php
-                              }
-                            ?>
-                            <button class="btn btn-success btn-icon left-icon" data-toggle="modal" data-target="#exampleModal" onclick="ajax_act('', '<?php echo $fila[0]; ?>')"> <i class="fa fa-list-ul"></i></button>
-                        </td>
-                </tr>
-                <?php
-                      }
-                        ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                           
-                                            
-                                             
+                                        
                                                </div>
                                         </div>
                                     </div>
@@ -575,22 +395,6 @@ if($bandera=='modificar'){
           }    
             if(!$result){
 				pg_query("rollback");   
-				mensajeInformacion('Error','Datos no almacenados','error');
-				}else{
-					pg_query("commit");
-                    mensajeInformacion('Informacion','Datos almacenados','info');
-				}
-}
-    if($bandera=="Dbajar" || $bandera=='Dactivar'){
-    if($bandera=="Dbajar"){
-        $estado='0';
-    }
-    else
-        $estado='1';
-     pg_query("BEGIN");
-      $result=pg_query($conexion,"update productos set bestado='$estado' where cmodelo='$baccion'");
-      if(!$result){
-				pg_query("rollback");
 				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
 					pg_query("commit");

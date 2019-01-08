@@ -55,63 +55,6 @@
 </div>
 <!-- fin del modal descuento-->
 
-<!-- Modal incia examen-->
-<div class="modal fade" id="myObtenerExamen" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Seleccione su examen</h4>
-      </div>
-      <div class="modal-body">
-        <div class="item form-group">
-          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12">Nombre del cliente: </label>
-          <label style="font-size:medium" class="control-label col-md-4 col-sm-4 col-xs-12" id="nombre_cliente_modal">Nombre aqui</label>
-        </div>
-
-        <div class="item form-group">
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th></th>
-                <th style="text-align: center">Modelo de lentes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                $query = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = true");
-
-                while($fila=pg_fetch_array($query)) {
-                  ?>
-                  <tr>
-                    <td class="text-center">
-                      <input class="medium" id="id_examen" name="id_examen" type="radio">
-                    </td>
-                    <?php
-                      // $cliente = "";
-                      //
-                      // $query_cliente = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente = '$fila[1]'");
-                      // while($fila_cliente=pg_fetch_array($query_cliente)) {
-                      //   $cliente = $fila_cliente[1]." ".$fila_cliente[2];
-                      // }
-                    ?>
-                    <td><?php echo $fila[3]; ?></td>
-                  </tr>
-                  <?php
-                }
-              ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-plus"></i> Agregar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- fin del modal examen-->
-
 <!--Aqui inicia pago-->
   <div class="modal fade" id="myAbono" role="dialog">
     <div class="modal-dialog">
@@ -150,3 +93,34 @@
       </div>
     </div>
   </div>
+
+<div class="modal fade" id="myObtenerExamen" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Seleccione su examen</h4>
+      </div>
+      <div class="modal-body">
+        <div class="item form-group">
+          <label class="control-label col-sm-12 col-md-12 col-xs-12" id="nombre_cliente_modal" style="text-align:center; font-size: medium">Cliente: </label>
+        </div>
+        <table id="datatable-examen-cliente" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th style="text-align: center">Modelo de lentes</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <center>
+          <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>

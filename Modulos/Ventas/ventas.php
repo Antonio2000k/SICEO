@@ -138,6 +138,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
         function verificarExamen(fila) {
           var i = fila.parentNode.parentNode.rowIndex;
+          var productos = document.getElementsByName("productos[]");
 
           swal({
             title: "¿Cuenta con un examen ya hecho para este tipo de lente?",
@@ -153,11 +154,25 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             showLoaderOnConfirm: true
           }).then(function(isConfirm) {
             if(isConfirm.value!=true) {
-
             }
             else {
-              $("#myObtenerExamen").modal();
-              $("#nombre_cliente_modal").text(document.getElementById("nombre_cliente").value);
+              // $("#myObtenerExamen").modal();
+
+              if (window.XMLHttpRequest) {
+                  xmlhttp = new XMLHttpRequest();
+              }
+              else {
+                  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+              }
+              xmlhttp.onreadystatechange = function () {
+                  if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                      document.getElementById("datatable-examen-cliente").innerHTML = xmlhttp.responseText;
+                  }
+              }
+              xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
+              xmlhttp.send();
+              $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
+              $('#myObtenerExamen').modal();
             }
           })
         }

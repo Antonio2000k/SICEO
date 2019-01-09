@@ -136,6 +136,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
         }
 
+        function obtenerExamenCliente(obj) {
+          //id_examen
+          document.getElementsByName("id_examen[]");
+        }
+
         function verificarExamen(fila) {
           var i = fila.parentNode.parentNode.rowIndex;
           var productos = document.getElementsByName("productos[]");
@@ -463,6 +468,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
           "<input type='hidden' name='existe_descuento[]' value=''>"+
+          "<input type='hidden' name='id_examen[]' value=''>"+
+          "<input type='hidden' name='fila_examen[]' value=''>"+
           "<input type='hidden' name='sub_totalFinal[]' value=''>"+
           "<input type='hidden' name='cantidadFinal[]' value=''>"+
           "<td>"+

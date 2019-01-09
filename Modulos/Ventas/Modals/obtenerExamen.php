@@ -20,7 +20,7 @@
       ?>
       <tr>
         <td class="text-center">
-          <input class="medium" id="id_examen" name="id_examen" type="radio">
+          <input class="medium" id="id_examen" name="id_examen" type="radio" value="<?php echo $modelo ?>" onclick="obtenerExamenCliente(this);">
         </td>
         <?php
           // $cliente = "";

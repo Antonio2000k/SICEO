@@ -60,7 +60,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Ingrese el abono por la compra</h4>
+          <h4 class="modal-title">Ingrese el abono para la venta</h4>
         </div>
         <div class="modal-body">
           <div class="item form-group">

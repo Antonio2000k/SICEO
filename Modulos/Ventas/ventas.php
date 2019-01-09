@@ -143,17 +143,56 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           examen[document.getElementById("fila_id_cliente").value] = obj.value;
           fila_examen[document.getElementById("fila_id_cliente").value] = document.getElementById("fila_id_cliente").value;
 
-          document.getElementById("fila_id_cliente").value = "";
+          document.getElementById("exito_examen").value = "true";
+        }
+
+        function agregarExamen() {
+          if(document.getElementById("exito_examen").value) {
+            //Para cambiar el color del boton.
+            var examen = document.getElementsByName("examen_cliente[]");
+            examen[document.getElementById("fila_id_cliente").value].style.backgroundColor="#26B99A";
+            examen[document.getElementById("fila_id_cliente").value].style.borderColor="#26B99A";
+            examen[document.getElementById("fila_id_cliente").value].value = "si";
+
+            $("#myObtenerExamen").modal("hide");
+
+            //Deja vacios los campos que se usaron.
+            document.getElementById("exito_examen").value = "";
+            document.getElementById("fila_id_cliente").value = "";
+          }
+          else {
+            swal('Informacion', "Seleccione un examen", 'info');
+          }
         }
 
         function verificarExamen(fila) {
           var i = fila.parentNode.parentNode.rowIndex;
           var productos = document.getElementsByName("productos[]");
+          var examen = document.getElementsByName("examen_cliente[]");
+
+          //Para el examen.
+          var fila_examen = document.getElementsByName("fila_examen[]");
+          var examen_cliente = document.getElementsByName("id_examen[]");
+
+          var mensaje = "";
+          var titulo = "";
+          var tipo = "";
+
+          if(examen[i-1].value=="si" && examen_cliente[i-1]!="" && fila_examen[i-1]!="") {
+            mensaje = "No podrás deshacer este paso.";
+            titulo = "¿Desea remover el examen seleccionado?";
+            tipo = "warning";
+          }
+          else {
+            mensaje = "Si no cuenta con uno, se procedera a registrar.";
+            titulo = "¿Cuenta con un examen ya hecho para este tipo de lente?";
+            tipo = "info";
+          }
 
           swal({
-            title: "¿Cuenta con un examen ya hecho para este tipo de lente?",
-            text: "Si no cuenta con uno, se procedera a registrar.",
-            type: "info",
+            title: titulo,
+            text: mensaje,
+            type: tipo,
             showCancelButton: true,
             confirmButtonColor: "#5CBDD9",
             cancelButtonColor: "#D9534F",
@@ -163,29 +202,36 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             closeOnCancel: false,
             showLoaderOnConfirm: true
           }).then(function(isConfirm) {
-            if(isConfirm.value!=true) {
-            }
-            else {
-              // $("#myObtenerExamen").modal();
+            if(isConfirm.value) {
+              if(tipo == "info") {
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("datatable-examen-cliente").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
+                xmlhttp.send();
+                //Para darle la fila...
+                $("#fila_id_cliente").val((i-1));
 
-              if (window.XMLHttpRequest) {
-                  xmlhttp = new XMLHttpRequest();
+                $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
+                $('#myObtenerExamen').modal({backdrop: 'static', keyboard: false});
               }
               else {
-                  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-              }
-              xmlhttp.onreadystatechange = function () {
-                  if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                      document.getElementById("datatable-examen-cliente").innerHTML = xmlhttp.responseText;
-                  }
-              }
-              xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
-              xmlhttp.send();
-              //Para darle la fila...
-              $("#fila_id_cliente").val((i-1));
+                fila_examen[i-1].value = "";
+                examen_cliente[i-1].value = "";
+                examen[i-1].value = "";
 
-              $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
-              $('#myObtenerExamen').modal();
+                //Para regresar al color original.
+                examen[i-1].style.backgroundColor="#D9534F";
+                examen[i-1].style.borderColor="#D9534F";
+              }
             }
           })
         }
@@ -420,11 +466,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
 
-            if(valorSeleccionado=="Lente") {
-              examen[i-1].style.visibility="visible";
-            }
-            else {
-              examen[i-1].style.visibility="hidden";
+            if(valorSeleccionado!="Lente") {
               examen[i-1].disabled=true;
             }
 
@@ -440,7 +482,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             precio[i-1].value=10.00;
             precio[i-1].innerText="$10";
 
-            examen[i-1].style.visibility="hidden";
             examen[i-1].disabled=true;
 
             //Para remover los item anteriores.
@@ -477,7 +518,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
           "<input type='hidden' name='existe_descuento[]' value=''>"+
           "<input type='hidden' name='id_examen[]' value=''>"+
-          "<input type='hidden' name='fila_examen[]' value=''>"+
+          "<input type='hidden' name='fila_examen[]' value='-1'>"+
           "<input type='hidden' name='sub_totalFinal[]' value=''>"+
           "<input type='hidden' name='cantidadFinal[]' value=''>"+
           "<td>"+
@@ -514,7 +555,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           "<td class='text-center'>"+
           "<button type='button' class='btn btn-warning btn-icon left-icon' onclick='eliminarProducto(this)'><i class='fa fa-trash'></i> </button>"+
           "<button name='descuento_cliente[]' type='button' class='btn btn-info btn-icon left-icon' onclick='descuentoProducto(this)' disabled='disabled'><i class='fa fa-money'></i> </button>"+
-          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' style='visibility:hidden' disabled='disabled'><i class='fa fa-book'></i> </button>"+
+          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' disabled='disabled'><i class='fa fa-book'></i> </button>"+
           "</td>"+
           "</tr>";
         }
@@ -652,8 +693,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   document.getElementById('porcentaje_descuento').selectedIndex=0;
 
                   var boton = document.getElementsByName('descuento_cliente[]');
-                  boton[index-1].style.backgroundColor="#C9302C";
-                  boton[index-1].style.borderColor="#C9302C";
+                  boton[index-1].style.backgroundColor="#D9534F";
+                  boton[index-1].style.borderColor="#D9534F";
                   cantidad[index-1].disabled=true;
                   existe[index-1].value=valor;
                   sub_totalFinal[index-1].value=nuevo_valor.toFixed(2);
@@ -864,6 +905,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                           <form class="form-horizontal form-label-left" id="frmVenta" name="frmVenta" method="post">
                             <div class="row">
                               <!--Codigos-->
+                              <input type="hidden" id="exito_examen">
                               <input type="hidden" id="bandera" name="bandera" value="">
                               <input type="hidden" id="total_final" name="total_final" value="">
                               <input type="hidden" id="nombre_clienteID" name="nombre_clienteID" value="">
@@ -1133,10 +1175,10 @@ if ($_POST) {
         $productoAux="";
       }
 
-      if($fila_detalle_examen[$i]=="") {
-        //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
-        $id_detalle_examen[$i] = -1;
-      }
+      // if($fila_detalle_examen[$i]==-1) {
+      //   //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
+      //   $id_detalle_examen[$i] = -1;
+      // }
 
       $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_detalle_examen[$i])");
 

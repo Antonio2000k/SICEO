@@ -118,7 +118,7 @@
       </div>
       <div class="modal-footer">
         <center>
-          <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button>
+          <button type="button" class="btn btn-success" onclick="agregarExamen()"><i class="fa fa-plus"></i> Agregar</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
         </center>
       </div>

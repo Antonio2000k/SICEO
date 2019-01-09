@@ -137,8 +137,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
 
         function obtenerExamenCliente(obj) {
-          //id_examen
-          document.getElementsByName("id_examen[]");
+          var examen = document.getElementsByName("id_examen[]");
+          var fila_examen = document.getElementsByName("fila_examen[]");
+
+          examen[document.getElementById("fila_id_cliente").value] = obj.value;
+          fila_examen[document.getElementById("fila_id_cliente").value] = document.getElementById("fila_id_cliente").value;
+
+          document.getElementById("fila_id_cliente").value = "";
         }
 
         function verificarExamen(fila) {
@@ -176,6 +181,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               }
               xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
               xmlhttp.send();
+              //Para darle la fila...
+              $("#fila_id_cliente").val((i-1));
+
               $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
               $('#myObtenerExamen').modal();
             }
@@ -1062,10 +1070,11 @@ if ($_POST) {
   $cantidadValores = $_POST['cantidadFinal'];
   $sub_totalValores = $_POST['sub_totalFinal'];
   $id_detalle_examen = $_POST['id_examen'];
+  $fila_detalle_examen = $_POST['fila_examen'];
 
-  if($id_detalle_examen=="" || $id_detalle_examen==null) {
-    $id_detalle_examen = -1;
-  }
+  // if($id_detalle_examen=="" || $id_detalle_examen==null) {
+  //   $id_detalle_examen = -1;
+  // }
 
   //Para la nota de abono.
   $abono = $_POST['abono'];
@@ -1076,7 +1085,7 @@ if ($_POST) {
     pg_query("BEGIN");
 
     //Insersion de la orden de compra.
-    $resultado=pg_query($conexion,"select MAX(ordenc.eid_compra) from ordenc");
+    $resultado=pg_query($conexion,"SELECT MAX(ordenc.eid_compra) FROM ordenc");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];
@@ -1087,7 +1096,7 @@ if ($_POST) {
     $id_compra=pg_fetch_array($query_compra);
 
     //Insersion de la nota de abono.
-    $resultado=pg_query($conexion,"select MAX(notab.eid_nota) from notab");
+    $resultado=pg_query($conexion,"SELECT MAX(notab.eid_nota) FROM notab");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];
@@ -1104,7 +1113,7 @@ if ($_POST) {
 
     for ($i=0; $i < $longitud; $i++) {
       //para el id.
-      $resultado=pg_query($conexion,"select MAX(detalle_notab.eid_detallenotab) from detalle_notab");
+      $resultado=pg_query($conexion,"SELECT MAX(detalle_notab.eid_detallenotab) FROM detalle_notab");
       $contado=0;
       while ($fila = pg_fetch_array($resultado)) {
         $contado=$fila[0];
@@ -1124,7 +1133,12 @@ if ($_POST) {
         $productoAux="";
       }
 
-      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_detalle_examen)");
+      if($fila_detalle_examen[$i]=="") {
+        //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
+        $id_detalle_examen[$i] = -1;
+      }
+
+      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_detalle_examen[$i])");
 
       //Muestra error.
       if(!$query_detalle_nota) {
@@ -1154,7 +1168,7 @@ if ($_POST) {
     pg_query("BEGIN");
 
     //Insersion de la nota de abono.
-    $resultado=pg_query($conexion,"select MAX(notab.eid_nota) from notab");
+    $resultado=pg_query($conexion,"SELECT MAX(notab.eid_nota) FROM notab");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];

@@ -103,6 +103,7 @@
       <div class="modal-body">
         <div class="item form-group">
           <label class="control-label col-sm-12 col-md-12 col-xs-12" id="nombre_cliente_modal" style="text-align:center; font-size: medium">Cliente: </label>
+          <input type="hidden" id="fila_id_cliente">
         </div>
         <table id="datatable-examen-cliente" class="table table-striped table-bordered">
           <thead>

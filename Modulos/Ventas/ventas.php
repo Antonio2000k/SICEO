@@ -140,8 +140,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var examen = document.getElementsByName("id_examen[]");
           var fila_examen = document.getElementsByName("fila_examen[]");
 
-          examen[document.getElementById("fila_id_cliente").value] = obj.value;
-          fila_examen[document.getElementById("fila_id_cliente").value] = document.getElementById("fila_id_cliente").value;
+          examen[document.getElementById("fila_id_cliente").value].value = obj;
+          fila_examen[document.getElementById("fila_id_cliente").value].value = document.getElementById("fila_id_cliente").value;
 
           document.getElementById("exito_examen").value = "true";
         }
@@ -443,14 +443,15 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
           else {
             $("#myDescuento").modal();
-            document.getElementById('index_descuento').value=""+i;
+            document.getElementById('index_descuento').value=i;
           }
         }
 
         function cambiarEstado(obj) {
           var valorSeleccionado = obj.options[obj.selectedIndex].value;
           var i = obj.parentNode.parentNode.rowIndex;
-          //Agarro los campos a usar.
+
+          //Se obtienen los campos a usar.
           var producto = document.getElementsByName("productos[]");
           var cantidad = document.getElementsByName("cantidad[]");
           var sub_total = document.getElementsByName("sub_total[]");
@@ -1114,6 +1115,9 @@ if ($_POST) {
   $id_detalle_examen = $_POST['id_examen'];
   $fila_detalle_examen = $_POST['fila_examen'];
 
+  //cantidad a recorrer.
+  $longitud = count($sub_totalValores);
+
   // if($id_detalle_examen=="" || $id_detalle_examen==null) {
   //   $id_detalle_examen = -1;
   // }
@@ -1123,7 +1127,6 @@ if ($_POST) {
   $opcion = $_POST['bandera'];
 
   if($opcion=="vender") {
-    $longitud = count($sub_totalValores);
     pg_query("BEGIN");
 
     //Insersion de la orden de compra.
@@ -1137,6 +1140,11 @@ if ($_POST) {
     $query_compra=pg_query($conexion, "INSERT INTO ordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, '$idEmpleado', '$cliente') RETURNING eid_compra");
     $id_compra=pg_fetch_array($query_compra);
 
+    //En la insercion de la orden de compra.
+    // if(!$query_compra) {
+    //   echo "Error orden compra";
+    // }
+
     //Insersion de la nota de abono.
     $resultado=pg_query($conexion,"SELECT MAX(notab.eid_nota) FROM notab");
     $contado=0;
@@ -1148,13 +1156,19 @@ if ($_POST) {
     $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra[0]) RETURNING eid_nota");
     $id_nota_abono=pg_fetch_array($query_nota_abono);
 
+    //En la insercion de la nota de abono.
+    //echo pg_last_error($conexion);
+    // if(!$query_nota_abono) {
+    //   echo "Error nota abono";
+    // }
+
     //Esto es del detalle nota de abono.
     $productoAux="";
     //Si es cero, no hubo ningun error si es mayor es que una fallo.
     $inserto_detalle=0;
 
     for ($i=0; $i < $longitud; $i++) {
-      //para el id.
+      //Para el id.
       $resultado=pg_query($conexion,"SELECT MAX(detalle_notab.eid_detallenotab) FROM detalle_notab");
       $contado=0;
       while ($fila = pg_fetch_array($resultado)) {
@@ -1185,7 +1199,7 @@ if ($_POST) {
       //Muestra error.
       if(!$query_detalle_nota) {
         $inserto_detalle++;
-        //echo pg_last_error($conexion);
+        //echo "Error detalle";
       }
     }
 

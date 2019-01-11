@@ -1241,7 +1241,7 @@ if ($_POST) {
 
     $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
 
-    echo pg_last_error($conexion);
+    //echo pg_last_error($conexion);
 
     if($query_nota_abono) {
       pg_query("COMMIT");

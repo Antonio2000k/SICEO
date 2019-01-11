@@ -68,7 +68,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <script type="text/javascript">
       registrarEncomendero = function() {
-        alert("Registrara al encomendero");
+        $.post("agregar.php",{
+          "nombre":document.getElementById("nombre").value, "apellido":document.getElementById("apellido").value, "telefono":document.getElementById("telefono").value, "celular":document.getElementById("telefonoc").value},function(respuesta) {
+            if(respuesta) {
+              $("#myEncomendero").modal('hide');
+              ajax_act('');
+            }
+        });
       };
 
       modalEncomendero = function() {
@@ -567,7 +573,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
                                   <!--Aqui va la tabla de la encomienda-->
                                   <div class="item form-group">
-                                    <table id="datatable" class="table table-striped table-bordered">
+                                    <table class="table table-striped table-bordered">
                                       <thead>
                                         <tr>
                                           <th width="10%">Seleccionar</th>

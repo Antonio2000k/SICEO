@@ -58,7 +58,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     </style>
     <link rel="stylesheet" href="css/radio.css">
 
-    <script src="../Encomendero/encomendero.js"></script>
+    <!--<script src="../Encomendero/encomendero.js"></script>-->
 
     <title>SICEO | Encomiendas</title>
 
@@ -91,7 +91,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       verEstado = function(valor, fila) {
         document.getElementById("id_estado").value = fila;
         $('#myEstado').modal();
-        if(valor==true) {
+        if(valor=="t") {
           $("#estado_encomienda").text("RECIBIDA");
           document.getElementById("estado_encomienda").style.color = "green";
           document.getElementById("estado").checked=1;
@@ -106,15 +106,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
       cambiarEstado = function() {
         if(document.getElementById('estado').checked) {
-          alert(document.getElementById("id_estado").value);
           //$id_estado
           $.post("buscar.php",{
             "id":document.getElementById("id_estado").value},function(respuesta) {
-              alert(respuesta);
               if(respuesta!="") {
                 document.getElementById("id_estado").value="";
                 swal('Hecho', 'Encomienda actualizada con exito', 'success');
                 $("#myEstado").modal('toggle');
+                ajax_act('');
               }
               else {
                 swal('Error', 'Hubo un error al actualizar el estado', 'error');
@@ -1039,7 +1038,7 @@ if(isset($_REQUEST["bandera"])) {
   $query_encomienda = pg_query($conexion, "INSERT INTO encomienda (eid_encomienda, ffecha_envio, bestado, eid_encomendero, cdetalle, ffecha_recibido) VALUES ($contado, '$fecha_envio', false, $id_encomendero, '$detalle_encomienda', null) RETURNING eid_encomienda");
   $id_encomienda = pg_fetch_array($query_encomienda);
 
-  $error_detalle= false;
+  $error_detalle = false;
 
   for ($i=0; $i < $longitud; $i++) {
     if($filaValores[$i] != "") {

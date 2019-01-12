@@ -7,18 +7,15 @@ include '../../Config/conexion.php';
 if($text || $id) {
 
 	if(isset($id)) {
-		pg_query("BEGIN");
 		ini_set('date.timezone','America/El_Salvador');
 	  $fecha = date("d-m-Y");
 
-		$consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true AND ffecha_recibido = '$fecha' WHERE eid_encomienda = $id");
+		$consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true, ffecha_recibido = '$fecha' WHERE eid_encomienda = $id");
 		if($consulta) {
 			echo "exito";
-			pg_query("COMMIT");
 		}
 		else {
 			echo "";
-			pg_query("ROLLBACK");
 		}
 	}
 

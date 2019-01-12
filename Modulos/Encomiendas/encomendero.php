@@ -31,7 +31,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
       <label style="text-align:left" class="control-label col-md-3 col-sm-3 col-xs-12">Telefono (*)</label>
       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-        <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" autocomplete="off" onblur="vali('tele');">
+        <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-3 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" autocomplete="off">
         <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
       </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
       <label style="text-align:left" class="control-label col-md-3 col-sm-3 col-xs-12">Celular (*)</label>
       <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
-        <input type="tel" class="form-control has-feedback-left"  id="telefonoc" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" data-inputmask="'mask': '9999-9999'" autocomplete="off" onblur="vali('celular');">
+        <input type="tel" class="form-control has-feedback-left"  id="telefonoc" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefonoc" placeholder="Celular" data-inputmask="'mask': '9999-9999'" autocomplete="off">
         <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
       </div>
     </div>

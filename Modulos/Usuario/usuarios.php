@@ -1,29 +1,5 @@
 <?php
 
-//Metodo para encriptar.
-function encrypt($string, $key) {
-   $result = '';
-   for($i=0; $i<strlen($string); $i++) {
-      $char = substr($string, $i, 1);
-      $keychar = substr($key, ($i % strlen($key))-1, 1);
-      $char = chr(ord($char)+ord($keychar));
-      $result.=$char;
-   }
-   return base64_encode($result);
-}
-
-function decrypt($string, $key) {
-   $result = '';
-   $string = base64_decode($string);
-   for($i=0; $i<strlen($string); $i++) {
-      $char = substr($string, $i, 1);
-      $keychar = substr($key, ($i % strlen($key))-1, 1);
-      $char = chr(ord($char)-ord($keychar));
-      $result.=$char;
-   }
-   return $result;
-}
-
 error_reporting(0);
 session_start();
 $t=$_SESSION["nivelUsuario"];
@@ -35,11 +11,8 @@ if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
 
-    //Desencriptacion.
-    $cadena_desencriptada = decrypt($iddatos,"fran2");
-
     //Se obtiene el usuario para cuando se va a modificar.
-    $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$cadena_desencriptada");
+    $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$iddatos");
     while ($fila = pg_fetch_array($query_s)) {
         //Se obtienen los valores de la base de datos.
         $cid_usuario = $fila[0];
@@ -484,26 +457,29 @@ if(isset($_REQUEST["id"])){
                                            >
                                               <option value="Seleccionar">Seleccionar</option>
                                               <?php
-                                              //$query = pg_query($conexion, "SELECT * FROM usuarios WHERE eprivilegio = 1");
-                                              //$contar = pg_num_rows($query);
+                                              include '../../Config/conexion.php';
 
-                                                //if($contar<2 || isset($eprivilegio)) {
+                                              $query_usuario = pg_query($conexion, "SELECT * FROM usuarios WHERE eprivilegio = 1");
+                                              $contar = pg_num_rows($query_usuario);
+
+                                                if($eprivilegio==1) {
                                                   ?>
-
+                                                    <option value="1"
+                                                    <?php
+                                                      echo "selected";
+                                                    ?>
+                                                    >Administrador</option>
                                                   <?php
-                                                //}
+                                                }
+                                                else if($contar<2) {
+                                                  ?>
+                                                    <option value="1">Administrador</option>
+                                                  <?php
+                                                }
                                               ?>
-                                              <option value="1"
-                                              <?php
-                                              if(isset($eprivilegio) || $eprivilegio==1) {
-                                                echo "selected";
-                                              }
-                                              ?>
-                                              >Administrador</option>
-                                              
                                               <option value="2"
                                               <?php
-                                              if(isset($eprivilegio) || $eprivilegio==2) {
+                                              if($eprivilegio==2) {
                                                 echo "selected";
                                               }
                                               ?>
@@ -781,11 +757,7 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $privilegio; ?></td>
 
                                       <td class="text-center">
-                                        <?php
-                                        //Encriptacion
-                                        $cadena_encriptada = encrypt($fila[0],"fran2");
-                                        ?>
-                                        <button class="btn btn-info btn-icon left-icon" onclick="location='usuarios.php?id=<?php echo $cadena_encriptada; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                        <button class="btn btn-info btn-icon left-icon" onclick="location='usuarios.php?id=<?php echo $fila[0]; ?>'"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
                                       <?php } ?>
                                       </td>
                                     </tr>

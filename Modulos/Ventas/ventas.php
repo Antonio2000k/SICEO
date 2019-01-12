@@ -21,18 +21,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-    <link href="css/jqueryui.css" type="text/css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.0.js"></script> -->
-
     <title>SICEO | Ventas </title>
 
     <?php
@@ -178,7 +166,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var titulo = "";
           var tipo = "";
 
-          if(examen[i-1].value=="si" && examen_cliente[i-1]!="" && fila_examen[i-1]!="") {
+          if(examen[i-1].value=="si" && examen_cliente[i-1].value!="-1" && fila_examen[i-1].value!="-1") {
             mensaje = "No podrás deshacer este paso.";
             titulo = "¿Desea remover el examen seleccionado?";
             tipo = "warning";
@@ -224,8 +212,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 $('#myObtenerExamen').modal({backdrop: 'static', keyboard: false});
               }
               else {
-                fila_examen[i-1].value = "";
-                examen_cliente[i-1].value = "";
+                fila_examen[i-1].value = "-1";
+                examen_cliente[i-1].value = "-1";
                 examen[i-1].value = "";
 
                 //Para regresar al color original.
@@ -518,8 +506,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
           "<input type='hidden' name='existe_descuento[]' value=''>"+
-          "<input type='hidden' name='id_examen[]' value=''>"+
-          "<input type='hidden' name='fila_examen[]' value='-1'>"+
+          "<input type='hidden' name='id_examen[]' value='-1'>"+
+          "<input type='hidden' name='fila_examen[]' value='vacio'>"+
           "<input type='hidden' name='sub_totalFinal[]' value=''>"+
           "<input type='hidden' name='cantidadFinal[]' value=''>"+
           "<td>"+
@@ -1189,12 +1177,15 @@ if ($_POST) {
         $productoAux="";
       }
 
-      // if($fila_detalle_examen[$i]==-1) {
-      //   //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
-      //   $id_detalle_examen[$i] = -1;
-      // }
+      if($fila_detalle_examen[$i]=="vacio") {
+        //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
+        $id_examen = null;
+      }
+      else {
+        $id_examen = $id_detalle_examen[$i];
+      }
 
-      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_detalle_examen[$i])");
+      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_examen)");
 
       //Muestra error.
       if(!$query_detalle_nota) {

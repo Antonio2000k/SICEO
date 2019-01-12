@@ -14,7 +14,7 @@
     $id=$_REQUEST['idCliente'];
     $modelo=$_REQUEST['modelo'];
 
-    $query = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = true AND cmodelo='$modelo' AND cid_cliente='$id'");
+    $query = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = false AND cmodelo='$modelo' AND cid_cliente='$id'");
 
     while($fila=pg_fetch_array($query)) {
       ?>

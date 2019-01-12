@@ -1,3 +1,20 @@
+function valiFecha(){
+var fecha = document.getElementById('fecha').value;
+var date = new Date();
+var yActual = parseInt(date.getFullYear());
+var yDigitado=parseInt(fecha.substr(6, 9));
+var YMaximo=yActual-18;
+var YMinimo=YMaximo-45;
+          if (yDigitado<YMinimo) {
+              Notificacion('error', "<b>Error: </b>Año inferior al aceptado");
+              document.getElementById('fecha').value="";
+          }
+          if (yDigitado>YMaximo) {
+              Notificacion('error', "<b>Error: </b>Año superior al aceptado");
+              document.getElementById('fecha').value="";
+          }
+          
+}
 function validarEmail() {
     var valor = document.getElementById('correo').value;
     if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)) {
@@ -5,7 +22,7 @@ function validarEmail() {
     }
     else {
         paso = false;
-        NotificacionSoloLetras2('error', "<b>Error: </b>Correo incorrecto");
+        Notificacion('error', "<b>Error: </b>Correo incorrecto");
         document.getElementById('correo').value = '';
     }
 }
@@ -23,7 +40,7 @@ function soloLetras(e) {
         }
     }
     if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-        NotificacionSoloLetras2('error', "<b>Error: </b>Solo se permiten letras");
+        Notificacion('error', "<b>Error: </b>Solo se permiten letras");
         return false;
     }
 }
@@ -34,7 +51,7 @@ function vali(opcion) {
         if (/^[6|7]{1}[0-9]{3}\-[0-9]{4}$/.test(valor)) {}
         else {
             document.getElementById('celular').focus();
-            NotificacionSoloLetras2('error', "<b>Error: </b>Celular debe iniciar con 6 o 7");
+            Notificacion('error', "<b>Error: </b>Celular debe iniciar con 6 o 7");
             document.getElementById('celular').value = '';
         }
     }
@@ -45,7 +62,7 @@ function vali(opcion) {
         }
         else {
             document.getElementById('dui').focus();
-            NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Dui</b>");
+            Notificacion('error', "<b>Error: </b>Complete el campo <b>Dui</b>");
         }
     }
     if (opcion === 'telefono') {
@@ -53,7 +70,7 @@ function vali(opcion) {
         if (/^[0-9]{4}\-[0-9]{4}$/.test(valor)) {}
         else {
             document.getElementById('telefono').focus();
-            NotificacionSoloLetras2('error', "<b>Error: </b>Complete el campo <b>Telefono</b>");
+            Notificacion('error', "<b>Error: </b>Complete el campo <b>Telefono</b>");
         }
     }
 }
@@ -161,7 +178,7 @@ function llamarPagina(id) {
     window.open("registrarEmpleado.php?id=" + id, '_parent');
 }
 
-function NotificacionSoloLetras2(tipo, msg) {
+function Notificacion(tipo, msg) {
     notif({
         type: tipo
         , msg: msg

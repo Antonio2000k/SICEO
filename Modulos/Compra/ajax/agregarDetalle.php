@@ -1,6 +1,5 @@
 <?php session_start();     
     $opcion=$_REQUEST["opcion"];
-
     if($opcion==="guardarTodo" || $opcion==="guardarTodoCredito"){
     $acumulador=$_SESSION["acumulador"];
     $matriz=$_SESSION["matriz"];

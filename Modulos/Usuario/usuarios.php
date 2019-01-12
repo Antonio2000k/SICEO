@@ -1,6 +1,6 @@
 <?php
 
-//Prueba de encriptar y desencriptar.
+//Metodo para encriptar.
 function encrypt($string, $key) {
    $result = '';
    for($i=0; $i<strlen($string); $i++) {
@@ -27,7 +27,6 @@ function decrypt($string, $key) {
 error_reporting(0);
 session_start();
 $t=$_SESSION["nivelUsuario"];
-//$iddatos=$_SESSION["idUsuario"];
 if($_SESSION['autenticado']!="yeah" || $t!=1){
   header("Location: ../../login.php");
   exit();
@@ -39,8 +38,10 @@ if(isset($_REQUEST["id"])){
     //Desencriptacion.
     $cadena_desencriptada = decrypt($iddatos,"fran2");
 
+    //Se obtiene el usuario para cuando se va a modificar.
     $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$cadena_desencriptada");
     while ($fila = pg_fetch_array($query_s)) {
+        //Se obtienen los valores de la base de datos.
         $cid_usuario = $fila[0];
         $cusuario = $fila[1];
         $cpassword = $fila[2];
@@ -79,6 +80,7 @@ if(isset($_REQUEST["id"])){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <script type="text/javascript">
+      //Metodo para verificar si un usuario existe el campo toma un color verde, sino el campo sera color rojo.
       function existeUsuario(obj) {
         $.post("user.php",{
           "texto":obj},function(respuesta) {
@@ -91,6 +93,7 @@ if(isset($_REQUEST["id"])){
         });
       }
 
+      //Metodo que permite comprobar si las contraseñas cumple con los requisitos.
       function comprobarPass(pass) {
         var numeros = "0123456789";
         var letras = "áéíóúabcdefghijklmnñopqrstuvwxyz";
@@ -98,6 +101,7 @@ if(isset($_REQUEST["id"])){
         var existe_letras=0;
         var existe_numeros=0;
 
+        //Se recorre cada uno de los caracteres de la primer contraseña para verificar si contiene numeros y letras.
         for (var i = 0; i < pass.length; i++) {
           if(letras.indexOf(pass.charAt(i)) != -1) {
             existe_letras++;
@@ -107,24 +111,31 @@ if(isset($_REQUEST["id"])){
           }
         }
 
+        //Si no existe alguna letra o numero entra al if.
         if(existe_letras==0 || existe_numeros==0) {
+          //Si la contraseña es mayor a 0, se deshabilita el campo verificar contraseña y se pone en color rojo, ya que no es valido.
           if(pass.length>0) {
             document.getElementById('pass').style.borderColor="#C70039";
             $("#repass").prop("disabled", true);
           }
+          //Se coloca en color rojo solo si es igual a 0.
           else {
             document.getElementById('pass').style.borderColor="#C70039";
           }
         }
+        //Si existe algun numero o letra entra aqui.
         else {
-          if(pass.length<5 || pass.length>30) {
+          //Si la contraseña es menor a 5 caracteres se colocara en color rojo y se deshabilitara el campo.
+          if(pass.length<5) {
             document.getElementById('pass').style.borderColor="#C70039";
             $("#repass").prop("disabled", true);
           }
+          //Si la contraseña es mayor a 5 pero menor o igual a 8 caracteres se colocara en color amarillo y se habilitara el campo.
           else if(pass.length>=5 && pass.length<=8) {
             document.getElementById('pass').style.borderColor="#FFB037";
             $("#repass").prop("disabled", false);
           }
+          //Si la contraseña es mayor a 5 pero menor o igual a 8 caracteres se colocara en color amarillo y se habilitara el campo.
           else if(pass.length>8 && pass.length<=15) {
             document.getElementById('pass').style.borderColor="#21df2c";
             $("#repass").prop("disabled", false);
@@ -132,6 +143,7 @@ if(isset($_REQUEST["id"])){
         }
       }
 
+      //Esta funcion sirve para cuando el usuario digita su contraseña de nuevo, si cumple con los requisitos de el tamaño de la contraseña se mostrara en diversos colores.
       function comprobarRePass(pass) {
         var coinciden=document.getElementById('pass_coincide');
         if(pass==document.getElementById('pass').value) {
@@ -145,11 +157,11 @@ if(isset($_REQUEST["id"])){
         }
         else {
           coinciden.value="no";
-          //document.getElementById('pass').style.borderColor="#C70039";
           document.getElementById('repass').style.borderColor="#C70039";
         }
       }
 
+      //Sirve para dejar los campos vacios.
       function limpiarCampos() {
         document.getElementById('user').disabled=enabled;
         document.getElementById('pass').value="";
@@ -159,6 +171,7 @@ if(isset($_REQUEST["id"])){
         document.getElementById('respuesta').disabled=enabled;
       }
 
+      //Funcion que recarga un porcion de la pantalla.
       function ajax_act(){
         <?php
           if(isset($_REQUEST["id"])) {
@@ -185,12 +198,11 @@ if(isset($_REQUEST["id"])){
         ?>
       }
 
+        //Funcion que sirve para poder ingresar una pregunta personalizada.
         function personalizar(obj) {
           var valorSeleccionado = obj.options[obj.selectedIndex].value;
 
           if(valorSeleccionado=="personalizada") {
-            //alertaSweet('Informacion','Digite su pregunta', 'info');
-
             $("#myModal").modal({backdrop: 'static', keyboard: false});
           }
           else {
@@ -202,6 +214,7 @@ if(isset($_REQUEST["id"])){
           }
         }
 
+        //Funcion que sirve cuando se cancela la pregunta personalizada, muestra un mensaje de alerta.
         function colocarPregunta() {
           var pregunta_usuario = document.getElementById('pregunta_usuario');
           var pre_personalizada = document.getElementById('pre_personalizada');
@@ -210,10 +223,12 @@ if(isset($_REQUEST["id"])){
           pre_personalizada.innerText = "No ingreso ninguna pregunta";
         }
 
+        //Mensajes de alerta.
         function alertaSweet(titulo,texto,tipo){
           swal(titulo,texto,tipo);
         }
 
+        //Funcion que sirve para asignarle la pregunta personalizada para que esta pueda ser guardada.
         function agregarPregunta() {
           var pregunta_usuario = document.getElementById('pregunta_usuario');
           var pre_personalizada = document.getElementById('pre_personalizada');
@@ -223,11 +238,9 @@ if(isset($_REQUEST["id"])){
             pre_personalizada.innerText = 'Pregunta ingresada';
             pre_personalizada.style.color = "#26B99A";
             pre_personalizada.style.fontWeight='bold';
-            //swal('Informacion','Pregunta agregada','success');
             //esto deberia transferir los valores
             pre_personalizada.value=pregunta_usuario.value;
             pregunta.value=pregunta_usuario.value;
-            //document.getElementById('pregunta').value=pregunta_usuario.value;
           }
           else {
             pregunta_usuario.value="";
@@ -237,6 +250,7 @@ if(isset($_REQUEST["id"])){
           }
         }
 
+        //Funcion que redirecciona a la misma pagina, para recargarla.
         function redireccionar(titulo, texto, tipo) {
           swal({
             title: titulo,
@@ -251,9 +265,9 @@ if(isset($_REQUEST["id"])){
           })
         }
 
+      //Funcion que sirve para validar el registro antes que sea ingresado.
       function validar(opcion) {
         var opc=false;
-
         var campos_vacios=document.getElementById('user').value=="" || document.getElementById('pass').value==""
           || document.getElementById('repass').value=="" || document.getElementById('idempleado').value=="Seleccionar"
           || document.getElementById('pregunta').value=="Seleccionar" || document.getElementById('respuesta').value==""
@@ -469,6 +483,16 @@ if(isset($_REQUEST["id"])){
                                             ?>
                                            >
                                               <option value="Seleccionar">Seleccionar</option>
+                                              <?php
+                                              //$query = pg_query($conexion, "SELECT * FROM usuarios WHERE eprivilegio = 1");
+                                              //$contar = pg_num_rows($query);
+
+                                                //if($contar<2 || isset($eprivilegio)) {
+                                                  ?>
+
+                                                  <?php
+                                                //}
+                                              ?>
                                               <option value="1"
                                               <?php
                                               if(isset($eprivilegio) || $eprivilegio==1) {
@@ -476,6 +500,7 @@ if(isset($_REQUEST["id"])){
                                               }
                                               ?>
                                               >Administrador</option>
+                                              
                                               <option value="2"
                                               <?php
                                               if(isset($eprivilegio) || $eprivilegio==2) {

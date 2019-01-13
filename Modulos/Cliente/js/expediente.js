@@ -1,28 +1,13 @@
+//Mostrar examen
 function Exam(id,idex){
          window.open("../../reporteExamen.php?id="+id+"&idexam="+idex);
       }
+      //Abrir ventana para hacer un examen
       function NuevoExam(id){
          window.open("examen.php?id="+id, '_parent');
       }
 
-      function obtenerDatosCliente(obj) {
-          if(obj!="") {
-            $.post("buscar.php",{
-              "texto":obj,"opcion":1},function(respuesta) {
-                if(respuesta!="") {
-                  document.getElementById('examino').style.borderColor="#21df2c";
-                  document.getElementById('nombre_clienteID').value=respuesta;
-                  
-                }
-                else {
-                  document.getElementById('examino').style.borderColor="#C70039";
-                  document.getElementById('nombre_clienteID').value="";
-                  
-                }
-            });
-          }
-        }
-
+      //Validar solo letrar
       function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -41,6 +26,7 @@ function Exam(id,idex){
             }
         }
 
+        //validar datos
         function vali(opcion) {
 
 
@@ -65,6 +51,7 @@ function Exam(id,idex){
 
         }
 
+        //Limpiar campos
         function limpia() {
             var val = document.getElementById("nombre").value;
             var tam = val.length;
@@ -75,7 +62,7 @@ function Exam(id,idex){
         }
 
 
-
+        //verificar datos campos
       function verificar(){
           var opc=true;
             if(document.getElementById('nombre').value=="" || document.getElementById('apellido').value=="" ||
@@ -105,6 +92,7 @@ function Exam(id,idex){
 
       }
 
+      //limpiar formulario
     function limpiarIn(opcion){
         if(opcion=="limpiarM"){
             document.getElementById('bandera').value='cancelar';
@@ -154,6 +142,7 @@ function Exam(id,idex){
             
         });
     }
+    //Validar solo numeros
     function soloNumeros(e,opcion) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -175,6 +164,7 @@ function Exam(id,idex){
             }       
         }
 
+    //validar todos los campos para guardar 
     function guardar(){
 
           var opc=true;

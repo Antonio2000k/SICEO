@@ -59,8 +59,9 @@ require 'Config/conexion.php';
 
     function Header(){
       $tipo = $_REQUEST['tipo'];
-	  $fechaini=$_REQUEST['fechaini'];
-	  $fechafini=$_REQUEST['fechafini'];
+	    $fechaini=$_REQUEST['fechaini'];
+	    $fechafini=$_REQUEST['fechafini'];
+      
       $this->Image('images/Siceom.png', 14, 20, 40 );
       $this->SetFont('times','B',14);
       $this->Ln(4);
@@ -104,13 +105,17 @@ require 'Config/conexion.php';
         $this->Line(10, $this->GetY()+7 , 202 , $this->GetY()+7);
 
         $x_posicion=$this->getx(); 
-        
-        
+        $this->vcellT(22,6,$x_posicion,'CORRELATIVO',0,0,'C',1);
+        $x_posicion=$this->getx(); 
         $this->vcellT(25,6,$x_posicion,'FECHA',0,0,'C',1);
         $x_posicion=$this->getx(); 
-        $this->vcellT(8,6,$x_posicion,'ID',0,0,'C',1);
-        $x_posicion=$this->getx(); 
         $this->vcellT(65,6,$x_posicion,utf8_decode('CLIENTE'),0,0,'C',1);
+        $x_posicion=$this->getx(); 
+        $this->vcellT(20,6,$x_posicion,'SERVICIO',0,0,'C',1);
+         $x_posicion=$this->getx(); 
+        $this->vcellT(20,6,$x_posicion,'CANTIDAD',0,0,'C',1);
+        $x_posicion=$this->getx(); 
+        $this->vcellT(25,6,$x_posicion,'PRODUCTO',0,0,'C',1);
         $x_posicion=$this->getx();  
         $this->vcellT(15,6,$x_posicion,'ABONO', 0,1,'C',1);
         
@@ -148,15 +153,19 @@ require 'Config/conexion.php';
         $this->Line(10, $this->GetY()+7 , 202 , $this->GetY()+7);
 
         $x_posicion=$this->getx(); 
-        
-        
+        $this->vcellT(22,6,$x_posicion,'CORRELATIVO',0,0,'C',1);
+        $x_posicion=$this->getx(); 
         $this->vcellT(25,6,$x_posicion,'FECHA',0,0,'C',1);
         $x_posicion=$this->getx(); 
-        $this->vcellT(8,6,$x_posicion,'ID',0,0,'C',1);
-        $x_posicion=$this->getx(); 
         $this->vcellT(65,6,$x_posicion,utf8_decode('CLIENTE'),0,0,'C',1);
+        $x_posicion=$this->getx(); 
+        $this->vcellT(20,6,$x_posicion,'SERVICIO',0,0,'C',1);
+         $x_posicion=$this->getx(); 
+        $this->vcellT(20,6,$x_posicion,'CANTIDAD',0,0,'C',1);
+        $x_posicion=$this->getx(); 
+        $this->vcellT(25,6,$x_posicion,'PRODUCTO',0,0,'C',1);
         $x_posicion=$this->getx();  
-        $this->vcellT(15,6,$x_posicion,'ABONO', 0,1,'C',1);
+        $this->vcellT(15,6,$x_posicion,'TOTAL', 0,1,'C',1);
         
         $this->Ln(); 
         
@@ -174,11 +183,14 @@ require 'Config/conexion.php';
     
     function Footer()
     {
-      $this->SetY(-15);
+      $fecha = new DateTime(null, new DateTimeZone('America/El_Salvador'));
+      $hora = $fecha->format("d/m/Y, h:i:s");
+
+      $this->SetY(-30);
       $this->SetFont('times','B',8);
       $this->Cell(0,10, utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C' );
       
-      $this->Cell(0,10,utf8_decode('Fecha y hora de impresión: '.date('d/m/Y, h:i:s') ),0,0,'R');
+      $this->Cell(0,10,utf8_decode('Fecha y hora de impresión: '.$hora ),0,0,'R');
 
     } 
 
@@ -192,10 +204,12 @@ require 'Config/conexion.php';
   $pdf->AddPage();
   switch ($tipo) {
     case 'notab':
-      $query_s= pg_query($conexion, "SELECT notab.eid_nota, notab.ffecha_pago, notab.rsaldo, clientes.cnombre, clientes.capellido
-  FROM notab INNER JOIN ordenc ON notab.eid_ordenc = ordenc.eid_compra
-  INNER JOIN clientes ON ordenc.ccliente = clientes.eid_cliente
-    WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by notab.ffecha_pago desc ");
+      $query_s= pg_query($conexion, "SELECT notab.eid_nota, notab.ffecha_pago, notab.rsaldo, clientes.cnombre,
+      clientes.capellido FROM notab
+      INNER JOIN ordenc ON notab.eid_ordenc = ordenc.eid_compra
+      INNER JOIN clientes ON ordenc.ccliente = clientes.eid_cliente
+      
+      WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by notab.eid_nota asc ");
      
 
     while($row=pg_fetch_assoc($query_s)){ 
@@ -208,20 +222,23 @@ require 'Config/conexion.php';
       $x_posicion=$pdf->getx(); 
       $pdf->SetFillColor(255, 255, 255);
       $pdf->SetTextColor(0,0,0);
-      $pdf->cell(25,6, date("d/m/Y", strtotime($row['ffecha_pago'])) , 1,0,'C',1);
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(8,6, utf8_decode($row['eid_nota']) , 1,0,'C',1);
+      $pdf->cell(22,6, utf8_decode($row['eid_nota']) , 1,0,'C',1);
+      $pdf->cell(25,6, date("d/m/Y", strtotime($row['ffecha_pago'])) , 1,0,'C',1);
       $x_posicion=$pdf->getx();   
       $pdf->cell(65,6,$row['cnombre'] . " ". $row['capellido'] ,1,0,'C',1);
+      $x_posicion=$pdf->getx();   
+      
       $x_posicion=$pdf->getx();   
       $pdf->cell(15,6,"$ ".$row['rsaldo'] ,1,1,'C',1);
     }
 
     $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
-       $pdf->SetFont('times','B',18);
-        $pdf->SetXY(140,72);
+       $pdf->SetFont('times','B',14);
+        $pdf->SetXY(155,44);
         $pdf->cell(40,8,'INGRESOS TOTALES ',0,1,'C',1);
-        $pdf->SetXY(150,78);
+        $pdf->SetXY(165,50);
+
 
         while($resultadoi=pg_fetch_array($consultai)){  
       if($resultadoi[1]===null){
@@ -234,11 +251,12 @@ require 'Config/conexion.php';
     }
       break;
     case 'ordenc':
-    
 
-      $queryS= pg_query($conexion, "SELECT ordenc.ffecha, ordenc.rtotal, clientes.cnombre, clientes.capellido, ordenc.eid_compra, clientes.eid_cliente
-  FROM ordenc  INNER JOIN clientes ON ordenc.ccliente = clientes.eid_cliente
-    WHERE ordenc.ffecha BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE)");
+      $queryS= pg_query($conexion, "SELECT ordenc.ffecha, ordenc.rtotal, clientes.cnombre, clientes.capellido, ordenc.eid_compra, clientes.eid_cliente, detalle_notab.ecantidad, detalle_notab.cmodelo, detalle_notab.cservicio  FROM ordenc  
+        INNER JOIN clientes ON ordenc.ccliente = clientes.eid_cliente
+        INNER JOIN notab ON notab.eid_ordenc = ordenc.eid_compra
+        INNER JOIN detalle_notab ON detalle_notab.eid_nota = notab.eid_nota
+        WHERE ordenc.ffecha BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by ordenc.eid_compra asc");
 
     while($row=pg_fetch_assoc($queryS)){ 
       ini_set('date.timezone', 'America/El_Salvador');
@@ -248,22 +266,28 @@ require 'Config/conexion.php';
       $x_posicion=$pdf->getx(); 
       $pdf->SetFillColor(255, 255, 255);
       $pdf->SetTextColor(0,0,0);
-      $pdf->cell(18,6, date("d/m/Y", strtotime($row['ffecha'])) , 1,0,'C',1);
       $x_posicion=$pdf->getx(); 
-      $pdf->cell(8,6, utf8_decode($row['eid_compra']) , 1,0,'C',1);
+      $pdf->cell(22,6, utf8_decode($row['eid_compra']) , 1,0,'C',1);
+      $x_posicion=$pdf->getx(); 
+      $pdf->cell(25,6, date("d/m/Y", strtotime($row['ffecha'])) , 1,0,'C',1);
       $x_posicion=$pdf->getx();   
-      $pdf->cell(59,6,$row['cnombre'] . " ". $row['capellido'] ,1,0,'C',1);
+      $pdf->cell(65,6,$row['cnombre'] . " ". $row['capellido'] ,1,0,'C',1);
+      $x_posicion=$pdf->getx();   
+      $pdf->cell(20,6,ucwords($row['cservicio']) ,1,0,'C',1);
+      $x_posicion=$pdf->getx();   
+      $pdf->cell(20,6,$row['ecantidad'] ,1,0,'C',1);
+      $x_posicion=$pdf->getx();   
+      $pdf->cell(25,6,$row['cmodelo'] ,1,0,'C',1);
       $x_posicion=$pdf->getx();   
       $pdf->cell(15,6,"$ ".$row['rtotal'] ,1,1,'C',1);
-        $x_posicion=$pdf->getx();   
-      $pdf->cell(15,6,"$ ".$row['eid_cliente'] ,1,1,'C',1);
+      
     }
 
     $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
-       $pdf->SetFont('times','B',18);
-        $pdf->SetXY(140,72);
+       $pdf->SetFont('times','B',14);
+        $pdf->SetXY(155,44);
         $pdf->cell(40,8,'INGRESOS NETOS ',0,1,'C',1);
-        $pdf->SetXY(150,78);
+        $pdf->SetXY(165,50);
 
         while($resultadoi=pg_fetch_array($consultai)){  
       if($resultadoi[1]===null){

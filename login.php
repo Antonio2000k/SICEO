@@ -257,17 +257,14 @@ if (isset($_REQUEST["bandera"])) {
           if($fila[2] == 1){
             
             $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-            $accion = 'El administrador ' . $nomusAccess. ' ('. $nomAccess. " " .$apeAccess. ") inició sesión";
+            $accion = 'El usuario ' . $nomusAccess. ' inició sesión';
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
             
-            //$fechaR = date("d/m/Y");
-            //$hora = date("h:i:s");
             $hora = date("Y/m/d ") . date("h:i:s a");
-            //$consult = pg_query($conexion, "INSERT INTO bitacora2 (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
             $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
 
             if(!$consult ){

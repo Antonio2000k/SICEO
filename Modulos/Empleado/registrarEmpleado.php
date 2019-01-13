@@ -129,7 +129,7 @@ include "../../ComponentesForm/menu.php";
                                            <label>Femenino</label>  <input type="radio" class="flat" name="genero" id="generoF" value="F" <?php if ($Rsexo == "F") echo "checked"; ?> />
                                        </div>
                                     </div>
-                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Telefono*</label>
+                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">Teléfono*</label>
                                     <div class="col-md-3 col-sm-6 col-xs-12 form-group has-feedback">
                                       <input type="tel" class="form-control has-feedback-left"  id="telefono" class="form-control col-md-7 col-xs-12" data-validate-length-range="8,20" data-validate-words="2" name="telefono" placeholder="Telefono" data-inputmask="'mask': '2999-9999'" value="<?php echo $Rtelefono; ?>" autocomplete="off" onblur="vali('telefono');">
                                       <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
@@ -146,7 +146,7 @@ include "../../ComponentesForm/menu.php";
                                     <label class="control-label col-md-2 col-sm-3 col-xs-12">Fecha de Nacimiento*</label>
                                     <div class="col-md-3 col-sm-10 col-xs-12 form-group has-feedback">
                                         <div class='input-group date' id='myDatepicker2'>
-                                            <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'" onclick="showHint(this.value)" onkeyup="showHint(this.value)" onchange="showHint(this.value)" autocomplete="off" />
+                                            <input type='text' class="form-control has-feedback-left col-md-4 col-sm-4 col-xs-12"  id="fecha" name="fecha"    data-inputmask="'mask': '99/99/9999'" onclick="showHint(this.value)" onkeyup="showHint(this.value)" onchange="showHint(this.value)" autocomplete="off" onblur="valiFecha();"/>
                                             <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                                         </div>
                                     </div>

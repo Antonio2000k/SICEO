@@ -1,4 +1,14 @@
 <?php //session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -441,7 +451,7 @@ if(isset($_REQUEST["id"])){
 
 
 
-  <!-- Modal -->
+  <!-- Modal de examen-->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -876,6 +886,7 @@ $cobservacion = $_REQUEST["observacion"];
 
 
 include("../../Config/conexion.php");
+//guardar examen
   if($bandera2=='add'){
       pg_query("BEGIN");
 
@@ -946,7 +957,26 @@ include("../../Config/conexion.php");
                   echo "document.getElementById('baccion').value='';";
                 echo "</script>";
               }else{
-                pg_query("commit");
+                //Guardar en bitacora y hacer commit 
+                $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                $accion = 'El usuario ' . $nomusAccess. ' Registro un examen al Cliente con Expediente '. $idexpediente ;
+                while ($filas = pg_fetch_array($query_ide)) {
+                    $ida=$filas[0];                                 
+                    $ida++ ;
+                } 
+                ini_set('date.timezone', 'America/El_Salvador');
+                
+                $hora = date("Y/m/d ") . date("h:i:s a");
+                $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+                if(!$consult ){
+                        pg_query("rollback");
+                        echo "<script type='text/javascript'>";
+                        echo pg_result_error($conexion);
+                        echo "alert('Error');";
+                        echo "</script>";
+                }else{
+                     pg_query("commit");
                   echo "<script type='text/javascript'>";
                       echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
                     //echo "location.href=('expediente.php?id='+'".$caccion."');";
@@ -957,40 +987,62 @@ include("../../Config/conexion.php");
                       echo "document.getElementById('baccion').value='';";
 
                   echo "</script>";
+                }
+                
               }
 
   }
 include("../../Config/conexion.php");
+//modificar cliente
 if($bandera=='modificar'){
       pg_query("BEGIN");
 
-            $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
-              if(!$result){
-                pg_query("rollback");
-          echo "<script type='text/javascript'>";
-          echo pg_result_error($conexion);
-          echo "alertaSweet('Error','Datos no almacenados', 'error');";
-          echo "document.getElementById('bandera').value='';";
-            echo "document.getElementById('baccion').value='';";
+      $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
+      
+      if(!$result){
+        pg_query("rollback");
+        echo "<script type='text/javascript'>";
+        echo pg_result_error($conexion);
+        echo "alertaSweet('Error','Datos no almacenados', 'error');";
+        echo "document.getElementById('bandera').value='';";
+        echo "document.getElementById('baccion').value='';";
 
-          echo "</script>";
-              }else{
-                pg_query("commit");
-                echo "<script type='text/javascript'>";
-                 echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
-                //echo "location.href=('expediente.php?id='+'".$caccion."');";
+        echo "</script>";
+      }else{
+        //Guardar en bitacora y hacer commit 
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Modifico al Cliente '. $nombre .' '.$apellido;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+                  //echo "location.href=('expediente.php?id='+'".$caccion."');";
                   echo "setTimeout (function llamarPagina(){
-                                      location.href=('expediente.php?id='+'".$caccion."');
-                                    }, 2000);";
-                echo "document.getElementById('bandera').value='';";
-                echo "document.getElementById('baccion').value='';";
+                    location.href=('expediente.php?id='+'".$caccion."');
+                    }, 2000);";
+                  echo "document.getElementById('bandera').value='';";
+                  echo "document.getElementById('baccion').value='';";
 
-                echo "document.getElementById('caccion').value='';";
+                  echo "document.getElementById('caccion').value='';";
 
-              echo "</script>";
-
-
-             }
+                  echo "</script>";
+            }
+      }
 
   }
 

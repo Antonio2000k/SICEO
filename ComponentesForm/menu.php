@@ -7,6 +7,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
   exit();
   }
 ?>
+<script src="../../Modulos/Bitacora/bitacora.js"></script>
+
 <script type="text/javascript" class="init">
   function Salir(){
     alertify.defaults.theme.ok = "btn btn-primary";
@@ -124,14 +126,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
-                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
+                      <li><a href="../../Modulos/Usuario/usuarios.php">Registrar usuario</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#impresion"">Bitacora</a></li>
                     </ul>
                   </li>
                 </ul>
               </div>
             </div>
             <!-- /sidebar menu -->
-
 
           </div>
         </div>
@@ -170,3 +172,55 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           </div>
         </div>
         <!-- /top navigation -->
+
+
+<!--- Modal Impresion -->
+
+        <div class="modal fade" id="impresion" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-md " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                  <h3 class="modal-title" id="exampleModalLabel">Selección de parametros a imprimir</h3> </center>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group" > 
+                  <button type="button" class="btn btn-info " id="daterange-btn" style="float: right;">
+                    <i class="fa fa-calendar"></i> Rango
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Inicio*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango3" id="rango3"  class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                  
+                        
+                </div>
+                <br><br>
+                <div class="item form-group"> 
+
+                  <label class="control-label col-md-3 col-sm-2 col-xs-12">Fecha Final*</label>
+                  <div  class="col-md-5 col-sm-6 col-xs-12 form-group has-feedback">
+                    <input type="text" name="rango4" id="rango4" class="form-control has-feedback-left" class="form-control col-md-6 col-xs-12" value="" data-validate-length-range="6" data-validate-words="2" placeholder="Fecha Inico"  autocomplete="off" >
+                    <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+                        
+                </div>
+                              
+               <br><br><br>
+              </div>
+              
+                <div class="modal-footer">
+                  <button class="btn btn-info btn-icon left-icon pull-left" id="imp" data-dismiss="modal" onclick="RepBitacora()"> <i class="fa fa-print"></i> Imprimir</button>
+                  
+                  <button type="button" class="btn btn-round btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>

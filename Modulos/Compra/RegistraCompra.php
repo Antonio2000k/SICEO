@@ -5,7 +5,7 @@ if(isset($_SESSION["acumulador"])){
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta charset="utf-8">
@@ -189,7 +189,7 @@ if(isset($_SESSION["acumulador"])){
                 <div class="modal-content">
                     <div class="modal-header">
                         <center>
-                            <h3 class="modal-title" id="exampleModalLabel">Informaci&oacuten producto</h3> </center>
+                            <h3 class="modal-title" id="exampleModalLabel">Información producto</h3> </center>
                     </div>
                     <div class="modal-body" id="cargala">                       
                        <div class="col-md-12 col-sm-12 col-xs-12">

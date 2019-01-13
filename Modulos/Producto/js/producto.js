@@ -146,7 +146,7 @@ function NotificacionSoloLetras2(tipo, msg) {
         , clickable: true
     });
 }
-function ActualizarModalOCombo(id, opcion,campoActualizar) {
+function ActualizarModalCombo(id, opcion,campoActualizar) {
     var url,data;
     if(opcion=="modal"){
         url="ajax/cargarModal.php";

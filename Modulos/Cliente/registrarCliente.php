@@ -1,12 +1,17 @@
 <?php session_start();
 $t=$_SESSION["nivelUsuario"];
-$idus=$_SESSION["idUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
 if($_SESSION['autenticado']!="yeah" || $t!=1  ){
   header("Location: ../../index.php");
   exit();
   }
 ?>
 <?php
+//Recuperar informacion del cliente para modificar cliente
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -104,6 +109,7 @@ if(isset($_REQUEST["id"])){
                           </a>
                         </li>
                     </ul>
+                    <!-- Formulario para registar cliente -->
                  <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                       <div class="x_content">
@@ -117,7 +123,7 @@ if(isset($_REQUEST["id"])){
                             <input type="hidden" name="baccion" id="baccion" value="<?php echo $RidCliente;?>"/>
                             
                              <div class="row">
-                                <!--Codigos-->
+                                
                                   <div class="ln_solid"></div>
 
                                 <div class="item form-group">
@@ -203,9 +209,10 @@ if(isset($_REQUEST["id"])){
                                            ?>
                                       </div>
                                     </center>
-                                  </div>
-                              </div>
-                            </form>
+                                  </div> 
+                                </div>
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -339,16 +346,6 @@ if(isset($_REQUEST["id"])){
         <footer>
             <?php
               include "../../ComponentesForm/footer.php";
-              $fecha = $_REQUEST["fecha"];
-              $anno2 = date('Y', strtotime($fecha));
-              //echo "$anno2";
-              $annoMax = date('Y')-1;
-              $annoMin = date('Y')-70;
-              $anno = date('Y');
-              
-              if($anno > $annoMin || $anno < $annoMax){
-                //echo "$anno";
-              }
              ?>
         </footer>
       </div>
@@ -359,36 +356,7 @@ if(isset($_REQUEST["id"])){
         <?php
           include "../../ComponentesForm/scripts.php";
         ?>
-        <script type="text/javascript">
-          $(document).ready(function() {
-              var warn_on_unload="";
-              $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() 
-              {
-                  warn_on_unload = "Si sale de la pagina, no se guardaran los datos, guarde los datos antes de abandonar la pagina.";
-           
-                  $('#submit').click(function() { 
-                      warn_on_unload = "";}); 
-           
-                  $('#submit1').click(function() { 
-                      warn_on_unload = "";});  
-           
-                  $('#modificar_direcciones').click(function() { 
-                      warn_on_unload = "";}); 
-           
-                  $('#eliminar_direcciones').click(function() { 
-                      warn_on_unload = "";}); 
-           
-                  $('#guardar_direcciones').click(function() { 
-                      warn_on_unload = "";});                                             
-           
-                      window.onbeforeunload = function() { 
-                      if(warn_on_unload != ''){
-                          return warn_on_unload;
-                      }   
-                  }
-              });
-          });
-          </script>
+        
     </body>
 </html>
 <?php
@@ -402,9 +370,10 @@ $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
 $fecha = $_REQUEST["fecha"];
-$edad = substr($_REQUEST["edad"],0,1);
+$edad = substr($_REQUEST["edad"],0,2);
 
 include("../../Config/conexion.php");
+//Guardar datos del cliente
 if($bandera=="add"){
     pg_query("BEGIN");
     $r=pg_query($conexion,"select * from clientes");
@@ -418,7 +387,7 @@ if($bandera=="add"){
           $res= pg_query($conexion,"INSERT INTO expediente2 (cid_expediente, eid_cliente) VALUES ('" . $expediente . "', '$codigo')");
           
 
-         
+         //Comprobar que los datos estan correctos
           if(!$result || !$res){
                     pg_query("rollback");
                     echo "<script type='text/javascript'>";
@@ -429,17 +398,37 @@ if($bandera=="add"){
                      echo "document.getElementById('baccion').value='';";
                     echo "</script>";
           }else{
+            //Guardar datos
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Registro al Cliente '. $nombre .' '.$apellido;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
             
-                pg_query("commit");
-                echo "<script type='text/javascript'>";
-                echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
-                echo "ajax_act('');";
-                echo "setTimeout (function llamarPagina(){
-                                        location.href=('expediente.php?id='+'".$expediente."');
-                                     }, 2000);";
-                echo "document.getElementById('bandera').value='';";
-                echo "document.getElementById('baccion').value='';";
-                echo "</script>";
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+                  echo "ajax_act('');";
+                  echo "setTimeout (function llamarPagina(){
+                                          location.href=('expediente.php?id='+'".$expediente."');
+                                       }, 2000);";
+                  echo "document.getElementById('bandera').value='';";
+                  echo "document.getElementById('baccion').value='';";
+                  echo "</script>";
+            }
+                
                 
         
           }  
@@ -455,6 +444,7 @@ if($bandera=="add"){
      
 }
 
+//Generar en numero de expediente
 function getExpediente($nombre, $apellido){
   include("../../Config/conexion.php");
   $expediente = date("Y");
@@ -481,7 +471,7 @@ function getExpediente($nombre, $apellido){
     return $expediente;
 }
 
-
+//Generar el codigo para la llave principal
 function generar($nombree,$apellidos){
     $str=trim($nombree).trim($apellidos);
     $cad="";

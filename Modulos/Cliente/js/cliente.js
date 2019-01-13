@@ -1,6 +1,8 @@
+//Abrir expediente
 function Expediente(id){
      window.open("expediente.php?id="+id, '_parent');
   }
+  //Validar utilizacion de solo letrar
       function soloLetras(e) {
             key = e.keyCode || e.which;
             tecla = String.fromCharCode(key).toLowerCase();
@@ -24,7 +26,7 @@ function Expediente(id){
         }
 
 
-
+        //Validar campos
         function vali(opcion) {
             
             
@@ -106,6 +108,7 @@ function Expediente(id){
                    
         }
         
+        //Limpiar el formulario
         function limpia() {
             var val = document.getElementById("nombre").value;
             var tam = val.length;
@@ -115,6 +118,7 @@ function Expediente(id){
             }
         }
         
+      //Verificar que todos los campos esten completos
       function verificar(opcion){
           var opc=true;
             if(document.getElementById('nombre').value=="" || document.getElementById('apellido').value=="" ||
@@ -142,6 +146,7 @@ function Expediente(id){
           
       }
 
+      //Cancelar operaciones
       function cancelar() {
             swal({
                 title: 'Confirmaci&oacuten'
@@ -164,7 +169,7 @@ function Expediente(id){
     
   
   
-        
+      //Sweet Alert  
     function alertaSweet(titulo,texto,tipo){
       swal({
             position:'center',
@@ -181,7 +186,7 @@ function Expediente(id){
      window.open("registrarCliente.php?id="+id, '_parent');
   }
         
-        
+    //Notify
     function NotificacionSoloLetras2(tipo,msg){
         notif({
           type:tipo,
@@ -193,6 +198,7 @@ function Expediente(id){
         });
     }
     
+    //Ajax para recargar tabla
     function ajax_act(str){
       if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
@@ -209,18 +215,20 @@ function Expediente(id){
         xmlhttp.send();
     }
 
+    //Reporte de cliente por fechas
       function Rep(){
         var fechaini = document.getElementById("rango3").value;
         var fechafini = document.getElementById("rango4").value;
 
         if(fechaini != "" && fechafini != ""){
-          window.open("../../reporteCliente.php?fechaini="+fechaini+"&fechafini="+fechafini);
+          window.open("../../reporteVentas.php?fechaini="+fechaini+"&fechafini="+fechafini+"&tipo=notab");
           $("#rango3").val('');
           $("#rango4").val('');
         }
         
       }
 
+    //Reporte de cliente por sexo
       function RepS(){
         var sexoM = document.getElementById("generoM").checked;
         var sexoF = document.getElementById("generoF").checked;
@@ -238,6 +246,7 @@ function Expediente(id){
 
       }
 
+      //Reporte de cliente por edad
       function RepEdad(){
         var edadE = document.getElementById("edadEs").value;
         var edadMe = document.getElementById("edadMe").value;
@@ -264,27 +273,7 @@ function Expediente(id){
       }
 
       
-      function calcula(str){
-        var cambio = document.getElementById('fecha').value;
-
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-          } else {
-          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                  }
-            xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-              document.getElementById("edad").innerHTML = xmlhttp.responseText;
-              
-            }
-        }
-        xmlhttp.open("post",  "fecha.php?naci=" + cambio, true);
-        xmlhttp.send();
-
-
-      }
-
+      //Validar fecha
     function isvaliddate(day,month,year){
       var dteDate;
 
@@ -293,7 +282,7 @@ function Expediente(id){
      
       return ((day==dteDate.getDate()) && (month==dteDate.getMonth()) && (year==dteDate.getFullYear()));
     }
-
+    //Darle formato a la fecha
     function validate_fecha(fecha){
       var patron=new RegExp("^([0-9]{1,2})([/])([0-9]{1,2})([/])(19|20)+([0-9]{2})$");
 
@@ -306,7 +295,7 @@ function Expediente(id){
       }
         return false;
     }
-
+    //Calcular fecha
     function calcularEdad(){
       var fecha=document.getElementById("fecha").value;
       if(validate_fecha(fecha)==true){
@@ -327,8 +316,8 @@ function Expediente(id){
 
         var ahora_dia = fecha_hoy.getDate();
 
+        var edad = (ahora_ano +1900) - ano;
 
-        var edad = (ahora_ano + 1900) - ano;
         
         if ( ahora_mes < mes )       {
           edad--;
@@ -337,10 +326,9 @@ function Expediente(id){
         if ((mes == ahora_mes) && (ahora_dia < dia)){
           edad--;
         }
+        if (edad>1900) {edad -=1900;}
         
-        if (edad > 1900){
-          edad -= 1900;
-        }
+        
 
 
         var meses=0;
@@ -368,6 +356,7 @@ function Expediente(id){
       }
     }
 
+    //Ajax para mostrar modal
     function cambioDiv(opcion) {
       if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -384,6 +373,7 @@ function Expediente(id){
       xmlhttp.send();
   }   
 
+//Hacer cambios en div de reporte
   function mostrarFormulario(opcion){
     if(opcion==="edadE"){
         $("#divE").show();
@@ -426,7 +416,7 @@ function Expediente(id){
     }
     
   }
-
+  //Limpiar Div
   function limpiarFormulario(){
     $("#divE").hide();
     document.getElementById("edadEs").value = "";

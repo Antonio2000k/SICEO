@@ -97,6 +97,7 @@ if(isset($_REQUEST["id"])){
                           </a>
                         </li>
                     </ul>
+                    <!-- Listado de clientes -->
                   <div class="tab-content" id="myTabContent">
                  
                       <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="profile-tab">
@@ -171,20 +172,20 @@ if(isset($_REQUEST["id"])){
 
                                   </tbody>
                                 </table>
-                                    </div>
-                                   </div>
-                                 </div>
-                                </div>
                               </div>
                             </div>
                           </div>
-                           </div>
                         </div>
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
         <!-- /page content -->
         <!--modal-->
@@ -346,7 +347,7 @@ if(isset($_REQUEST["id"])){
         </div>
 
         
-
+        <!-- Modal para los reportes -->
         <div class="modal fade" id="edad" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog modal-md " role="document">
             <div class="modal-content">

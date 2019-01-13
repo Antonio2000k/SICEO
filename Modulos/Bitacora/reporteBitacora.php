@@ -1,8 +1,9 @@
 <?php
-require 'Config/conexion.php';
+require '../../Config/conexion.php';
 
-  require 'fpdf/fpdf.php';
-  
+  require '../../fpdf/fpdf.php';
+  $fechaini=$_REQUEST['fechaini'];
+  $fechafini=$_REQUEST['fechafini'];
   class PDF extends FPDF
   {
     function vcell($c_ancho,$c_alto,$x_posicion,$texto){ 
@@ -56,13 +57,13 @@ require 'Config/conexion.php';
     }
 
     function Header(){
-      $this->Image('images/Siceom.png', 14, 20, 40 );
+      $this->Image('../../images/Siceom.png', 14, 20, 40 );
       $this->SetFont('times','B',14);
       $this->Ln(4);
       $this->Cell(30);
       $this->Cell(135,11,utf8_decode("ÓPTICA"),0,0,'C');
       // 1º Datos del cliente
-      $this->Image('images/Grupo.png', 165, 20, 35 );
+      $this->Image('../../images/Grupo.png', 165, 20, 35 );
       $this->SetXY(135, 23);
       $this->SetFont('times','B',14);
       $this->Cell(30);
@@ -82,33 +83,28 @@ require 'Config/conexion.php';
       $this->Cell(140,10, utf8_decode('Bitácora de Sistema'),0,1,'C');
       $this->Ln(5);
 
-      $this->SetFont('times','B',9);
+      $this->SetFont('times','B',11);
       $this->Ln(1);
       $this->Cell(30); 
 
       $y = $this->GetY();
       $this->SetY($y+3);
 
-      $this->SetX(8); 
+      $this->SetX(10); 
       $this->SetFillColor(255, 255, 255);
       $this->SetTextColor(0,0,0);
-      $this->SetFont('times','B',8);
+      $this->SetFont('times','B',11);
       $this->SetDrawColor(25, 25, 112);
       $this->SetLineWidth(2);
       $this->Line(10, $this->GetY()+7 , 202 , $this->GetY()+7);
 
-      $x_posicion=$this->getx(); 
-      
-      
-      $this->vcellT(20,6,$x_posicion,'ID BITACORA',0,0,'C',1);
-      $x_posicion=$this->getx(); 
-      $this->vcellT(25,6,$x_posicion,'ID USUARIO',0,0,'C',1);
-      $x_posicion=$this->getx(); 
-      $this->vcellT(110,6,$x_posicion,utf8_decode('ACCIÓN'),0,0,'C',1);
       $x_posicion=$this->getx();  
-      $this->vcellT(18,6,$x_posicion,'FECHA', 0,1,'C',1);
+      $this->vcellT(24,6,$x_posicion,'FECHA', 0,1,'C',1);
       $x_posicion=$this->getx();  
-      $this->vcellT(19,6,$x_posicion,'HORA', 0,1,'C',1);
+      $this->vcellT(24,6,$x_posicion,'HORA', 0,1,'C',1);
+      $x_posicion=$this->getx(); 
+      $this->vcellT(140,6,$x_posicion,utf8_decode('ACCIÓN'),0,0,'C',1);
+      
       $this->Ln(); 
       
       $y = $this->GetY();
@@ -118,7 +114,7 @@ require 'Config/conexion.php';
       $this->SetLineWidth(0);
 
       $this->SetFillColor(255, 99, 71);
-      $this->Rect(10, 71, 192, 174, '');
+      $this->Rect(12, 71, 190, 174, '');
       
     }
     
@@ -141,7 +137,8 @@ require 'Config/conexion.php';
 
   $pdf->AddPage();
   
-    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha FROM bitacora order by  bitacora.ffecha ");
+    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha FROM bitacora 
+      WHERE bitacora.ffecha BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE)  order by  bitacora.ffecha asc ");
   
   while($row=pg_fetch_assoc($query_s)){ 
     ini_set('date.timezone', 'America/El_Salvador');
@@ -151,24 +148,19 @@ require 'Config/conexion.php';
     $hora2 = date_format($hora, 'h:i:s a'); 
     
     
-    $pdf->SetFont('times','B',9);
-    $pdf->SetX(10); 
+    $pdf->SetFont('times','B',11);
+    $pdf->SetX(12); 
     $x_posicion=$pdf->getx(); 
     $pdf->SetFillColor(255, 255, 255);
     $pdf->SetTextColor(0,0,0);
-    $pdf->cell(20,6,$row['eid_bitacora'], 1,0,'C',1);
-    
-    
-    $x_posicion=$pdf->getx();   
-    $pdf->cell(25,6,$row['cid_usuario'] ,1,0,'C',1);
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(110,6,utf8_decode($row['accion']),1,0,'C',1);
-    
-    $x_posicion=$pdf->getx(); 
-    $pdf->cell(18,6,$dia1, 1,0,'C',1);
+    $pdf->cell(24,6,$dia1, 1,0,'C',1);
     $x_posicion=$pdf->getx();   
-    $pdf->cell(19,6,$hora2 ,1,1,'C',1);
-      
+    $pdf->cell(24,6,$hora2 ,1,0,'C',1);
+    $x_posicion=$pdf->getx(); 
+    $pdf->cell(142,6,utf8_decode($row['accion']),1,1,'C',1);
+    
+          
   }
 
   

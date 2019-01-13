@@ -125,7 +125,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
 
         function obtenerExamenCliente(obj) {
-          var examen = document.getElementsByName("id_examen[]");
+          var examen = document.getElementsByName("id_examenes[]");
           var fila_examen = document.getElementsByName("fila_examen[]");
 
           examen[document.getElementById("fila_id_cliente").value].value = obj;
@@ -160,13 +160,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           //Para el examen.
           var fila_examen = document.getElementsByName("fila_examen[]");
-          var examen_cliente = document.getElementsByName("id_examen[]");
+          var examen_cliente = document.getElementsByName("id_examenes[]");
 
           var mensaje = "";
           var titulo = "";
           var tipo = "";
 
-          if(examen[i-1].value=="si" && examen_cliente[i-1].value!="-1" && fila_examen[i-1].value!="-1") {
+          if(examen[i-1].value=="si" && examen_cliente[i-1].value!="vacio" && fila_examen[i-1].value!="vacio") {
             mensaje = "No podrás deshacer este paso.";
             titulo = "¿Desea remover el examen seleccionado?";
             tipo = "warning";
@@ -212,8 +212,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 $('#myObtenerExamen').modal({backdrop: 'static', keyboard: false});
               }
               else {
-                fila_examen[i-1].value = "-1";
-                examen_cliente[i-1].value = "-1";
+                fila_examen[i-1].value = "vacio";
+                examen_cliente[i-1].value = "vacio";
                 examen[i-1].value = "";
 
                 //Para regresar al color original.
@@ -304,6 +304,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           var cantidad = document.getElementsByName("cantidad[]");
           var examen = document.getElementsByName("examen_cliente[]");
 
+          var producto_aux = document.getElementsByName("productoFinal[]");
+
           $.post("buscar.php",{
             "texto":obj,"opcion":2},function(respuesta) {
               var producto=document.getElementsByName("productos[]");
@@ -311,7 +313,16 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                 precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
                 precio[i-1].value=parseFloat(respuesta).toFixed(2);
                 cantidad[i-1].disabled=false;
-                examen[i-1].disabled=false;
+
+                var servicio = document.getElementsByName("servicios[]");
+                if(servicio[i-1].value=="Lente") {
+                  examen[i-1].disabled=false;
+                }
+                else {
+                  examen[i-1].disabled=true;
+                }
+
+                producto_aux[i-1].value = obj;
               }
               else {
                 cantidad[i-1].disabled=true;
@@ -455,9 +466,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
 
-            if(valorSeleccionado!="Lente") {
-              examen[i-1].disabled=true;
-            }
+            examen[i-1].disabled=true;
 
             //Para remover los item anteriores.
             producto[i-1].value="";
@@ -479,13 +488,14 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
           else if(valorSeleccionado=="seleccione") {
             producto[i-1].disabled=true;
-            examen[i-1].disabled=true;
             producto[i-1].value="";
             sub_total[i-1].innerText="$0.00";
             cantidad[i-1].disabled=true;
             cantidad[i-1].value="";
             precio[i-1].innerText="$0.00";
             precio[i-1].value=0.00;
+
+            examen[i-1].disabled=true;
 
             //Para remover los item anteriores.
             producto[i-1].value="";
@@ -506,10 +516,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
           var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
           "<input type='hidden' name='existe_descuento[]' value=''>"+
-          "<input type='hidden' name='id_examen[]' value='-1'>"+
+          "<input type='hidden' name='id_examenes[]' value='vacio'>"+
           "<input type='hidden' name='fila_examen[]' value='vacio'>"+
           "<input type='hidden' name='sub_totalFinal[]' value=''>"+
           "<input type='hidden' name='cantidadFinal[]' value=''>"+
+          "<input type='hidden' name='productoFinal[]' value='nada'>"+
           "<td>"+
           "<select class='form-control' name='servicios[]' onchange='cambiarEstado(this);'>"+
             "<option value='seleccione'>Seleccione</option>"+
@@ -1100,15 +1111,34 @@ if ($_POST) {
   $productoValores = $_POST['productos'];
   $cantidadValores = $_POST['cantidadFinal'];
   $sub_totalValores = $_POST['sub_totalFinal'];
-  $id_detalle_examen = $_POST['id_examen'];
+  $id_detalle_examen = $_POST['id_examenes'];
   $fila_detalle_examen = $_POST['fila_examen'];
+  $productoFinal = $_POST["productoFinal"];
 
-  //cantidad a recorrer.
-  $longitud = count($sub_totalValores);
-
-  // if($id_detalle_examen=="" || $id_detalle_examen==null) {
-  //   $id_detalle_examen = -1;
-  // }
+  //Impresion de arrays.
+  // echo "Servicios:";
+  // echo "<br>";
+  // print_r($servicioValores);
+  // echo "<br>";
+  // echo "Producto final:";
+  // echo "<br>";
+  // print_r($productoFinal);
+  // echo "<br>";
+  // echo "Cantidad:";
+  // echo "<br>";
+  // print_r($cantidadValores);
+  // echo "<br>";
+  // echo "Sub-total:";
+  // echo "<br>";
+  // print_r($sub_totalValores);
+  // echo "<br>";
+  // echo "ID examen:";
+  // echo "<br>";
+  // print_r($id_detalle_examen);
+  // echo "<br>";
+  // echo "Fila examen:";
+  // echo "<br>";
+  // print_r($fila_detalle_examen);
 
   //Para la nota de abono.
   $abono = $_POST['abono'];
@@ -1116,6 +1146,9 @@ if ($_POST) {
 
   if($opcion=="vender") {
     pg_query("BEGIN");
+
+    //cantidad a recorrer.
+    $longitud = count($sub_totalValores);
 
     //Insersion de la orden de compra.
     $resultado=pg_query($conexion,"SELECT MAX(ordenc.eid_compra) FROM ordenc");
@@ -1164,22 +1197,16 @@ if ($_POST) {
       }
       $contado++;
 
-      if($servicioValores[$i]!="examen") {
-        $productoAux=$productoValores[$contAux];
+      if($servicioFinal=="Examen") {
+        $productoAux = "";
       }
       else {
-        if($i>0) {
-          $contAux=$i-1;
-        }
-        else {
-          $contAux=$i;
-        }
-        $productoAux="";
+        $productoAux = $productoValores[$i];
       }
 
       if($fila_detalle_examen[$i]=="vacio") {
         //Esto significa que se escogio un examen o un accesorio y no fue necesario un id de examen.
-        $id_examen = null;
+        $id_examen = -1;
       }
       else {
         $id_examen = $id_detalle_examen[$i];

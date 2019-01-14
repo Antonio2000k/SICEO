@@ -221,7 +221,22 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             examen[i-1].style.borderColor="#D9534F";
           }
         }
+        else {
+          $.post("buscar.php",{
+            "texto":document.getElementById("nombre_clienteID").value,"opcion":4},function(respuesta) {
+              if(respuesta!="") {
+                window.open("../Cliente/expediente.php?id="+expediente);
+              }
+          });
+
+          //
+        }
       })
+    }
+
+    function registrarExamen() {
+      swal('Hecho', 'Examen registrado', 'success');
+      $('#myRegistrarExamen').modal('hide');
     }
 
     function obtenerSubTotal(value, fila) {

@@ -3,10 +3,16 @@
 error_reporting(0);
 session_start();
 $t=$_SESSION["nivelUsuario"];
-if($_SESSION['autenticado']!="yeah" || $t!=1){
-  header("Location: ../../login.php");
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
   exit();
   }
+
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -915,13 +921,33 @@ if(isset($_REQUEST['bandera'])) {
           echo "</script>";
         }
         else{
-          pg_query("commit");
-          echo "<script type='text/javascript'>";
-          // echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
-          echo "redireccionar('Informacion','Datos Almacenados', 'success');";
-          echo "document.getElementById('bandera').value='';";
-          // echo "ajax_act('');";
-          echo "</script>";
+           $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Registro al Usuario '. $user ;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  // echo "alertaSweet('Informacion','Datos Almacenados', 'success');";
+                  echo "redireccionar('Informacion','Datos Almacenados', 'success');";
+                  echo "document.getElementById('bandera').value='';";
+                  // echo "ajax_act('');";
+                  echo "</script>";
+            }
+          
         }
       }
 
@@ -938,13 +964,38 @@ if(isset($_REQUEST['bandera'])) {
           echo "</script>";
         }
         else{
-          pg_query("commit");
-          echo "<script type='text/javascript'>";
-          // echo "alertaSweet('Informacion','Datos modificados', 'success');";
-          echo "document.getElementById('bandera').value='';";
-          // echo "ajax_act('');";
-          echo "redireccionar('Informacion','Datos modificados', 'success');";
-          echo "</script>";
+          $queryu=pg_query($conexion,"SELECT usuarios.cid_usuario, usuarios.cusuario FROM usuarios WHERE cid_usuario=$id");
+          while ($filas = pg_fetch_array($queryu)) {
+                $usmod=$filas[1];                                 
+                
+            } 
+           $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Modificó al usuario '. $usmod ;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
+                  echo "<script type='text/javascript'>";
+                  // echo "alertaSweet('Informacion','Datos modificados', 'success');";
+                  echo "document.getElementById('bandera').value='';";
+                  // echo "ajax_act('');";
+                  echo "redireccionar('Informacion','Datos modificados', 'success');";
+                  echo "</script>";
+            }
+          
         }
       }
     }

@@ -1011,7 +1011,7 @@ if($bandera=='modificar'){
       }else{
         //Guardar en bitacora y hacer commit 
             $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-            $accion = 'El usuario ' . $nomusAccess. ' Modifico al Cliente '. $nombre .' '.$apellido;
+            $accion = 'El usuario ' . $nomusAccess. ' Modifico al cliente '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
@@ -1019,7 +1019,7 @@ if($bandera=='modificar'){
             ini_set('date.timezone', 'America/El_Salvador');
             
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
 
             if(!$consult ){
                     pg_query("rollback");

@@ -2,8 +2,9 @@
 require '../../Config/conexion.php';
 
   require '../../fpdf/fpdf.php';
-  $fechaini=$_REQUEST['fechaini'];
-  $fechafini=$_REQUEST['fechafini'];
+  ini_set('date.timezone', 'America/El_Salvador');
+  $fechaini= substr($_REQUEST['fechaini'], 0, 10);
+  $fechafini= substr($_REQUEST['fechafini'], 0,10);
   class PDF extends FPDF
   {
     function vcell($c_ancho,$c_alto,$x_posicion,$texto){ 
@@ -137,13 +138,13 @@ require '../../Config/conexion.php';
 
   $pdf->AddPage();
   
-    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha FROM bitacora 
-      WHERE bitacora.ffecha BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE)  order by  bitacora.ffecha asc ");
+    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha, bitacora.ffechaingreso FROM bitacora 
+      WHERE bitacora.ffechaingreso BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE)  order by  bitacora.ffechaingreso asc ");
   
   while($row=pg_fetch_assoc($query_s)){ 
-    ini_set('date.timezone', 'America/El_Salvador');
+    
     $dia = date_create($row['ffecha']);
-    $dia1 = date_format($dia, 'd-m-Y');
+    $dia1 = date_format($dia, 'd/m/Y');
     $hora = date_create($row['ffecha']);
     $hora2 = date_format($hora, 'h:i:s a'); 
     

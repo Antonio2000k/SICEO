@@ -1,4 +1,14 @@
-<?php
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
 include '../../Config/conexion.php';
 $cantidad = 0;
 
@@ -1065,11 +1075,31 @@ if(isset($_REQUEST["bandera"])) {
   }
 
   if($query_encomienda && !$error_detalle && $query_detalle) {
-    pg_query("COMMIT");
-    echo "<script type='text/javascript'>";
-    echo "swal('Hecho', 'Se registro la encomienda exitosamente', 'success');";
-    echo "ajax_act('');";
-    echo "</script>";
+     $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Registro una encomienda';
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("COMMIT");
+                  echo "<script type='text/javascript'>";
+                  echo "swal('Hecho', 'Se registro la encomienda exitosamente', 'success');";
+                  echo "ajax_act('');";
+                  echo "</script>";
+            }
+    
   }
   else {
     pg_query("ROLLBACK");

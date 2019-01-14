@@ -1,4 +1,12 @@
 <?php
+session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+
   include '../../Config/conexion.php';
 
   if($_POST) {
@@ -17,7 +25,26 @@
     $query_encomendero = pg_query($conexion, "INSERT INTO encomendero (eid_encomendero, cnombre, capellido, ctelefonof, ccelular, bestado) VALUES ($contado, '$nombre', '$apellido', '$telefono', '$celular', true)");
 
     if($query_encomendero) {
-      echo "true";
+       $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Registro al encomendero '. $nombre .' '.$apellido;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  echo "true";
+            }
     }
     else {
       echo "false";

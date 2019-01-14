@@ -117,7 +117,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       </li>
                       <li><a>Encomiendas<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                          <li><a href="../../Modulos/Encomiendas/registrarEncomienda.php">Registrar</a></li>
+                          <li><a href="../../Modulos/Encomiendas/encomiendas.php">Registrar</a></li>
                           <li><a href="empleados.php">Listado de encomiendas</a></li>
                         </ul>
                       </li>

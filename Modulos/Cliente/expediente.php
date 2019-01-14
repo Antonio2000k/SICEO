@@ -1,4 +1,4 @@
-<?php //session_start();
+<?php session_start();
 $t=$_SESSION["nivelUsuario"];
 $idAccess = $_SESSION["idUsuario"];
 $nomusAccess =$_SESSION["nombrUsuario"];

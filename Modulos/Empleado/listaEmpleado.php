@@ -1,5 +1,15 @@
 <?php session_start();
-}	
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
+?>
 ?>
 <!DOCTYPE html>
 <html lang="es">

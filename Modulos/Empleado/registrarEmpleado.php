@@ -1,4 +1,15 @@
 <?php session_start(); 
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
+
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -240,9 +251,29 @@ if($bandera=="add"){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                        pg_query("commit");
-                        mensajeInformacion('Informacion','Datos almacenados','info');
-                        clearstatcache(); 
+                       $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                        $accion = 'El usuario ' . $nomusAccess. ' Registró al Empleado '. $nombre .' '.$apellido;
+                        while ($filas = pg_fetch_array($query_ide)) {
+                            $ida=$filas[0];                                 
+                            $ida++ ;
+                        } 
+                        ini_set('date.timezone', 'America/El_Salvador');
+                        
+                        $hora = date("Y/m/d ") . date("h:i:s a");
+                        $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+                        if(!$consult ){
+                                pg_query("rollback");
+                                echo "<script type='text/javascript'>";
+                                echo pg_result_error($conexion);
+                                echo "alert('Error');";
+                                echo "</script>";
+                        }else{
+                              pg_query("commit");
+                              mensajeInformacion('Informacion','Datos almacenados','info');
+                              clearstatcache(); 
+                        }
+                        
                     }
     }
   }
@@ -256,8 +287,27 @@ if($bandera=='modificar'){
 				pg_query("rollback");
 				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
-					pg_query("commit");
-                    mensajeInformacion('Informacion','Datos almacenados','info');
+					          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                        $accion = 'El usuario ' . $nomusAccess. ' Modificó al Empleado '. $nombre .' '.$apellido;
+                        while ($filas = pg_fetch_array($query_ide)) {
+                            $ida=$filas[0];                                 
+                            $ida++ ;
+                        } 
+                        ini_set('date.timezone', 'America/El_Salvador');
+                        
+                        $hora = date("Y/m/d ") . date("h:i:s a");
+                        $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+                        if(!$consult ){
+                                pg_query("rollback");
+                                echo "<script type='text/javascript'>";
+                                echo pg_result_error($conexion);
+                                echo "alert('Error');";
+                                echo "</script>";
+                        }else{
+                             pg_query("commit");
+                              mensajeInformacion('Informacion','Datos almacenados','info');
+                        }
 				}
       }
 }   
@@ -272,6 +322,20 @@ function generar($nombree,$apellidos){
 		}
 		return strtoupper($cad);
 	}
+  function validaCorreo($correo,$baccion,$dui){
+    $valor=0;
+    include("../../Config/conexion.php");
+    $query_s= pg_query($conexion, "select * from empleados order by cnombre");
+        while($fila=pg_fetch_array($query_s)){
+            if(strcmp($fila[10],$correo)===0 || strcmp($fila[5],$dui)===0){
+                $valor=1;
+            }
+            if(strcmp($fila[0],$baccion)===0){
+                $valor=0;
+            }
+        }
+    return $valor;
+}
 
 
 function mensajeInformacion($titulo,$mensaje,$tipo){

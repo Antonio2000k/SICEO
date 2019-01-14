@@ -1,4 +1,14 @@
-<?php
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
@@ -357,16 +367,33 @@ include("../../Config/conexion.php");
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                        pg_query("commit");
+                      $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                      $accion = 'El usuario ' . $nomusAccess. ' Registro al Proveedor '. $nombre .' '.$apellido;
+                      while ($filas = pg_fetch_array($query_ide)) {
+                          $ida=$filas[0];                                 
+                          $ida++ ;
+                      } 
+                      ini_set('date.timezone', 'America/El_Salvador');
+                      
+                      $hora = date("Y/m/d ") . date("h:i:s a");
+                      $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+                      if(!$consult ){
+                              pg_query("rollback");
+                              echo "<script type='text/javascript'>";
+                              echo pg_result_error($conexion);
+                              echo "alert('Error');";
+                              echo "</script>";
+                      }else{
+                            pg_query("commit");
+                            echo "<script type='text/javascript'>";
+                            echo "alertaSweet('Informacion','Datos Almacenados','success');";
+                            echo "setTimeout (function llamarPagina(){
+                                          location.href=('proveedor.php');
+                                        }, 1000);";
+                            echo "</script>";
+                      }
                         
-
-                        echo "<script type='text/javascript'>";
-                        echo "alertaSweet('Informacion','Datos Almacenados','success');";
-
-                    echo "setTimeout (function llamarPagina(){
-                                      location.href=('proveedor.php');
-                                    }, 1000);";
-                    echo "</script>";
                     }
     }
   }
@@ -381,7 +408,25 @@ include("../../Config/conexion.php");
         pg_query("rollback");
         mensajeInformacion('Error','Datos no almacenados','error');
         }else{
-          pg_query("commit");
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Modificó al Proveedor '. $nombre .' '.$apellido;
+            while ($filas = pg_fetch_array($query_ide)) {
+                $ida=$filas[0];                                 
+                $ida++ ;
+            } 
+            ini_set('date.timezone', 'America/El_Salvador');
+            
+            $hora = date("Y/m/d ") . date("h:i:s a");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+
+            if(!$consult ){
+                    pg_query("rollback");
+                    echo "<script type='text/javascript'>";
+                    echo pg_result_error($conexion);
+                    echo "alert('Error');";
+                    echo "</script>";
+            }else{
+                  pg_query("commit");
                     echo "<script type='text/javascript'>";
                     echo "alertaSweet('Informacion','Datos actualizados!','success');";
 
@@ -389,6 +434,8 @@ include("../../Config/conexion.php");
                                       location.href=('proveedor.php');
                                     }, 1000);";
                     echo "</script>";
+            }
+          
         }
       }
 }

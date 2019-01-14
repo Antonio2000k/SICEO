@@ -30,813 +30,813 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     <link rel="stylesheet" href="../Encomiendas/css/radio.css">
 
     <script type="text/javascript">
-        //Variables globales.
-        var filas=document.getElementById("datatable-ventas");
-        var id;
+    //Variables globales.
+    var filas=document.getElementById("datatable-ventas");
+    var id;
 
-        function mostrarOrdenCompra() {
-          window.open("../../reporteOrden.php?id="+document.getElementById("id_reporteOrden").value);
+    function mostrarOrdenCompra() {
+      window.open("../../reporteOrden.php?id="+document.getElementById("id_reporteOrden").value);
+    }
+
+    function ajax_act(str) {
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+      } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          document.getElementById("recargarListaVentas").innerHTML = xmlhttp.responseText;
         }
+      }
 
-        function ajax_act(str) {
-          if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-          } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-          xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-              document.getElementById("recargarListaVentas").innerHTML = xmlhttp.responseText;
-            }
-          }
+      xmlhttp.open("post", "ventasTabla.php", true);
+      xmlhttp.send();
+    }
 
-          xmlhttp.open("post", "ventasTabla.php", true);
-          xmlhttp.send();
+    function ajax_productos(opcion, fila) {
+      if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+      }
+      else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+              document.getElementById("listaProducto"+fila).innerHTML = xmlhttp.responseText;
+          }
+      }
+
+      xmlhttp.open("post", "listaProductos.php?opcion="+opcion, true);
+      xmlhttp.send();
+    }
+
+    function abonarCuenta(total, id) {
+      if(parseFloat(total)>0) {
+        $("#myAbonoActualizado").modal({backdrop: 'static', keyboard: false});
+        //Paso de parametros.
+        $('#total_abono_actualizar').text("Total $"+parseFloat(total).toFixed(2));
+        $('#diferencia_abono_actualizar').text("Restante $"+parseFloat(total).toFixed(2));
+        $('#total_abono_actualizar').val(parseFloat(total).toFixed(2));
+        document.getElementById('id_ordenCompra').value=id;
+      }
+      else {
+        swal('Informacion', 'El cliente ya no tiene pagos pendientes', 'info');
+      }
+    }
+
+    function obtenerPrecioRestante(obj, id) {
+      var total=document.getElementById("total_abono"+id).value;
+      var diferencia=document.getElementById("diferencia_abono"+id);
+
+      if(obj!="" && total!="") {
+        if(total>=obj) {
+          obj=parseFloat(obj).toFixed(2);
+          total=parseFloat(total).toFixed(2);
+          diferencia.innerText="Restante $"+(total-obj).toFixed(2);
         }
-
-        function ajax_productos(opcion, fila) {
-          if (window.XMLHttpRequest) {
-              xmlhttp = new XMLHttpRequest();
-          }
-          else {
-              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-          xmlhttp.onreadystatechange = function () {
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("listaProducto"+fila).innerHTML = xmlhttp.responseText;
-              }
-          }
-
-          xmlhttp.open("post", "listaProductos.php?opcion="+opcion, true);
-          xmlhttp.send();
+        else {
+          obj=parseFloat(obj).toFixed(2);
+          total=parseFloat(total).toFixed(2);
+          diferencia.innerText="Restante $"+(total-obj).toFixed(2);
         }
+      }
+      else {
+        diferencia.innerText="Restante $"+total;
+      }
+    }
 
-        function abonarCuenta(total, id) {
-          if(parseFloat(total)>0) {
-            $("#myAbonoActualizado").modal({backdrop: 'static', keyboard: false});
-            //Paso de parametros.
-            $('#total_abono_actualizar').text("Total $"+parseFloat(total).toFixed(2));
-            $('#diferencia_abono_actualizar').text("Restante $"+parseFloat(total).toFixed(2));
-            $('#total_abono_actualizar').val(parseFloat(total).toFixed(2));
-            document.getElementById('id_ordenCompra').value=id;
-          }
-          else {
-            swal('Informacion', 'El cliente ya no tiene pagos pendientes', 'info');
-          }
-        }
-
-        function obtenerPrecioRestante(obj, id) {
-          var total=document.getElementById("total_abono"+id).value;
-          var diferencia=document.getElementById("diferencia_abono"+id);
-
-          if(obj!="" && total!="") {
-            if(total>=obj) {
-              obj=parseFloat(obj).toFixed(2);
-              total=parseFloat(total).toFixed(2);
-              diferencia.innerText="Restante $"+(total-obj).toFixed(2);
-            }
-            else {
-              obj=parseFloat(obj).toFixed(2);
-              total=parseFloat(total).toFixed(2);
-              diferencia.innerText="Restante $"+(total-obj).toFixed(2);
-            }
-          }
-          else {
-            diferencia.innerText="Restante $"+total;
-          }
-        }
-
-        function obtenerDatosCliente(obj) {
-          if(obj!="") {
-            $.post("buscar.php",{
-              "texto":obj,"opcion":1},function(respuesta) {
-                if(respuesta!="") {
-                  document.getElementById('nombre_cliente').style.borderColor="#21df2c";
-                  document.getElementById('nombre_clienteID').value=respuesta;
-                  document.getElementById('addFila').disabled=false;
-                }
-                else {
-                  document.getElementById('nombre_cliente').style.borderColor="#C70039";
-                  document.getElementById('nombre_clienteID').value="";
-                  document.getElementById('addFila').disabled=true;
-                }
-            });
-          }
-        }
-
-        function obtenerExamenCliente(obj) {
-          var examen = document.getElementsByName("id_examenes[]");
-          var fila_examen = document.getElementsByName("fila_examen[]");
-
-          examen[document.getElementById("fila_id_cliente").value].value = obj;
-          fila_examen[document.getElementById("fila_id_cliente").value].value = document.getElementById("fila_id_cliente").value;
-
-          document.getElementById("exito_examen").value = "true";
-        }
-
-        function agregarExamen() {
-          if(document.getElementById("exito_examen").value) {
-            //Para cambiar el color del boton.
-            var examen = document.getElementsByName("examen_cliente[]");
-            examen[document.getElementById("fila_id_cliente").value].style.backgroundColor="#26B99A";
-            examen[document.getElementById("fila_id_cliente").value].style.borderColor="#26B99A";
-            examen[document.getElementById("fila_id_cliente").value].value = "si";
-
-            $("#myObtenerExamen").modal("hide");
-
-            //Deja vacios los campos que se usaron.
-            document.getElementById("exito_examen").value = "";
-            document.getElementById("fila_id_cliente").value = "";
-          }
-          else {
-            swal('Informacion', "Seleccione un examen", 'info');
-          }
-        }
-
-        function verificarExamen(fila) {
-          var i = fila.parentNode.parentNode.rowIndex;
-          var productos = document.getElementsByName("productos[]");
-          var examen = document.getElementsByName("examen_cliente[]");
-
-          //Para el examen.
-          var fila_examen = document.getElementsByName("fila_examen[]");
-          var examen_cliente = document.getElementsByName("id_examenes[]");
-
-          var mensaje = "";
-          var titulo = "";
-          var tipo = "";
-
-          if(examen[i-1].value=="si" && examen_cliente[i-1].value!="vacio" && fila_examen[i-1].value!="vacio") {
-            mensaje = "No podrás deshacer este paso.";
-            titulo = "¿Desea remover el examen seleccionado?";
-            tipo = "warning";
-          }
-          else {
-            mensaje = "Si no cuenta con uno, se procedera a registrar.";
-            titulo = "¿Cuenta con un examen ya hecho para este tipo de lente?";
-            tipo = "info";
-          }
-
-          swal({
-            title: titulo,
-            text: mensaje,
-            type: tipo,
-            showCancelButton: true,
-            confirmButtonColor: "#5CBDD9",
-            cancelButtonColor: "#D9534F",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            closeOnConfirm: false,
-            closeOnCancel: false,
-            showLoaderOnConfirm: true
-          }).then(function(isConfirm) {
-            if(isConfirm.value) {
-              if(tipo == "info") {
-                if (window.XMLHttpRequest) {
-                    xmlhttp = new XMLHttpRequest();
-                }
-                else {
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        document.getElementById("datatable-examen-cliente").innerHTML = xmlhttp.responseText;
-                    }
-                }
-                xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
-                xmlhttp.send();
-                //Para darle la fila...
-                $("#fila_id_cliente").val((i-1));
-
-                $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
-                $('#myObtenerExamen').modal({backdrop: 'static', keyboard: false});
-              }
-              else {
-                fila_examen[i-1].value = "vacio";
-                examen_cliente[i-1].value = "vacio";
-                examen[i-1].value = "";
-
-                //Para regresar al color original.
-                examen[i-1].style.backgroundColor="#D9534F";
-                examen[i-1].style.borderColor="#D9534F";
-              }
-            }
-          })
-        }
-
-        function obtenerSubTotal(value, fila) {
-          var i = fila.parentNode.parentNode.rowIndex;
-          var precio = document.getElementsByName("precio[]");
-          var sub_total_valores = document.getElementsByName("sub_total[]");
-          var descuentos = document.getElementsByName("descuento_cliente[]");
-          var servicio = document.getElementsByName("servicios[]");
-          var precioU = "";
-          var boton = document.getElementsByName('existe_descuento[]');
-          var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
-          var cantidadFinal=document.getElementsByName('cantidadFinal[]');
-
-          var sub_total=sub_total_valores[i-1];
-
-          if(value=="cambio") {
-            sub_total.value=0.00;
-          }
-
-          if(value.charAt(0)!=0) {
-            $.post("buscar.php",{
-              "texto":value,"opcion":3},function(respuesta) {
-                //Lo muestra.
-                if(i!=0) {
-                  if(!isNaN(respuesta) && respuesta!="" && respuesta.charAt(0)!=0) {
-                    if(servicio[i-1].value=="examen") {
-                      precioU="10";
-                    }
-                    else {
-                      precioU=precio[i-1].value;
-                    }
-
-                    var valor=(parseFloat(respuesta)*parseFloat(precioU));
-
-                    if(!isNaN(valor)) {
-                      sub_total.value=valor.toFixed(2);
-                      sub_total.innerText="$"+valor.toFixed(2);
-                      descuentos[i-1].disabled=false;
-                      sub_totalFinal[i-1].value=valor.toFixed(2);
-                      cantidadFinal[i-1].value=respuesta;
-                    }
-                  }
-                  else {
-                    sub_total.innerText="$0.00";
-                    sub_total.value=0.00;
-                    descuentos[i-1].disabled=true;
-                    sub_totalFinal[i-1].value=valor.toFixed(2);
-                  }
-
-                  sumarValores();
-                }
-            });
-          }
-          else if(value.charAt(0)==0) {
-            // var sub_total_valores = document.getElementsByName("sub_total[]");
-            // var descuentos = document.getElementsByName("descuento_cliente[]");
-            // var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
-
-            sub_total_valores[i-1].value=0.00;
-            sub_total_valores[i-1].innerText="$0.00";
-            descuentos[i-1].disabled=true;
-
-            if(value!="" && value.charAt(0)==0) {
-              sub_totalFinal[i-1].value=valor.toFixed(2);
+    function obtenerDatosCliente(obj) {
+      if(obj!="") {
+        $.post("buscar.php",{
+          "texto":obj,"opcion":1},function(respuesta) {
+            if(respuesta!="") {
+              document.getElementById('nombre_cliente').style.borderColor="#21df2c";
+              document.getElementById('nombre_clienteID').value=respuesta;
+              document.getElementById('addFila').disabled=false;
             }
             else {
-              sub_totalFinal[i-1].value=0.00;
+              document.getElementById('nombre_cliente').style.borderColor="#C70039";
+              document.getElementById('nombre_clienteID').value="";
+              document.getElementById('addFila').disabled=true;
             }
+        });
+      }
+    }
 
-            sumarValores();
+    function obtenerExamenCliente(obj) {
+      var examen = document.getElementsByName("id_examenes[]");
+      var fila_examen = document.getElementsByName("fila_examen[]");
+
+      examen[document.getElementById("fila_id_cliente").value].value = obj;
+      fila_examen[document.getElementById("fila_id_cliente").value].value = document.getElementById("fila_id_cliente").value;
+
+      document.getElementById("exito_examen").value = "true";
+    }
+
+    function agregarExamen() {
+      if(document.getElementById("exito_examen").value) {
+        //Para cambiar el color del boton.
+        var examen = document.getElementsByName("examen_cliente[]");
+        examen[document.getElementById("fila_id_cliente").value].style.backgroundColor="#26B99A";
+        examen[document.getElementById("fila_id_cliente").value].style.borderColor="#26B99A";
+        examen[document.getElementById("fila_id_cliente").value].value = "si";
+
+        $("#myObtenerExamen").modal("hide");
+
+        //Deja vacios los campos que se usaron.
+        document.getElementById("exito_examen").value = "";
+        document.getElementById("fila_id_cliente").value = "";
+      }
+      else {
+        swal('Informacion', "Seleccione un examen", 'info');
+      }
+    }
+
+    function verificarExamen(fila) {
+      var i = fila.parentNode.parentNode.rowIndex;
+      var productos = document.getElementsByName("productos[]");
+      var examen = document.getElementsByName("examen_cliente[]");
+
+      //Para el examen.
+      var fila_examen = document.getElementsByName("fila_examen[]");
+      var examen_cliente = document.getElementsByName("id_examenes[]");
+
+      var mensaje = "";
+      var titulo = "";
+      var tipo = "";
+
+      if(examen[i-1].value=="si" && examen_cliente[i-1].value!="vacio" && fila_examen[i-1].value!="vacio") {
+        mensaje = "No podrás deshacer este paso.";
+        titulo = "¿Desea remover el examen seleccionado?";
+        tipo = "warning";
+      }
+      else {
+        mensaje = "Si no cuenta con uno, se procedera a registrar.";
+        titulo = "¿Cuenta con un examen ya hecho para este tipo de lente?";
+        tipo = "info";
+      }
+
+      swal({
+        title: titulo,
+        text: mensaje,
+        type: tipo,
+        showCancelButton: true,
+        confirmButtonColor: "#5CBDD9",
+        cancelButtonColor: "#D9534F",
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        showLoaderOnConfirm: true
+      }).then(function(isConfirm) {
+        if(isConfirm.value) {
+          if(tipo == "info") {
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("datatable-examen-cliente").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("post", "Modals/obtenerExamen.php?idCliente="+ document.getElementById("nombre_clienteID").value+"&modelo="+productos[i-1].value, true);
+            xmlhttp.send();
+            //Para darle la fila...
+            $("#fila_id_cliente").val((i-1));
+
+            $("#nombre_cliente_modal").text("Cliente: "+document.getElementById("nombre_cliente").value);
+            $('#myObtenerExamen').modal({backdrop: 'static', keyboard: false});
+          }
+          else {
+            fila_examen[i-1].value = "vacio";
+            examen_cliente[i-1].value = "vacio";
+            examen[i-1].value = "";
+
+            //Para regresar al color original.
+            examen[i-1].style.backgroundColor="#D9534F";
+            examen[i-1].style.borderColor="#D9534F";
           }
         }
+      })
+    }
 
-        function obtenerDatosProducto(obj, fila) {
-          var i = fila.parentNode.parentNode.rowIndex;
-          //alert("fila: "+i);
+    function obtenerSubTotal(value, fila) {
+      var i = fila.parentNode.parentNode.rowIndex;
+      var precio = document.getElementsByName("precio[]");
+      var sub_total_valores = document.getElementsByName("sub_total[]");
+      var descuentos = document.getElementsByName("descuento_cliente[]");
+      var servicio = document.getElementsByName("servicios[]");
+      var precioU = "";
+      var boton = document.getElementsByName('existe_descuento[]');
+      var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
+      var cantidadFinal=document.getElementsByName('cantidadFinal[]');
 
-          //Obtengo los valores.
-          var precio = document.getElementsByName("precio[]");
-          var cantidad = document.getElementsByName("cantidad[]");
-          var examen = document.getElementsByName("examen_cliente[]");
+      var sub_total=sub_total_valores[i-1];
 
-          var producto_aux = document.getElementsByName("productoFinal[]");
+      if(value=="cambio") {
+        sub_total.value=0.00;
+      }
 
-          $.post("buscar.php",{
-            "texto":obj,"opcion":2},function(respuesta) {
-              var producto=document.getElementsByName("productos[]");
-              if(respuesta!="" && !isNaN(respuesta)) {
-                precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
-                precio[i-1].value=parseFloat(respuesta).toFixed(2);
-                cantidad[i-1].disabled=false;
-
-                var servicio = document.getElementsByName("servicios[]");
-                if(servicio[i-1].value=="Lente") {
-                  examen[i-1].disabled=false;
+      if(value.charAt(0)!=0) {
+        $.post("buscar.php",{
+          "texto":value,"opcion":3},function(respuesta) {
+            //Lo muestra.
+            if(i!=0) {
+              if(!isNaN(respuesta) && respuesta!="" && respuesta.charAt(0)!=0) {
+                if(servicio[i-1].value=="examen") {
+                  precioU="10";
                 }
                 else {
-                  examen[i-1].disabled=true;
+                  precioU=precio[i-1].value;
                 }
 
-                producto_aux[i-1].value = obj;
+                var valor=(parseFloat(respuesta)*parseFloat(precioU));
+
+                if(!isNaN(valor)) {
+                  sub_total.value=valor.toFixed(2);
+                  sub_total.innerText="$"+valor.toFixed(2);
+                  descuentos[i-1].disabled=false;
+                  sub_totalFinal[i-1].value=valor.toFixed(2);
+                  cantidadFinal[i-1].value=respuesta;
+                }
               }
               else {
-                cantidad[i-1].disabled=true;
-                examen[i-1].disabled=true;
-              }
-          });
-        }
-
-        function alertaSweet(titulo,texto,tipo){
-          swal(titulo,texto,tipo);
-        }
-
-        function eliminarProducto(fila) {
-          swal({
-            title: "¿Seguro quiere eliminar esta fila?",
-            text: "No podrás deshacer este paso.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#5CBDD9",
-            cancelButtonColor: "#D9534F",
-            confirmButtonText: "No",
-            cancelButtonText: "Si",
-            closeOnConfirm: false,
-            closeOnCancel: false,
-            showLoaderOnConfirm: true
-          }).then(function(isConfirm) {
-            if(isConfirm.value!=true) {
-              var i = fila.parentNode.parentNode.rowIndex;
-              //alert("Fila: "+i);
-
-              var total_pago=document.getElementById("total_pago").value;
-              total_pago = parseFloat(total_pago).toFixed(2);
-              var sub_total=document.getElementsByName("sub_total[]");
-              var sub_total_borrado=sub_total[i-1].value;
-              sub_total_borrado = parseFloat(sub_total_borrado).toFixed(2);
-              //alert("Total: "+total_pago+", sub-total: "+sub_total_borrado);
-
-              //Si los campos son nulos o incorrectos, no hace proceso de decremento, pero si borra.
-              if(!isNaN(total_pago) && !isNaN(sub_total_borrado)) {
-                var total=total_pago-sub_total_borrado;
-                document.getElementById("total_pago").value=total;
-                if(document.getElementById("total_pago").value==0) {
-                  document.getElementById("total_pago").innerText="Total $0.00";
-                }
-                else {
-                  document.getElementById("total_pago").innerText="Total $"+document.getElementById("total_pago").value;
-                }
+                sub_total.innerText="$0.00";
+                sub_total.value=0.00;
+                descuentos[i-1].disabled=true;
+                sub_totalFinal[i-1].value=valor.toFixed(2);
               }
 
-              document.getElementById("datatable-ventas").deleteRow(i);
+              sumarValores();
             }
-          })
+        });
+      }
+      else if(value.charAt(0)==0) {
+        // var sub_total_valores = document.getElementsByName("sub_total[]");
+        // var descuentos = document.getElementsByName("descuento_cliente[]");
+        // var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
+
+        sub_total_valores[i-1].value=0.00;
+        sub_total_valores[i-1].innerText="$0.00";
+        descuentos[i-1].disabled=true;
+
+        if(value!="" && value.charAt(0)==0) {
+          sub_totalFinal[i-1].value=valor.toFixed(2);
+        }
+        else {
+          sub_totalFinal[i-1].value=0.00;
         }
 
-        function limpiarAbono() {
-          $('#myAbono').modal('hide');
-          document.getElementById('abono').value="";
-        }
+        sumarValores();
+      }
+    }
 
-        function reporteAbono(id) {
-          if (window.XMLHttpRequest) {
-              xmlhttp = new XMLHttpRequest();
-          }
-          else {
-              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-          xmlhttp.onreadystatechange = function () {
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("datatable-abono-cuentas").innerHTML = xmlhttp.responseText;
-              }
-          }
-          document.getElementById("id_reporteOrden").value=id;
-          xmlhttp.open("post", "Modals/reporteAbono.php?id_comprac=" + id, true);
-          xmlhttp.send();
-          $('#myReporteAbonos').modal();
-        }
+    function obtenerDatosProducto(obj, fila) {
+      var i = fila.parentNode.parentNode.rowIndex;
+      //alert("fila: "+i);
 
-        function descuentoProducto(fila) {
-          var i = fila.parentNode.parentNode.rowIndex;
-          var boton = document.getElementsByName('existe_descuento[]');
-          var sub_totales = document.getElementsByName('sub_total[]');
-          var cantidad = document.getElementsByName('cantidad[]');
+      //Obtengo los valores.
+      var precio = document.getElementsByName("precio[]");
+      var cantidad = document.getElementsByName("cantidad[]");
+      var examen = document.getElementsByName("examen_cliente[]");
 
-          var descuento = document.getElementsByName('descuento_cliente[]');
+      var producto_aux = document.getElementsByName("productoFinal[]");
 
-          if(boton[i-1].value!="") {
-            swal({
-              title: "¿Seguro quiere eliminar el descuento del "+boton[i-1].value+"% aplicado?",
-              text: "No podrás deshacer este paso.",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#5CBDD9",
-              cancelButtonColor: "#D9534F",
-              confirmButtonText: "No",
-              cancelButtonText: "Si",
-              closeOnConfirm: false,
-              closeOnCancel: false,
-              showLoaderOnConfirm: true
-            }).then(function(isConfirm) {
-              if (isConfirm.value!=true) {
-                var ganancia=1-(parseFloat(boton[i-1].value)/100);
-                var sub_total=parseFloat(sub_totales[i-1].value);//1 - el descuento aplicado al producto.
-                var nuevo_valor = sub_total/ganancia;
-                var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
-
-                sub_totales[i-1].value=nuevo_valor.toFixed(2);
-                sub_totales[i-1].innerText="$"+nuevo_valor.toFixed(2);
-                descuento[i-1].style.backgroundColor="#5CBDD9";
-                descuento[i-1].style.borderColor="#5CBDD9";
-                cantidad[i-1].disabled=false;
-                boton[i-1].value="";
-                sub_totalFinal[i-1].value=nuevo_valor.toFixed(2);
-                sumarValores();
-                swal('Información', 'Se elimino el descuento', 'info');
-              }
-            })
-          }
-          else {
-            $("#myDescuento").modal();
-            document.getElementById('index_descuento').value=i;
-          }
-        }
-
-        function cambiarEstado(obj) {
-          var valorSeleccionado = obj.options[obj.selectedIndex].value;
-          var i = obj.parentNode.parentNode.rowIndex;
-
-          //Se obtienen los campos a usar.
-          var producto = document.getElementsByName("productos[]");
-          var cantidad = document.getElementsByName("cantidad[]");
-          var sub_total = document.getElementsByName("sub_total[]");
-          var precio = document.getElementsByName("precio[]");
-          var cantidadFinal = document.getElementsByName("cantidadFinal[]");
-          var examen = document.getElementsByName("examen_cliente[]");
-
-          if(valorSeleccionado=="Lente" || valorSeleccionado=="Accesorio") {
-            cantidad[i-1].value="";
-            cantidadFinal[i-1].value="";
-            cantidad[i-1].disabled=true;
-            producto[i-1].disabled=false;
-            precio[i-1].innerText="$0.00";
-            precio[i-1].value=0.00;
-
-            examen[i-1].disabled=true;
-
-            //Para remover los item anteriores.
-            producto[i-1].value="";
-            ajax_productos(valorSeleccionado,i);
-          }
-          if(valorSeleccionado=="Examen") {
-            cantidad[i-1].value="";
+      $.post("buscar.php",{
+        "texto":obj,"opcion":2},function(respuesta) {
+          var producto=document.getElementsByName("productos[]");
+          if(respuesta!="" && !isNaN(respuesta)) {
+            precio[i-1].innerText="$"+parseFloat(respuesta).toFixed(2);
+            precio[i-1].value=parseFloat(respuesta).toFixed(2);
             cantidad[i-1].disabled=false;
-            producto[i-1].disabled=true;
-            producto[i-1].value="";
-            precio[i-1].value=10.00;
-            precio[i-1].innerText="$10";
 
-            examen[i-1].disabled=true;
+            var servicio = document.getElementsByName("servicios[]");
+            if(servicio[i-1].value=="Lente") {
+              examen[i-1].disabled=false;
+            }
+            else {
+              examen[i-1].disabled=true;
+            }
 
-            //Para remover los item anteriores.
-            producto[i-1].value="";
-            ajax_productos("",i);
+            producto_aux[i-1].value = obj;
           }
-          else if(valorSeleccionado=="seleccione") {
-            producto[i-1].disabled=true;
-            producto[i-1].value="";
-            sub_total[i-1].innerText="$0.00";
+          else {
             cantidad[i-1].disabled=true;
-            cantidad[i-1].value="";
-            precio[i-1].innerText="$0.00";
-            precio[i-1].value=0.00;
-
             examen[i-1].disabled=true;
-
-            //Para remover los item anteriores.
-            producto[i-1].value="";
-            ajax_productos("",i);
           }
+      });
+    }
 
-          obtenerSubTotal("cambio", obj);
-          sumarValores();
-        }
+    function alertaSweet(titulo,texto,tipo){
+      swal(titulo,texto,tipo);
+    }
 
-        function agregarFila() {
-          var table=document.getElementById("datatable-ventas");
-          var table_len=(table.rows.length);
+    function eliminarProducto(fila) {
+      swal({
+        title: "¿Seguro quiere eliminar esta fila?",
+        text: "No podrás deshacer este paso.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#5CBDD9",
+        cancelButtonColor: "#D9534F",
+        confirmButtonText: "No",
+        cancelButtonText: "Si",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        showLoaderOnConfirm: true
+      }).then(function(isConfirm) {
+        if(isConfirm.value!=true) {
+          var i = fila.parentNode.parentNode.rowIndex;
+          //alert("Fila: "+i);
 
-          if(table_len==0) {
-            table_len=(table.rows.length);
-          }
+          var total_pago=document.getElementById("total_pago").value;
+          total_pago = parseFloat(total_pago).toFixed(2);
+          var sub_total=document.getElementsByName("sub_total[]");
+          var sub_total_borrado=sub_total[i-1].value;
+          sub_total_borrado = parseFloat(sub_total_borrado).toFixed(2);
+          //alert("Total: "+total_pago+", sub-total: "+sub_total_borrado);
 
-          var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
-          "<input type='hidden' name='existe_descuento[]' value=''>"+
-          "<input type='hidden' name='id_examenes[]' value='vacio'>"+
-          "<input type='hidden' name='fila_examen[]' value='vacio'>"+
-          "<input type='hidden' name='sub_totalFinal[]' value=''>"+
-          "<input type='hidden' name='cantidadFinal[]' value=''>"+
-          "<input type='hidden' name='productoFinal[]' value='nada'>"+
-          "<td>"+
-          "<select class='form-control' name='servicios[]' onchange='cambiarEstado(this);'>"+
-            "<option value='seleccione'>Seleccione</option>"+
-            "<option value='Examen'>Examen</option>"+
-            "<option value='Lente'>Lentes</option>"+
-            "<option value='Accesorio'>Accesorios</option>"+
-          "</select>"+
-          "</td>"+
-          "<td>"+
-          "<input type='text' class='form-control' placeholder='Lentes de sol, etc' disabled='disabled' name='productos[]' autocomplete='off' list='listaProducto"+table_len+"' oninput='obtenerDatosProducto(this.value, this);'>"+
-          "<datalist id='listaProducto"+table_len+"'>"+
-              "<?php
-                include('../../Config/conexion.php');
-
-                $query_s=pg_query($conexion,"select * from productos");
-                $cont = pg_num_rows($query_s);
-
-                while($fila=pg_fetch_array($query_s)) {
-                  echo "<option value='$fila[0]'>$fila[1] - $fila[0]</option>";
-                }
-                if($cont==0) {
-                  echo "<option value=''>No hay registros</option>";
-                }
-              ?>"+
-          "</datalist>"+
-          "</td>"+
-          "<td>"+
-          "<input type='text' class='form-control' placeholder='Cantidad' name='cantidad[]' onkeypress='return validarNumeros(event);' disabled='disabled'  oninput='obtenerSubTotal(this.value, this);' autocomplete='off'>"+
-          "</td>"+
-          "<td class='text-center'><label class='control-label' value='0.00' name='precio[]'>$0.00</label></td>"+
-          "<td class='text-center'><label class='control-label' value='0.00' name='sub_total[]'>$0.00</label></td>"+
-          "<td class='text-center'>"+
-          "<button type='button' class='btn btn-warning btn-icon left-icon' onclick='eliminarProducto(this)'><i class='fa fa-trash'></i> </button>"+
-          "<button name='descuento_cliente[]' type='button' class='btn btn-info btn-icon left-icon' onclick='descuentoProducto(this)' disabled='disabled'><i class='fa fa-money'></i> </button>"+
-          "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' disabled='disabled'><i class='fa fa-book'></i> </button>"+
-          "</td>"+
-          "</tr>";
-        }
-
-        function registrarCliente() {
-          swal('Agregado', 'Cliente registrado', 'success');
-        }
-
-        function Notificacion(tipo,msg){
-            notif({
-              type:tipo,
-              msg:msg ,
-              position: "center",
-              timeout: 3000,
-              clickable: true
-            });
-        }
-
-        function validarNombre(e) {
-          var key = e.keyCode || e.which;
-          var tecla = String.fromCharCode(key).toLowerCase();
-          var letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
-          var especiales = [8, 37, 39, 46];
-          var tecla_especial = false;
-
-          for(var i = 0; i < letras.length; i++) {
-              if(key == especiales[i]) {
-                  tecla_especial = true;
-                  break;
-              }
-          }
-          if(letras.indexOf(tecla) == -1 && !tecla_especial){
-              Notificacion('error',"<b>Error: </b>Solo se permiten letras");
-              return false;
-          }
-        }
-
-        function validarNumerosVenta(e, id) {
-          var key = e.keyCode || e.which;
-          var tecla = String.fromCharCode(key).toLowerCase();
-          var numeros = "0123456789";
-          var especiales = [8, 37, 39, 46];
-          var tecla_especial = false;
-
-          var abono = document.getElementById("abono"+id).value;
-          var cantidad = "";
-
-          if(key!=8) {
-            cantidad = (abono+tecla);
-          }
-          else {
-            cantidad = abono.substring(0, (abono.length-1));
-          }
-
-          for(var i = 0; i < numeros.length; i++) {
-              if(key == especiales[i]) {
-                  tecla_especial = true;
-                  break;
-              }
-          }
-
-          var mayor=false;
-          if(key!=190) {
-            mayor=parseFloat(cantidad)>parseFloat(document.getElementById("total_abono"+id).value);
-
-            if(numeros.indexOf(tecla) == -1 && !tecla_especial || mayor) {
-              Notificacion('error',"<b>Error: </b>La cantidad abonada debe ser menor o igual al total");
-              return false;
-            }
-          }
-        }
-
-        function validarNumeros(e) {
-          var key = e.keyCode || e.which;
-          var tecla = String.fromCharCode(key).toLowerCase();
-          var numeros = "0123456789";
-          var especiales = [8, 37, 39, 46];
-          var tecla_especial = false;
-
-          for(var i = 0; i < numeros.length; i++) {
-              if(key == especiales[i]) {
-                  tecla_especial = true;
-                  break;
-              }
-          }
-          if(numeros.indexOf(tecla) == -1 && !tecla_especial || tecla==".") {
-            Notificacion('error',"<b>Error: </b>Solo se permiten numeros mayores a 0");
-            return false;
-          }
-        }
-
-        function sumarValores() {
-          var total=0.00;
-          //var filas=document.getElementById("datatable-ventas").rows.length;
-          var sub_total_valores = document.getElementsByName("sub_total[]");
-
-          for (var i = 0; i < sub_total_valores.length; i++) {
-            if(!isNaN(sub_total_valores[i].value)) {
-              total+=parseFloat(sub_total_valores[i].value);
-            }
-          }
-
-          if(total==0) {
-            document.getElementById('total_pago').innerText="Total $0.00";
-          }
-          else {
-            document.getElementById('total_pago').innerText="Total $"+total.toFixed(2);
-          }
-          document.getElementById('total_pago').value=total.toFixed(2);
-          document.getElementById('total_pago').style.fontWeight='bold';
-          document.getElementById('total_final').value=total.toFixed(2);
-        }
-
-        aplicarDescuento = function() {
-          var valor=document.getElementById('porcentaje_descuento').value;
-          var cantidad=document.getElementsByName('cantidad[]');
-
-          if(valor!="Seleccione") {
-            var index=document.getElementById('index_descuento').value;
-            valor=parseFloat(document.getElementById('porcentaje_descuento').value);
-
-            if(index!='') {
-              var sub_totales=document.getElementsByName('sub_total[]');
-              var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
-
-              var nuevo_valor=0.00;
-              nuevo_valor=parseFloat(sub_totales[index-1].value)-(parseFloat(sub_totales[index-1].value)*(parseFloat(valor)/100));
-
-              if(!isNaN(nuevo_valor)) {
-                var existe = document.getElementsByName('existe_descuento[]');
-
-                if(existe[index-1].value=="") {
-                  sub_totales[index-1].value=nuevo_valor.toFixed(2);
-                  sub_totales[index-1].innerText="$"+nuevo_valor.toFixed(2);
-                  document.getElementById('porcentaje_descuento').selectedIndex=0;
-
-                  var boton = document.getElementsByName('descuento_cliente[]');
-                  boton[index-1].style.backgroundColor="#D9534F";
-                  boton[index-1].style.borderColor="#D9534F";
-                  cantidad[index-1].disabled=true;
-                  existe[index-1].value=valor;
-                  sub_totalFinal[index-1].value=nuevo_valor.toFixed(2);
-                  swal('Hecho', 'Descuento aplicado', 'success');
-                  sumarValores();
-                }
-              }
-              else {
-                swal('Error', 'Ocurrio un error al aplicar un descuento', 'error');
-              }
+          //Si los campos son nulos o incorrectos, no hace proceso de decremento, pero si borra.
+          if(!isNaN(total_pago) && !isNaN(sub_total_borrado)) {
+            var total=total_pago-sub_total_borrado;
+            document.getElementById("total_pago").value=total;
+            if(document.getElementById("total_pago").value==0) {
+              document.getElementById("total_pago").innerText="Total $0.00";
             }
             else {
-              swal('Error', 'Ocurrio un error al aplicar un descuento', 'error');
+              document.getElementById("total_pago").innerText="Total $"+document.getElementById("total_pago").value;
+            }
+          }
+
+          document.getElementById("datatable-ventas").deleteRow(i);
+        }
+      })
+    }
+
+    function limpiarAbono() {
+      $('#myAbono').modal('hide');
+      document.getElementById('abono').value="";
+    }
+
+    function reporteAbono(id) {
+      if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+      }
+      else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+              document.getElementById("datatable-abono-cuentas").innerHTML = xmlhttp.responseText;
+          }
+      }
+      document.getElementById("id_reporteOrden").value=id;
+      xmlhttp.open("post", "Modals/reporteAbono.php?id_comprac=" + id, true);
+      xmlhttp.send();
+      $('#myReporteAbonos').modal();
+    }
+
+    function descuentoProducto(fila) {
+      var i = fila.parentNode.parentNode.rowIndex;
+      var boton = document.getElementsByName('existe_descuento[]');
+      var sub_totales = document.getElementsByName('sub_total[]');
+      var cantidad = document.getElementsByName('cantidad[]');
+
+      var descuento = document.getElementsByName('descuento_cliente[]');
+
+      if(boton[i-1].value!="") {
+        swal({
+          title: "¿Seguro quiere eliminar el descuento del "+boton[i-1].value+"% aplicado?",
+          text: "No podrás deshacer este paso.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5CBDD9",
+          cancelButtonColor: "#D9534F",
+          confirmButtonText: "No",
+          cancelButtonText: "Si",
+          closeOnConfirm: false,
+          closeOnCancel: false,
+          showLoaderOnConfirm: true
+        }).then(function(isConfirm) {
+          if (isConfirm.value!=true) {
+            var ganancia=1-(parseFloat(boton[i-1].value)/100);
+            var sub_total=parseFloat(sub_totales[i-1].value);//1 - el descuento aplicado al producto.
+            var nuevo_valor = sub_total/ganancia;
+            var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
+
+            sub_totales[i-1].value=nuevo_valor.toFixed(2);
+            sub_totales[i-1].innerText="$"+nuevo_valor.toFixed(2);
+            descuento[i-1].style.backgroundColor="#5CBDD9";
+            descuento[i-1].style.borderColor="#5CBDD9";
+            cantidad[i-1].disabled=false;
+            boton[i-1].value="";
+            sub_totalFinal[i-1].value=nuevo_valor.toFixed(2);
+            sumarValores();
+            swal('Información', 'Se elimino el descuento', 'info');
+          }
+        })
+      }
+      else {
+        $("#myDescuento").modal();
+        document.getElementById('index_descuento').value=i;
+      }
+    }
+
+    function cambiarEstado(obj) {
+      var valorSeleccionado = obj.options[obj.selectedIndex].value;
+      var i = obj.parentNode.parentNode.rowIndex;
+
+      //Se obtienen los campos a usar.
+      var producto = document.getElementsByName("productos[]");
+      var cantidad = document.getElementsByName("cantidad[]");
+      var sub_total = document.getElementsByName("sub_total[]");
+      var precio = document.getElementsByName("precio[]");
+      var cantidadFinal = document.getElementsByName("cantidadFinal[]");
+      var examen = document.getElementsByName("examen_cliente[]");
+
+      if(valorSeleccionado=="Lente" || valorSeleccionado=="Accesorio") {
+        cantidad[i-1].value="";
+        cantidadFinal[i-1].value="";
+        cantidad[i-1].disabled=true;
+        producto[i-1].disabled=false;
+        precio[i-1].innerText="$0.00";
+        precio[i-1].value=0.00;
+
+        examen[i-1].disabled=true;
+
+        //Para remover los item anteriores.
+        producto[i-1].value="";
+        ajax_productos(valorSeleccionado,i);
+      }
+      if(valorSeleccionado=="Examen") {
+        cantidad[i-1].value="";
+        cantidad[i-1].disabled=false;
+        producto[i-1].disabled=true;
+        producto[i-1].value="";
+        precio[i-1].value=10.00;
+        precio[i-1].innerText="$10";
+
+        examen[i-1].disabled=true;
+
+        //Para remover los item anteriores.
+        producto[i-1].value="";
+        ajax_productos("",i);
+      }
+      else if(valorSeleccionado=="seleccione") {
+        producto[i-1].disabled=true;
+        producto[i-1].value="";
+        sub_total[i-1].innerText="$0.00";
+        cantidad[i-1].disabled=true;
+        cantidad[i-1].value="";
+        precio[i-1].innerText="$0.00";
+        precio[i-1].value=0.00;
+
+        examen[i-1].disabled=true;
+
+        //Para remover los item anteriores.
+        producto[i-1].value="";
+        ajax_productos("",i);
+      }
+
+      obtenerSubTotal("cambio", obj);
+      sumarValores();
+    }
+
+    function agregarFila() {
+      var table=document.getElementById("datatable-ventas");
+      var table_len=(table.rows.length);
+
+      if(table_len==0) {
+        table_len=(table.rows.length);
+      }
+
+      var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'>"+
+      "<input type='hidden' name='existe_descuento[]' value=''>"+
+      "<input type='hidden' name='id_examenes[]' value='vacio'>"+
+      "<input type='hidden' name='fila_examen[]' value='vacio'>"+
+      "<input type='hidden' name='sub_totalFinal[]' value=''>"+
+      "<input type='hidden' name='cantidadFinal[]' value=''>"+
+      "<input type='hidden' name='productoFinal[]' value='nada'>"+
+      "<td>"+
+      "<select class='form-control' name='servicios[]' onchange='cambiarEstado(this);'>"+
+        "<option value='seleccione'>Seleccione</option>"+
+        "<option value='Examen'>Examen</option>"+
+        "<option value='Lente'>Lentes</option>"+
+        "<option value='Accesorio'>Accesorios</option>"+
+      "</select>"+
+      "</td>"+
+      "<td>"+
+      "<input type='text' class='form-control' placeholder='Lentes de sol, etc' disabled='disabled' name='productos[]' autocomplete='off' list='listaProducto"+table_len+"' oninput='obtenerDatosProducto(this.value, this);'>"+
+      "<datalist id='listaProducto"+table_len+"'>"+
+          "<?php
+            include('../../Config/conexion.php');
+
+            $query_s=pg_query($conexion,"select * from productos");
+            $cont = pg_num_rows($query_s);
+
+            while($fila=pg_fetch_array($query_s)) {
+              echo "<option value='$fila[0]'>$fila[1] - $fila[0]</option>";
+            }
+            if($cont==0) {
+              echo "<option value=''>No hay registros</option>";
+            }
+          ?>"+
+      "</datalist>"+
+      "</td>"+
+      "<td>"+
+      "<input type='text' class='form-control' placeholder='Cantidad' name='cantidad[]' onkeypress='return validarNumeros(event);' disabled='disabled'  oninput='obtenerSubTotal(this.value, this);' autocomplete='off'>"+
+      "</td>"+
+      "<td class='text-center'><label class='control-label' value='0.00' name='precio[]'>$0.00</label></td>"+
+      "<td class='text-center'><label class='control-label' value='0.00' name='sub_total[]'>$0.00</label></td>"+
+      "<td class='text-center'>"+
+      "<button type='button' class='btn btn-warning btn-icon left-icon' onclick='eliminarProducto(this)'><i class='fa fa-trash'></i> </button>"+
+      "<button name='descuento_cliente[]' type='button' class='btn btn-info btn-icon left-icon' onclick='descuentoProducto(this)' disabled='disabled'><i class='fa fa-money'></i> </button>"+
+      "<button name='examen_cliente[]' type='button' class='btn btn-danger btn-icon left-icon' onclick='verificarExamen(this)' disabled='disabled'><i class='fa fa-book'></i> </button>"+
+      "</td>"+
+      "</tr>";
+    }
+
+    function registrarCliente() {
+      swal('Agregado', 'Cliente registrado', 'success');
+    }
+
+    function Notificacion(tipo,msg){
+        notif({
+          type:tipo,
+          msg:msg ,
+          position: "center",
+          timeout: 3000,
+          clickable: true
+        });
+    }
+
+    function validarNombre(e) {
+      var key = e.keyCode || e.which;
+      var tecla = String.fromCharCode(key).toLowerCase();
+      var letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+      var especiales = [8, 37, 39, 46];
+      var tecla_especial = false;
+
+      for(var i = 0; i < letras.length; i++) {
+          if(key == especiales[i]) {
+              tecla_especial = true;
+              break;
+          }
+      }
+      if(letras.indexOf(tecla) == -1 && !tecla_especial){
+          Notificacion('error',"<b>Error: </b>Solo se permiten letras");
+          return false;
+      }
+    }
+
+    function validarNumerosVenta(e, id) {
+      var key = e.keyCode || e.which;
+      var tecla = String.fromCharCode(key).toLowerCase();
+      var numeros = "0123456789";
+      var especiales = [8, 37, 39, 46];
+      var tecla_especial = false;
+
+      var abono = document.getElementById("abono"+id).value;
+      var cantidad = "";
+
+      if(key!=8) {
+        cantidad = (abono+tecla);
+      }
+      else {
+        cantidad = abono.substring(0, (abono.length-1));
+      }
+
+      for(var i = 0; i < numeros.length; i++) {
+          if(key == especiales[i]) {
+              tecla_especial = true;
+              break;
+          }
+      }
+
+      var mayor=false;
+      if(key!=190) {
+        mayor=parseFloat(cantidad)>parseFloat(document.getElementById("total_abono"+id).value);
+
+        if(numeros.indexOf(tecla) == -1 && !tecla_especial || mayor) {
+          Notificacion('error',"<b>Error: </b>La cantidad abonada debe ser menor o igual al total");
+          return false;
+        }
+      }
+    }
+
+    function validarNumeros(e) {
+      var key = e.keyCode || e.which;
+      var tecla = String.fromCharCode(key).toLowerCase();
+      var numeros = "0123456789";
+      var especiales = [8, 37, 39, 46];
+      var tecla_especial = false;
+
+      for(var i = 0; i < numeros.length; i++) {
+          if(key == especiales[i]) {
+              tecla_especial = true;
+              break;
+          }
+      }
+      if(numeros.indexOf(tecla) == -1 && !tecla_especial || tecla==".") {
+        Notificacion('error',"<b>Error: </b>Solo se permiten numeros mayores a 0");
+        return false;
+      }
+    }
+
+    function sumarValores() {
+      var total=0.00;
+      //var filas=document.getElementById("datatable-ventas").rows.length;
+      var sub_total_valores = document.getElementsByName("sub_total[]");
+
+      for (var i = 0; i < sub_total_valores.length; i++) {
+        if(!isNaN(sub_total_valores[i].value)) {
+          total+=parseFloat(sub_total_valores[i].value);
+        }
+      }
+
+      if(total==0) {
+        document.getElementById('total_pago').innerText="Total $0.00";
+      }
+      else {
+        document.getElementById('total_pago').innerText="Total $"+total.toFixed(2);
+      }
+      document.getElementById('total_pago').value=total.toFixed(2);
+      document.getElementById('total_pago').style.fontWeight='bold';
+      document.getElementById('total_final').value=total.toFixed(2);
+    }
+
+    aplicarDescuento = function() {
+      var valor=document.getElementById('porcentaje_descuento').value;
+      var cantidad=document.getElementsByName('cantidad[]');
+
+      if(valor!="Seleccione") {
+        var index=document.getElementById('index_descuento').value;
+        valor=parseFloat(document.getElementById('porcentaje_descuento').value);
+
+        if(index!='') {
+          var sub_totales=document.getElementsByName('sub_total[]');
+          var sub_totalFinal=document.getElementsByName('sub_totalFinal[]');
+
+          var nuevo_valor=0.00;
+          nuevo_valor=parseFloat(sub_totales[index-1].value)-(parseFloat(sub_totales[index-1].value)*(parseFloat(valor)/100));
+
+          if(!isNaN(nuevo_valor)) {
+            var existe = document.getElementsByName('existe_descuento[]');
+
+            if(existe[index-1].value=="") {
+              sub_totales[index-1].value=nuevo_valor.toFixed(2);
+              sub_totales[index-1].innerText="$"+nuevo_valor.toFixed(2);
+              document.getElementById('porcentaje_descuento').selectedIndex=0;
+
+              var boton = document.getElementsByName('descuento_cliente[]');
+              boton[index-1].style.backgroundColor="#D9534F";
+              boton[index-1].style.borderColor="#D9534F";
+              cantidad[index-1].disabled=true;
+              existe[index-1].value=valor;
+              sub_totalFinal[index-1].value=nuevo_valor.toFixed(2);
+              swal('Hecho', 'Descuento aplicado', 'success');
+              sumarValores();
             }
           }
           else {
-            swal('Error', 'Debe ingresar el % de descuento', 'error');
-          }
-        };
-
-        function verificarCamposCliente() {
-          if(document.getElementById('name').value!="" || document.getElementById('lastname').value!="" ||
-          document.getElementById('telefono').value!="" || document.getElementById('telefonoc').value!="" ||
-          document.getElementById('direccion').value!="") {
-            swal({
-              title: "¿Seguro que desea cancelar el registro?",
-              text: "Se perderan los datos ingresados.",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#5CBDD9",
-              cancelButtonColor: "#D9534F",
-              confirmButtonText: "No",
-              cancelButtonText: "Si",
-              closeOnConfirm: false,
-              closeOnCancel: false,
-              showLoaderOnConfirm: true
-            }).then(function(isConfirm) {
-              if (isConfirm.value!=true) {
-                $('#myCliente').modal('hide');
-              }
-            })
-          }
-          else {
-            swal('Agregado', 'Se registro al cliente', 'success');
+            swal('Error', 'Ocurrio un error al aplicar un descuento', 'error');
           }
         }
-
-        function pedirAbono() {
-          if(validarRegistro()) {
-            $("#myAbono").modal({backdrop: 'static', keyboard: false});
-            //Paso de parametros.
-            $('#total_abono').text("Total $"+document.getElementById('total_pago').value);
-            $('#diferencia_abono').text("Restante $"+document.getElementById('total_pago').value);
-            $('#total_abono').val(document.getElementById('total_pago').value);
-          }
-          else {
-            swal('Error', 'Los campos no deben estar vacios', 'error');
-          }
-
-          // $(document).ready(function(){
-          //   $("#frmVenta").submit(function() {
-          //       return false;
-          //     });
-          // });
+        else {
+          swal('Error', 'Ocurrio un error al aplicar un descuento', 'error');
         }
+      }
+      else {
+        swal('Error', 'Debe ingresar el % de descuento', 'error');
+      }
+    };
 
-        function registrarVenta(id, opcion) {
-          var opc=false;
-
-          if(document.getElementById("abono"+id).value=="" || document.getElementById("abono"+id).value=="0") {
-            swal('Error', 'Los campos no deben estar vacios', 'error');
-            opc=false;
+    function verificarCamposCliente() {
+      if(document.getElementById('name').value!="" || document.getElementById('lastname').value!="" ||
+      document.getElementById('telefono').value!="" || document.getElementById('telefonoc').value!="" ||
+      document.getElementById('direccion').value!="") {
+        swal({
+          title: "¿Seguro que desea cancelar el registro?",
+          text: "Se perderan los datos ingresados.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#5CBDD9",
+          cancelButtonColor: "#D9534F",
+          confirmButtonText: "No",
+          cancelButtonText: "Si",
+          closeOnConfirm: false,
+          closeOnCancel: false,
+          showLoaderOnConfirm: true
+        }).then(function(isConfirm) {
+          if (isConfirm.value!=true) {
+            $('#myCliente').modal('hide');
           }
-          else {
-            opc=true;
-            if(opcion=="vender") {
-              document.getElementById('bandera').value="vender";
-            }
-            else if(opcion=="abonar") {
-              document.getElementById('bandera').value="abonar";
-              document.getElementById('abono_final_actualizar').value=document.getElementById('abono_actualizar').value;
-            }
-          }
+        })
+      }
+      else {
+        swal('Agregado', 'Se registro al cliente', 'success');
+      }
+    }
 
-          $(document).ready(function(){
-            $("#frmVenta").submit(function() {
-                if(opc && document.getElementById('bandera').value!="") {
-                  return true;
-                }
-                else {
-                  return false;
-                }
-              });
+    function pedirAbono() {
+      if(validarRegistro()) {
+        $("#myAbono").modal({backdrop: 'static', keyboard: false});
+        //Paso de parametros.
+        $('#total_abono').text("Total $"+document.getElementById('total_pago').value);
+        $('#diferencia_abono').text("Restante $"+document.getElementById('total_pago').value);
+        $('#total_abono').val(document.getElementById('total_pago').value);
+      }
+      else {
+        swal('Error', 'Los campos no deben estar vacios', 'error');
+      }
+
+      // $(document).ready(function(){
+      //   $("#frmVenta").submit(function() {
+      //       return false;
+      //     });
+      // });
+    }
+
+    function registrarVenta(id, opcion) {
+      var opc=false;
+
+      if(document.getElementById("abono"+id).value=="" || document.getElementById("abono"+id).value=="0") {
+        swal('Error', 'Los campos no deben estar vacios', 'error');
+        opc=false;
+      }
+      else {
+        opc=true;
+        if(opcion=="vender") {
+          document.getElementById('bandera').value="vender";
+        }
+        else if(opcion=="abonar") {
+          document.getElementById('bandera').value="abonar";
+          document.getElementById('abono_final_actualizar').value=document.getElementById('abono_actualizar').value;
+        }
+      }
+
+      $(document).ready(function(){
+        $("#frmVenta").submit(function() {
+            if(opc && document.getElementById('bandera').value!="") {
+              return true;
+            }
+            else {
+              return false;
+            }
           });
+      });
+    }
+
+    function validarRegistro() {
+      var opc=false;
+      var servicos=document.getElementsByName('servicios[]');
+      var productos=document.getElementsByName('productos[]');
+      var cantidad=document.getElementsByName('cantidad[]');
+      var precio=document.getElementsByName('precio[]');
+      var sub_total=document.getElementsByName('sub_total[]');
+      var examen_cliente=document.getElementsByName('examen_cliente[]');
+
+      var table=document.getElementById("datatable-ventas");
+      var table_len=table.rows.length-1;
+
+      var vacios=true;
+      var campos_llenos=0;
+
+      for (var i = 0; i < table_len; i++) {
+        if(servicos[i].value=="seleccione" || cantidad[i].value=="" ||
+          precio[i].value===undefined || precio[i].value=="0.00" || sub_total[i].value===undefined ||
+          sub_total[i].value=="0.00") {
+          vacios=true;
+          break;
         }
-
-        function validarRegistro() {
-          var opc=false;
-          var servicos=document.getElementsByName('servicios[]');
-          var productos=document.getElementsByName('productos[]');
-          var cantidad=document.getElementsByName('cantidad[]');
-          var precio=document.getElementsByName('precio[]');
-          var sub_total=document.getElementsByName('sub_total[]');
-          var examen_cliente=document.getElementsByName('examen_cliente[]');
-
-          var table=document.getElementById("datatable-ventas");
-          var table_len=table.rows.length-1;
-
-          var vacios=true;
-          var campos_llenos=0;
-
-          for (var i = 0; i < table_len; i++) {
-            if(servicos[i].value=="seleccione" || cantidad[i].value=="" ||
-              precio[i].value===undefined || precio[i].value=="0.00" || sub_total[i].value===undefined ||
-              sub_total[i].value=="0.00") {
-              vacios=true;
-              break;
-            }
-            else if((servicos[i].value=="Lente" || servicos[i].value=="Accesorio") && productos[i].value=="") {
-              vacios=true;
-              break;
-            }
-            else if((servicos[i].value=="Lente" && examen_cliente[i].value=="") || (servicos[i].value=="Lente" && examen_cliente[i].value===undefined)) {
-              //Notificacion('error',"<b>Error: </b>Debe tener un examen antes de vender un lente");
-              vacios=true;
-              break;
-            }
-            else {
-              vacios=false;
-            }
-          }
-
-          // alert("Hay campos vacios: "+vacios);
-          // alert(document.getElementById('nombre_cliente').value);
-
-          if(document.getElementById('nombre_cliente').value=="" || vacios) {
-            return false;
-          }
-          else {
-            return true;
-          }
+        else if((servicos[i].value=="Lente" || servicos[i].value=="Accesorio") && productos[i].value=="") {
+          vacios=true;
+          break;
         }
+        else if((servicos[i].value=="Lente" && examen_cliente[i].value=="") || (servicos[i].value=="Lente" && examen_cliente[i].value===undefined)) {
+          //Notificacion('error',"<b>Error: </b>Debe tener un examen antes de vender un lente");
+          vacios=true;
+          break;
+        }
+        else {
+          vacios=false;
+        }
+      }
+
+      // alert("Hay campos vacios: "+vacios);
+      // alert(document.getElementById('nombre_cliente').value);
+
+      if(document.getElementById('nombre_cliente').value=="" || vacios) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    }
     </script>
 
   </head>
@@ -1197,11 +1197,11 @@ if ($_POST) {
       }
       $contado++;
 
-      if($servicioFinal=="Examen") {
+      if($servicioValores[$i]=="Examen") {
         $productoAux = "";
       }
       else {
-        $productoAux = $productoValores[$i];
+        $productoAux = $productoFinal[$i];
       }
 
       if($fila_detalle_examen[$i]=="vacio") {

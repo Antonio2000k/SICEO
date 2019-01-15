@@ -128,6 +128,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
                       <li><a href="../../Modulos/Usuario/usuarios.php">Registrar usuario</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#impresion"">Bitacora</a></li>
+                      <li><a href="../../Modulos/Seguridad/respaldo.php">Respaldo </a></li>
                     </ul>
                   </li>
                 </ul>

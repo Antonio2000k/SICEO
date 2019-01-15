@@ -214,7 +214,7 @@ if (isset($_REQUEST["bandera"])) {
   pg_query("BEGIN");
   
   
-   $query_s2= pg_query($conexion,"select * from usuarios where cusuario=trim('$usuariO') and cpassword=trim('$clavE')  ");
+   $query_s2= pg_query($conexion,"select * from pbusuarios where cusuario=trim('$usuariO') and cpassword=trim('$clavE')  ");
   
   $rows = pg_num_rows($query_s2);
   
@@ -234,8 +234,8 @@ if (isset($_REQUEST["bandera"])) {
           em.cdireccion,
           em.csexo,
           em.cid_empleado
-          from usuarios as us
-          inner join empleados as em on us.cid_empleado = em.cid_empleado where cusuario=trim('$usuariO') and cpassword=trim('$clavE')  ");
+          from pbusuarios as us
+          inner join paempleados as em on us.cid_empleado = em.cid_empleado where cusuario=trim('$usuariO') and cpassword=trim('$clavE')  ");
     
 
 
@@ -256,7 +256,7 @@ if (isset($_REQUEST["bandera"])) {
      // $usAc =$_SESSION["idUsuario"];
           if($fila[2] == 1){
             
-            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' inició sesión';
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
@@ -265,7 +265,7 @@ if (isset($_REQUEST["bandera"])) {
             ini_set('date.timezone', 'America/El_Salvador');
             
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -287,7 +287,7 @@ if (isset($_REQUEST["bandera"])) {
           }
           if($fila[2] == 2){
               
-              $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+              $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
             $accion = 'El Empleado ' . $idAccess. '('. $nomAccess. " " .$apeAccess. ") inició sesión";
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
@@ -297,7 +297,7 @@ if (isset($_REQUEST["bandera"])) {
             
             $fechaR = date("d/m/Y");
             $hora = date("h:i:s");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, hora)
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, hora)
                   VALUES ($ida, $idAccess, '".$accion."' , '$fechaR' , '$hora' )");
             if(!$consult ){
                     pg_query("rollback");

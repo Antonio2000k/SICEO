@@ -846,6 +846,7 @@ if(isset($_REQUEST['bandera'])) {
   $pregunta=($_REQUEST['pregunta_hidden']);
   $respuesta=$_REQUEST['respuesta'];
   $id_pregunta_definida = $_REQUEST['pregunta'];
+  $fechaA= date("d/m/Y");
 
   // if(isset($_REQUEST['pregunta']) && $_REQUEST['pregunta']!="") {
   //   echo "<script type='text/javascript'>";
@@ -930,7 +931,7 @@ if(isset($_REQUEST['bandera'])) {
             ini_set('date.timezone', 'America/El_Salvador');
             
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -978,7 +979,7 @@ if(isset($_REQUEST['bandera'])) {
             ini_set('date.timezone', 'America/El_Salvador');
             
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
 
             if(!$consult ){
                     pg_query("rollback");

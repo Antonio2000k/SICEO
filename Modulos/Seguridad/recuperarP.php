@@ -3,14 +3,13 @@ if(isset($_REQUEST["user"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["user"];
     $query_s = pg_query($conexion, "select
-                    pre.idusuario,
+                    pre.cid_usuario,
                     pre.idpregunta,
                     pre.respuesta,
                     po.cpregunta
                     from pre_us pre
                     INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
-                    WHERE
-                    pre.idusuario = '$iddatos'");
+                    WHERE pre.cid_usuario = '$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
        $RidUsuario = $fila[0];
        $RPass = $fila[2];
@@ -108,25 +107,18 @@ if(isset($_REQUEST["user"])){
                 <?php
                   include("../../Config/conexion.php");
                   $usuario = $_REQUEST["id"];
-                  $query_s = pg_query($conexion,"select
-                    pre.cid_usuario,
-                    pre.idpregunta,
-                    po.cpregunta
+                  $query_s = pg_query($conexion,"SELECT pre.cid_usuario, pre.idpregunta, po.cpregunta
                     from pre_us pre
                     INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
-                    WHERE
-                    pre.cid_usuario = '$usuario'");
+                    WHERE pre.cid_usuario = '$usuario'");
                   $row = pg_num_rows($query_s);
                   
                if($row=!0){
-                      $query_s2 = pg_query($conexion,"select
-                    pre.cid_usuario,
-                    pre.idpregunta,
+                      $query_s2 = pg_query($conexion,"SELECT pre.cid_usuario, pre.idpregunta, 
                     po.cpregunta
                     from pre_us pre
                     INNER JOIN pregunta po ON pre.idpregunta = po.eid_pregunta
-                    WHERE
-                    pre.cid_usuario = '$usuario'");
+                    WHERE pre.cid_usuario = '$usuario'");
                     while ($fila = pg_fetch_array($query_s2)) {
                       ?>
                       <fieldset>

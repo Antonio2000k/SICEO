@@ -10,7 +10,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
   exit();
   }
 ?>
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

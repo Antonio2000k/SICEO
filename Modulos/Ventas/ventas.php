@@ -118,6 +118,12 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
               document.getElementById('nombre_cliente').style.borderColor="#21df2c";
               document.getElementById('nombre_clienteID').value=respuesta;
               document.getElementById('addFila').disabled=false;
+
+              $.post("buscar.php",{
+                "texto":respuesta,"opcion":4},function(expediente) {
+                  document.getElementById("expediente_ID").value = expediente;
+              });
+
             }
             else {
               document.getElementById('nombre_cliente').style.borderColor="#C70039";
@@ -226,6 +232,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
         }
         else {
+          window.open("../Cliente/expediente.php?id="+document.getElementById("expediente_ID").value);
+          document.getElementById("expediente_ID").value = "";
         }
       })
     }
@@ -923,6 +931,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               <input type="hidden" id="abono_final_actualizar" name="abono_final_actualizar" value="">
                               <input type="hidden" id="id_ordenCompra" name="id_ordenCompra" value="">
                               <input type="hidden" id="id_reporteOrden">
+
+                              <input type="hidden" id="expediente_ID">
                               <!--fin codigos-->
 
                               <div class="item form-group">

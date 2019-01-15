@@ -931,7 +931,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               <input type="hidden" id="abono_final_actualizar" name="abono_final_actualizar" value="">
                               <input type="hidden" id="id_ordenCompra" name="id_ordenCompra" value="">
                               <input type="hidden" id="id_reporteOrden">
-
                               <input type="hidden" id="expediente_ID">
                               <!--fin codigos-->
 
@@ -1291,15 +1290,28 @@ if ($_POST) {
     $id_compra;
 
     $query=pg_query($conexion,"SELECT * FROM ordenc WHERE eid_compra=$id_ordenc");
+    $total = 0;
 
     while($fila=pg_fetch_array($query)) {
       $id_compra=$fila[0];
+      $total = $fila[2];
     }
 
-    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
+    //Para verificar si aun hay que pagar.
+    $query_abono=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$id_ordenc");
+    $saldo = 0;
+
+    while($fila=pg_fetch_array($query_abono)) {
+      $saldo=$saldo+floatval($fila[1]);
+    }
+
+    $query_nota_abono = null;
+
+    if($saldo<$total) {
+      $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
+    }
 
     //echo pg_last_error($conexion);
-
     if($query_nota_abono) {
       pg_query("COMMIT");
       echo "<script type='text/javascript'>";

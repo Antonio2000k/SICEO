@@ -38,6 +38,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       window.open("../../reporteOrden.php?id="+document.getElementById("id_reporteOrden").value);
     }
 
+    function reporteExamen(expediente, id_examen) {
+      window.open("../../reporteExamen.php?id="+expediente+"&idexam="+id_examen);
+    }
+
     function ajax_act(str) {
       if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -222,14 +226,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           }
         }
         else {
-          $.post("buscar.php",{
-            "texto":document.getElementById("nombre_clienteID").value,"opcion":4},function(respuesta) {
-              if(respuesta!="") {
-                window.open("../Cliente/expediente.php?id="+expediente);
-              }
-          });
-
-          //
         }
       })
     }
@@ -1202,6 +1198,7 @@ if ($_POST) {
     $productoAux="";
     //Si es cero, no hubo ningun error si es mayor es que una fallo.
     $inserto_detalle=0;
+    $inserto_examen=0;
 
     for ($i=0; $i < $longitud; $i++) {
       //Para el id.
@@ -1234,9 +1231,26 @@ if ($_POST) {
         $inserto_detalle++;
         //echo "Error detalle";
       }
+
+      if($servicioValores[$i]=="Lente") {
+        //Para registrar el detalle del examen.
+        //Contador...
+        $resultado=pg_query($conexion,"SELECT MAX(detalle_examen.eid_detalle_examen) FROM detalle_examen");
+        $contado=0;
+        while ($fila = pg_fetch_array($resultado)) {
+          $contado=$fila[0];
+        }
+        $contado++;
+
+        $query_detalle_examen = pg_query($conexion, "INSERT INTO detalle_examen (eid_detalle_examen, cid_cliente, eid_examen, cmodelo, bestado) VALUES ($contado, '$cliente', $id_examen,'$productoAux', false)");
+
+        if(!$query_detalle_examen) {
+          $inserto_examen++;
+        }
+      }
     }
 
-    if($query_compra && $query_nota_abono && $inserto_detalle==0) {
+    if($query_compra && $query_nota_abono && $inserto_detalle==0 && $inserto_examen==0) {
       pg_query("COMMIT");
       echo "<script type='text/javascript'>";
       echo "swal('Hecho','Se realizo la venta con exito','success');";

@@ -86,22 +86,22 @@ if($text && $opcion)
 	    }
 		}
 		//Para otra validacion, opcion 3
-		else if($opcion==3) {
+		else{
 			echo $text;
     }
-		else if($opcion==4) {
-			$query_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE eid_cliente='$text'");
-			$conteo = pg_num_rows($query_expediente);
-
-			if($conteo>0) {
-				while($fila=pg_fetch_array($query_expediente)) {
-					echo $fila[0];
-				}
-			}
-			else {
-				echo "";
-			}
-		}
+		// else if($opcion==4) {
+		// 	$query_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE eid_cliente='$text'");
+		// 	$conteo = pg_num_rows($query_expediente);
+		//
+		// 	if($conteo>0) {
+		// 		while($fila=pg_fetch_array($query_expediente)) {
+		// 			echo $fila[0];
+		// 		}
+		// 	}
+		// 	else {
+		// 		echo "";
+		// 	}
+		// }
   }
   else {
     echo "";

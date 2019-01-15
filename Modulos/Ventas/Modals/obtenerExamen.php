@@ -6,7 +6,8 @@
 <thead>
   <tr>
     <th></th>
-    <th style="text-align: center">Modelo de lentes</th>
+    <th style="text-align: center">Fecha de realización</th>
+    <th>Reporte de examen</th>
   </tr>
 </thead>
 <tbody>
@@ -14,24 +15,33 @@
     $id=$_REQUEST['idCliente'];
     $modelo=$_REQUEST['modelo'];
 
-    $query = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = false AND cmodelo='$modelo' AND cid_cliente='$id'");
+    $query_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE eid_cliente='$id'");
 
-    while($fila=pg_fetch_array($query)) {
+    $expediente = "";
+    while($fila=pg_fetch_array($query_expediente)) {
+      $expediente = $fila[0];
+    }
+
+    $query = pg_query($conexion, "SELECT * FROM examen WHERE cid_expediente='$expediente'");
+    $id_examen = 0;
+    $fecha = "";
+
+    $expediente = 0;
+
+    while ($fila = pg_fetch_array($query)) {
+      $id_examen = $fila[0];
+      $fecha = $fila[7];
+      $expediente = $fila[9];
+    }
+
+    if($fecha!="" || $fecha!=null) {
       ?>
       <tr>
         <td class="text-center">
-          <input class="medium" id="id_examen" name="id_examen" type="radio" value="<?php echo $fila[0] ?>" onclick="obtenerExamenCliente(<?php echo $fila[0] ?>);">
+          <input class="medium" id="id_examen" name="id_examen" type="radio" value="<?php echo $id_examen; ?>" onclick="obtenerExamenCliente(<?php echo $id_examen; ?>);">
         </td>
-        <?php
-          // $cliente = "";
-          //
-          // $query_cliente = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente = '$fila[1]'");
-          // while($fila_cliente=pg_fetch_array($query_cliente)) {
-          //   $cliente = $fila_cliente[1]." ".$fila_cliente[2];
-          // }
-        ?>
-        <!--$fila[3]-->
-        <td><?php echo $modelo; ?></td>
+        <td class="text-center"><?php echo $fecha; ?></td>
+        <td class="text-center"><button type="button" class="btn btn-info btn-icon left-icon" onclick="reporteExamen('<?php echo $expediente ?>', '<?php echo $id_examen ?>')"><i class="fa fa-book"></i> </button></td>
       </tr>
       <?php
     }

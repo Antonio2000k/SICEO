@@ -1084,6 +1084,159 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                         </div>
                       </div>
                     </div>
+
+                    <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA REGISTRO Y ABONO DE VENTAS</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda1.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Hacemos clic o escribimos el nombre del cliente en el campo. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda2.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si no esta registrado, dar clic en nuevo cliente. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda3.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Se habilitara el boton agregar fila, al dar clic nos agregara una fila en la tabla. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda4.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En servicios apareceran 3 opciones a elegir. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda5.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si escogemos examen, nos deshabilitara campo productos. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda6.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En la opcion lentes, solicitara un producto a escoger. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda7.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Se ingresa la cantidad y se multiplica por el precio. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda8.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En la opcion accesorios, solicitara un producto a escoger. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda9.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Se ingresa la cantidad y se multiplica por el precio. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda10.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Con el siguiente boton, podemos borrar la fila. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda11.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Con el siguiente boton, podemos aplicar un porcentaje de descuento. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda12.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si ya se encuentra con descuento,cambia de color y aparecera la opcion de eliminarlo. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda13.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Para los lentes, hay un boton el cual permite escoger el examen que se usara para ese lente. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda14.png" alt="...">
+                                 <div class="carousel-caption">
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda15.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Cuando ya esta lista la venta se procedera a solicitar el abono que se hara. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda16.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En el listado de ventas, podemos abonar las cuentas pendientes en color verde. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Ventas/ayuda17.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Este boton sirve para ver el reporte de la venta. </p>
+                                 </div>
+                               </div>
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
                   </div>
                 </div>
               </div>

@@ -90,7 +90,7 @@ include "../../ComponentesForm/menu.php";
                                   <tbody>
                                     <?php
                                           include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from empleados where bestado='f' order by cnombre");
+                                          $query_s= pg_query($conexion, "select * from paempleados where bestado='f' order by cnombre");
                                           while($fila=pg_fetch_array($query_s)){
                                       ?>
                                     <tr>

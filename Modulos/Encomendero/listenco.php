@@ -1,8 +1,14 @@
-<?php
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from encomendero where eid_encomendero=$iddatos");
+    $query_s = pg_query($conexion, "select * from paencomendero where eid_encomendero=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
         $Rid_encomendero = $fila[0];
         $Rnombre = $fila[1];
@@ -182,7 +188,7 @@ if(isset($_REQUEST["id"])){
                                   <tbody id="imp">
                                     <?php
                                           include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from encomendero where bestado='t'  order  by cnombre");
+                                          $query_s= pg_query($conexion, "select * from paencomendero where bestado='t'  order  by cnombre");
                                           while($fila=pg_fetch_array($query_s)){
                                       ?>
                                     <tr>
@@ -191,9 +197,9 @@ if(isset($_REQUEST["id"])){
                                       <td><?php echo $fila[2]; ?></td>
                                       <td><?php echo $fila[3]; ?></td>
                                       <td> <?php echo $fila[4]; ?> </td>
-                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span>Modificar</span></button>
+                                      <td class="text-center"><button class="btn btn-info btn-icon left-icon"  onClick="llamarPagina('<?php echo $fila[0]; ?>')"> <i class="fa fa-edit"></i> <span></span></button>
                                       <?php if($fila[5]=='t'){ ?>
-                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al encomendero '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-folder-open-o"></i> <span>Dar de Baja</span></button>
+                                      <button class="btn btn-warning btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','baja','Esta seguro de querer dar de baja al encomendero '+' <?php echo $fila[1]; ?>','Si, Dar de Baja!')"> <i class="fa fa-arrow-circle-down"></i> <span></span></button>
                                       <?php }if($fila[5]=='f'){?>
                                         <button class="btn btn-success btn-icon left-icon" onclick="DarBaja('<?php echo $fila[0]; ?>','alta','Esta seguro de querer activar al encomendero '+' <?php echo $fila[1]; ?>','Si, Activar!')"> <i class="fa fa-folder-open-o"></i> <span>Activar</span></button> 
                                       <?php }?>
@@ -342,12 +348,30 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
     else
         $estado=1;
      pg_query("BEGIN");
-    $result=pg_query($conexion,"update encomendero set bestado='$estado' where eid_encomendero='$baccion'");      
+    $result=pg_query($conexion,"update paencomendero set bestado='$estado' where eid_encomendero='$baccion'");      
       if(!$result){
         pg_query("rollback");
         mensajeInformacion('Error','Datos no almacenados','error');
         }else{
-          pg_query("commit");
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                      $accion = 'El usuario ' . $nomusAccess. ' dio de baja a un encomendero '. $nombre .' '.$apellido;
+                      while ($filas = pg_fetch_array($query_ide)) {
+                          $ida=$filas[0];                                 
+                          $ida++ ;
+                      } 
+                      ini_set('date.timezone', 'America/El_Salvador');
+                      $fechaA= date("d/m/Y");  
+                      $hora = date("Y/m/d ") . date("h:i:s a");
+                      $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
+
+                      if(!$consult ){
+                              pg_query("rollback");
+                              echo "<script type='text/javascript'>";
+                              echo pg_result_error($conexion);
+                              echo "alert('Error');";
+                              echo "</script>";
+                      }else{
+                           pg_query("commit");
                 echo "<script type='text/javascript'>";
                     echo "alertaSweet('Informacion!','Datos actualizados !','success');";
 
@@ -355,6 +379,8 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
                                       location.href=('listencoi.php');
                                     }, 2000);";
                       echo "</script>";
+                      }
+          
         }
 }
      

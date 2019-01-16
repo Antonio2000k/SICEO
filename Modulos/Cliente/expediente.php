@@ -811,6 +811,7 @@ $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 
 $idexpediente= cortar($_REQUEST["bacciones"]);
+ini_set('date.timezone', 'America/El_Salvador');
 $fechaA= date("d/m/Y");
 
 //datos de antecedentes medicos
@@ -890,7 +891,7 @@ include("../../Config/conexion.php");
 //guardar examen
   if($bandera2=='add'){
       pg_query("BEGIN");
-
+ini_set('date.timezone', 'America/El_Salvador');
       $query_s1=pg_query($conexion,"SELECT MAX(antecedente_medico.eid_antecedente_medico) from paantecedente_medico AS antecedente_medico ");
         while ($fila = pg_fetch_array($query_s1)) {
             $idantm=$fila[0];
@@ -959,7 +960,7 @@ include("../../Config/conexion.php");
                 echo "</script>";
               }else{
                 //Guardar en bitacora y hacer commit 
-                $fechaA= date("d/m/Y");
+                
                 $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                 $accion = 'El usuario ' . $nomusAccess. ' Registro un nuevo examen al Cliente con Expediente '. $idexpediente ;
                 while ($filas = pg_fetch_array($query_ide)) {
@@ -967,7 +968,7 @@ include("../../Config/conexion.php");
                     $ida++ ;
                 } 
                 ini_set('date.timezone', 'America/El_Salvador');
-                
+                $fechaA= date("d/m/Y");
                 $hora = date("Y/m/d ") . date("h:i:s a");
                 $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$idexpediente')");
 

@@ -12,7 +12,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from encomendero where eid_encomendero=$iddatos");
+    $query_s = pg_query($conexion, "select * from paencomendero where eid_encomendero=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
         $Rid_encomendero = $fila[0];
         $Rnombre = $fila[1];
@@ -214,27 +214,29 @@ include("../../Config/conexion.php");
     
     if($bandera=="add"){
     pg_query("BEGIN");
-    $r=pg_query($conexion,"select count(*) from encomendero");
+    $r=pg_query($conexion,"select count(*) from paencomendero");
     while ($fila = pg_fetch_array($r)) {
             $ida=$fila[0];                                 
             $ida++ ;
         } 
       
-          $result=pg_query($conexion,"insert into encomendero(eid_encomendero, cnombre, capellido, ctelefonof, ccelular, bestado) values('$ida','$nombre','$apellido','$telefono','$celular','1')");
+          $result=pg_query($conexion,"insert into paencomendero(eid_encomendero, cnombre, capellido, ctelefonof, ccelular, bestado) values('$ida','$nombre','$apellido','$telefono','$celular','1')");
           if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                      $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-                      $accion = 'El usuario ' . $nomusAccess. ' Registro al Encomendero '. $nombre .' '.$apellido;
+                      list($nombre1, $palabra2) = explode(' ', $nombre) ;
+                      list($apellido1, $palabra2) = explode(' ',$apellido);
+                      $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                      $accion = 'El usuario ' . $nomusAccess. ' Registro al Encomendero '. $nombre1 .' '.$apellido1;
                       while ($filas = pg_fetch_array($query_ide)) {
                           $ida=$filas[0];                                 
                           $ida++ ;
                       } 
                       ini_set('date.timezone', 'America/El_Salvador');
-                      
+                      $fechaA= date("d/m/Y");  
                       $hora = date("Y/m/d ") . date("h:i:s a");
-                      $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+                      $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
 
                       if(!$consult ){
                               pg_query("rollback");
@@ -258,21 +260,25 @@ include("../../Config/conexion.php");
   
   if($bandera=='modificar'){
     pg_query("BEGIN");
-          $result=pg_query($conexion,"update encomendero set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular' where eid_encomendero='$baccion'");    
+          $result=pg_query($conexion,"update paencomendero set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular' where eid_encomendero='$baccion'");    
             if(!$result){
         pg_query("rollback");
         mensajeInformacion('Error','Datos no almacenados','error');
         }else{
-          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-            $accion = 'El usuario ' . $nomusAccess. ' Modificó al Encomendero '. $nombre .' '.$apellido;
+          list($nombre1, $palabra2) = explode(' ', $nombre) ;
+          list($apellido1, $palabra2) = explode(' ',$apellido);
+          
+
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Modificó al Encomendero '. $nombre1 .' '.$apellido1;
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
-            
+            $fechaA= date("d/m/Y");  
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -305,7 +311,7 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
     else
         $estado=1;
      pg_query("BEGIN");
-    $result=pg_query($conexion,"update encomendero set bestado='$estado' where eid_encomendero='$baccion'");      
+    $result=pg_query($conexion,"update paencomendero set bestado='$estado' where eid_encomendero='$baccion'");      
       if(!$result){
         pg_query("rollback");
         mensajeInformacion('Informacion','Datos no almacenados','success');

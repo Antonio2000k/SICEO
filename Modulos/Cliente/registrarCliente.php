@@ -368,6 +368,7 @@ $apellido=($_REQUEST["apellido"]);
 $telefono=($_REQUEST["telefono"]);
 $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
+ini_set('date.timezone', 'America/El_Salvador');
 
 $fecha = $_REQUEST["fecha"];
 $edad = substr($_REQUEST["edad"],0,2);
@@ -399,7 +400,7 @@ if($bandera=="add"){
                     echo "</script>";
           }else{
             //Guardar datos
-            $fechaA= date("d/m/Y");
+            
             $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Registro un nuevo Cliente: '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
@@ -407,9 +408,9 @@ if($bandera=="add"){
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
-            
+            $fechaA= date("d/m/Y");
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$codigo')");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$expediente')");
 
             if(!$consult ){
                     pg_query("rollback");

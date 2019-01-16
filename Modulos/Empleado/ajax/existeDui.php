@@ -5,7 +5,7 @@
 	 include '../../../Config/conexion.php';
     if($opcion==="dui"){
         pg_query("BEGIN");
-				 $result=pg_query($conexion,"select * from empleados where cdui='".$codigo."'");
+				 $result=pg_query($conexion,"select * from paempleados where cdui='".$codigo."'");
 				 $nue=pg_num_rows($result);
 						 if($nue>0){
 							 pg_query("commit");
@@ -16,7 +16,7 @@
 						 }
     }else if($opcion==="correo"){
         pg_query("BEGIN");
-				 $result=pg_query($conexion,"select * from empleados where ccorreo='".$codigo."'");
+				 $result=pg_query($conexion,"select * from paempleados where ccorreo='".$codigo."'");
 				 $nue=pg_num_rows($result);
 						 if($nue>0){
 							 pg_query("commit");

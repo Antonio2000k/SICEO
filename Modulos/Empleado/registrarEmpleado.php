@@ -13,7 +13,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select *,TO_CHAR(empleados.ffecha_nac, 'dd/mm/yyyy') from empleados where cid_empleado='$iddatos'");
+    $query_s = pg_query($conexion, "select *,TO_CHAR(paempleados.ffecha_nac, 'dd/mm/yyyy') from paempleados  where cid_empleado='$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
         $RidEmpleado = $fila[0];
         $Rnombre = $fila[1];
@@ -238,7 +238,7 @@ $correo=$_REQUEST["correo"];
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
-    $r=pg_query($conexion,"select * from empleados");
+    $r=pg_query($conexion,"select * from paempleados");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
     
@@ -246,21 +246,22 @@ if($bandera=="add"){
         mensajeInformacion('Error','Correo o Dui ya se encuentra registrado','error');
     }else{
         
-          $result=pg_query($conexion,"insert into empleados(cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
+          $result=pg_query($conexion,"insert into paempleados (cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
           if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                       $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                      
+                       $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                         $accion = 'El usuario ' . $nomusAccess. ' Registró al Empleado '. $nombre .' '.$apellido;
                         while ($filas = pg_fetch_array($query_ide)) {
                             $ida=$filas[0];                                 
                             $ida++ ;
                         } 
                         ini_set('date.timezone', 'America/El_Salvador');
-                        
+                        $fechaA= date("d/m/Y");
                         $hora = date("Y/m/d ") . date("h:i:s a");
-                        $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+                        $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$codigo')");
 
                         if(!$consult ){
                                 pg_query("rollback");
@@ -282,21 +283,22 @@ if($bandera=='modificar'){
       if(validaCorreo($correo,$baccion,$dui)){
           mensajeInformacion('Error','Correo o Dui ya se encuentra registrado','error');
       }else{
-          $result=pg_query($conexion,"update empleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion',ccorreo='$correo' where cid_empleado='$baccion'");    
+          $result=pg_query($conexion,"update paempleados set  cnombre='$nombre', capellido='$apellido', ctelefonof='$telefono', ccelular='$celular', cdui='$dui', csexo='$sexo',ffecha_nac='$fecha',cdireccion='$direccion',ccorreo='$correo' where cid_empleado='$baccion'");    
             if(!$result){
 				pg_query("rollback");
 				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
-					          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+          
+					          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                         $accion = 'El usuario ' . $nomusAccess. ' Modificó al Empleado '. $nombre .' '.$apellido;
                         while ($filas = pg_fetch_array($query_ide)) {
                             $ida=$filas[0];                                 
                             $ida++ ;
                         } 
                         ini_set('date.timezone', 'America/El_Salvador');
-                        
+                        $fechaA= date("d/m/Y");
                         $hora = date("Y/m/d ") . date("h:i:s a");
-                        $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+                        $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$baccion')");
 
                         if(!$consult ){
                                 pg_query("rollback");
@@ -325,7 +327,7 @@ function generar($nombree,$apellidos){
   function validaCorreo($correo,$baccion,$dui){
     $valor=0;
     include("../../Config/conexion.php");
-    $query_s= pg_query($conexion, "select * from empleados order by cnombre");
+    $query_s= pg_query($conexion, "select * from paempleados order by cnombre");
         while($fila=pg_fetch_array($query_s)){
             if(strcmp($fila[10],$correo)===0 || strcmp($fila[5],$dui)===0){
                 $valor=1;

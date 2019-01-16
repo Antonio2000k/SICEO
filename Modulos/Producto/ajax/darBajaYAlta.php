@@ -15,7 +15,7 @@ $apeAccess = $_SESSION["apellidoEmpleado"];
         pg_query("rollback");
         else{
             if($estado == "1"){
-	        	$fechaA= date("d/m/Y");
+	        	
 	            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
 	            $accion = 'El usuario ' . $nomusAccess. ' dio de alta a un producto' ;
 	            while ($filas = pg_fetch_array($query_ide)) {
@@ -23,7 +23,7 @@ $apeAccess = $_SESSION["apellidoEmpleado"];
 	                $ida++ ;
 	            } 
 	            ini_set('date.timezone', 'America/El_Salvador');
-	                            
+	           $fechaA= date("d/m/Y");             
 	            $hora = date("Y/m/d ") . date("h:i:s a");
 	            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$baccion')");
 
@@ -38,7 +38,7 @@ $apeAccess = $_SESSION["apellidoEmpleado"];
 	                
 	            }
         	}else if($estado == "0"){
-        		$fechaA= date("d/m/Y");
+        		
                 $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                 $accion = 'El usuario ' . $nomusAccess. ' dio de baja a un producto ';
                 while ($filas = pg_fetch_array($query_ide)) {
@@ -46,7 +46,7 @@ $apeAccess = $_SESSION["apellidoEmpleado"];
                     $ida++ ;
                 } 
                 ini_set('date.timezone', 'America/El_Salvador');
-                            
+                $fechaA= date("d/m/Y");       
                 $hora = date("Y/m/d ") . date("h:i:s a");
                 $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$baccion')");
 

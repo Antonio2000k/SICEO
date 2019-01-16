@@ -978,6 +978,8 @@ if(isset($_REQUEST['bandera'])) {
     if($pass==$repass) {
       if($bandera=="add") {
         pg_query("BEGIN");
+        //Encriptar aqui...
+
         $result=pg_query($conexion,"INSERT INTO pbusuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
         $id_usuario=pg_fetch_array($result);
 
@@ -987,7 +989,7 @@ if(isset($_REQUEST['bandera'])) {
         $registro_pregunta = false;
 
         if(isset($_REQUEST['pregunta_hidden'])) {
-          $resultado=pg_query($conexion,"select MAX(pregunta.eid_pregunta) from pregunta");
+          $resultado=pg_query($conexion,"SELECT MAX(papregunta.eid_pregunta) from papregunta");
           $contado=0;
           while ($fila = pg_fetch_array($resultado)) {
             $contado=$fila[0];
@@ -1070,7 +1072,7 @@ if(isset($_REQUEST['bandera'])) {
           echo "</script>";
         }
         else{
-          $queryu=pg_query($conexion,"SELECT usuarios.cid_usuario, usuarios.cusuario FROM pbusuarios WHERE cid_usuario=$id");
+          $queryu=pg_query($conexion,"SELECT pbusuarios.cusuario FROM pbusuarios WHERE cid_usuario=$id");
           while ($filas = pg_fetch_array($queryu)) {
                 $usmod=$filas[1];
 

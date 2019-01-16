@@ -11,7 +11,7 @@
   <tbody>
     <?php
     $id=$_REQUEST['id_comprac'];
-    $query=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$id order by eid_nota asc");
+    $query=pg_query($conexion,"SELECT * FROM pcnotab WHERE eid_ordenc=$id order by eid_nota asc");
 
     while ($fila=pg_fetch_array($query)) {
     ?>
@@ -19,7 +19,7 @@
       <?php $newDate = date("d/m/Y", strtotime($fila[2])); ?>
       <td><?php echo $newDate ?></td>
       <?php
-      $query_emp=pg_query($conexion, "SELECT * FROM empleados WHERE cid_empleado='$fila[3]'");
+      $query_emp=pg_query($conexion, "SELECT * FROM paempleados WHERE cid_empleado='$fila[3]'");
       $empleado;
       while ($result=pg_fetch_array($query_emp)) {
         $empleado=$result[1]." ".$result[2];

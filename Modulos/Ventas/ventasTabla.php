@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <?php
-    $query_s= pg_query($conexion, "SELECT * FROM ordenc order by eid_compra asc");
+    $query_s= pg_query($conexion, "SELECT * FROM pbordenc order by eid_compra asc");
     while ($fila=pg_fetch_array($query_s)) {
     ?>
     <tr>
@@ -22,7 +22,7 @@
       <td><?php echo $newDate ?></td>
       <td>
         <?php
-          $query_cliente=pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[4]'");
+          $query_cliente=pg_query($conexion, "SELECT * FROM paclientes WHERE eid_cliente='$fila[4]'");
 
           while ($result=pg_fetch_array($query_cliente)) {
             echo $result[1]." ".$result[2];
@@ -34,7 +34,7 @@
         $restante=0.00;
         $id_abono;
         $abonado=0;
-        $query=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$fila[0]");
+        $query=pg_query($conexion,"SELECT * FROM pcnotab WHERE eid_ordenc=$fila[0]");
 
         while($result=pg_fetch_array($query)) {
           $abonado+=$result[1];

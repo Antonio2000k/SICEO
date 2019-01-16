@@ -6,10 +6,10 @@
         <h4 class="modal-title">Registro de cliente</h4>
       </div>
       <div class="modal-body">
-
+        <?php include 'cliente.php'; ?>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="registrarCliente()"><i class="fa fa-save"></i> Registrar</button>
+        <button type="button" class="btn btn-success" onclick="registrarCliente()"><i class="fa fa-save"></i> Registrar</button>
         <button type="button" class="btn btn-danger" onclick="verificarCamposCliente()"><i class="fa fa-close"></i> Cerrar</button>
       </div>
     </div>

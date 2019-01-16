@@ -44,9 +44,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
     function ajax_act(str) {
       if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-      } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          xmlhttp = new XMLHttpRequest();
+      }
+      else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
       }
       xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -55,6 +56,23 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       }
 
       xmlhttp.open("post", "ventasTabla.php", true);
+      xmlhttp.send();
+    }
+
+    function ajax_clientes() {
+      if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+      }
+      else {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function () {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+              document.getElementById("listaCliente").innerHTML = xmlhttp.responseText;
+          }
+      }
+
+      xmlhttp.open("post", "listaClientes.php", true);
       xmlhttp.send();
     }
 
@@ -312,6 +330,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 
         sumarValores();
       }
+    }
+
+    function modalCliente() {
+      $("#myCliente").modal();
     }
 
     function obtenerDatosProducto(obj, fila) {
@@ -580,7 +602,32 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     }
 
     function registrarCliente() {
-      swal('Agregado', 'Cliente registrado', 'success');
+      var nombre = document.getElementById('name').value;
+      var apellido = document.getElementById('lastname').value;
+      var telefono = document.getElementById('telefono').value;
+      var celular = document.getElementById('telefonoc').value;
+      var direcion = document.getElementById('direccion').value;
+      var sexo = document.getElementById('gender').value;
+      var fecha = document.getElementById('single_cal4').value;
+
+      if(nombre!="" || apellido!="" || telefono!="" || celular!="" || direcion!="" || fecha!="" || fecha!=null) {
+        $.post("buscar.php",{
+          "texto":nombre,"apellido":apellido,"telefono":telefono,"celular":celular,"direccion":direcion,"sexo":sexo,"fecha":fecha,"opcion":5},function(respuesta) {
+            if(respuesta!="") {
+              alert(respuesta);
+              $("#myCliente").modal("hide");
+              swal('Hecho', 'Cliente registrado exitosamente', 'success');
+              ajax_clientes();
+            }
+            else {
+              swal('Error', 'Hubo un error al registrar al cliente', 'error');
+            }
+        });
+
+      }
+      else {
+        swal('Error', 'Los campos no deben estar vacios', 'error');
+      }
     }
 
     function Notificacion(tipo,msg){
@@ -757,7 +804,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         })
       }
       else {
-        swal('Agregado', 'Se registro al cliente', 'success');
+        $('#myCliente').modal('hide');
       }
     }
 
@@ -957,7 +1004,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                 </div>
 
-                                <a href="../Cliente/registrarCliente.php?nuevo_cliente=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
+                                <!--../Cliente/registrarCliente.php?nuevo_cliente=si-->
+                                <a href="#nuevo_cliente" onclick="modalCliente();" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
                               </div>
 
                               <!--Inicio boton-->
@@ -1442,7 +1490,7 @@ if ($_POST) {
 
     $id_compra;
 
-    $query=pg_query($conexion,"SELECT * FROM ordenc WHERE eid_compra=$id_ordenc");
+    $query=pg_query($conexion,"SELECT * FROM pbordenc WHERE eid_compra=$id_ordenc");
     $total = 0;
 
     while($fila=pg_fetch_array($query)) {

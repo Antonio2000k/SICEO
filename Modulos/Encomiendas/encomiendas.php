@@ -101,16 +101,19 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       verEstado = function(valor, fila) {
         document.getElementById("id_estado").value = fila;
         $('#myEstado').modal();
-        if(valor) {
+        if(valor=="t") {
           $("#estado_encomienda").text("RECIBIDA");
           document.getElementById("estado_encomienda").style.color = "green";
           document.getElementById("estado").checked=1;
-          document.getElementById("estado").disabled="disabled";
-          document.getElementById("guardar_estado").disabled="disabled";
+          document.getElementById("estado").disabled=true;
+          document.getElementById("guardar_estado").disabled=true;
         }
         else {
-          $("#estado_encomienda").val("PENDIENTE");
+          $("#estado_encomienda").text("PENDIENTE");
           document.getElementById("estado_encomienda").style.color = "red";
+          document.getElementById("estado").checked=0;
+          document.getElementById("estado").disabled=false;
+          document.getElementById("guardar_estado").disabled=false;
         }
       };
 

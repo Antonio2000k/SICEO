@@ -15,14 +15,14 @@
     $id=$_REQUEST['idCliente'];
     $modelo=$_REQUEST['modelo'];
 
-    $query_expediente = pg_query($conexion, "SELECT * FROM expediente2 WHERE eid_cliente='$id'");
+    $query_expediente = pg_query($conexion, "SELECT * FROM pbexpediente2 WHERE eid_cliente='$id'");
 
     $expediente = "";
     while($fila=pg_fetch_array($query_expediente)) {
       $expediente = $fila[0];
     }
 
-    $query = pg_query($conexion, "SELECT * FROM examen WHERE cid_expediente='$expediente'");
+    $query = pg_query($conexion, "SELECT * FROM pcexamen WHERE cid_expediente='$expediente'");
     $id_examen = 0;
     $fecha = "";
 

@@ -4,7 +4,7 @@
 
     include('../../Config/conexion.php');
 
-    $query_s=pg_query($conexion,"SELECT * FROM productos WHERE ctipo = '$opcion'");
+    $query_s=pg_query($conexion,"SELECT * FROM pbproductos WHERE ctipo = '$opcion'");
     $cont = pg_num_rows($query_s);
 
     while($fila=pg_fetch_array($query_s)) {

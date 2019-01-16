@@ -18,7 +18,7 @@ if(isset($_REQUEST["id"])){
     $iddatos = $_REQUEST["id"];
 
     //Se obtiene el usuario para cuando se va a modificar.
-    $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$iddatos");
+    $query_s = pg_query($conexion, "SELECT * FROM pbusuarios WHERE cid_usuario=$iddatos");
     while ($fila = pg_fetch_array($query_s)) {
         //Se obtienen los valores de la base de datos.
         $cid_usuario = $fila[0];
@@ -28,7 +28,7 @@ if(isset($_REQUEST["id"])){
         $cid_empleado = $fila[4];
     }
 
-    $existe=pg_query($conexion,"SELECT * FROM pre_us WHERE cid_usuario=$cid_usuario");
+    $existe=pg_query($conexion,"SELECT * FROM pcpre_us WHERE cid_usuario=$cid_usuario");
     while ($fila = pg_fetch_array($existe)) {
       $id_pregunta = $fila[1];
     }
@@ -465,7 +465,7 @@ if(isset($_REQUEST["id"])){
                                               <?php
                                               include '../../Config/conexion.php';
 
-                                              $query_usuario = pg_query($conexion, "SELECT * FROM usuarios WHERE eprivilegio = 1");
+                                              $query_usuario = pg_query($conexion, "SELECT * FROM pbusuarios WHERE eprivilegio = 1");
                                               $contar = pg_num_rows($query_usuario);
 
                                                 if($eprivilegio==1) {
@@ -520,10 +520,10 @@ if(isset($_REQUEST["id"])){
                                             <option value="Seleccionar">Seleccione Empleado</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"SELECT * FROM empleados WHERE bestado = true");
+                                             $query_s=pg_query($conexion,"SELECT * FROM paempleados WHERE bestado = true");
 
                                             while ($fila = pg_fetch_array($query_s)) {
-                                              $query_usuario=pg_query($conexion, "SELECT * FROM usuarios WHERE cid_empleado='$fila[0]'");
+                                              $query_usuario=pg_query($conexion, "SELECT * FROM pbusuarios WHERE cid_empleado='$fila[0]'");
 
                                               //pg_num_rows($query_usuario)==0
                                               if($cid_empleado!=null) {
@@ -589,7 +589,7 @@ if(isset($_REQUEST["id"])){
                                             <option value="Seleccionar">Seleccione Pregunta</option>
                                             <?php
                                              include("../../Config/conexion.php");
-                                             $query_s=pg_query($conexion,"SELECT * FROM pregunta");
+                                             $query_s=pg_query($conexion,"SELECT * FROM papregunta");
 
                                             while ($fila = pg_fetch_array($query_s)) {
                                               if($id_pregunta==$fila[0]) {
@@ -636,7 +636,7 @@ if(isset($_REQUEST["id"])){
                                         if(isset($_REQUEST['id'])) {
                                           include "../../Config/conexion.php";
 
-                                          $query_s=pg_query($conexion,"SELECT * FROM pre_us WHERE cid_usuario=$cid_usuario");
+                                          $query_s=pg_query($conexion,"SELECT * FROM pcpre_us WHERE cid_usuario=$cid_usuario");
                                           while ($fila = pg_fetch_array($query_s)) {
                                             $crespuesta = $fila[3];
                                           }
@@ -738,13 +738,13 @@ if(isset($_REQUEST["id"])){
                                   <tbody>
                                     <?php
                                           include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "SELECT * FROM usuarios order by cid_usuario asc");
+                                          $query_s= pg_query($conexion, "SELECT * FROM pbusuarios order by cid_usuario asc");
                                           while($fila=pg_fetch_array($query_s)){
 
                                             $empleado = "";
                                             $privilegio = "";
 
-                                            $query_emp= pg_query($conexion, "SELECT * FROM empleados where cid_empleado='$fila[4]'");
+                                            $query_emp= pg_query($conexion, "SELECT * FROM paempleados where cid_empleado='$fila[4]'");
 
                                             while($fila_emp=pg_fetch_array($query_emp)) {
                                               $empleado = $fila_emp[1]." ".$fila_emp[2];
@@ -862,7 +862,7 @@ if(isset($_REQUEST['bandera'])) {
   // }
 
   include("../../Config/conexion.php");
-  $existe=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario='$user'");
+  $existe=pg_query($conexion,"SELECT * FROM pbusuarios WHERE cusuario='$user'");
   $aux_existe=false;
 
   while($fila=pg_fetch_array($existe)) {
@@ -873,7 +873,7 @@ if(isset($_REQUEST['bandera'])) {
     if($pass==$repass) {
       if($bandera=="add") {
         pg_query("BEGIN");
-        $result=pg_query($conexion,"INSERT INTO usuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
+        $result=pg_query($conexion,"INSERT INTO pbusuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
         $id_usuario=pg_fetch_array($result);
 
         $result_pregunta = null;
@@ -889,7 +889,7 @@ if(isset($_REQUEST['bandera'])) {
           }
           $contado++;
 
-          $result_pregunta=pg_query($conexion,"INSERT INTO pregunta (eid_pregunta, cpregunta, bestatico) VALUES ($contado, '$pregunta', false) RETURNING eid_pregunta");
+          $result_pregunta=pg_query($conexion,"INSERT INTO papregunta (eid_pregunta, cpregunta, bestatico) VALUES ($contado, '$pregunta', false) RETURNING eid_pregunta");
           $id_pregunta=pg_fetch_array($result_pregunta);
 
           if($result_pregunta) {
@@ -897,19 +897,19 @@ if(isset($_REQUEST['bandera'])) {
           }
 
           //Para la pregunta de usuario.
-          $resultado=pg_query($conexion,"select MAX(pre_us.id_preus) from pre_us");
+          $resultado=pg_query($conexion,"select MAX(pcpre_us.id_preus) from pcpre_us");
           $contado=0;
           while ($fila = pg_fetch_array($resultado)) {
             $contado=$fila[0];
           }
           $contado++;
 
-          $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
+          $result_pre_usuario=pg_query($conexion,"INSERT INTO pcpre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta[0],$id_usuario[0],'$respuesta')");
         }
         else {
           $id_pregunta = $id_pregunta_definida;
 
-          $result_pre_usuario=pg_query($conexion,"INSERT INTO pre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta,$id_usuario[0],'$respuesta')");
+          $result_pre_usuario=pg_query($conexion,"INSERT INTO pcpre_us (id_preus, idpregunta, cid_usuario, respuesta) VALUES ($contado, $id_pregunta,$id_usuario[0],'$respuesta')");
 
           $registro_pregunta = true;
         }
@@ -922,16 +922,16 @@ if(isset($_REQUEST['bandera'])) {
           echo "</script>";
         }
         else{
-           $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+           $query_ide=pg_query($conexion,"SELECT MAX(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Registro al Usuario '. $user ;
             while ($filas = pg_fetch_array($query_ide)) {
-                $ida=$filas[0];                                 
+                $ida=$filas[0];
                 $ida++ ;
-            } 
+            }
             ini_set('date.timezone', 'America/El_Salvador');
-            
+
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -948,14 +948,14 @@ if(isset($_REQUEST['bandera'])) {
                   // echo "ajax_act('');";
                   echo "</script>";
             }
-          
+
         }
       }
 
       if($bandera=="modif") {
         pg_query("BEGIN");
         $id=$_REQUEST["id_usuario"];
-        $result=pg_query($conexion,"UPDATE usuarios SET cpassword='$pass' WHERE cid_usuario=$id");
+        $result=pg_query($conexion,"UPDATE pbusuarios SET cpassword='$pass' WHERE cid_usuario=$id");
 
         if(!$result){
           pg_query("rollback");
@@ -965,21 +965,21 @@ if(isset($_REQUEST['bandera'])) {
           echo "</script>";
         }
         else{
-          $queryu=pg_query($conexion,"SELECT usuarios.cid_usuario, usuarios.cusuario FROM usuarios WHERE cid_usuario=$id");
+          $queryu=pg_query($conexion,"SELECT usuarios.cid_usuario, usuarios.cusuario FROM pbusuarios WHERE cid_usuario=$id");
           while ($filas = pg_fetch_array($queryu)) {
-                $usmod=$filas[1];                                 
-                
-            } 
-           $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                $usmod=$filas[1];
+
+            }
+           $query_ide=pg_query($conexion,"SELECT MAX(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Modificó al usuario '. $usmod ;
             while ($filas = pg_fetch_array($query_ide)) {
-                $ida=$filas[0];                                 
+                $ida=$filas[0];
                 $ida++ ;
-            } 
+            }
             ini_set('date.timezone', 'America/El_Salvador');
-            
+
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -996,7 +996,7 @@ if(isset($_REQUEST['bandera'])) {
                   echo "redireccionar('Informacion','Datos modificados', 'success');";
                   echo "</script>";
             }
-          
+
         }
       }
     }

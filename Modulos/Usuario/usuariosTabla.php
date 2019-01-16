@@ -38,7 +38,7 @@
       //Desencriptacion.
       $cadena_desencriptada = decrypt($iddatos,"fran2");
 
-      $query_s = pg_query($conexion, "SELECT * FROM usuarios WHERE cid_usuario=$cadena_desencriptada");
+      $query_s = pg_query($conexion, "SELECT * FROM pbusuarios WHERE cid_usuario=$cadena_desencriptada");
       while ($fila = pg_fetch_array($query_s)) {
           $cid_usuario = $fila[0];
           $cusuario = $fila[1];
@@ -47,7 +47,7 @@
           $cid_empleado = $fila[4];
       }
 
-      $existe=pg_query($conexion,"SELECT * FROM pre_us WHERE cid_usuario=$cid_usuario");
+      $existe=pg_query($conexion,"SELECT * FROM pcpre_us WHERE cid_usuario=$cid_usuario");
       while ($fila = pg_fetch_array($existe)) {
         $id_pregunta = $fila[1];
       }
@@ -189,10 +189,10 @@
                    <option value="Seleccionar">Seleccione Empleado</option>
                    <?php
                     include("../../Config/conexion.php");
-                    $query_s=pg_query($conexion,"SELECT * FROM empleados WHERE bestado = true");
+                    $query_s=pg_query($conexion,"SELECT * FROM paempleados WHERE bestado = true");
 
                    while ($fila = pg_fetch_array($query_s)) {
-                     $query_usuario=pg_query($conexion, "SELECT * FROM usuarios WHERE cid_empleado='$fila[0]'");
+                     $query_usuario=pg_query($conexion, "SELECT * FROM pbusuarios WHERE cid_empleado='$fila[0]'");
 
                      //pg_num_rows($query_usuario)==0
                      if($cid_empleado!=null) {
@@ -258,7 +258,7 @@
                    <option value="Seleccionar">Seleccione Pregunta</option>
                    <?php
                     include("../../Config/conexion.php");
-                    $query_s=pg_query($conexion,"SELECT * FROM pregunta WHERE bestatico = true");
+                    $query_s=pg_query($conexion,"SELECT * FROM papregunta WHERE bestatico = true");
 
                    while ($fila = pg_fetch_array($query_s)) {
                      ?>
@@ -299,7 +299,7 @@
                if(isset($_REQUEST['id'])) {
                  include "../../Config/conexion.php";
 
-                 $query_s=pg_query($conexion,"SELECT * FROM pre_us WHERE cid_usuario=$cid_usuario");
+                 $query_s=pg_query($conexion,"SELECT * FROM pcpre_us WHERE cid_usuario=$cid_usuario");
                  while ($fila = pg_fetch_array($query_s)) {
                    $crespuesta = $fila[3];
                  }

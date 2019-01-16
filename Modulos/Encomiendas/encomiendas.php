@@ -101,7 +101,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       verEstado = function(valor, fila) {
         document.getElementById("id_estado").value = fila;
         $('#myEstado').modal();
-        if(valor=="t") {
+        if(valor) {
           $("#estado_encomienda").text("RECIBIDA");
           document.getElementById("estado_encomienda").style.color = "green";
           document.getElementById("estado").checked=1;
@@ -912,11 +912,11 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       ?>
                                       <tr>
                                         <td><?php echo $fila[0] ?></td>
-                                        <td><?php echo $fila[1] ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($fila[1])) ?></td>
                                         <td>
                                           <?php
                                             if($fila[5]) {
-                                              echo $fila[5];
+                                              echo date('d-m-Y', strtotime($fila[5]));
                                             }
                                             else {
                                               echo "Sin fecha";
@@ -940,6 +940,97 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             </div>
                           </div>
                         </div>
+
+                        <!--Inicio modal ayuda-->
+                        <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                         <div class="modal-dialog modal-lg" role="document">
+                           <div class="modal-content">
+                             <div class="modal-header">
+                               <div style="float: right; color: red">
+                                   <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                     <span style="color: red" aria-hidden="true">&times;</span>
+                                   </button>
+                                 </div>
+                                 <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                                   <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE ENCOMIENDAS</h5>
+                                   <div class="clearfix"></div>
+                                 </div>
+                             </div>
+                             <div class="modal-body modal-md">
+                               <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                                 <!-- Wrapper for slides -->
+                                 <div class="carousel-inner">
+                                   <div class="item active">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda1.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Hacemos clic o escribimos el nombre del encomendero en el campo. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda2.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Si no esta registrado, dar clic en registrar uno nuevo. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda3.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Ingresar un detalle de la encomienda. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda4.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Al dar clic en el boton, se mostrara una ventana con los tipos de materiales y lente. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda5.0.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> El siguiente boton muestra las caracteristicas que se eligieron y poder cambiarlas si se desea. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda5.1.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Este boton permite ver el examen de ese lente. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda6.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> El boton ver encomiendas muestra todas las encomiendas que estan listas para ser enviadas. </p>
+                                     </div>
+                                   </div>
+
+                                   <div class="item ">
+                                     <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda7.png" alt="...">
+                                     <div class="carousel-caption">
+                                       <p style="color:black";> Luego solo procedemos a guardar cuando hemos completado los campos. </p>
+                                     </div>
+                                   </div>
+
+                                 </div>
+
+                                 <!-- Controls -->
+                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                   <span class="glyphicon glyphicon-chevron-left"></span>
+                                 </a>
+                                 <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                   <span class="glyphicon glyphicon-chevron-right"></span>
+                                 </a>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                       <!--Fin modal ayuda-->
 
                         <!--Inicio modal-->
                         <div class="modal fade" id="myEstado" role="dialog">
@@ -1038,7 +1129,7 @@ if(isset($_REQUEST["bandera"])) {
   pg_query("BEGIN");
 
   //Insersion de la encomienda.
-  $resultado = pg_query($conexion,"SELECT MAX(encomienda.eid_encomienda) FROM encomienda");
+  $resultado = pg_query($conexion,"SELECT MAX(pbencomienda.eid_encomienda) FROM pbencomienda");
   $contado = 0;
   while ($fila = pg_fetch_array($resultado)) {
     $contado = $fila[0];

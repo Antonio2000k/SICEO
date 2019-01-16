@@ -2,7 +2,7 @@
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "SELECT * from clientes where eid_cliente='$iddatos' order by cnombre");
+    $query_s = pg_query($conexion, "SELECT * from paclientes where eid_cliente='$iddatos' order by cnombre");
     while ($fila = pg_fetch_array($query_s)) {
         $RidCliente = $fila[0];
         $Rnombre = $fila[1];
@@ -142,8 +142,8 @@ if(isset($_REQUEST["id"])){
                                     <?php
                                           include("../../Config/conexion.php");
                                           $query_s= pg_query($conexion, "SELECT clientes.eid_cliente, clientes.cnombre, clientes.capellido, clientes.eedad, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, ex.cid_expediente
-                                              FROM clientes
-                                              INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente
+                                              FROM paclientes as clientes
+                                              INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente
                                                order by clientes.cnombre");
 
                                           while($fila=pg_fetch_array($query_s)){

@@ -86,7 +86,7 @@ STOCK
 <tbody id="imprimirTablaDesactivados">
 <?php
 include("../../Config/conexion.php");
-$query_s= pg_query($conexion, "select * from productos where bestado='f' order by cmodelo ");
+$query_s= pg_query($conexion, "select * from pbproductos where bestado='f' order by cmodelo ");
 while($fila=pg_fetch_array($query_s)){
 ?>
 <tr>

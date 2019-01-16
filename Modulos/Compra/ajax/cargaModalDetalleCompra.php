@@ -14,7 +14,7 @@
                         $tipo=$_REQUEST["tipo"];
                         if($tipo==="credito"){
                              pg_query("BEGIN");
-                            $resultado=pg_query($conexion, "SELECT compra.ecuotas, compra.eperiodo, compra.rabono,compra.rtotal_compra FROM compra  where compra.eid_compra=$cambio");
+                            $resultado=pg_query($conexion, "SELECT compra.ecuotas, compra.eperiodo, compra.rabono,compra.rtotal_compra FROM pbcompra as compra  where compra.eid_compra=$cambio");
                             $nue=pg_num_rows($resultado);
                             if($nue>0){
                             while ($fila = pg_fetch_array($resultado)) {
@@ -45,7 +45,7 @@
                         }
                         pg_query("BEGIN");
                         $resultado=pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, productos.cnombre, detalle_compra.rprecio_compradetalle FROM
-                        compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo where compra.eid_compra=$cambio");
+                        pbcompra as compra INNER JOIN pcdetalle_compra as detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN pbproductos as productos ON detalle_compra.id_producto = productos.cmodelo where compra.eid_compra=$cambio");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {

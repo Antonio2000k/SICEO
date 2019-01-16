@@ -152,7 +152,7 @@
               'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
               'Ultimo Año'  : [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
               'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
-              'Desde Siempre'  : [moment().subtract(3, 'year').startOf('year'), moment().endOf('year')],
+              
             },
             startDate: moment(),
             endDate  : moment(),
@@ -175,7 +175,7 @@
               'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
               'Ultimo Año'  : [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
               'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
-              'Desde Siempre'  : [moment().subtract(3, 'year').startOf('year'), moment().endOf('year')],
+              
             },
             startDate: moment(),
             endDate  : moment(),
@@ -186,6 +186,29 @@
             $("#rango1").val(start.format('DD/MM/YYYY')),
             $("#rango2").val(end.format('DD/MM/YYYY')),
             $('#daterange-btn2 ')
+            
+        })
+
+        $('#daterange-btn3').daterangepicker({
+            ranges   : {
+              'Hoy'       : [moment(), moment()],
+              'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
+              'Este Mes'  : [moment().startOf('month'), moment().endOf('month')],
+              'Ultimo Mes'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+              'Ultimo Año'  : [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+              'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
+              
+            },
+            startDate: moment(),
+            endDate  : moment(),
+            maxDate: moment()
+        },
+        
+        function (start, end) {
+            $("#rango5").val(start.format('DD/MM/YYYY')),
+            $("#rango6").val(end.format('DD/MM/YYYY')),
+            $('#daterange-btn3 ')
             
         })
 

@@ -1,4 +1,10 @@
-<?php session_start();     
+<?php session_start(); 
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+    
     $opcion=$_REQUEST["opcion"];
     if($opcion==="guardarTodo" || $opcion==="guardarTodoCredito"){
     $acumulador=$_SESSION["acumulador"];
@@ -10,55 +16,137 @@
       include '../../../Config/conexion.php';
       pg_query("BEGIN");
       if($opcion==="guardarTodo"){
-          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','0','0','0')");
+          $result=pg_query($conexion,"INSERT INTO pbcompra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','0','0','0')");
       }else if($opcion==="guardarTodoCredito"){
           $abono=$_REQUEST["abono"];
           $cuotas=$_REQUEST["cuota"];
           $periodo=$_REQUEST["periodo"];
-          $result=pg_query($conexion,"INSERT INTO compra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','".$cuotas."','".$periodo."','".$abono."')");
+          $result=pg_query($conexion,"INSERT INTO pbcompra(cid_empleado, ffecha_compra, rtotal_compra, ecuotas,eperiodo, rabono) values('".$id_empleado."',to_date('$fechita', 'dd/mm/yyyy'),'".$total."','".$cuotas."','".$periodo."','".$abono."')");
       }      
       if(!$result){
                 pg_query("rollback");
                 $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso Compra</h5></div>';
                 $quepaso=0;
-                }else{                    
-                    pg_query("commit");
-                    $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
-                        pg_query("BEGIN");
-                      $resultado=pg_query($conexion, "SELECT max(compra.eid_compra) FROM compra");
-                      $nue=pg_num_rows($resultado);
-                            if($nue>0){ while ($fila = pg_fetch_array($resultado)) {$maximo=$fila[0];}}
-                    
-                    for($k=1 ; $k<=$acumulador+1 ; $k++){
-                        pg_query("BEGIN");
-                        $resultado=pg_query($conexion,"select rprecio_compra from productos where cmodelo='".$matriz[$k][0]."'");
-                        while ($fila = pg_fetch_array($resultado)) {$precioCompra=$fila[0];}
-                        
-                        $resulta=pg_query($conexion,"INSERT INTO detalle_compra(id_producto, ecantidad, id_compra, rprecio_compradetalle) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo)."','".$precioCompra."')");
-                        if(!$resulta){
+                }else{
+                    if($opcion==="guardarTodo"){
+                        $fechaA= date("d/m/Y");
+                        $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                        $accion = 'El usuario ' . $nomusAccess. ' Registro una nueva compra al contado ' ;
+                        while ($filas = pg_fetch_array($query_ide)) {
+                            $ida=$filas[0];                                 
+                            $ida++ ;
+                        } 
+                        ini_set('date.timezone', 'America/El_Salvador');
+                                
+                        $hora = date("Y/m/d ") . date("h:i:s a");
+                        $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
+
+                        if(!$consult ){
                             pg_query("rollback");
-                             $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';
-                            $quepaso=0;
+                            echo "<script type='text/javascript'>";
+                            echo pg_result_error($conexion);
+                            echo "alert('Error');";
+                            echo "</script>";
                         }else{
                             pg_query("commit");
                             $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
-                        }
-                    }
+                            pg_query("BEGIN");
+                            $resultado=pg_query($conexion, "SELECT max(compra.eid_compra) FROM pbcompra as compra");
+                            $nue=pg_num_rows($resultado);
+                            if($nue>0){ while ($fila = pg_fetch_array($resultado)) {$maximo=$fila[0];}}
+                        
+                            for($k=1 ; $k<=$acumulador+1 ; $k++){
+                                pg_query("BEGIN");
+                                $resultado=pg_query($conexion,"select rprecio_compra from pbproductos where cmodelo='".$matriz[$k][0]."'");
+                                while ($fila = pg_fetch_array($resultado)) {$precioCompra=$fila[0];}
+                                
+                                $resulta=pg_query($conexion,"INSERT INTO pcdetalle_compra(id_producto, ecantidad, id_compra, rprecio_compradetalle) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo)."','".$precioCompra."')");
+                                if(!$resulta){
+                                    pg_query("rollback");
+                                     $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';
+                                    $quepaso=0;
+                                }else{
+                                    pg_query("commit");
+                                    $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                                }
+                            }
                             actualizaStock();
                             $matriz=$_SESSION["matriz"];
-                    for($j=1 ; $j<=$acumulador ; $j++){                        
-                            pg_query("BEGIN");                            
-                            //echo "update productos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'";
-                            $result=pg_query($conexion,"update productos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'");
-                            if(!$result){
-                            pg_query("rollback");
-                             $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso ActualizacionStock</h5></div>';
-                            $quepaso=0;
-                            }else{
-                                pg_query("commit");
-                                $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                            for($j=1 ; $j<=$acumulador ; $j++){                        
+                                    pg_query("BEGIN");                            
+                                    //echo "update productos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'";
+                                    $result=pg_query($conexion,"update pbproductos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'");
+                                    if(!$result){
+                                    pg_query("rollback");
+                                     $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso ActualizacionStock</h5></div>';
+                                    $quepaso=0;
+                                    }else{
+                                        pg_query("commit");
+                                        $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                                    }
                             }
+                        }   
+                    }else if($opcion==="guardarTodoCredito"){
+                        $fechaA= date("d/m/Y");
+                        $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                        $accion = 'El usuario ' . $nomusAccess. ' Registro una nueva compra al credito ' ;
+                        while ($filas = pg_fetch_array($query_ide)) {
+                            $ida=$filas[0];                                 
+                            $ida++ ;
+                        } 
+                        ini_set('date.timezone', 'America/El_Salvador');
+                                
+                        $hora = date("Y/m/d ") . date("h:i:s a");
+                        $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
+
+                        if(!$consult ){
+                            pg_query("rollback");
+                            echo "<script type='text/javascript'>";
+                            echo pg_result_error($conexion);
+                            echo "alert('Error');";
+                            echo "</script>";
+                        }else{
+                            pg_query("commit");
+                            $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                            pg_query("BEGIN");
+                            $resultado=pg_query($conexion, "SELECT max(compra.eid_compra) FROM pbcompra as compra");
+                            $nue=pg_num_rows($resultado);
+                            if($nue>0){ while ($fila = pg_fetch_array($resultado)) {$maximo=$fila[0];}}
+                        
+                            for($k=1 ; $k<=$acumulador+1 ; $k++){
+                                pg_query("BEGIN");
+                                $resultado=pg_query($conexion,"select rprecio_compra from pbproductos where cmodelo='".$matriz[$k][0]."'");
+                                while ($fila = pg_fetch_array($resultado)) {$precioCompra=$fila[0];}
+                                
+                                $resulta=pg_query($conexion,"INSERT INTO pcdetalle_compra(id_producto, ecantidad, id_compra, rprecio_compradetalle) values('".$matriz[$k][0]."','".$matriz[$k][1]."','".($maximo)."','".$precioCompra."')");
+                                if(!$resulta){
+                                    pg_query("rollback");
+                                     $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso detalle</h5></div>';
+                                    $quepaso=0;
+                                }else{
+                                    pg_query("commit");
+                                    $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                                }
+                            }
+                            actualizaStock();
+                            $matriz=$_SESSION["matriz"];
+                            for($j=1 ; $j<=$acumulador ; $j++){                        
+                                    pg_query("BEGIN");                            
+                                    //echo "update productos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'";
+                                    $result=pg_query($conexion,"update pbproductos set estock='".$matriz[$j][1]."' where cmodelo='".$matriz[$j][0]."'");
+                                    if(!$result){
+                                    pg_query("rollback");
+                                     $mensaje='<div class="text-center error"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos no almacenados Ingreso ActualizacionStock</h5></div>';
+                                    $quepaso=0;
+                                    }else{
+                                        pg_query("commit");
+                                        $mensaje='<div class="text-center info"><strong><h5><i class="fa fa-remove"></i>Error</strong>Datos Almacenados</h5></div>';
+                                    }
+                            }
+                        }   
                     }
+
+                    
                 }
         imprimirGuardar($mensaje,$quepaso);
     }
@@ -135,7 +223,7 @@ function actualizaStock(){
     include '../../../Config/conexion.php';
     for($i=1 ; $i<=$acumulador ; $i++){
             pg_query("BEGIN");
-            $resultado=pg_query($conexion, "select * from productos");
+            $resultado=pg_query($conexion, "select * from pbproductos");
             $nue=pg_num_rows($resultado);
                 if($nue>0){
                 while ($fila = pg_fetch_array($resultado)) {
@@ -187,7 +275,7 @@ function impresion($mensaje,$quepaso){
             $id=$matriz[$i][0];
             include '../../../Config/conexion.php';
             pg_query("BEGIN");
-            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
+            $resultado=pg_query($conexion, "select * from pbproductos where cmodelo='".$id."'");
             $nue=pg_num_rows($resultado);
                 if($nue>0){
                 while ($fila = pg_fetch_array($resultado)) {
@@ -219,7 +307,7 @@ function total(){
             $id=$matriz[$i][0];
             include '../../../Config/conexion.php';
             pg_query("BEGIN");
-            $resultado=pg_query($conexion, "select * from productos where cmodelo='".$id."'");
+            $resultado=pg_query($conexion, "select * from pbproductos where cmodelo='".$id."'");
             $nue=pg_num_rows($resultado);
                 if($nue>0){
                 while ($fila = pg_fetch_array($resultado)) {

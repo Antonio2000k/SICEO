@@ -12,25 +12,22 @@ require '../../Config/conexion.php';
 
       $primera=$altura+2; 
 
-      $segunda=$primera+$primera+3; 
-
-      $tercera=$segunda+13; 
+      $segunda=$primera+$primera+3;  
 
       $len=strlen($texto); 
       if($len>=1){ 
-        $w_texto=str_split($texto,40); 
+        $w_texto=str_split($texto,10); 
         $this->SetX($x_posicion); 
         $this->Cell($c_ancho,$primera,$w_texto[0],0,0,'C',0); 
         $this->SetX($x_posicion); 
         $this->Cell($c_ancho,$segunda,$w_texto[1],0,0,'C',0); 
-        $this->SetX($x_posicion); 
-        $this->Cell($c_ancho,$tercera,$w_texto[2],0,0,'C',0); 
+        
         
         $this->SetX($x_posicion); 
-        $this->Cell($c_ancho,$c_alto,'',1,0,'C',0); 
+        $this->Cell($c_ancho,$c_alto,'',0,0,'C',0); 
       }else{ 
           $this->SetX($x_posicion); 
-          $this->Cell($c_ancho,$c_alto,$texto, 1,0,'C',0);
+          $this->Cell($c_ancho,$c_alto,$texto, 0,0,'C',0);
       } 
     } 
 
@@ -91,20 +88,22 @@ require '../../Config/conexion.php';
       $y = $this->GetY();
       $this->SetY($y+3);
 
-      $this->SetX(10); 
+      $this->SetX(12); 
       $this->SetFillColor(255, 255, 255);
       $this->SetTextColor(0,0,0);
       $this->SetFont('times','B',11);
       $this->SetDrawColor(25, 25, 112);
       $this->SetLineWidth(2);
-      $this->Line(10, $this->GetY()+7 , 202 , $this->GetY()+7);
+      $this->Line(12, $this->GetY()+7 , 202 , $this->GetY()+7);
 
       $x_posicion=$this->getx();  
-      $this->vcellT(24,6,$x_posicion,'FECHA', 0,1,'C',1);
+      $this->vcellT(19,6,$x_posicion,'FECHA', 0,1,'C',1);
       $x_posicion=$this->getx();  
-      $this->vcellT(24,6,$x_posicion,'HORA', 0,1,'C',1);
+      $this->vcellT(21,6,$x_posicion,'HORA', 0,1,'C',1);
       $x_posicion=$this->getx(); 
-      $this->vcellT(140,6,$x_posicion,utf8_decode('ACCIÓN'),0,0,'C',1);
+      $this->vcellT(122,6,$x_posicion,utf8_decode('ACCIÓN'),0,1,'C',1);
+      $x_posicion=$this->getx();                           
+      $this->vcell(28,6,$x_posicion,utf8_decode('REFERENCIA'),0,0,'C',1);
       
       $this->Ln(); 
       
@@ -138,7 +137,7 @@ require '../../Config/conexion.php';
 
   $pdf->AddPage();
   
-    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha, bitacora.ffechaingreso FROM bitacora 
+    $query_s= pg_query($conexion, "SELECT bitacora.eid_bitacora, bitacora.cid_usuario, bitacora.accion, bitacora.ffecha, bitacora.ffechaingreso, bitacora.idmod FROM pcbitacora as bitacora
       WHERE bitacora.ffechaingreso BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE)  order by  bitacora.ffechaingreso asc ");
   
   while($row=pg_fetch_assoc($query_s)){ 
@@ -149,17 +148,19 @@ require '../../Config/conexion.php';
     $hora2 = date_format($hora, 'h:i:s a'); 
     
     
-    $pdf->SetFont('times','B',11);
+    $pdf->SetFont('times','B',10);
     $pdf->SetX(12); 
     $x_posicion=$pdf->getx(); 
     $pdf->SetFillColor(255, 255, 255);
     $pdf->SetTextColor(0,0,0);
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(24,6,$dia1, 1,0,'C',1);
+    $pdf->cell(19,6,$dia1, 1,0,'C',1);
     $x_posicion=$pdf->getx();   
-    $pdf->cell(24,6,$hora2 ,1,0,'C',1);
+    $pdf->cell(21,6,$hora2 ,1,0,'C',1);
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(142,6,utf8_decode($row['accion']),1,1,'C',1);
+    $pdf->cell(122,6,utf8_decode($row['accion']),1,0,'L',1);
+    $x_posicion=$pdf->getx(); 
+    $pdf->cell(28,6,utf8_decode($row['idmod']),1,1,'C',1);
     
           
   }

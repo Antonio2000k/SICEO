@@ -3,7 +3,7 @@
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["idd"];
    
-    $query_s = pg_query($conexion, "select cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo,
+    $query_s = pg_query($conexion, "SELECT cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo,
                                     cl.ctelefonof, cl.cdireccion, ex.eid_expediente from expediente as ex 
                                     INNER JOIN clientes as cl on ex.eid_cliente = cl.eid_cliente
                                     WHERE cl.eid_cliente = '$iddatos'");

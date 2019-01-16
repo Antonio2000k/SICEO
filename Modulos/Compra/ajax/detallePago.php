@@ -3,7 +3,7 @@
 include '../../../Config/conexion.php';
     $idCompra=$_REQUEST['idd'];
     pg_query("BEGIN");
-    $resultado=pg_query($conexion, "SELECT compra.ecuotas, compra.eperiodo, compra.rabono,compra.rtotal_compra FROM compra  where compra.eid_compra=$idCompra");
+    $resultado=pg_query($conexion, "SELECT compra.ecuotas, compra.eperiodo, compra.rabono,compra.rtotal_compra FROM pbcompra as compra  where compra.eid_compra=$idCompra");
     $nue=pg_num_rows($resultado);
     if($nue>0){
     while ($fila = pg_fetch_array($resultado)) {

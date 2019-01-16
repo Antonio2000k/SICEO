@@ -221,7 +221,7 @@ function Expediente(id){
         var fechafini = document.getElementById("rango4").value;
 
         if(fechaini != "" && fechafini != ""){
-          window.open("../../reporteVentas.php?fechaini="+fechaini+"&fechafini="+fechafini+"&tipo=notab");
+          window.open("../../reporteCliente.php?fechaini="+fechaini+"&fechafini="+fechafini);
           $("#rango3").val('');
           $("#rango4").val('');
         }

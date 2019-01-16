@@ -233,7 +233,7 @@ require 'Config/conexion.php';
       $pdf->cell(15,6,"$ ".$row['rsaldo'] ,1,1,'C',1);
     }
 
-    $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
+    $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from pbordenc as o INNER JOIN pcnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
        $pdf->SetFont('times','B',14);
         $pdf->SetXY(155,44);
         $pdf->cell(40,8,'INGRESOS TOTALES ',0,1,'C',1);
@@ -252,10 +252,10 @@ require 'Config/conexion.php';
       break;
     case 'ordenc':
 
-      $queryS= pg_query($conexion, "SELECT ordenc.ffecha, ordenc.rtotal, clientes.cnombre, clientes.capellido, ordenc.eid_compra, clientes.eid_cliente, detalle_notab.ecantidad, detalle_notab.cmodelo, detalle_notab.cservicio  FROM ordenc  
-        INNER JOIN clientes ON ordenc.ccliente = clientes.eid_cliente
-        INNER JOIN notab ON notab.eid_ordenc = ordenc.eid_compra
-        INNER JOIN detalle_notab ON detalle_notab.eid_nota = notab.eid_nota
+      $queryS= pg_query($conexion, "SELECT ordenc.ffecha, ordenc.rtotal, clientes.cnombre, clientes.capellido, ordenc.eid_compra, clientes.eid_cliente, detalle_notab.ecantidad, detalle_notab.cmodelo, detalle_notab.cservicio  FROM pbordenc as ordenc  
+        INNER JOIN paclientes as clientes ON ordenc.ccliente = clientes.eid_cliente
+        INNER JOIN pbnotab as notab ON notab.eid_ordenc = ordenc.eid_compra
+        INNER JOIN pddetalle_notab as detalle_notab ON detalle_notab.eid_nota = notab.eid_nota
         WHERE ordenc.ffecha BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by ordenc.eid_compra asc");
 
     while($row=pg_fetch_assoc($queryS)){ 
@@ -283,7 +283,7 @@ require 'Config/conexion.php';
       
     }
 
-    $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
+    $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from pbordenc as o INNER JOIN pbnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE notab.ffecha_pago BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
        $pdf->SetFont('times','B',14);
         $pdf->SetXY(155,44);
         $pdf->cell(40,8,'INGRESOS NETOS ',0,1,'C',1);

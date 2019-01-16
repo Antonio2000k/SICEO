@@ -205,49 +205,49 @@ require 'Config/conexion.php';
 	if($proveedor!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
+			garantia.cdenominacion, proveedors.cempresa FROM paproveedor as proveedors
+			INNER JOIN pbproductos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
+			INNER JOIN pamarca as marca ON producto.eid_marca = marca.eid_marca
+			INNER JOIN pagarantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE proveedors.eid_proveedor = '$proveedor'  ");
 	} 
 	
 	if($estado!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
+			garantia.cdenominacion, proveedors.cempresa FROM paproveedor as proveedors
+			INNER JOIN pbproductos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
+			INNER JOIN pamarca as marca ON producto.eid_marca = marca.eid_marca
+			INNER JOIN pagarantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE producto.bestado = '$estado'  ");
 	} 
 
 	if($tipo!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
+			garantia.cdenominacion, proveedors.cempresa FROM paproveedor as proveedors
+			INNER JOIN pbproductos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
+			INNER JOIN pamarca as marca ON producto.eid_marca = marca.eid_marca
+			INNER JOIN pagarantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE producto.ctipo = '$tipo'  ");
 	}
 
 	if($marca!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
+			garantia.cdenominacion, proveedors.cempresa FROM paproveedor as proveedors
+			INNER JOIN pbproductos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
+			INNER JOIN pamarca as marca ON producto.eid_marca = marca.eid_marca
+			INNER JOIN pagarantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE marca.cnombre = '$marca'  ");
 	}
 	if($garantia!= ""){
 		$query_s= pg_query($conexion, "SELECT producto.cmodelo, producto.cnombre, producto.estock, producto.rprecio_compra, 
 			producto.ccolor, producto.rprecio_venta, producto.bestado, producto.ctipo, marca.cnombre as marcas, garantia.etiempo,
-			garantia.cdenominacion, proveedors.cempresa FROM proveedor as proveedors
-			INNER JOIN productos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
-			INNER JOIN marca as marca ON producto.eid_marca = marca.eid_marca
-			INNER JOIN garantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
+			garantia.cdenominacion, proveedors.cempresa FROM paproveedor as proveedors
+			INNER JOIN pbproductos as producto ON producto.eid_proveedor = proveedors.eid_proveedor
+			INNER JOIN pamarca as marca ON producto.eid_marca = marca.eid_marca
+			INNER JOIN pagarantia as garantia ON producto.eid_garantia = garantia.eid_garantia 
 			WHERE garantia.cdenominacion = '$garantia'  ");
 	}
 	

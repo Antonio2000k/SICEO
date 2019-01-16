@@ -199,7 +199,7 @@ require 'Config/conexion.php';
             $mes=$i;
         
         if($tipos==="ingreso")
-            $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
+            $consulta="SELECT sum(o.rtotal), sum(notab.rsaldo) from pbordenc as o INNER JOIN pcnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         
         $pdf->SetFont('times','B',9);
@@ -317,7 +317,7 @@ require 'Config/conexion.php';
         else
             $mes=$i;
         if($tipo==="egreso")
-            $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
+            $consulta="select sum(c.rabono), sum(rtotal_compra) from pbcompra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         
         $pdf->SetFont('times','B',9);
@@ -441,7 +441,7 @@ require 'Config/conexion.php';
             $mes='0'.$i;
         else
             $mes=$i;
-        	$consultae= pg_query($conexion, "SELECT sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'");
+        	$consultae= pg_query($conexion, "SELECT sum(c.rabono), sum(rtotal_compra) from pbcompra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'");
 
          while($resultadoe=pg_fetch_array($consultae)){		
 			if($resultadoe[0]===null){
@@ -454,7 +454,7 @@ require 'Config/conexion.php';
 		} 
         
         
-        $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."' ");
+        $consultai= pg_query($conexion, "SELECT sum(o.rtotal), sum(notab.rsaldo) from pbordenc as o INNER JOIN pcnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."' ");
         
         while($resultadoi=pg_fetch_array($consultai)){	
 			if($resultadoi[1]===null){

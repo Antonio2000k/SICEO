@@ -12,7 +12,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from proveedor where eid_proveedor=$iddatos");
+    $query_s = pg_query($conexion, "select * from paproveedor where eid_proveedor=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
         $Rid_proveedor = $fila[0];
         $Rnombre = $fila[1];
@@ -347,7 +347,7 @@ $email=$_REQUEST["email"];
 include("../../Config/conexion.php");
 
     
-    $resulta  = pg_query("SELECT * from proveedor where  cemail= '$email'");
+    $resulta  = pg_query("SELECT * from paproveedor where  cemail= '$email'");
   if (pg_num_rows($resulta)>0) {                  
       echo "<script language='javascript'>";
       echo "alertaSweet('Error','Este correo ya existe ','error');";
@@ -356,18 +356,18 @@ include("../../Config/conexion.php");
   }else{
     if($bandera=="add"){
     pg_query("BEGIN");
-    $r=pg_query($conexion,"select count(*) from proveedor");
+    $r=pg_query($conexion,"select count(*) from paproveedor");
     while ($fila = pg_fetch_array($r)) {
             $ida=$fila[0];                                 
             $ida++ ;
         } 
       
-          $result=pg_query($conexion,"insert into proveedor(eid_proveedor,cnombre, capellido, cempresa,ctelefonof, ccelular, cdireccion, bestado ,cemail ) values('$ida','$nombre','$apellido','$empresa','$telefono','$celular','$direccion','1', '$email')");
+          $result=pg_query($conexion,"insert into paproveedor(eid_proveedor,cnombre, capellido, cempresa,ctelefonof, ccelular, cdireccion, bestado ,cemail ) values('$ida','$nombre','$apellido','$empresa','$telefono','$celular','$direccion','1', '$email')");
           if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                      $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+                      $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                       $accion = 'El usuario ' . $nomusAccess. ' Registro al Proveedor '. $nombre .' '.$apellido;
                       while ($filas = pg_fetch_array($query_ide)) {
                           $ida=$filas[0];                                 
@@ -375,8 +375,9 @@ include("../../Config/conexion.php");
                       } 
                       ini_set('date.timezone', 'America/El_Salvador');
                       
+                      $fechaA= date("d/m/Y");
                       $hora = date("Y/m/d ") . date("h:i:s a");
-                      $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+                      $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
 
                       if(!$consult ){
                               pg_query("rollback");
@@ -403,12 +404,12 @@ include("../../Config/conexion.php");
       if(validaCorreo($correo,$baccion)){
           mensajeInformacion('Error','Correo ya se encuentra registrado','error');
       }else{
-          $result=pg_query($conexion,"update proveedor set  cnombre='$nombre', capellido='$apellido', cempresa='$empresa', ctelefonof='$telefono', ccelular='$celular', cdireccion='$direccion',cemail='$email' where eid_proveedor='$baccion'");    
+          $result=pg_query($conexion,"update paproveedor set  cnombre='$nombre', capellido='$apellido', cempresa='$empresa', ctelefonof='$telefono', ccelular='$celular', cdireccion='$direccion',cemail='$email' where eid_proveedor='$baccion'");    
             if(!$result){
         pg_query("rollback");
         mensajeInformacion('Error','Datos no almacenados','error');
         }else{
-          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Modificó al Proveedor '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
@@ -416,8 +417,9 @@ include("../../Config/conexion.php");
             } 
             ini_set('date.timezone', 'America/El_Salvador');
             
+            $fechaA= date("d/m/Y");
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -450,12 +452,30 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
     else
         $estado=1;
      pg_query("BEGIN");
-    $result=pg_query($conexion,"update proveedor set bestado='$estado' where eid_proveedor='$baccion'");      
+    $result=pg_query($conexion,"update paproveedor set bestado='$estado' where eid_proveedor='$baccion'");      
       if(!$result){
         pg_query("rollback");
         mensajeInformacion('Informacion','Datos no almacenados','success');
         }else{
-          pg_query("commit");
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                      $accion = 'El usuario ' . $nomusAccess. ' dio de baja a un encomendero '. $nombre .' '.$apellido;
+                      while ($filas = pg_fetch_array($query_ide)) {
+                          $ida=$filas[0];                                 
+                          $ida++ ;
+                      } 
+                      ini_set('date.timezone', 'America/El_Salvador');
+                      $fechaA= date("d/m/Y");  
+                      $hora = date("Y/m/d ") . date("h:i:s a");
+                      $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
+
+                      if(!$consult ){
+                              pg_query("rollback");
+                              echo "<script type='text/javascript'>";
+                              echo pg_result_error($conexion);
+                              echo "alert('Error');";
+                              echo "</script>";
+                      }else{
+                        pg_query("commit");
                 echo "<script type='text/javascript'>";
                     echo "alertaSweet('Informacion','Datos actualizados !','success');";
 
@@ -463,6 +483,8 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
                                       location.href=('proveedor.php');
                                     }, 1000);";
                       echo "</script>";
+                      }
+          
         }
 
      

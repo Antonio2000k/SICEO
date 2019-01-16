@@ -126,10 +126,10 @@ require 'Config/conexion.php';
 	$pdf->AddPage();
 	if($estado === "t"){
 		$query_s= pg_query($conexion, "SELECT proveedor.cnombre, proveedor.capellido, proveedor.cempresa, proveedor.ctelefonof,
-				proveedor.ccelular, proveedor.cdireccion, proveedor.cemail FROM proveedor WHERE proveedor.bestado = 't'");
+				proveedor.ccelular, proveedor.cdireccion, proveedor.cemail FROM paproveedor as proveedor WHERE proveedor.bestado = 't'");
 	}else if($estado === "f") {
 		$query_s= pg_query($conexion, "SELECT proveedor.cnombre, proveedor.capellido, proveedor.cempresa, proveedor.ctelefonof,
-				proveedor.ccelular, proveedor.cdireccion, proveedor.cemail FROM proveedor WHERE proveedor.bestado = 'f'");
+				proveedor.ccelular, proveedor.cdireccion, proveedor.cemail FROM paproveedor as proveedor WHERE proveedor.bestado = 'f'");
 	}
 	
 

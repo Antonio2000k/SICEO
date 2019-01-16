@@ -1,9 +1,15 @@
 
-<?php
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
 if(isset($_REQUEST["id"])){
   include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from proveedor where eid_proveedor=$iddatos");
+    $query_s = pg_query($conexion, "select * from paproveedor where eid_proveedor=$iddatos");
      while ($fila = pg_fetch_array($query_s)) {
         $Rid_proveedor = $fila[0];
         $Rnombre = $fila[1];
@@ -237,7 +243,7 @@ if(isset($_REQUEST["id"])){
                                   <tbody id="imp">
                                     <?php
                                           include("../../Config/conexion.php");
-                                          $query_s= pg_query($conexion, "select * from proveedor where bestado='t'  order  by cnombre");
+                                          $query_s= pg_query($conexion, "select * from paproveedor where bestado='t'  order  by cnombre");
                                           while($fila=pg_fetch_array($query_s)){
                                       ?>
                                     <tr>
@@ -407,19 +413,38 @@ if($bandera=="Dbajar" || $bandera=='Dactivar'){
     else
         $estado=1;
      pg_query("BEGIN");
-    $result=pg_query($conexion,"update proveedor set bestado='$estado' where eid_proveedor='$baccion'");      
+    $result=pg_query($conexion,"update paproveedor set bestado='$estado' where eid_proveedor='$baccion'");      
       if(!$result){
         pg_query("rollback");
         mensajeInformacion('Error','Datos no almacenados','error');
         }else{
-          pg_query("commit");
+          $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                      $accion = 'El usuario ' . $nomusAccess. ' dio de baja a un proveedor ';
+                      while ($filas = pg_fetch_array($query_ide)) {
+                          $ida=$filas[0];                                 
+                          $ida++ ;
+                      } 
+                      ini_set('date.timezone', 'America/El_Salvador');
+                      $fechaA= date("d/m/Y");  
+                      $hora = date("Y/m/d ") . date("h:i:s a");
+                      $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '')");
+
+                      if(!$consult ){
+                              pg_query("rollback");
+                              echo "<script type='text/javascript'>";
+                              echo pg_result_error($conexion);
+                              echo "alert('Error');";
+                              echo "</script>";
+                      }else{
+                        pg_query("commit");
                 echo "<script type='text/javascript'>";
-                    echo "alertaSweet('Exito!','Datos actualizados !','success');";
+                    echo "alertaSweet('Informacion','Datos actualizados !','success');";
 
                     echo "setTimeout (function llamarPagina(){
                                       location.href=('proveedori.php');
                                     }, 1000);";
                       echo "</script>";
+                      }
         }
 }
      

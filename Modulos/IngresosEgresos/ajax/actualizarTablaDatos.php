@@ -26,9 +26,9 @@
             else
                 $mes=$i;
         if($tipo==="egreso")
-            $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
+            $consulta="select sum(c.rabono), sum(rtotal_compra) from pbcompra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM')='".$year."-".$mes."'";
         else if($tipo==="ingreso")
-            $consulta="SELECT sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
+            $consulta="SELECT sum(notab.rsaldo),sum(o.rtotal) from pbordenc as o INNER JOIN pcnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM') ='".$year."-".$mes."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         ?>
             <tr class="text-center">
@@ -81,9 +81,9 @@
             else
                 $dia=$i;
         if($tipo==="egreso")
-            $consulta="select sum(c.rabono), sum(rtotal_compra) from compra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$dia."'";
+            $consulta="select sum(c.rabono), sum(rtotal_compra) from pbcompra as c where TO_CHAR(c.ffecha_compra,'YYYY-MM-DD')='".$year."-".$mes."-".$dia."'";
         if($tipo==="ingreso")
-            $consulta="SELECT  sum(notab.rsaldo),sum(o.rtotal) from ordenc as o INNER JOIN notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') ='".$year."-".$mes."-".$dia."'";
+            $consulta="SELECT  sum(notab.rsaldo),sum(o.rtotal) from pbordenc as o INNER JOIN pcnotab as notab ON notab.eid_ordenc = o.eid_compra WHERE TO_CHAR(o.ffecha,'YYYY-MM-DD') ='".$year."-".$mes."-".$dia."'";
         $resultado=pg_fetch_array(pg_query($conexion,$consulta));
         ?>
             <tr class="text-center">

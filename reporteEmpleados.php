@@ -152,7 +152,7 @@ require 'Config/conexion.php';
 	
 	if($estado!= ""){
 		$query_s= pg_query($conexion, "SELECT empleados.cid_empleado, empleados.cnombre, empleados.capellido, empleados.ctelefonof, empleados.ccelular, empleados.cdui, empleados.cdireccion, empleados.ccorreo 
-			FROM empleados WHERE empleados.bestado =  '$estado'  ");
+			FROM paempleados as empleados WHERE empleados.bestado =  '$estado'  ");
 	}
 	
 	while($row=pg_fetch_assoc($query_s)){	

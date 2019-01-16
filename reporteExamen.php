@@ -91,14 +91,14 @@
 	medidas.cexamino,
 	medidas.cobservacion 
 FROM
-	expediente2 as expediente
-	INNER JOIN clientes ON expediente.eid_cliente = clientes.eid_cliente
-	INNER JOIN examen ON examen.cid_expediente = expediente.cid_expediente
-	INNER JOIN antecedente_medico ON examen.eid_antecedente_medico = antecedente_medico.eid_antecedente_medico
-	INNER JOIN antecedente_ocular ON examen.eid_antecedente_ocular = antecedente_ocular.eid_antecedente_ocular
-	INNER JOIN lensometria ON examen.eid_lensometria = lensometria.eid_lensometria
-	INNER JOIN refraccion ON examen.eid_refraccion = refraccion.eid_refraccion
-	INNER JOIN medidas ON examen.eid_medidas = medidas.eid_medidas WHERE examen.cid_expediente = '$iddatos' and examen.eid_examen = '$idexam'");
+	pbexpediente2 as expediente
+	INNER JOIN paclientes as clientes ON expediente.eid_cliente = clientes.eid_cliente
+	INNER JOIN pcexamen as examen ON examen.cid_expediente = expediente.cid_expediente
+	INNER JOIN paantecedente_medico as antecedente_medico ON examen.eid_antecedente_medico = antecedente_medico.eid_antecedente_medico
+	INNER JOIN paantecedente_ocular as antecedente_ocular ON examen.eid_antecedente_ocular = antecedente_ocular.eid_antecedente_ocular
+	INNER JOIN palensometria as lensometria ON examen.eid_lensometria = lensometria.eid_lensometria
+	INNER JOIN parefraccion as refraccion ON examen.eid_refraccion = refraccion.eid_refraccion
+	INNER JOIN pamedidas as medidas ON examen.eid_medidas = medidas.eid_medidas WHERE examen.cid_expediente = '$iddatos' and examen.eid_examen = '$idexam'");
 
 	
 	

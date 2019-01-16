@@ -16,7 +16,7 @@
                    <?php
                       $cambio=$_REQUEST["idd"];
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "SELECT productos.ccolor, productos.cmodelo FROM productos where productos.cmodelo='".$cambio."'");
+                        $resultado=pg_query($conexion, "SELECT pbproductos.ccolor, pbproductos.cmodelo FROM pbproductos where pbproductos.cmodelo='".$cambio."'");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {
@@ -35,8 +35,9 @@
                        <?php
                         $cambio=$_REQUEST["idd"];
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "SELECT proveedor.cnombre, proveedor.capellido, proveedor.cempresa, proveedor.ctelefonof,
-                        proveedor.cdireccion, marca.cnombre FROM productos INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor INNER JOIN marca ON productos.eid_marca = marca.eid_marca where productos.cmodelo='".$cambio."'");
+                        $resultado=pg_query($conexion, "SELECT paproveedor.cnombre, paproveedor.capellido, paproveedor.cempresa, paproveedor.ctelefonof,
+                        paproveedor.cdireccion, pamarca.cnombre FROM pbproductos as productos 
+                        INNER JOIN paproveedor  ON productos.eid_proveedor = paproveedor.eid_proveedor  INNER JOIN pamarca ON productos.eid_marca = pamarca.eid_marca  where productos.cmodelo='".$cambio."'");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {
@@ -69,8 +70,8 @@
                        <?php
                         $cambio=$_REQUEST["idd"];
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "SELECT proveedor.cnombre, proveedor.capellido, proveedor.cempresa, proveedor.ctelefonof,
-                        proveedor.cdireccion, marca.cnombre FROM productos INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor INNER JOIN marca ON productos.eid_marca = marca.eid_marca where productos.cmodelo='".$cambio."'");
+                        $resultado=pg_query($conexion, "SELECT paproveedor.cnombre, paproveedor.capellido, paproveedor.cempresa, paproveedor.ctelefonof,
+                        paproveedor.cdireccion, pamarca.cnombre FROM pbproductos as productos INNER JOIN paproveedor ON productos.eid_proveedor = paproveedor.eid_proveedor INNER JOIN pamarca ON productos.eid_marca = pamarca.eid_marca where productos.cmodelo='".$cambio."'");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {
@@ -93,7 +94,7 @@
                        <?php
                         $cambio=$_REQUEST["idd"];
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "SELECT garantia.etiempo, garantia.cdenominacion, productos.cnombre, productos.cmodelo FROM garantia INNER JOIN productos ON productos.eid_garantia = garantia.eid_garantia where productos.cmodelo='".$cambio."'");
+                        $resultado=pg_query($conexion, "SELECT garantia.etiempo, garantia.cdenominacion, pbproductos.cnombre, pbproductos.cmodelo FROM pagarantia as garantia INNER JOIN pbproductos ON pbproductos.eid_garantia = garantia.eid_garantia where pbproductos.cmodelo='".$cambio."'");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {

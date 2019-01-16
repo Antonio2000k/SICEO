@@ -15,7 +15,7 @@
                        <?php
                         $cambio=$_REQUEST["idd"];
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "SELECT productos.rprecio_compra, productos.rprecio_venta FROM productos INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor INNER JOIN marca ON productos.eid_marca = marca.eid_marca where productos.cmodelo='".$cambio."'");
+                        $resultado=pg_query($conexion, "SELECT productos.rprecio_compra, productos.rprecio_venta FROM pbproductos as productos INNER JOIN paproveedor as proveedor ON productos.eid_proveedor = proveedor.eid_proveedor INNER JOIN pamarca as marca ON productos.eid_marca = marca.eid_marca where productos.cmodelo='".$cambio."'");
                         $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {                               

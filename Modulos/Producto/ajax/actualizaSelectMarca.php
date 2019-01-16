@@ -5,7 +5,7 @@
         <option value="0">Seleccione</option>
         <?php       
         pg_query("BEGIN");
-        $resultado=pg_query($conexion, "select * from marca");
+        $resultado=pg_query($conexion, "select * from pamarca");
         $nue=pg_num_rows($resultado);
             if($nue>0){
             while ($fila = pg_fetch_array($resultado)) {

@@ -152,32 +152,32 @@
 	
 	
 	if($fechaini!= "" && $fechafini!= "" ){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-		INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.ffechar BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by clientes.ffechar asc  " );
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes AS clientes
+		INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.ffechar BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) order by clientes.ffechar asc  " );
 	}
 	if($sexo!= ""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-	INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.csexo = '".$sexo."' ");
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes as clientes
+	INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.csexo = '".$sexo."' ");
 	}
 	if($fechaini!= "" && $fechafini!= "" && $sexo!= ""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes as clientes 
 		INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.ffechar BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) AND clientes.csexo = '$sexo' 	" );
 	}
 	if($edad!= ""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-	INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad = '".$edad."' ");
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes  as clientes
+	INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad = '".$edad."' ");
 	}
 	if($edadMe!= ""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-	INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad < '".$edadMe."' ");
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes as clientes 
+	INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad < '".$edadMe."' ");
 	}
 	if($edadMa!= ""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-	INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad > '".$edadMa."' ");
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes as clientes
+	INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad > '".$edadMa."' ");
 	}
 	if($edadMe!= "" && $edadMa!=""){
-		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM clientes 
-	INNER JOIN expediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad > '$edadMe'  AND clientes.eedad < '$edadMa' ");
+		$query_s= pg_query($conexion, "SELECT clientes.ffechar, ex.cid_expediente, clientes.eid_cliente, clientes.cnombre, clientes.capellido, 	clientes.ffecha, clientes.csexo, clientes.ctelefonof, clientes.cdireccion, clientes.eedad FROM paclientes as clientes 
+	INNER JOIN pbexpediente2 as ex ON clientes.eid_cliente = ex.eid_cliente WHERE clientes.eedad > '$edadMe'  AND clientes.eedad < '$edadMa' ");
 	}
 
 	

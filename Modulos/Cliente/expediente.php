@@ -4,6 +4,7 @@ $idAccess = $_SESSION["idUsuario"];
 $nomusAccess =$_SESSION["nombrUsuario"];
 $nomAccess = $_SESSION["nombreEmpleado"];
 $apeAccess = $_SESSION["apellidoEmpleado"];
+$idEmpAccess = $_SESSION["cid_empleado"];
 
 if($_SESSION['autenticado']!="yeah" || $t!=1  ){
   header("Location: ../../index.php");
@@ -13,9 +14,9 @@ if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
     $idexam = $_REQUEST["idexam"];
-    $query_s = pg_query($conexion, "select cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo,
-                                    cl.ctelefonof, cl.cdireccion, ex.cid_expediente from expediente2 as ex
-                                    INNER JOIN clientes as cl on ex.eid_cliente = cl.eid_cliente
+    $query_s = pg_query($conexion, "SELECT cl.eid_cliente, cl.cnombre, cl.capellido, cl.eedad, cl.csexo,
+                                    cl.ctelefonof, cl.cdireccion, ex.cid_expediente from pbexpediente2 as ex
+                                    INNER JOIN paclientes as cl on ex.eid_cliente = cl.eid_cliente
                                     WHERE ex.cid_expediente = '$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
         $RidCliente = $fila[0];
@@ -137,7 +138,7 @@ if(isset($_REQUEST["id"])){
                   </div>
                   <?php
                     include("../../Config/conexion.php");
-                    $query_s= pg_query($conexion, "SELECT ex.cid_expediente, clientes.cnombre, clientes.capellido FROM expediente2 as ex INNER JOIN clientes ON ex.eid_cliente = clientes.eid_cliente  WHERE ex.cid_expediente = '$iddatos' ");
+                    $query_s= pg_query($conexion, "SELECT ex.cid_expediente, clientes.cnombre, clientes.capellido FROM pbexpediente2 as ex INNER JOIN paclientes as clientes ON ex.eid_cliente = clientes.eid_cliente  WHERE ex.cid_expediente = '$iddatos' ");
 
                     while($fila=pg_fetch_array($query_s)){
                   ?>
@@ -293,9 +294,9 @@ if(isset($_REQUEST["id"])){
                                           examen.ffecha,
                                           examen.eid_examen
                                           FROM
-                                          expediente2 as ex
-                                          INNER JOIN clientes ON ex.eid_cliente = clientes.eid_cliente
-                                          INNER JOIN examen ON examen.cid_expediente = ex.cid_expediente
+                                          pbexpediente2 as ex
+                                          INNER JOIN paclientes as clientes ON ex.eid_cliente = clientes.eid_cliente
+                                          INNER JOIN pcexamen as examen ON examen.cid_expediente = ex.cid_expediente
                                           WHERE ex.cid_expediente = '$iddatos' ");
 
                                           while($fila=pg_fetch_array($query_s)){
@@ -731,7 +732,7 @@ if(isset($_REQUEST["id"])){
                                           <?php
                                             include("../../Config/conexion.php");
 
-                                            $query_s=pg_query($conexion,"select * from empleados order by cnombre");
+                                            $query_s=pg_query($conexion,"SELECT * from paempleados where cid_empleado= '$idEmpAccess' order by cnombre");
 
                                             while($fila=pg_fetch_array($query_s)){
                                               echo " <option value='$fila[0] '>$fila[1]  $fila[2]</option>";
@@ -890,26 +891,26 @@ include("../../Config/conexion.php");
   if($bandera2=='add'){
       pg_query("BEGIN");
 
-      $query_s1=pg_query($conexion,"select MAX(antecedente_medico.eid_antecedente_medico) from antecedente_medico ");
+      $query_s1=pg_query($conexion,"SELECT MAX(antecedente_medico.eid_antecedente_medico) from paantecedente_medico AS antecedente_medico ");
         while ($fila = pg_fetch_array($query_s1)) {
             $idantm=$fila[0];
         }$idantm++ ;
 
-      $result1=pg_query($conexion,"INSERT INTO  antecedente_medico (eid_antecedente_medico, cdm, cha, ccyt, ctiroides, cotros)  VALUES ($idantm, '$antmcdm', '$antmcha', '$antmccyte', '$antmtiroides', '$antmcotros') ");
+      $result1=pg_query($conexion,"INSERT INTO  paantecedente_medico (eid_antecedente_medico, cdm, cha, ccyt, ctiroides, cotros)  VALUES ($idantm, '$antmcdm', '$antmcha', '$antmccyte', '$antmtiroides', '$antmcotros') ");
 
-      $query_s2=pg_query($conexion,"select MAX(antecedente_ocular.eid_antecedente_ocular) from antecedente_ocular ");
+      $query_s2=pg_query($conexion,"SELECT MAX(antecedente_ocular.eid_antecedente_ocular) from paantecedente_ocular AS antecedente_ocular");
         while ($fila = pg_fetch_array($query_s2)) {
             $idanto=$fila[0];
         }$idanto++ ;
 
-      $ressult2= pg_query($conexion,"INSERT INTO antecedente_ocular (eid_antecedente_ocular, cglaucomap, cglaucomaf, ccataratap, ccatarataf, cdoctor, cotro, coperadod) VALUES ($idanto, '$antoglaucomap', '$antoglaucomaf', '$antocataratap', '$antocatarataf', '$antocdoctor', '$antocotro', '$antooperad')");
+      $ressult2= pg_query($conexion,"INSERT INTO paantecedente_ocular (eid_antecedente_ocular, cglaucomap, cglaucomaf, ccataratap, ccatarataf, cdoctor, cotro, coperadod) VALUES ($idanto, '$antoglaucomap', '$antoglaucomaf', '$antocataratap', '$antocatarataf', '$antocdoctor', '$antocotro', '$antooperad')");
 
-      $query_s3=pg_query($conexion,"select MAX(lensometria.eid_lensometria) from lensometria ");
+      $query_s3=pg_query($conexion,"SELECT MAX(lensometria.eid_lensometria) from palensometria as lensometria ");
         while ($fila = pg_fetch_array($query_s3)) {
             $idlen=$fila[0];
         }$idlen++ ;
 
-      $ressult3= pg_query($conexion,"INSERT INTO lensometria (eid_lensometria, resfera_ojoderecho,
+      $ressult3= pg_query($conexion,"INSERT INTO palensometria (eid_lensometria, resfera_ojoderecho,
         resfera_ojoizquierdo, rcilindro_ojoderecho, rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo,
         radiccion_ojoderecho, radiccion_ojoizquierdo, rprisma_ojoderecho, rprisma_ojodizquierdo, rcb_ojoderecho,
          rcb_ojoizquierdo, rav_lej_ojoderecho, rav_lej_ojoizquierdo, rav_cer_ojoderecho, rav_cer_ojoizquierdo,
@@ -918,12 +919,12 @@ include("../../Config/conexion.php");
         $lprisojodizquierdo, $lcbojoderecho, $lcbojoizquierdo, $lavlejojoderecho, $lavlejojoizquierdo,
         $lavcerojoderecho, $lavcerojoizquierdo, '$ldescripcion')");
 
-      $query_s4=pg_query($conexion,"select MAX(refraccion.eid_refraccion) from refraccion ");
+      $query_s4=pg_query($conexion,"SELECT MAX(refraccion.eid_refraccion) from parefraccion as refraccion");
         while ($fila = pg_fetch_array($query_s4)) {
             $idref=$fila[0];
         }$idref++ ;
 
-      $ressult4= pg_query($conexion,"INSERT INTO refraccion (eid_refraccion, ravscl_ojoderecho, ravscl_ojoizquierdo,
+      $ressult4= pg_query($conexion,"INSERT INTO parefraccion (eid_refraccion, ravscl_ojoderecho, ravscl_ojoizquierdo,
        ravscc_ojoderecho, ravscc_ojoizquierdo, resfera_ojoderecho, resfera_ojoizquierdo, rcilindro_ojoderecho,
        rcilindro_ojoizquierdo, reje_ojoderecho, reje_ojoizquierdo, radiccion_ojoderecho, radiccion_ojoizquierdo,
        rprisma_ojoderecho, rprisma_ojoizquierdo, rcb_ojoderecho, rcb_ojoizquierdo, ravlej_ojoderecho,
@@ -933,19 +934,19 @@ include("../../Config/conexion.php");
        $radicojoizquierdo, $rprisojoderecho, $rprisojodizquierdo, $rcbojoderecho, $rcbojoizquierdo, $ravlejojoderecho,
         $ravlejojoizquierdo, $ravcerojoderecho, $ravcerojoizquierdo, '$rdescripcion')");
 
-      $query_s5=pg_query($conexion,"select MAX(medidas.eid_medidas) from medidas ");
+      $query_s5=pg_query($conexion,"SELECT MAX(medidas.eid_medidas) from pamedidas as medidas ");
         while ($fila = pg_fetch_array($query_s5)) {
             $idmed=$fila[0];
         }$idmed++ ;
 
-      $ressult5= pg_query($conexion,"INSERT INTO medidas (eid_medidas, rdnp_ojoderecho, rdnp_ojoizquierdo, rdip, ralt_pupilar, ralt_oblea, cexamino, cobservacion) VALUES ($idmed, $rdnpojoderecho, $rdnpojoizquierdo, $rdip,
+      $ressult5= pg_query($conexion,"INSERT INTO pamedidas (eid_medidas, rdnp_ojoderecho, rdnp_ojoizquierdo, rdip, ralt_pupilar, ralt_oblea, cexamino, cobservacion) VALUES ($idmed, $rdnpojoderecho, $rdnpojoizquierdo, $rdip,
        $raltpupilar, $raltoblea, '$cexamino', '$cobservacion')");
 
-      $query_s6=pg_query($conexion,"select MAX(examen.eid_examen) from examen ");
+      $query_s6=pg_query($conexion,"SELECT MAX(examen.eid_examen) from pcexamen as examen ");
         while ($fila = pg_fetch_array($query_s6)) {
             $idexam=$fila[0];
         }$idexam++ ;
-      $ressult6= pg_query($conexion,"INSERT INTO examen (eid_examen, cobservaciones, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, cid_empleado, cid_expediente)  VALUES ($idexam, '$cobservacion', $idantm, $idanto, $idlen, $idref, $idmed, '$fechaA', '$cexamino',  '$idexpediente')");
+      $ressult6= pg_query($conexion,"INSERT INTO pcexamen (eid_examen, cobservaciones, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha, cid_empleado, cid_expediente)  VALUES ($idexam, '$cobservacion', $idantm, $idanto, $idlen, $idref, $idmed, '$fechaA', '$cexamino',  '$idexpediente')");
 
 
               if(!$result1 || !$ressult2 || !$ressult3 || !$ressult4 || !$ressult5 || !$ressult6){
@@ -958,8 +959,9 @@ include("../../Config/conexion.php");
                 echo "</script>";
               }else{
                 //Guardar en bitacora y hacer commit 
-                $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-                $accion = 'El usuario ' . $nomusAccess. ' Registro un examen al Cliente con Expediente '. $idexpediente ;
+                $fechaA= date("d/m/Y");
+                $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                $accion = 'El usuario ' . $nomusAccess. ' Registro un nuevo examen al Cliente con Expediente '. $idexpediente ;
                 while ($filas = pg_fetch_array($query_ide)) {
                     $ida=$filas[0];                                 
                     $ida++ ;
@@ -967,7 +969,7 @@ include("../../Config/conexion.php");
                 ini_set('date.timezone', 'America/El_Salvador');
                 
                 $hora = date("Y/m/d ") . date("h:i:s a");
-                $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+                $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$idexpediente')");
 
                 if(!$consult ){
                         pg_query("rollback");
@@ -997,7 +999,7 @@ include("../../Config/conexion.php");
 if($bandera=='modificar'){
       pg_query("BEGIN");
 
-      $result=pg_query($conexion,"update clientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
+      $result=pg_query($conexion,"UPDATE paclientes set  cnombre='$nombre', capellido='$apellido', eedad='$edad', csexo='$sexo', ctelefonof='$telefono' ,cdireccion='$direccion' where eid_cliente='$baccion'");
       
       if(!$result){
         pg_query("rollback");
@@ -1010,16 +1012,22 @@ if($bandera=='modificar'){
         echo "</script>";
       }else{
         //Guardar en bitacora y hacer commit 
-            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Modifico al cliente '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
-            
+            $query_idC=pg_query($conexion,"SELECT pbexpediente2.cid_expediente, pbexpediente2.eid_cliente
+            FROM pbexpediente2 WHERE pbexpediente2.eid_cliente = '$baccion' ");
+            while ($filas = pg_fetch_array($query_idC)) {
+                $idEXP=$filas[0];                                 
+            }
+
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso) VALUES ($ida, $idAccess, '".$accion."' , '$hora', '$fechaA' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$idEXP')");
 
             if(!$consult ){
                     pg_query("rollback");

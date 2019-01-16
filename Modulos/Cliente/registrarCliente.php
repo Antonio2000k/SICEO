@@ -15,7 +15,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1  ){
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from clientes where eid_cliente='$iddatos'");
+    $query_s = pg_query($conexion, "select * from paclientes where eid_cliente='$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
         $RidCliente = $fila[0];
         $Rnombre = $fila[1];
@@ -376,15 +376,15 @@ include("../../Config/conexion.php");
 //Guardar datos del cliente
 if($bandera=="add"){
     pg_query("BEGIN");
-    $r=pg_query($conexion,"select * from clientes");
+    $r=pg_query($conexion,"select * from paclientes");
     $numero = pg_num_rows($r);
     $codigo=generar($nombre,$apellido).$numero;
     
     $expediente = getExpediente($nombre, $apellido);
     $fechaR = date('d/m/Y');
             
-          $result=pg_query($conexion,"INSERT INTO  clientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion,ffecha,ffechar) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion', to_date('$fecha', 'mm/dd/yyyy'), to_date('$fechaR', 'dd/mm/yyyy'))");
-          $res= pg_query($conexion,"INSERT INTO expediente2 (cid_expediente, eid_cliente) VALUES ('" . $expediente . "', '$codigo')");
+          $result=pg_query($conexion,"INSERT INTO  paclientes (eid_cliente,cnombre, capellido,eedad, csexo, ctelefonof,cdireccion,ffecha,ffechar) VALUES ('$codigo','$nombre','$apellido','$edad','$sexo','$telefono','$direccion', to_date('$fecha', 'mm/dd/yyyy'), to_date('$fechaR', 'dd/mm/yyyy'))");
+          $res= pg_query($conexion,"INSERT INTO pbexpediente2 (cid_expediente, eid_cliente) VALUES ('" . $expediente . "', '$codigo')");
           
 
          //Comprobar que los datos estan correctos
@@ -399,8 +399,9 @@ if($bandera=="add"){
                     echo "</script>";
           }else{
             //Guardar datos
-            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
-            $accion = 'El usuario ' . $nomusAccess. ' Registro al Cliente '. $nombre .' '.$apellido;
+            $fechaA= date("d/m/Y");
+            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+            $accion = 'El usuario ' . $nomusAccess. ' Registro un nuevo Cliente: '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
@@ -408,7 +409,7 @@ if($bandera=="add"){
             ini_set('date.timezone', 'America/El_Salvador');
             
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$codigo')");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -453,7 +454,7 @@ function getExpediente($nombre, $apellido){
   $expediente .= strtoupper(substr($apellido,0,1));
   $expediente .= "-";
     
-  $resulta = pg_query($conexion,"SELECT substring(cid_expediente from 9 for 3) as expediente from expediente2 where substring(cid_expediente from 1 for 8)='$expediente' order by cid_expediente desc LIMIT 1");
+  $resulta = pg_query($conexion,"SELECT substring(cid_expediente from 9 for 3) as expediente from pbexpediente2 where substring(cid_expediente from 1 for 8)='$expediente' order by cid_expediente desc LIMIT 1");
 
   if($resulta){
     while ($fila = pg_fetch_array($resulta)) {

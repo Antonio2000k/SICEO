@@ -5,7 +5,7 @@
 	 include '../../../Config/conexion.php';
     if($opcion==="codigo"){
         pg_query("BEGIN");
-				 $result=pg_query($conexion,"select * from productos where cmodelo='".$codigo."'");
+				 $result=pg_query($conexion,"select * from pbproductos where cmodelo='".$codigo."'");
 				 $nue=pg_num_rows($result);
 						 if($nue>0){
 							 pg_query("commit");
@@ -16,7 +16,7 @@
 						 }
     }else if($opcion==="nombre"){
         pg_query("BEGIN");
-				 $result=pg_query($conexion,"select * from productos where cnombre='".$codigo."'");
+				 $result=pg_query($conexion,"select * from pbproductos where cnombre='".$codigo."'");
 				 $nue=pg_num_rows($result);
 						 if($nue>0){
 							 pg_query("commit");
@@ -27,7 +27,7 @@
 						 }
     }else if($opcion==="marca"){
         pg_query("BEGIN");
-				 $result=pg_query($conexion,"select * from marca where cnombre='".$codigo."'");
+				 $result=pg_query($conexion,"select * from pamarca where cnombre='".$codigo."'");
 				 $nue=pg_num_rows($result);
 						 if($nue>0){
 							 pg_query("commit");

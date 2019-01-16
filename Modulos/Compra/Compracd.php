@@ -76,7 +76,7 @@
                                 <tbody>
                                     <?php
                           include("../../Config/conexion.php");
-                          $query_s= pg_query($conexion, "SELECT c.eid_compra,c.cid_empleado,c.ffecha_compra,c.rtotal_compra,c.ecuotas,c.eperiodo,c.rabono,empleados.cnombre,empleados.capellido FROM compra as c INNER JOIN empleados  ON c.cid_empleado = empleados.cid_empleado WHERE c.eperiodo > 0 ORDER BY c.ffecha_compra asc");
+                          $query_s= pg_query($conexion, "SELECT c.eid_compra,c.cid_empleado,c.ffecha_compra,c.rtotal_compra,c.ecuotas,c.eperiodo,c.rabono,empleados.cnombre,empleados.capellido FROM pbcompra as c INNER JOIN paempleados as empleados  ON c.cid_empleado = empleados.cid_empleado WHERE c.eperiodo > 0 ORDER BY c.ffecha_compra asc");
                           while($fila=pg_fetch_array($query_s)){
                       ?>
                                 <tr>

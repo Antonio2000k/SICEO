@@ -34,7 +34,7 @@
                         <?php
                    include '../../../Config/conexion.php';
                     pg_query("BEGIN");
-                    $resultado=pg_query($conexion, "select * from proveedor");
+                    $resultado=pg_query($conexion, "select * from paproveedor");
                     $nue=pg_num_rows($resultado);
                         if($nue>0){
                         while ($fila = pg_fetch_array($resultado)) {
@@ -65,7 +65,7 @@
                         <?php
                            include '../../../Config/conexion.php';
                             pg_query("BEGIN");
-                            $resultado=pg_query($conexion, "select * from marca");
+                            $resultado=pg_query($conexion, "select * from pamarca");
                             $nue=pg_num_rows($resultado);
                                 if($nue>0){
                                 while ($fila = pg_fetch_array($resultado)) {
@@ -99,7 +99,7 @@
                             echo '<option value="0" selected="">Seleccione</option>';
                             include '../../../Config/conexion.php';
                         pg_query("BEGIN");
-                        $resultado=pg_query($conexion, "select * from garantia");
+                        $resultado=pg_query($conexion, "select * from pagarantia");
                         $nue=pg_num_rows($resultado);
                             if($nue>0){
                             while ($fila = pg_fetch_array($resultado)) {

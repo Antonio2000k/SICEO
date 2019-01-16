@@ -89,7 +89,7 @@ STOCK
 <tbody>
 <?php
 include("../../Config/conexion.php");
-$query_s= pg_query($conexion, "select * from productos where bestado='t' order by cmodelo");
+$query_s= pg_query($conexion, "select * from pbproductos where bestado='t' order by cmodelo");
 while($fila=pg_fetch_array($query_s)){
 ?>
 <tr>
@@ -183,7 +183,7 @@ if($fila[2]==0){
 <?php
 include '../../Config/conexion.php';
 pg_query("BEGIN");
-$resultado=pg_query($conexion, "select * from proveedor");
+$resultado=pg_query($conexion, "select * from paproveedor");
 $nue=pg_num_rows($resultado);
 if($nue>0){
 while ($fila = pg_fetch_array($resultado)) {
@@ -208,7 +208,7 @@ if($fila[0]==$proveedor){
 <?php
 include '../../Config/conexion.php';
 pg_query("BEGIN");
-$resultado=pg_query($conexion, "select * from marca");
+$resultado=pg_query($conexion, "select * from pamarca");
 $nue=pg_num_rows($resultado);
 if($nue>0){
 while ($fila = pg_fetch_array($resultado)) {
@@ -231,7 +231,7 @@ if($fila[0]==$marca){
 <?php 
 include '../../Config/conexion.php';
 pg_query("BEGIN");
-$resultado=pg_query($conexion, "select * from garantia");
+$resultado=pg_query($conexion, "select * from pagarantia");
 $nue=pg_num_rows($resultado);
 if($nue>0){
 while ($fila = pg_fetch_array($resultado)) {

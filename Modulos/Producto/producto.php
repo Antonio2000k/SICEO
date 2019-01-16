@@ -1,8 +1,18 @@
 <?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
+if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+  header("Location: ../../index.php");
+  exit();
+  }
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from productos where cmodelo='$iddatos'");
+    $query_s = pg_query($conexion, "select * from pbproductos where cmodelo='$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
         $idProducto = $fila[0];
         $Rnombre = $fila[1];
@@ -161,7 +171,7 @@ if(isset($_REQUEST["id"])){
                                         <?php
                                    include '../../Config/conexion.php';
                                     pg_query("BEGIN");
-                                    $resultado=pg_query($conexion, "select * from proveedor where bestado='t'");
+                                    $resultado=pg_query($conexion, "select * from paproveedor where bestado='t'");
                                     $nue=pg_num_rows($resultado);
                                         if($nue>0){
                                         while ($fila = pg_fetch_array($resultado)) {
@@ -205,7 +215,7 @@ if(isset($_REQUEST["id"])){
                                 <?php
                                    include '../../Config/conexion.php';
                                     pg_query("BEGIN");
-                                    $resultado=pg_query($conexion, "select * from marca");
+                                    $resultado=pg_query($conexion, "select * from pamarca");
                                     $nue=pg_num_rows($resultado);
                                         if($nue>0){
                                         while ($fila = pg_fetch_array($resultado)) {
@@ -241,7 +251,7 @@ if(isset($_REQUEST["id"])){
                                         echo '<option value="0" selected="">Seleccione</option>';
                                         include '../../Config/conexion.php';
                                     pg_query("BEGIN");
-                                    $resultado=pg_query($conexion, "select * from garantia");
+                                    $resultado=pg_query($conexion, "select * from pagarantia");
                                     $nue=pg_num_rows($resultado);
                                         if($nue>0){
                                         while ($fila = pg_fetch_array($resultado)) {
@@ -371,34 +381,76 @@ if($bandera=="add"){
     //mensajeInformacion('Esta','Entre  '.$modelo,'info');
     pg_query("BEGIN");
     if($tipo=="1"){
-          $result=pg_query($conexion,"insert into productos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
+          $result=pg_query($conexion,"insert into pbproductos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
             eid_garantia, eid_proveedor, eid_marca, bestado, ctipo) values('$modelo','$nombre','0','$precioC','$color','$precioV','$garantia','$proveedor','$marca','1','$tipoc')");  
     }else if($tipo==="2"){
-        $result=pg_query($conexion,"insert into productos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
+        $result=pg_query($conexion,"insert into pbproductos(cmodelo, cnombre, estock, rprecio_compra, ccolor, rprecio_venta,
             eid_garantia, eid_proveedor, eid_marca, bestado, ctipo) values('$nombre','$nombre','0','$precioC','$color','$precioV','1','$proveedor','$marca','1','$tipoc')"); 
     }
     if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                        pg_query("commit");
-                        mensajeInformacion('Informacion','Datos almacenados','info');
+                         $fechaA= date("d/m/Y");
+                            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                            $accion = 'El usuario ' . $nomusAccess. ' Registro un nuevo producto';
+                            while ($filas = pg_fetch_array($query_ide)) {
+                                $ida=$filas[0];                                 
+                                $ida++ ;
+                            } 
+                            ini_set('date.timezone', 'America/El_Salvador');
+                            
+                            $hora = date("Y/m/d ") . date("h:i:s a");
+                            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$modelo')");
+
+                            if(!$consult ){
+                                    pg_query("rollback");
+                                    echo "<script type='text/javascript'>";
+                                    echo pg_result_error($conexion);
+                                    echo "alert('Error');";
+                                    echo "</script>";
+                            }else{
+                                pg_query("commit");
+                                mensajeInformacion('Informacion','Datos almacenados','info');
+                            }
+                        
                     }
 
   }
 if($bandera=='modificar'){
     pg_query("BEGIN");
           if($tipoR=="Lente"){
-              $result=pg_query($conexion,"UPDATE productos SET rprecio_compra='$precioC', cnombre='$nombre', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+              $result=pg_query($conexion,"UPDATE pbproductos SET rprecio_compra='$precioC', cnombre='$nombre', ccolor='$color', rprecio_venta='$precioV', eid_garantia='$garantia', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
           }else if($tipoR=="Accesorio"){
-              $result=pg_query($conexion,"UPDATE productos SET rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
+              $result=pg_query($conexion,"UPDATE pbproductos SET rprecio_compra='$precioC', ccolor='$color', rprecio_venta='$precioV', eid_proveedor='$proveedor',eid_marca='$marca' where cmodelo='$baccion'");
           }    
             if(!$result){
 				pg_query("rollback");   
 				mensajeInformacion('Error','Datos no almacenados','error');
 				}else{
-					pg_query("commit");
-                    mensajeInformacion('Informacion','Datos almacenados','info');
+                     $fechaA= date("d/m/Y");
+                            $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
+                            $accion = 'El usuario ' . $nomusAccess. ' modificó un producto';
+                            while ($filas = pg_fetch_array($query_ide)) {
+                                $ida=$filas[0];                                 
+                                $ida++ ;
+                            } 
+                            ini_set('date.timezone', 'America/El_Salvador');
+                            
+                            $hora = date("Y/m/d ") . date("h:i:s a");
+                            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$baccion')");
+
+                            if(!$consult ){
+                                    pg_query("rollback");
+                                    echo "<script type='text/javascript'>";
+                                    echo pg_result_error($conexion);
+                                    echo "alert('Error');";
+                                    echo "</script>";
+                            }else{
+                                pg_query("commit");
+                                mensajeInformacion('Informacion','Datos almacenados','info');
+                            }
+					
 				}
 }
 if($bandera=="cancelar"){

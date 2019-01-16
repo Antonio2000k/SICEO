@@ -203,7 +203,7 @@ require 'Config/conexion.php';
 
   $pdf->AddPage();
   if($tipo === "credito"){
-    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, detalle_compra.id_producto, productos.cnombre, detalle_compra.rprecio_compradetalle, compra.ffecha_compra, compra.rabono, proveedor.cempresa, compra.rtotal_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor
+    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, detalle_compra.id_producto, productos.cnombre, detalle_compra.rprecio_compradetalle, compra.ffecha_compra, compra.rabono, proveedor.cempresa, compra.rtotal_compra FROM pbcompra as compra INNER JOIN pcdetalle_compra as detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN pbproductos as productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN paproveedor as proveedor ON productos.eid_proveedor = proveedor.eid_proveedor
       where compra.eperiodo>0 AND compra.ffecha_compra BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) ");
 
 
@@ -239,7 +239,7 @@ require 'Config/conexion.php';
         
     }
   }else if ($tipo === "contado"){
-    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, compra.rtotal_compra, productos.cnombre, detalle_compra.rprecio_compradetalle, proveedor.cempresa, compra.ffecha_compra FROM compra INNER JOIN detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN proveedor ON productos.eid_proveedor = proveedor.eid_proveedor where compra.ffecha_compra BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) AND compra.eperiodo<=0");
+    $query_s= pg_query($conexion, "SELECT detalle_compra.ecantidad, productos.rprecio_compra, compra.rtotal_compra, productos.cnombre, detalle_compra.rprecio_compradetalle, proveedor.cempresa, compra.ffecha_compra FROM pbcompra as compra INNER JOIN pcdetalle_compra as detalle_compra ON detalle_compra.id_compra = compra.eid_compra INNER JOIN pbproductos as productos ON detalle_compra.id_producto = productos.cmodelo INNER JOIN paproveedor as proveedor ON productos.eid_proveedor = proveedor.eid_proveedor where compra.ffecha_compra BETWEEN CAST ('$fechaini ' AS DATE) AND CAST ('$fechafini ' AS DATE) AND compra.eperiodo<=0");
 
     while($row=pg_fetch_assoc($query_s)){ 
       ini_set('date.timezone', 'America/El_Salvador');

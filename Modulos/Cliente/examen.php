@@ -3,9 +3,8 @@
       include("../../Config/conexion.php");
       $iddatos = $_REQUEST["id"];
 
-      $query_s = pg_query($conexion, "SELECT eid_examen, cobservaciones, eid_expediente, eid_antecedente_medico,
-                                      eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha,
-                                      cid_empleado FROM examen WHERE eid_expediente = '$iddatos'");
+      $query_s = pg_query($conexion, "SELECT eid_examen, cobservaciones, eid_expediente, eid_antecedente_medico, eid_antecedente_ocular, eid_lensometria, eid_refraccion, eid_medidas, ffecha,
+      cid_empleado FROM examen WHERE eid_expediente = '$iddatos'");
       while ($fila = pg_fetch_array($query_s)) {
           $RidExpediente = $fila[2];
 

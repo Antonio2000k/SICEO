@@ -1,4 +1,10 @@
-<?php session_start(); 
+<?php session_start();
+$t=$_SESSION["nivelUsuario"];
+$idAccess = $_SESSION["idUsuario"];
+$nomusAccess =$_SESSION["nombrUsuario"];
+$nomAccess = $_SESSION["nombreEmpleado"];
+$apeAccess = $_SESSION["apellidoEmpleado"];
+
 if(isset($_SESSION["acumulador"])){
     unset($_SESSION["matriz"]);
     unset($_SESSION["acumulador"]);
@@ -86,7 +92,7 @@ if(isset($_SESSION["acumulador"])){
                                             <?php
                                            include '../../Config/conexion.php';
                                             pg_query("BEGIN");
-                                            $resultado=pg_query($conexion, "select * from proveedor where bestado='t'");
+                                            $resultado=pg_query($conexion, "select * from paproveedor where bestado='t'");
                                             $nue=pg_num_rows($resultado);
                                                 if($nue>0){
                                                 while ($fila = pg_fetch_array($resultado)) {

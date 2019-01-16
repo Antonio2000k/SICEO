@@ -539,7 +539,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <input type="text" class="form-control text-center" id="nombre_encomendero" style="font-size:medium" list="listaEncomenderos" oninput="obtenerDatosEncomendero(this.value);" placeholder="Nombre del encomendero" autocomplete="off">
                                       <datalist id="listaEncomenderos">
                                         <?php
-                                        $consulta = pg_query($conexion, "SELECT * FROM encomendero WHERE bestado = true");
+                                        $consulta = pg_query($conexion, "SELECT * FROM paencomendero WHERE bestado = true");
                                         $cont = pg_num_rows($consulta);
 
                                         while ($fila = pg_fetch_array($consulta)) {
@@ -597,17 +597,17 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                         $modelo = "";
                                         $cont = 1;
 
-                                        $result = pg_query($conexion, "SELECT * FROM detalle_examen WHERE bestado = false ");
+                                        $result = pg_query($conexion, "SELECT * FROM pddetalle_examen WHERE bestado = false ");
 
                                         //Es para todos los examenes.
                                         while($fila = pg_fetch_array($result)) {
-                                            $consulta = pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[1]'");
+                                            $consulta = pg_query($conexion, "SELECT * FROM paclientes WHERE eid_cliente='$fila[1]'");
                                             $cliente = obtenerValorSQL($consulta, "cliente", "");
 
-                                            $consulta = pg_query($conexion, "SELECT * FROM productos WHERE cmodelo='$fila[3]'");
+                                            $consulta = pg_query($conexion, "SELECT * FROM pbproductos WHERE cmodelo='$fila[3]'");
                                             $modelo = obtenerValorSQL($consulta, "modelo", "");
 
-                                            $result_examen = pg_query($conexion, "SELECT * FROM examen WHERE eid_examen=$fila[2]");
+                                            $result_examen = pg_query($conexion, "SELECT * FROM pcexamen WHERE eid_examen=$fila[2]");
                                             $examen;
                                             $id;
                                             while ($fila_examen = pg_fetch_array($result_examen)) {
@@ -900,10 +900,10 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   </thead>
                                   <tbody id="recargarListaEncomiendas">
                                     <?php
-                                    $consulta = pg_query($conexion, "SELECT * FROM encomienda");
+                                    $consulta = pg_query($conexion, "SELECT * FROM pbencomienda");
 
                                     while($fila = pg_fetch_array($consulta)) {
-                                      $consulta_encomendero = pg_query($conexion, "SELECT * FROM encomendero");
+                                      $consulta_encomendero = pg_query($conexion, "SELECT * FROM paencomendero");
                                       $encomendero = "";
 
                                       while ($fila_encomendero = pg_fetch_array($consulta_encomendero)) {
@@ -1045,7 +1045,7 @@ if(isset($_REQUEST["bandera"])) {
   }
   $contado++;
 
-  $query_encomienda = pg_query($conexion, "INSERT INTO encomienda (eid_encomienda, ffecha_envio, bestado, eid_encomendero, cdetalle, ffecha_recibido) VALUES ($contado, '$fecha_envio', false, $id_encomendero, '$detalle_encomienda', null) RETURNING eid_encomienda");
+  $query_encomienda = pg_query($conexion, "INSERT INTO pbencomienda (eid_encomienda, ffecha_envio, bestado, eid_encomendero, cdetalle, ffecha_recibido) VALUES ($contado, '$fecha_envio', false, $id_encomendero, '$detalle_encomienda', null) RETURNING eid_encomienda");
   $id_encomienda = pg_fetch_array($query_encomienda);
 
   $error_detalle = false;
@@ -1053,14 +1053,14 @@ if(isset($_REQUEST["bandera"])) {
   for ($i=0; $i < $longitud; $i++) {
     if($filaValores[$i] != "") {
       //Insersion del detalle de la encomienda.
-      $resultado = pg_query($conexion,"SELECT MAX(detalle_encomienda.eid_detalle_encomienda) FROM detalle_encomienda");
+      $resultado = pg_query($conexion,"SELECT MAX(pcdetalle_encomienda.eid_detalle_encomienda) FROM pcdetalle_encomienda");
       $contado = 0;
       while ($fila = pg_fetch_array($resultado)) {
         $contado = $fila[0];
       }
       $contado++;
 
-      $query_detalle_encomienda = pg_query($conexion, "INSERT INTO detalle_encomienda (eid_detalle_encomienda, eid_encomienda, cmodelo, cid_cliente, cmaterial, ctipo) VALUES ($contado, $id_encomienda[0], '$modelo_lentes[$i]', '$cliente_lentes[$i]', '$materialValores[$i]', '$tipoValores[$i]')");
+      $query_detalle_encomienda = pg_query($conexion, "INSERT INTO pcdetalle_encomienda (eid_detalle_encomienda, eid_encomienda, cmodelo, cid_cliente, cmaterial, ctipo) VALUES ($contado, $id_encomienda[0], '$modelo_lentes[$i]', '$cliente_lentes[$i]', '$materialValores[$i]', '$tipoValores[$i]')");
 
       //Muestra error.
       if(!$query_detalle_encomienda) {
@@ -1070,21 +1070,21 @@ if(isset($_REQUEST["bandera"])) {
         //echo pg_last_error($conexion);
       }
 
-      $query_detalle = pg_query($conexion, "UPDATE detalle_examen SET bestado = true WHERE eid_detalle_examen = $id_lentes[$i]");
+      $query_detalle = pg_query($conexion, "UPDATE pddetalle_examen SET bestado = true WHERE eid_detalle_examen = $id_lentes[$i]");
     }
   }
 
   if($query_encomienda && !$error_detalle && $query_detalle) {
-     $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+     $query_ide=pg_query($conexion,"SELECT MAX(eid_bitacora) from pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Registro una encomienda';
             while ($filas = pg_fetch_array($query_ide)) {
-                $ida=$filas[0];                                 
+                $ida=$filas[0];
                 $ida++ ;
-            } 
+            }
             ini_set('date.timezone', 'America/El_Salvador');
-            
+
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -1099,7 +1099,7 @@ if(isset($_REQUEST["bandera"])) {
                   echo "ajax_act('');";
                   echo "</script>";
             }
-    
+
   }
   else {
     pg_query("ROLLBACK");

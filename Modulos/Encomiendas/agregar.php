@@ -15,26 +15,26 @@ $apeAccess = $_SESSION["apellidoEmpleado"];
     $telefono = $_POST["telefono"];
     $celular = $_POST["celular"];
 
-    $resultado = pg_query($conexion,"SELECT MAX(encomendero.eid_encomendero) FROM encomendero");
+    $resultado = pg_query($conexion,"SELECT MAX(paencomendero.eid_encomendero) FROM paencomendero");
     $contado = 0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado = $fila[0];
     }
     $contado++;
 
-    $query_encomendero = pg_query($conexion, "INSERT INTO encomendero (eid_encomendero, cnombre, capellido, ctelefonof, ccelular, bestado) VALUES ($contado, '$nombre', '$apellido', '$telefono', '$celular', true)");
+    $query_encomendero = pg_query($conexion, "INSERT INTO paencomendero (eid_encomendero, cnombre, capellido, ctelefonof, ccelular, bestado) VALUES ($contado, '$nombre', '$apellido', '$telefono', '$celular', true)");
 
     if($query_encomendero) {
-       $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from bitacora ");
+       $query_ide=pg_query($conexion,"SELECT MAX(eid_bitacora) FROM pcbitacora ");
             $accion = 'El usuario ' . $nomusAccess. ' Registro al encomendero '. $nombre .' '.$apellido;
             while ($filas = pg_fetch_array($query_ide)) {
-                $ida=$filas[0];                                 
+                $ida=$filas[0];
                 $ida++ ;
-            } 
+            }
             ini_set('date.timezone', 'America/El_Salvador');
-            
+
             $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO bitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
 
             if(!$consult ){
                     pg_query("rollback");

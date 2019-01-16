@@ -10,7 +10,7 @@ if($text || $id) {
 		ini_set('date.timezone','America/El_Salvador');
 	  $fecha = date("d-m-Y");
 
-		$consulta = pg_query($conexion, "UPDATE encomienda SET bestado = true, ffecha_recibido = '$fecha' WHERE eid_encomienda = $id");
+		$consulta = pg_query($conexion, "UPDATE pbencomienda SET bestado = true, ffecha_recibido = '$fecha' WHERE eid_encomienda = $id");
 		if($consulta) {
 			echo "exito";
 		}
@@ -47,7 +47,7 @@ if($text || $id) {
       $apellido = $nombres[1];
     }
 
-    $query_s = pg_query($conexion, "SELECT * FROM encomendero WHERE cnombre='$nombre' AND capellido='$apellido'");
+    $query_s = pg_query($conexion, "SELECT * FROM paencomendero WHERE cnombre='$nombre' AND capellido='$apellido'");
 
     if($query_s) {
       $contar = pg_num_rows($query_s);
@@ -67,7 +67,7 @@ if($text || $id) {
         $apellido = $nombres[1]." ".$nombres[2];
       }
 
-      $query_s = pg_query($conexion, "SELECT * FROM encomendero WHERE cnombre='$nombre' AND capellido='$apellido'");
+      $query_s = pg_query($conexion, "SELECT * FROM paencomendero WHERE cnombre='$nombre' AND capellido='$apellido'");
 
       if($query_s) {
         $contar = pg_num_rows($query_s);

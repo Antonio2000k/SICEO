@@ -779,6 +779,111 @@ if(isset($_REQUEST["id"])){
                            </div>
                         </div>
                       </div>
+
+                      <!--Inicio modal ayuda-->
+                      <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       <div class="modal-dialog modal-lg" role="document">
+                         <div class="modal-content">
+                           <div class="modal-header">
+                             <div style="float: right; color: red">
+                                 <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                   <span style="color: red" aria-hidden="true">&times;</span>
+                                 </button>
+                               </div>
+                               <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                                 <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE USUARIOS</h5>
+                                 <div class="clearfix"></div>
+                               </div>
+                           </div>
+                           <div class="modal-body modal-md">
+                             <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                               <!-- Wrapper for slides -->
+                               <div class="carousel-inner">
+                                 <div class="item active">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda1.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Ingresamos el nombre de usuario, si no existe aparecera en color verde. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda2.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Luego colocamos la contraseña, si no es valida se mostrara en color rojo y el campo confirmar esta deshabilitado. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda3.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Ingresar la misma contraseña. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda4.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Elegir el privilegio. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda5.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Seleccionar su nombre de empleado. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda6.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Puede elegir entre una pregunta del sistema o una personalizada. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda7.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Ingrese su pregunta. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda8.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Luego escriba la respuesta. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda9.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> Cuando haya completado los campos, presione guardar. </p>
+                                   </div>
+                                 </div>
+
+                                 <div class="item ">
+                                   <img class="img-responsive" src="../Ayuda/Usuarios/ayuda10.png" alt="...">
+                                   <div class="carousel-caption">
+                                     <p style="color:black";> En la pestaña de lista usuarios, puede modificar su contraseña de usuario. </p>
+                                   </div>
+                                 </div>
+
+                               </div>
+
+                               <!-- Controls -->
+                               <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                 <span class="glyphicon glyphicon-chevron-left"></span>
+                               </a>
+                               <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                 <span class="glyphicon glyphicon-chevron-right"></span>
+                               </a>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <!--Fin modal ayuda-->
                   </div>
                 </div>
               </div>

@@ -411,10 +411,10 @@ function obtenerValorSQL($consulta, $opcion, $id) {
           </thead>
           <tbody id="recargarListaEncomiendas">
             <?php
-            $consulta = pg_query($conexion, "SELECT * FROM pbencomienda");
+            $consulta = pg_query($conexion, "SELECT * FROM pbencomienda order by eid_encomienda asc");
 
             while($fila = pg_fetch_array($consulta)) {
-              $consulta_encomendero = pg_query($conexion, "SELECT * FROM paencomendero");
+              $consulta_encomendero = pg_query($conexion, "SELECT * FROM paencomendero WHERE eid_encomendero=$fila[3]");
               $encomendero = "";
 
               while ($fila_encomendero = pg_fetch_array($consulta_encomendero)) {

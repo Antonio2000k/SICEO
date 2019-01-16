@@ -554,7 +554,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
           "<?php
             include('../../Config/conexion.php');
 
-            $query_s=pg_query($conexion,"select * from productos");
+            $query_s=pg_query($conexion,"SELECT * FROM pbproductos");
             $cont = pg_num_rows($query_s);
 
             while($fila=pg_fetch_array($query_s)) {
@@ -941,7 +941,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <datalist id="listaCliente">
                                     <?php
                                     include("../../Config/conexion.php");
-                                    $query_s = pg_query($conexion,"select * from clientes");
+                                    $query_s = pg_query($conexion,"SELECT * FROM paclientes");
                                     $cont = pg_num_rows($query_s);
 
                                     while($fila=pg_fetch_array($query_s)) {
@@ -1026,7 +1026,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                               </thead>
                               <tbody>
                                 <?php
-                                $query_s= pg_query($conexion, "SELECT * FROM ordenc order by eid_compra asc");
+                                $query_s= pg_query($conexion, "SELECT * FROM pbordenc order by eid_compra asc");
                                 while ($fila=pg_fetch_array($query_s)) {
                                 ?>
                                 <tr>
@@ -1035,7 +1035,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                   <td><?php echo $newDate ?></td>
                                   <td>
                                     <?php
-                                      $query_cliente=pg_query($conexion, "SELECT * FROM clientes WHERE eid_cliente='$fila[4]'");
+                                      $query_cliente=pg_query($conexion, "SELECT * FROM paclientes WHERE eid_cliente='$fila[4]'");
 
                                       while ($result=pg_fetch_array($query_cliente)) {
                                         echo $result[1]." ".$result[2];
@@ -1047,7 +1047,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                     $restante=0.00;
                                     $id_abono;
                                     $abonado=0;
-                                    $query=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$fila[0]");
+                                    $query=pg_query($conexion,"SELECT * FROM pcnotab WHERE eid_ordenc=$fila[0]");
 
                                     while($result=pg_fetch_array($query)) {
                                       $abonado+=$result[1];
@@ -1324,14 +1324,14 @@ if ($_POST) {
     $longitud = count($sub_totalValores);
 
     //Insersion de la orden de compra.
-    $resultado=pg_query($conexion,"SELECT MAX(ordenc.eid_compra) FROM ordenc");
+    $resultado=pg_query($conexion,"SELECT MAX(pbordenc.eid_compra) FROM pbordenc");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];
     }
     $contado++;
 
-    $query_compra=pg_query($conexion, "INSERT INTO ordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, '$idEmpleado', '$cliente') RETURNING eid_compra");
+    $query_compra=pg_query($conexion, "INSERT INTO pbordenc (eid_compra, ffecha, rtotal, cid_empleado, ccliente) VALUES ($contado, '$fecha', $total_final, '$idEmpleado', '$cliente') RETURNING eid_compra");
     $id_compra=pg_fetch_array($query_compra);
 
     //En la insercion de la orden de compra.
@@ -1340,14 +1340,14 @@ if ($_POST) {
     // }
 
     //Insersion de la nota de abono.
-    $resultado=pg_query($conexion,"SELECT MAX(notab.eid_nota) FROM notab");
+    $resultado=pg_query($conexion,"SELECT MAX(pcnotab.eid_nota) FROM pcnotab");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];
     }
     $contado++;
 
-    $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra[0]) RETURNING eid_nota");
+    $query_nota_abono=pg_query($conexion, "INSERT INTO pcnotab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra[0]) RETURNING eid_nota");
     $id_nota_abono=pg_fetch_array($query_nota_abono);
 
     //En la insercion de la nota de abono.
@@ -1364,7 +1364,7 @@ if ($_POST) {
 
     for ($i=0; $i < $longitud; $i++) {
       //Para el id.
-      $resultado=pg_query($conexion,"SELECT MAX(detalle_notab.eid_detallenotab) FROM detalle_notab");
+      $resultado=pg_query($conexion,"SELECT MAX(pddetalle_notab.eid_detallenotab) FROM pddetalle_notab");
       $contado=0;
       while ($fila = pg_fetch_array($resultado)) {
         $contado=$fila[0];
@@ -1386,7 +1386,7 @@ if ($_POST) {
         $id_examen = $id_detalle_examen[$i];
       }
 
-      $query_detalle_nota=pg_query($conexion, "INSERT INTO detalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_examen)");
+      $query_detalle_nota=pg_query($conexion, "INSERT INTO pddetalle_notab (eid_detallenotab, eid_nota, cmodelo, ecantidad, cservicio, eid_detalle_examen) VALUES ($contado, $id_nota_abono[0], '$productoAux', $cantidadValores[$i], '$servicioValores[$i]', $id_examen)");
 
       //Muestra error.
       if(!$query_detalle_nota) {
@@ -1397,14 +1397,14 @@ if ($_POST) {
       if($servicioValores[$i]=="Lente") {
         //Para registrar el detalle del examen.
         //Contador...
-        $resultado=pg_query($conexion,"SELECT MAX(detalle_examen.eid_detalle_examen) FROM detalle_examen");
+        $resultado=pg_query($conexion,"SELECT MAX(pddetalle_examen.eid_detalle_examen) FROM pddetalle_examen");
         $contado=0;
         while ($fila = pg_fetch_array($resultado)) {
           $contado=$fila[0];
         }
         $contado++;
 
-        $query_detalle_examen = pg_query($conexion, "INSERT INTO detalle_examen (eid_detalle_examen, cid_cliente, eid_examen, cmodelo, bestado) VALUES ($contado, '$cliente', $id_examen,'$productoAux', false)");
+        $query_detalle_examen = pg_query($conexion, "INSERT INTO pddetalle_examen (eid_detalle_examen, cid_cliente, eid_examen, cmodelo, bestado) VALUES ($contado, '$cliente', $id_examen,'$productoAux', false)");
 
         if(!$query_detalle_examen) {
           $inserto_examen++;
@@ -1433,7 +1433,7 @@ if ($_POST) {
     pg_query("BEGIN");
 
     //Insersion de la nota de abono.
-    $resultado=pg_query($conexion,"SELECT MAX(notab.eid_nota) FROM notab");
+    $resultado=pg_query($conexion,"SELECT MAX(pcnotab.eid_nota) FROM pcnotab");
     $contado=0;
     while ($fila = pg_fetch_array($resultado)) {
       $contado=$fila[0];
@@ -1451,7 +1451,7 @@ if ($_POST) {
     }
 
     //Para verificar si aun hay que pagar.
-    $query_abono=pg_query($conexion,"SELECT * FROM notab WHERE eid_ordenc=$id_ordenc");
+    $query_abono=pg_query($conexion,"SELECT * FROM pcnotab WHERE eid_ordenc=$id_ordenc");
     $saldo = 0;
 
     while($fila=pg_fetch_array($query_abono)) {
@@ -1461,7 +1461,7 @@ if ($_POST) {
     $query_nota_abono = null;
 
     if($saldo<$total) {
-      $query_nota_abono=pg_query($conexion, "INSERT INTO notab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
+      $query_nota_abono=pg_query($conexion, "INSERT INTO pcnotab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
     }
 
     //echo pg_last_error($conexion);

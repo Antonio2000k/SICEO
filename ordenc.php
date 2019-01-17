@@ -102,7 +102,6 @@ INNER JOIN paclientes ON pbordenc.ccliente = paclientes.eid_cliente where pborde
 				$valor = $id;
 			}
 
-			//#DC375C
 			$pdf->SetXY(102,17);
 			$pdf->SetTextColor(178,25,56);
 			$pdf->SetFont('times','B',14);

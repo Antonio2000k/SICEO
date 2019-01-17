@@ -1,23 +1,3 @@
-<!--Modal incia cliente-->
-<div class="modal fade" id="myCliente" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Registro de cliente</h4>
-      </div>
-      <div class="modal-body">
-        <?php include 'cliente.php'; ?>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="registrarCliente()"><i class="fa fa-save"></i> Registrar</button>
-        <button type="button" class="btn btn-danger" onclick="verificarCamposCliente()"><i class="fa fa-close"></i> Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--Modal termina cliente-->
-
 <!-- Modal incia descuento-->
 <div class="modal fade" id="myDescuento" role="dialog">
   <div class="modal-dialog">

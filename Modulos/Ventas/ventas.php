@@ -35,7 +35,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
     var id;
 
     function mostrarOrdenCompra() {
-      window.open("../../reporteOrden.php?id="+document.getElementById("id_reporteOrden").value);
+      window.open("../../ordenc.php?id="+document.getElementById("id_reporteOrden").value);
     }
 
     function reporteExamen(expediente, id_examen) {
@@ -51,7 +51,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
       }
       xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          document.getElementById("recargarListaVentas").innerHTML = xmlhttp.responseText;
+          document.getElementById("tab_content2").innerHTML = xmlhttp.responseText;
         }
       }
 
@@ -1005,7 +1005,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 </div>
 
                                 <!--../Cliente/registrarCliente.php?nuevo_cliente=si-->
-                                <a href="#nuevo_cliente" onclick="modalCliente();" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
+                                <a href="../Cliente/registrarCliente.php?nuevo_cliente=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
                               </div>
 
                               <!--Inicio boton-->
@@ -1060,7 +1060,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                             <h2>VENTAS </h2>
                             <div class="clearfix"></div>
                           </div>
-                          <div class="x_content" id="recargarListaVentas">
+                          <div class="x_content">
                             <table id="datatable-fixed-header" class="table table-striped table-bordered">
                               <thead>
                                 <tr>
@@ -1119,7 +1119,13 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                       <?php
                                     }
                                     ?>
-                                    <button class="btn btn-warning btn-icon left-icon" onclick="reporteAbono(<?php echo $fila[0]; ?>)"> <i class="fa fa-book"></i> <span></span></button>
+                                    <button class="btn btn-warning btn-icon left-icon" onclick="reporteAbono(<?php echo $fila[0]; ?>)"
+                                      <?php
+                                        if(round($restante, 2)!=0) {
+                                          echo "disabled";
+                                        }
+                                      ?>
+                                    > <i class="fa fa-book"></i> <span></span></button>
                                   <?php } ?>
                                   </td>
                                 </tr>
@@ -1155,91 +1161,91 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                <div class="item active">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda1.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Hacemos clic o escribimos el nombre del cliente en el campo. </p>
+                                   <p style="color:black;font-size:medium"> Hacemos clic o escribimos el nombre del cliente en el campo. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda2.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Si no esta registrado, dar clic en nuevo cliente. </p>
+                                   <p style="color:black;font-size:medium"> Si no esta registrado, dar clic en nuevo cliente. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda3.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Se habilitara el boton agregar fila, al dar clic nos agregara una fila en la tabla. </p>
+                                   <p style="color:black;font-size:medium"> Se habilitara el boton agregar fila, al dar clic nos agregara una fila en la tabla. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda4.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> En servicios apareceran 3 opciones a elegir. </p>
+                                   <p style="color:black;font-size:medium"> En servicios apareceran 3 opciones a elegir. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda5.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Si escogemos examen, nos deshabilitara campo productos. </p>
+                                   <p style="color:black;font-size:medium"> Si escogemos examen, nos deshabilitara campo productos. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda6.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> En la opcion lentes, solicitara un producto a escoger. </p>
+                                   <p style="color:black;font-size:medium"> En la opcion lentes, solicitara un producto a escoger. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda7.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Se ingresa la cantidad y se multiplica por el precio. </p>
+                                   <p style="color:black;font-size:medium"> Se ingresa la cantidad y se multiplica por el precio. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda8.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> En la opcion accesorios, solicitara un producto a escoger. </p>
+                                   <p style="color:black;font-size:medium"> En la opcion accesorios, solicitara un producto a escoger. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda9.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Se ingresa la cantidad y se multiplica por el precio. </p>
+                                   <p style="color:black;font-size:medium"> Se ingresa la cantidad y se multiplica por el precio. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda10.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Con el siguiente boton, podemos borrar la fila. </p>
+                                   <p style="color:black;font-size:medium"> Con el siguiente boton, podemos borrar la fila. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda11.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Con el siguiente boton, podemos aplicar un porcentaje de descuento. </p>
+                                   <p style="color:black;font-size:medium"> Con el siguiente boton, podemos aplicar un porcentaje de descuento. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda12.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Si ya se encuentra con descuento,cambia de color y aparecera la opcion de eliminarlo. </p>
+                                   <p style="color:black;font-size:medium"> Si ya se encuentra con descuento,cambia de color y aparecera la opcion de eliminarlo. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda13.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Para los lentes, hay un boton el cual permite escoger el examen que se usara para ese lente. </p>
+                                   <p style="color:black;font-size:medium"> Para los lentes, hay un boton el cual permite escoger el examen que se usara para ese lente. </p>
                                  </div>
                                </div>
 
@@ -1252,21 +1258,21 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda15.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Cuando ya esta lista la venta se procedera a solicitar el abono que se hara. </p>
+                                   <p style="color:black;font-size:medium"> Cuando ya esta lista la venta se procedera a solicitar el abono que se hara. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda16.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> En el listado de ventas, podemos abonar las cuentas pendientes en color verde. </p>
+                                   <p style="color:black;font-size:medium"> En el listado de ventas, podemos abonar las cuentas pendientes en color verde. </p>
                                  </div>
                                </div>
 
                                <div class="item ">
                                  <img class="img-responsive" src="../Ayuda/Ventas/ayuda17.png" alt="...">
                                  <div class="carousel-caption">
-                                   <p style="color:black";> Este boton sirve para ver el reporte de la venta. </p>
+                                   <p style="color:black;font-size:medium"> Este boton sirve para ver el reporte de la venta. </p>
                                  </div>
                                </div>
 
@@ -1465,6 +1471,7 @@ if ($_POST) {
       echo "<script type='text/javascript'>";
       echo "swal('Hecho','Se realizo la venta con exito','success');";
       echo "ajax_act('');";
+      echo "window.open('../../notab.php?id=$id_nota_abono[0]');";
       echo "</script>";
     }
     else {
@@ -1509,7 +1516,8 @@ if ($_POST) {
     $query_nota_abono = null;
 
     if($saldo<$total) {
-      $query_nota_abono=pg_query($conexion, "INSERT INTO pcnotab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra)");
+      $query_nota_abono=pg_query($conexion, "INSERT INTO pcnotab (eid_nota, rsaldo, ffecha_pago, cid_empleado, eid_ordenc) VALUES ($contado, $abono, '$fecha', '$idEmpleado', $id_compra) RETURNING eid_nota");
+      $id_nota_abono=pg_fetch_array($query_nota_abono);
     }
 
     //echo pg_last_error($conexion);
@@ -1518,6 +1526,7 @@ if ($_POST) {
       echo "<script type='text/javascript'>";
       echo "swal('Hecho','Se realizo el abono con exito','success');";
       echo "ajax_act('');";
+      echo "window.open('../../notab.php?id=$id_nota_abono[0]');";
       echo "</script>";
     }
     else {

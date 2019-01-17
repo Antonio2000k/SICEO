@@ -8,10 +8,10 @@ $nomusAccess =$_SESSION["nombrUsuario"];
 $nomAccess = $_SESSION["nombreEmpleado"];
 $apeAccess = $_SESSION["apellidoEmpleado"];
 
-if($_SESSION['autenticado']!="yeah" || $t!=1  ){
+if($_SESSION['autenticado']!="yeah" || $t!=1) {
   header("Location: ../../index.php");
   exit();
-  }
+}
 
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
@@ -378,7 +378,7 @@ if(isset($_REQUEST["id"])){
                                <div class="clearfix"></div>
                         </div>
                          <div class="x_content" id="recargarUsuarios">
-                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="post">
+                           <form class="form-horizontal form-label-left" id="frmUsuario" name="frmUsuario" method="get">
                              <div class="row">
                                 <!--Codigos-->
                                 <input type="hidden" name="bandera" id="bandera">
@@ -802,70 +802,70 @@ if(isset($_REQUEST["id"])){
                                  <div class="item active">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda1.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Ingresamos el nombre de usuario, si no existe aparecera en color verde. </p>
+                                     <p style="color:black;font-size:medium"> Ingresamos el nombre de usuario, si no existe aparecera en color verde. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda2.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Luego colocamos la contraseña, si no es valida se mostrara en color rojo y el campo confirmar esta deshabilitado. </p>
+                                     <p style="color:black;font-size:medium"> Luego colocamos la contraseña, si no es valida se mostrara en color rojo y el campo confirmar esta deshabilitado. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda3.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Ingresar la misma contraseña. </p>
+                                     <p style="color:black;font-size:medium"> Ingresar la misma contraseña. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda4.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Elegir el privilegio. </p>
+                                     <p style="color:black;font-size:medium"> Elegir el privilegio. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda5.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Seleccionar su nombre de empleado. </p>
+                                     <p style="color:black;font-size:medium"> Seleccionar su nombre de empleado. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda6.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Puede elegir entre una pregunta del sistema o una personalizada. </p>
+                                     <p style="color:black;font-size:medium"> Puede elegir entre una pregunta del sistema o una personalizada. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda7.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Ingrese su pregunta. </p>
+                                     <p style="color:black;font-size:medium"> Ingrese su pregunta. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda8.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Luego escriba la respuesta. </p>
+                                     <p style="color:black;font-size:medium"> Luego escriba la respuesta. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda9.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> Cuando haya completado los campos, presione guardar. </p>
+                                     <p style="color:black;font-size:medium"> Cuando haya completado los campos, presione guardar. </p>
                                    </div>
                                  </div>
 
                                  <div class="item ">
                                    <img class="img-responsive" src="../Ayuda/Usuarios/ayuda10.png" alt="...">
                                    <div class="carousel-caption">
-                                     <p style="color:black";> En la pestaña de lista usuarios, puede modificar su contraseña de usuario. </p>
+                                     <p style="color:black;font-size:medium"> En la pestaña de lista usuarios, puede modificar su contraseña de usuario. </p>
                                    </div>
                                  </div>
 
@@ -979,8 +979,9 @@ if(isset($_REQUEST['bandera'])) {
       if($bandera=="add") {
         pg_query("BEGIN");
         //Encriptar aqui...
+        $pass_encriptada = password_hash($pass, PASSWORD_DEFAULT);
 
-        $result=pg_query($conexion,"INSERT INTO pbusuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass',$privilegio,'$idempleado') RETURNING cid_usuario");
+        $result=pg_query($conexion,"INSERT INTO pbusuarios (cusuario, cpassword, eprivilegio, cid_empleado) VALUES ('$user','$pass_encriptada',$privilegio,'$idempleado') RETURNING cid_usuario");
         $id_usuario=pg_fetch_array($result);
 
         $result_pregunta = null;

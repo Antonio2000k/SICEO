@@ -30,7 +30,7 @@
 
     while ($fila = pg_fetch_array($query)) {
       $id_examen = $fila[0];
-      $fecha = $fila[7];
+      $fecha = date('d-m-Y', strtotime($fila[7]));
       $expediente = $fila[9];
     }
 

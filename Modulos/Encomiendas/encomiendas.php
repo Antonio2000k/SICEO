@@ -356,8 +356,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         }
       };
 
-      verReporteEncomienda = function() {
-        alert("Aqui va el reporte");
+      verReporteEncomienda = function(id) {
+        window.open("../../reporteEncomiendas.php?id="+id);
       };
 
       mostrarListado = function() {
@@ -931,7 +931,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                           <button type="button" class="btn btn-success"  onclick="verEstado('<?php echo $fila[2] ?>', <?php echo $fila[0] ?>);"><i class="fa fa-info"></i> <span></span></button>
                                         </td>
                                         <td class="text-center">
-                                          <button type="button" class="btn btn-warning" onclick="verReporteEncomienda()"><i class="fa fa-book"></i> <span></span></button>
+                                          <button type="button" class="btn btn-warning" onclick="verReporteEncomienda(<?php echo $fila[0] ?>)"><i class="fa fa-book"></i> <span></span></button>
                                         </td>
                                       </tr>
                                       <?php
@@ -966,56 +966,56 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                    <div class="item active">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda1.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Hacemos clic o escribimos el nombre del encomendero en el campo. </p>
+                                       <p style="color:black;font-size:medium"> Hacemos clic o escribimos el nombre del encomendero en el campo. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda2.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Si no esta registrado, dar clic en registrar uno nuevo. </p>
+                                       <p style="color:black;font-size:medium"> Si no esta registrado, dar clic en registrar uno nuevo. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda3.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Ingresar un detalle de la encomienda. </p>
+                                       <p style="color:black;font-size:medium"> Ingresar un detalle de la encomienda. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda4.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Al dar clic en el boton, se mostrara una ventana con los tipos de materiales y lente. </p>
+                                       <p style="color:black;font-size:medium"> Al dar clic en el boton, se mostrara una ventana con los tipos de materiales y lente. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda5.0.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> El siguiente boton muestra las caracteristicas que se eligieron y poder cambiarlas si se desea. </p>
+                                       <p style="color:black;font-size:medium"> El siguiente boton muestra las caracteristicas que se eligieron y poder cambiarlas si se desea. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda5.1.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Este boton permite ver el examen de ese lente. </p>
+                                       <p style="color:black;font-size:medium"> Este boton permite ver el examen de ese lente. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda6.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> El boton ver encomiendas muestra todas las encomiendas que estan listas para ser enviadas. </p>
+                                       <p style="color:black;font-size:medium"> El boton ver encomiendas muestra todas las encomiendas que estan listas para ser enviadas. </p>
                                      </div>
                                    </div>
 
                                    <div class="item ">
                                      <img class="img-responsive" src="../Ayuda/Encomiendas/ayuda7.png" alt="...">
                                      <div class="carousel-caption">
-                                       <p style="color:black";> Luego solo procedemos a guardar cuando hemos completado los campos. </p>
+                                       <p style="color:black;font-size:medium"> Luego solo procedemos a guardar cuando hemos completado los campos. </p>
                                      </div>
                                    </div>
 

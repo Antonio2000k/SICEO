@@ -78,7 +78,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                   <li><a><i class="fa fa-line-chart"></i> Servicios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="../../Modulos/Ventas/ventas.php">Registrar Venta</a></li>
-                      <li><a href="../../Modulos/Ventas/listaVentas.php">Lista de Ventas</a></li>
+                     
                     </ul>
                   </li>
                   <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>

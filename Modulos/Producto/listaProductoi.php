@@ -144,7 +144,54 @@ echo '<td>'.$fila[2].'</td>';
 </div>
 </div>
 <!-- Fin Modal -->
+ <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA PRODUCTOS DADOS DE BAJA</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto9.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Se nos muestra una lista con todos los productos dados de baja y podemos dar de alta al producto o ver la informacion de ese producto. </p>
+                                 </div>
+                               </div>
 
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto10.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Al pulsar la opcion de ver información se lanza una ventana donde se muestran los datos mas relevantes del producto. </p>
+                                 </div>
+                               </div>
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
 <?php include 'Modal/nuevaMarca.php';?>
 <footer>
 <?php

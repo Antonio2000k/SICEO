@@ -320,7 +320,105 @@ if(isset($_SESSION["acumulador"])){
             </div>
         </div>
         <!-- Fin Modal -->
-    
+    <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE COMPRAS</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra.png" alt="...">
+                                 <div class="carousel-caption" style="margin-bottom:0px;">
+                                   <p style="color:black";> Formulario principal en donde se hacen el registro de compras, tener en cuenta que debe existir un producto en la lista para generar una compra. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra1.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Notificación que se muestra cuando se quiere guardar sin ingresar productos a la lista. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra2.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Tras seleccionar el proveedor, se cargaran todos los modelos que este ofrece, al seleccionar un modelo se carga automaticamente el nombre del producto y solo resta asignar una cantidad y agregarlo a la lista. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra3.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Al presionar el boton de agregar, se carga el producto en la tabla, se debe tener en cuenta que los campos proveedor, modelo y cantidad son obligatorios, en la tabla cada producto tiene la opcion de ser eliminado de la lista y modificado. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra4.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Cuando se presiona el boton de modificar, nos aparece una notificación consultando si desea modificar el producto. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra5.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Tras aceptar la opcion de modificar se cargan los datos del proveedor y el modelo, pero sin posibilidad de modificarlos el unico dato que se permite modificar es la cantidad del producto. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra6.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si en un caso se desea modificar los precios de los productos, existe un boton a la derecha del modelo y al pulsarlo nos lanza una ventana donde podemos modificar los precios. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra7.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Al tener listo el registro y darle a la opcion de guardar, nos aparecera una ventana en donde podemos seleccionar si el pago sera al contado o al credito, si el pago es al contado solo nos pide aceptar y guardamos. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra8.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si el tipo de pago es al credito debemos llenar los campos de cuotas y periodo el campo de abono inicial es opcional. </p>
+                                 </div>
+                               </div>
+
+                               
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
         
         <?php include'Modal/modificacionProducto.php'; ?>
     <!--Aqui va fin el contenido-->

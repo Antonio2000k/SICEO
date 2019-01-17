@@ -206,7 +206,7 @@ if (isset($_REQUEST["bandera"])) {
     $usuariO=$_REQUEST["usuariox"];
    // $usuariox=base64_encode($usuariox);
     $clavE=$_REQUEST["clavex"];
-    $clavE=base64_encode($clavE);
+    //$clavE=base64_encode($clavE);
   
   include("Config/conexion.php");
 
@@ -263,9 +263,9 @@ if (isset($_REQUEST["bandera"])) {
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
-            
-            $hora = date("Y/m/d ") . date("h:i:s a");
-            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha) VALUES ($ida, $idAccess, '".$accion."' , '$hora' )");
+            $fechaA= date("d/m/Y");
+                            $hora = date("Y/m/d ") . date("h:i:s a");
+                            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$nomusAccess')");
 
             if(!$consult ){
                     pg_query("rollback");
@@ -288,17 +288,15 @@ if (isset($_REQUEST["bandera"])) {
           if($fila[2] == 2){
               
               $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
-            $accion = 'El Empleado ' . $idAccess. '('. $nomAccess. " " .$apeAccess. ") inició sesión";
+            $accion = 'El usuario ' . $nomusAccess. ' inició sesión';
             while ($filas = pg_fetch_array($query_ide)) {
                 $ida=$filas[0];                                 
                 $ida++ ;
             } 
             ini_set('date.timezone', 'America/El_Salvador');
-            
-            $fechaR = date("d/m/Y");
-            $hora = date("h:i:s");
-            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, hora)
-                  VALUES ($ida, $idAccess, '".$accion."' , '$fechaR' , '$hora' )");
+            $fechaA= date("d/m/Y");
+                            $hora = date("Y/m/d ") . date("h:i:s a");
+                            $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$nomusAccess')");
             if(!$consult ){
                     pg_query("rollback");
                     echo "<script type='text/javascript'>";
@@ -309,7 +307,7 @@ if (isset($_REQUEST["bandera"])) {
                   pg_query("commit");
                   echo "<script type='text/javascript'>";
                   echo "alert('Datos Almacenados');";
-                  $_SESSION["autenticado2"]="yeah2";
+                  $_SESSION["autenticado"]="yeah";
                   echo "location.href='index2.php';";
                   echo "</script>"; 
             }

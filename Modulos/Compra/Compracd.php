@@ -175,6 +175,53 @@
           </div>
         </div>
         <!-- Fin -->
+         <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA COMPRAS AL CREDITO</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra11.png" alt="...">
+                                 <div class="carousel-caption" style="margin-bottom:0px;">
+                                   <p style="color:black";> En esta pantalla se muestran listadas todas slas compras hechas al credito. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Compras/compra12.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";>Si pulsamos el boton de la columna ver mas nos carga el listado de los productos adquiridos en esa compra, ademas de mostrar detalles como las cuotas, el periodo y el saldo a pagar. </p>
+                                 </div>
+                               </div>
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
         
         <div id="cambiaso">
             

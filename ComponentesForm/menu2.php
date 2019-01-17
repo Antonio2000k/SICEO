@@ -2,11 +2,14 @@
 session_start();
 $t=$_SESSION["nivelUsuario"];
 
-if($_SESSION['autenticado2']!="yeah2" || $t!=2){
+if($_SESSION['autenticado']!="yeah" || $t!=2){
   header("Location: ../../login.php");
   exit();
   }
 ?>
+
+
+
 <script type="text/javascript" class="init">
   function Salir(){
     alertify.defaults.theme.ok = "btn btn-primary";
@@ -25,6 +28,8 @@ if($_SESSION['autenticado2']!="yeah2" || $t!=2){
         });
     }
   </script>
+
+  
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
@@ -47,75 +52,33 @@ if($_SESSION['autenticado2']!="yeah2" || $t!=2){
               <div class="menu_section">
                 <h3>Menu Principal</h3>
                 <ul class="nav side-menu">
-                  <li><a href="../../index.php"><i class="fa fa-home"></i> Inicio </a></li>
-                  <li><a><i class="fa fa-male"></i> Empleados <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Empleado/registrarEmpleado.php">Registrar Empleado</a></li>
-                      <li><a href="../../Modulos/Empleado/listaEmpleado.php">Lista de Empleados</a></li>
-                      <li><a href="../../Modulos/Empleado/listaEmpleadoi.php">Empleados de Baja</a></li>
-                    </ul>
-                  </li>
+                  <li><a href="index2.php"><i class="fa fa-home"></i> Inicio </a></li>
+                  
                   <li><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Cliente/registrarCliente.php">Registrar Cliente</a></li>
-                      <li><a href="../../Modulos/Cliente/listaCliente.php">Listado de clientes</a></li>
+                      <li><a href="../../Modulos2/Cliente/registrarCliente.php">Registrar Cliente</a></li>
+                      <li><a href="../../Modulos2/Cliente/listaCliente.php">Listado de clientes</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-list-alt"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Producto/producto.php">Registar Producto</a></li>
-                      <li><a href="../../Modulos/Producto/listaProducto.php">Lista de Producto</a></li>
-                      <li><a href="../../Modulos/Producto/listaProductoi.php">Producto de Baja</a></li>
-                      <li><a href="../../Modulos/Producto/stock.php">Stock</a></li>
+                      
+                      <li><a href="../../Modulos2/Producto/listaProducto.php">Lista de Producto</a></li>
+                      
+                      <li><a href="../../Modulos2/Producto/stock.php">Stock</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-line-chart"></i> Servicios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Ventas/ventas.php">Registrar Venta</a></li>
-                      <li><a href="../../Modulos/Ventas/listaVentas.php">Lista de Ventas</a></li>
+                      <li><a href="../../Modulos2/Ventas/ventas.php">Registrar Venta</a></li>
+                      
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-shopping-cart"></i> Suministros <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a>Proveedores<span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedor.php">Registrar Proveedor</a>
-                            </li>
-                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedora.php">Lista de Proveedores</a>
-                            </li>
-                            <li class="sub_menu"><a href="../../Modulos/Proveedor/proveedori.php">Proveedores de Baja</a>
-                            </li>
-                          </ul>
-                      </li>
-                      <li><a>Compras<span class="fa fa-chevron-down"></span></a>
-                          <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="../../Modulos/Compra/RegistraCompra.php">Registrar Compras</a>
-                            </li>
-                            <li class="sub_menu"><a href="../../Modulos/Compra/Comprac.php">Compras al contado</a>
-                            </li>
-                            <li class="sub_menu"><a href="../../Modulos/Compra/Compracd.php">Compras al credito</a>
-                            </li>
-                          </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-automobile"></i> Encomiendas <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="registrarEncomienda.php">Registrar</a></li>
-                      <li><a href="empleados.php">Listado de encomiendas</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-key"></i>Seguridad <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
-                      <li><a href="../../Modulos/Usuario/registrarUsuarios.php">Registrar usuario</a></li>
-                    </ul>
-                  </li>
+                  
                 </ul>
               </div>
             </div>
             <!-- /sidebar menu -->
-
 
           </div>
         </div>
@@ -154,3 +117,4 @@ if($_SESSION['autenticado2']!="yeah2" || $t!=2){
           </div>
         </div>
         <!-- /top navigation -->
+

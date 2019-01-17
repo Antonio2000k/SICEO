@@ -7,7 +7,9 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
   exit();
   }
 ?>
-<script src="../../Modulos/Bitacora/bitacora.js"></script>
+
+
+<script src="../Modulos/Bitacora/bitacora.js"></script>
 
 <script type="text/javascript" class="init">
   function Salir(){
@@ -27,6 +29,8 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
         });
     }
   </script>
+
+  
 <!-- menu profile quick info -->
  <div class="profile clearfix">
             <div class="navbar nav_title" style="border: 0;">
@@ -128,6 +132,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
                       <li><a href="../../Modulos/Usuario/usuarios.php">Registrar usuario</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#impresion2">Bitacora</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#impresion3">Backup</a></li>
                       <li><a href="../../Modulos/Seguridad/respaldo.php">Respaldo </a></li>
                     </ul>
                   </li>
@@ -225,3 +230,5 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
             </div>
           </div>
         </div>
+
+

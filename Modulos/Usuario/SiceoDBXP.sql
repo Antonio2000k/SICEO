@@ -753,7 +753,6 @@ INSERT INTO pcbitacora VALUES ('83','1','El usuario admin Modificó al Encomender
 INSERT INTO pcbitacora VALUES ('84','1','El usuario admin Modificó al Encomendero Jose Perez','2019-01-15 22:56:05','2019-01-15',NULL);
 INSERT INTO pcbitacora VALUES ('85','1','El usuario admin dio de baja a un proveedor ','2019-01-15 23:16:07','2019-01-15',NULL);
 INSERT INTO pcbitacora VALUES ('86','1','El usuario admin dio de alta a un proveedor ','2019-01-15 23:16:53','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('87','1','El usuario admin inició sesión','2019-01-16 14:00:22',NULL,NULL);
 
 
 --

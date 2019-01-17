@@ -1005,7 +1005,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                                 </div>
 
                                 <!--../Cliente/registrarCliente.php?nuevo_cliente=si-->
-                                <a href="../Cliente/registrarCliente.php?nuevo_cliente=si" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
+                                <a href="../Cliente/registrarCliente.php" class="col-sm-3 col-md-3 col-xs-12"><h4><b>¿Es cliente nuevo?</b></h4></a>
                               </div>
 
                               <!--Inicio boton-->

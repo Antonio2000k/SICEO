@@ -279,7 +279,64 @@ if($fila[0]==$garantia){
 </div>
 </div>
 <!-- Fin Modal -->
+<!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA  PRODUCTOS</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto6.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En esta pestaña se muestran todos los productos activos en la columna de opciones podemos, modificar, dar de baja solo si el stock del producto es igual a cero y ver la informacion del producto. </p>
+                                 </div>
+                               </div>
 
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto7.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Tras pulsar el boton para ver la información se lanza una ventana donde se muestran todos los detalles de ese producto en especifico. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto8.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Al pulsar el boton para dar de baja un producto nos aparece una confirmación donde nos pregunta si deseamos dar de baja al producto, si se acepta se da de baja al producto redireccionandolo hasta esa lista. </p>
+                                 </div>
+                               </div>
+
+
+                               
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
 <?php include 'Modal/nuevaMarca.php';?>
 <footer>
 <?php

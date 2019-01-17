@@ -137,7 +137,61 @@
             </div>
         </div>
         <!-- Fin Modal -->
-        
+         <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA EGRESOS</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/IngresoEgreso/04.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";>En esta pantalla se muestra un grafico en donde se pueden observar el flujo de egresos netos vs egresos totales, tomar en cuenta que pueden observar por año o por un mes especifico. Se entiende por egresos netos a los pagos en efectivo que se han realizado, y por egresos totales a ese valor neto mas el efectivo que se debea  los proveedores </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/IngresoEgreso/05.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> De esta forma se observa cuando se selecciona por mes, en la parte de abajo se observan los dias y en el costado el valor en $ de los egresos netos o totales. </p>
+                                 </div>
+                               </div>
+                                <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/IngresoEgreso/06.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> En la parte de abajo podemos apreciar una tabla donde se muestran los datos dependiendo la seleccion, estos pueden ser por año o por mes, en ambos casos se puede ver en detalle los egresos que se dieron en un dia o un mes todo esto al presionar el boton de opciones. </p>
+                                 </div>
+                               </div>
+                               
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
         <div id="cambiaso">
             
         </div>

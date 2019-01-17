@@ -203,12 +203,15 @@ include "../../ComponentesForm/menu.php";
                         </div>
                       </div>
                 </div>
+                
+                 
             </div>
             </div>
             </div>
             </div>
           </div>
     </div>
+    
 <footer>
 <?php
 include "../../ComponentesForm/footer.php";
@@ -235,6 +238,9 @@ $dui=($_REQUEST["dui"]);
 $direccion=($_REQUEST["direccion"]);
 $sexo=$_REQUEST["genero"];
 $correo=$_REQUEST["correo"];
+$fechaN=date_format($fecha,"Y/m/d");
+
+    
 include("../../Config/conexion.php");
 if($bandera=="add"){
     pg_query("BEGIN");
@@ -245,13 +251,13 @@ if($bandera=="add"){
     if(validaCorreo($correo,$baccion,$dui)){
         mensajeInformacion('Error','Correo o Dui ya se encuentra registrado','error');
     }else{
-        
-          $result=pg_query($conexion,"insert into paempleados (cid_empleado,cnombre, capellido, ctelefonof, ccelular, cdui, csexo,ffecha_nac,cdireccion,bestado,ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo','$fecha','$direccion','1','$correo')");
+        $consulta="INSERT INTO paempleados(cid_empleado, cnombre, capellido, ctelefonof, ccelular, cdui, csexo, ffecha_nac, cdireccion, bestado, ccorreo) values('$codigo','$nombre','$apellido','$telefono','$celular','$dui','$sexo',to_date('$fecha', 'dd/mm/yyyy'),'$direccion','1','$correo')";
+
+          $result=pg_query($conexion,$consulta);
           if(!$result){
                     pg_query("rollback");
                     mensajeInformacion('Error','Datos no almacenados','error');
                     }else{
-                      
                        $query_ide=pg_query($conexion,"select MAx(eid_bitacora) from pcbitacora ");
                         $accion = 'El usuario ' . $nomusAccess. ' Registró al Empleado '. $nombre .' '.$apellido;
                         while ($filas = pg_fetch_array($query_ide)) {
@@ -261,7 +267,8 @@ if($bandera=="add"){
                         ini_set('date.timezone', 'America/El_Salvador');
                         $fechaA= date("d/m/Y");
                         $hora = date("Y/m/d ") . date("h:i:s a");
-                        $consult = pg_query($conexion, "INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$codigo')");
+                        $consu="INSERT INTO pcbitacora (eid_bitacora, cid_usuario, accion, ffecha, ffechaingreso, idmod) VALUES ($ida, $idAccess, '".$accion."' , '$hora' , '$fechaA', '$codigo')";
+                        $consult = pg_query($conexion, $consu);
 
                         if(!$consult ){
                                 pg_query("rollback");
@@ -317,7 +324,7 @@ if($bandera=='modificar'){
 
 
 function generar($nombree,$apellidos){
-		$str=trim($nombree).trim($apellidos);
+		$str=str_replace(' ','',trim($nombree).trim($apellidos));
 		$cad="";
 		for($i=0; strlen($cad)<2; $i++){
 			$cad.=substr($str,rand(0,strlen($str)-1),1);
@@ -343,6 +350,7 @@ function generar($nombree,$apellidos){
 function mensajeInformacion($titulo,$mensaje,$tipo){
             echo "<script language='javascript'>";
             echo "alertaSweet('".$titulo."','".$mensaje."', '".$tipo."');";
+            //echo "alert('".$mensaje."');";
             echo "</script>";
     
 }

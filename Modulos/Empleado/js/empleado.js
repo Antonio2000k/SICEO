@@ -142,7 +142,7 @@ function alertaSweet(titulo, texto, tipo) {
         , confirmButtonText: 'Ok'
     }).then((result) => {
         if (result.value) {
-            document.location.href = 'registrarEmpleado.php';
+            //document.location.href = 'registrarEmpleado.php';
         }
     })
 }

@@ -331,7 +331,84 @@ if(isset($_REQUEST["id"])){
             </div>
         </div>
         <!-- Fin Modal -->
-        
+         <!--Inicio modal ayuda-->
+                    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-lg" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <div style="float: right; color: red">
+                               <button style="color: red" type="button"  data-dismiss="modal" aria-label="Close">
+                                 <span style="color: red" aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
+                               <h5 align="center" style=" color: white">ASISTENCIA REGISTRO DE PRODUCTOS</h5>
+                               <div class="clearfix"></div>
+                             </div>
+                         </div>
+                         <div class="modal-body modal-md">
+                           <div id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel" >
+                             <!-- Wrapper for slides -->
+                             <div class="carousel-inner">
+                               <div class="item active">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Formulario para el registro de productos, los cuales pueden ser lentes o accesorios. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto1.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Tras seleccionar el tipo de producto como lente es obligatorio completas todos los campos que se piden para poder registralo. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto2.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Al seleccionar tipo Accesorio se deshabilitan los campos de modelo y garantia, los demas campos son obligatorios. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto3.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Cuando se quiere guardar un producto sin completar sus campos aparece esta notificación para prevenir errores futuros, ademas se valida que el modelo sea unico y no se encuentre registrado y el precio de venta debe ser mayor que el precio de compra. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto4.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Si digitamos un numero donde solo se permiten letras nos lanza la siguiente alerta eso sucede de igual forma en el caso opuesto. </p>
+                                 </div>
+                               </div>
+
+                               <div class="item ">
+                                 <img class="img-responsive" src="../Ayuda/Productos/producto5.png" alt="...">
+                                 <div class="carousel-caption">
+                                   <p style="color:black";> Puede suceder que se necesite de una nueva marca que no se encuentra registrada, entonces podemos pular el boton de nueva marca y nos aparecera una ventana donde ingresamos el nombre de la nueva marca. </p>
+                                 </div>
+                               </div>
+
+                               
+
+                             </div>
+
+                             <!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                               <span class="glyphicon glyphicon-chevron-left"></span>
+                             </a>
+                             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                               <span class="glyphicon glyphicon-chevron-right"></span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                   <!--Fin modal ayuda-->
         <?php include 'Modal/nuevaMarca.php';?>
         <footer>
             <?php

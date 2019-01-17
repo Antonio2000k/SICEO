@@ -154,8 +154,8 @@
               'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
               
             },
-            startDate: moment(),
-            endDate  : moment(),
+            startDate: moment().startOf('month'),
+            endDate  : moment().endOf('month'),
             maxDate: moment()
         },
         
@@ -177,8 +177,8 @@
               'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
               
             },
-            startDate: moment(),
-            endDate  : moment(),
+            startDate: moment().startOf('month'),
+            endDate  : moment().endOf('month'),
             maxDate: moment()
         },
         
@@ -200,8 +200,8 @@
               'Este Año'  : [moment().startOf('year'), moment().endOf('year')],
               
             },
-            startDate: moment(),
-            endDate  : moment(),
+            startDate: moment().startOf('month'),
+            endDate  : moment().endOf('month'),
             maxDate: moment()
         },
         

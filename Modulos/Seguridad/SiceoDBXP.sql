@@ -345,12 +345,13 @@ INSERT INTO paclientes VALUES ('OL1','Alex ','Orellana Corvera','48','M','7828-2
 INSERT INTO paclientes VALUES ('AC2','Carolina ','Martinez','14','F','2801-9821','San Vicente','2004-04-02','2018-11-05');
 INSERT INTO paclientes VALUES ('IM7','Mario','Ruiz','48','M','7878-9789','bxmznx','2005-05-05','2018-11-10');
 INSERT INTO paclientes VALUES ('AL8','Maria','Alfaro','48','F','2131-3123','dadadna','2019-07-15','2018-11-10');
-INSERT INTO paclientes VALUES ('RR9','Kevin','Ruiz 2','6','M','2121-2121','ajhsjka','2012-03-01','2018-11-10');
 INSERT INTO paclientes VALUES ('ZP6','Oscar','Perez','48','M','2121-2121','San Vicente, Col Agua Caliente','1991-05-07','2018-11-10');
 INSERT INTO paclientes VALUES ('ZM10','Maria Jose','Ruiz Martinez','26','F','7812-9129','San Vicente','1993-04-01','2019-01-16');
 INSERT INTO paclientes VALUES ('RL11','Silvia Guadalupe','Monarca Padilla','24','F','2121-2121','San Vicente','1994-04-04','2019-01-16');
 INSERT INTO paclientes VALUES ('NO3','Alonso Manuel','Cortez Martinez','6','M','2365-6757','Col. Santa Elena, Casa #3, San Vicente','2012-01-02','2018-11-10');
-INSERT INTO paclientes VALUES ('AK12','ajskla','sklalksj','6','M','7918-2901','ashkaskj','2013-01-01','2019-01-15');
+INSERT INTO paclientes VALUES ('RR9','Kevin','Ruiz','6','M','2121-2121','ajhsjka','2012-03-01','2018-11-10');
+INSERT INTO paclientes VALUES ('HJ13','Hugo ','Perez','9','M','7617-8678','absjka','2010-07-01','2019-01-17');
+INSERT INTO paclientes VALUES ('AK12','Alonso Raul','Martinez Ruiz','6','M','7918-2901','San Vicente','2013-01-01','2019-01-15');
 
 
 --
@@ -541,6 +542,7 @@ INSERT INTO pbcompra VALUES ('9','AO1','2019-01-15','358.00','5','30','150.00');
 INSERT INTO pbcompra VALUES ('12','AO1','2019-01-15','362.00','0','0','0.00');
 INSERT INTO pbcompra VALUES ('13','AO1','2019-01-15','716.00','5','30','400.00');
 INSERT INTO pbcompra VALUES ('14','AO1','2019-01-15','154.00','0','0','0.00');
+INSERT INTO pbcompra VALUES ('15','V 7','2019-01-17','1880.00','0','0','0.00');
 
 
 --
@@ -575,6 +577,7 @@ INSERT INTO pbexpediente2 VALUES ('2018-KR-001','RR9');
 INSERT INTO pbexpediente2 VALUES ('2019-MR-001','ZM10');
 INSERT INTO pbexpediente2 VALUES ('2019-SM-001','RL11');
 INSERT INTO pbexpediente2 VALUES ('2019-AS-001','AK12');
+INSERT INTO pbexpediente2 VALUES ('2019-AA-001','HJ13');
 
 
 --
@@ -607,6 +610,7 @@ INSERT INTO pbordenc VALUES ('19','2019-01-13','190','AO1','IM7');
 INSERT INTO pbordenc VALUES ('20','2019-01-13','190','AO1','IM7');
 INSERT INTO pbordenc VALUES ('21','2019-01-13','155','AO1','IM7');
 INSERT INTO pbordenc VALUES ('22','2019-01-13','155','AO1','IM7');
+INSERT INTO pbordenc VALUES ('23','2019-01-17','600','V 7','OL1');
 
 
 --
@@ -621,9 +625,7 @@ INSERT INTO pbproductos VALUES ('Convers','Convers kid','17488','34','Verde','45
 INSERT INTO pbproductos VALUES ('Aviador','Degradado','15545','69','Rojo','105.99','2','1','1','t','Lente');
 INSERT INTO pbproductos VALUES ('DG3269F ','Asian Fit 501','0','150','Negro','185','4','1','17','t','Lente');
 INSERT INTO pbproductos VALUES ('7090 010','Na','0','133','Verde','161','3','4','10','t','Lente');
-INSERT INTO pbproductos VALUES ('51 Kids 10G','CARRERINO ','0','88','Negro Mate','126','2','3','18','t','Lente');
 INSERT INTO pbproductos VALUES ('RY1544 3579','Ray-Ban Junior','0','104','Blanco','160','2','5','19','t','Lente');
-INSERT INTO pbproductos VALUES ('TH 1237 1IA','Street TH','0','200','Rojo y Negro','250','4','3','21','t','Lente');
 INSERT INTO pbproductos VALUES ('VO2714 2406','Light & Shine ','0','78','Carey','111','3','5','23','t','Lente');
 INSERT INTO pbproductos VALUES ('SRX00053','TRENTON ','0','156','Azul','205','3','5','24','t','Lente');
 INSERT INTO pbproductos VALUES ('SL 130 001','COMBI ','0','245','Blanco','341','4','4','25','t','Lente');
@@ -638,6 +640,8 @@ INSERT INTO pbproductos VALUES ('33552 779','Spirit','2','181','Verde y blanco',
 INSERT INTO pbproductos VALUES ('RX5187 2000','Highstreet ','6','179','Negro','225','4','4','19','t','Lente');
 INSERT INTO pbproductos VALUES ('Estuche FX','Estuche FX','17473','25','Rosa','30','1','1','1','t','Accesorio');
 INSERT INTO pbproductos VALUES ('NB5017','Kids C01','2','77','Carey','110','2','3','20','t','Lente');
+INSERT INTO pbproductos VALUES ('51 Kids 10G','CARRERINO ','10','88','Negro Mate','126','2','3','18','t','Lente');
+INSERT INTO pbproductos VALUES ('TH 1237 1IA','Street TH','5','200','Rojo y Negro','250','4','3','21','t','Lente');
 
 
 --
@@ -745,15 +749,8 @@ INSERT INTO pcbitacora VALUES ('75','1','El usuario admin dio de alta a un emple
 INSERT INTO pcbitacora VALUES ('76','1','El usuario admin Modificó al Empleado Alexandder Antonio  Portillo Duran','2019-01-15 21:12:39','2019-01-15','D 4');
 INSERT INTO pcbitacora VALUES ('77','1','El usuario admin Registro una nueva marca','2019-01-15 21:14:45','2019-01-15','XP');
 INSERT INTO pcbitacora VALUES ('78','1','El usuario admin modificó un producto','2019-01-15 21:15:31','2019-01-15','Estuche FX');
-INSERT INTO pcbitacora VALUES ('79','1','El usuario admin Registro una nueva compra al contado ','2019-01-15 21:31:52','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('80','1','El usuario admin Registro al Encomendero Jose Perez','2019-01-15 21:48:24','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('81','1','El usuario admin dio de baja a un encomendero  ','2019-01-15 22:03:39','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('82','1','El usuario admin dio de alta a un encomendero  ','2019-01-15 22:06:26','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('83','1','El usuario admin Modificó al Encomendero Francisco Antonio Hernandez Alfaro','2019-01-15 22:50:55','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('84','1','El usuario admin Modificó al Encomendero Jose Perez','2019-01-15 22:56:05','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('85','1','El usuario admin dio de baja a un proveedor ','2019-01-15 23:16:07','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('86','1','El usuario admin dio de alta a un proveedor ','2019-01-15 23:16:53','2019-01-15',NULL);
-INSERT INTO pcbitacora VALUES ('87','1','El usuario admin inició sesión','2019-01-16 14:00:22',NULL,NULL);
+INSERT INTO pcbitacora VALUES ('109','24','El usuario admin1 inició sesión','2019-01-17 01:53:18','2019-01-17','admin1');
+INSERT INTO pcbitacora VALUES ('110','24','El usuario admin1 Registro una nueva compra al contado ','2019-01-17 06:59:50','2019-01-17',NULL);
 
 
 --
@@ -780,6 +777,8 @@ INSERT INTO pcdetalle_compra VALUES ('13','RX5187 2000','2','9','179.00');
 INSERT INTO pcdetalle_compra VALUES ('14','33552 779','2','12','181.00');
 INSERT INTO pcdetalle_compra VALUES ('15','RX5187 2000','4','13','179.00');
 INSERT INTO pcdetalle_compra VALUES ('16','NB5017','2','14','77.00');
+INSERT INTO pcdetalle_compra VALUES ('17','51 Kids 10G','10','15','88.00');
+INSERT INTO pcdetalle_compra VALUES ('18','TH 1237 1IA','5','15','200.00');
 
 
 --
@@ -859,6 +858,7 @@ INSERT INTO pcnotab VALUES ('31','100','2019-01-13','AO1','19');
 INSERT INTO pcnotab VALUES ('32','100','2019-01-13','AO1','20');
 INSERT INTO pcnotab VALUES ('33','100','2019-01-13','AO1','21');
 INSERT INTO pcnotab VALUES ('34','90','2019-01-13','AO1','22');
+INSERT INTO pcnotab VALUES ('35','600','2019-01-17','V 7','23');
 
 
 --
@@ -889,6 +889,7 @@ INSERT INTO pcpre_us VALUES ('8','7','29','el que');
 --
 INSERT INTO pddetalle_examen VALUES ('2','IM7','2','Convers','f');
 INSERT INTO pddetalle_examen VALUES ('1','AC2','1','DG1293 01','f');
+INSERT INTO pddetalle_examen VALUES ('3','OL1','3','MK8001 3001','f');
 
 
 --
@@ -935,7 +936,8 @@ INSERT INTO pddetalle_notab VALUES ('21','28',NULL,'1','Lente','2');
 INSERT INTO pddetalle_notab VALUES ('22','29','Estuche FX','1','Accesorio','-1');
 INSERT INTO pddetalle_notab VALUES ('23','30','Convers','2','Lente','2');
 INSERT INTO pddetalle_notab VALUES ('24','30','Estuche FX','1','Examen','-1');
-INSERT INTO pddetalle_notab VALUES ('25','30','','3','Accesorio','-1');
+INSERT INTO pddetalle_notab VALUES ('25','30',NULL,'3','Accesorio','-1');
+INSERT INTO pddetalle_notab VALUES ('38','35','MK8001 3001','2','Lente','3');
 
 
 --

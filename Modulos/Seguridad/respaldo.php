@@ -320,7 +320,21 @@ clf.relkind = 'r')
     <?php
       include "../../ComponentesForm/estilos.php";
     ?>
+    <script language="javascript">
+         
+            function alertaError(titulo, texto, tipo) {
+                sweetAlert(titulo, texto, tipo);
+            }
+            function alertaExito(titulo, texto, tipo) {
+                swal('Informacion', 'Restauracion Exitosa', 'success');
 
+
+            }
+
+
+
+
+        </script>
 
         <script>  
   
@@ -333,7 +347,7 @@ function validar(){
   
   if(document.contact.path.value=='' ){
     
-    alertaError();
+    
 }else{
 
     if(!allowedExtensions.exec(filePath)){
@@ -389,15 +403,15 @@ document.getElementById('bandera').value="Exportar Respaldo";
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                  <div >
-                     <img  align="left" src="../../production/images/emplea.png" width="120" height="120">
+                     <img  align="left" src="../../images/backup.png" width="120" height="120">
                         <h1 class="col-xs-12 col-sm-8 col-md-10" align="center">
-                          Registrar Cliente
+                          Respaldo De Informacion
                         </h1>
                       </img>
                   </div>
                   <div align="center">
                       <h4 style="font-size: medium;" class="col-xs-12 col-sm-8 col-md-10 " >
-                        Bienvenido en esta sección puede registrar clientes en el sistema debe de llenar todos los campos obligatorios (*) para registrarlos exitosamente. En la pestaña <b>LISTA DE CLIENTES</b> se muestran todos los clientes registrados.
+                        Bienvenido en esta sección puede hacer un respaldo de toda la informacion en el sistema y tambien restaurarla.
                         
                       </h4>
                   </div>
@@ -410,65 +424,54 @@ document.getElementById('bandera').value="Exportar Respaldo";
                 <div class="x_panel">
                   <div class="" data-example-id="togglable-tabs" role="tabpanel">
                     <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
-                       <li  class="active col-md-5 col-sm-5 col-xs-5" role="presentation">
-                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" aria-expanded="true" data-toggle="tab" href="#tab_content1" id="home-tab" role="tab" >
-                             EXPORTAR
-                          </a>
-                        </li>
-                        <li class="col-md-5 col-sm-5 col-xs-5"  role="presentation">
-                          <a class="col-md-12 col-sm-12 col-xs-12" style="text-align: center" aria-expanded="false"  href="listaCliente.php" id="profile-tab" >
-                            IMPORTAR
-                          </a>
-                        </li>
+                       
+                        
                     </ul>
                     <!-- Formulario para registar cliente -->
                  <div class="tab-content" id="myTabContent">
                     <div aria-labelledby="home-tab" class="tab-pane fade active in" id="tab_content1" role="tabpanel">
                       <div class="x_content">
-                        <div class="x_title" style="background: linear-gradient(to top,#000104d6 0,#03016b 50%)">
-                           <h3 align="center" style=" color: white">Datos Personales</h3>
-                               <div class="clearfix"></div>
-                        </div>
+                        
                          <div class="x_content">
-                           <form id="contact" name="contact" action="" method="post" autocomplete="off" enctype="multipart/form-data">
-                            
-                            <div class="row">
-                                            <div class="ln_solid"></div>
-                                            <input type="hidden" id="bandera" name="bandera">
+                            <form id="contact" name="contact" action="" method="post" autocomplete="off" enctype="multipart/form-data">
+                              <input type="hidden" id="bandera" name="bandera">
+                             
+                              
 
-                                            <h3>Respaldo</h3>
-                                            <h4>Verifique los datos </h4>
+                              <div class="form-group " style="margin-top:20px !important;">
+                                <input type="file" name="path" id="path" style="width:400px" class="btn btn-primary" />
+                              </div>
 
-                                            <div class="form-group " style="margin-top:20px !important;">
-                                              <input type="file" name="path" id="path" style="width:400px" class="btn btn-primary" />
-                                            </div>
-
-                                            <div class="form-group " style="margin-top:20px !important;">
-                                              <input type="button"  value="Importar Respaldo" class="btn btn-success" name="actionButton"                   id="actionButton" onclick="validar()">
-                                            </div>
-
-                                            <div class="form-group " style="margin-top:20px !important;">
-                                              <input type="button"  value="Exportar Respaldo" class="btn btn-info" name="actionButton" id="actionButton" onclick="exportar()">
-                                            </div>
-                                          </div>
-                              </form>
+                            <div class="form-group " style="margin-top:20px !important;">
+                              <input type="button"  value="Importar Respaldo" class="btn btn-success" name="actionButton" id="actionButton"  onclick="validar()"> 
+                              <input type="button"  value="Exportar Respaldo" class="btn btn-info" name="actionButton" id="actionButton" onclick="exportar()">
                             </div>
-                          </div>
+
+                            <div class="form-group " style="margin-top:20px !important;">
+                              
+                            </div>
+
+                          </form>
                         </div>
                       </div>
-                   
-                              </div>  
-                            </div>
-                          </div>
-                           </div>
-                        </div>                
-                      </div>
+                    </div>
                   </div>
-                </div>
+                    
+                </div>  
               </div>
             </div>
-        
+          </div>
 
+        </div>                
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+        
+        <!-- /page content -->
+     
+        
         <footer>
             <?php
               include "../../ComponentesForm/footer.php";

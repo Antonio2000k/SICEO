@@ -315,16 +315,22 @@ if(isset($_REQUEST["id"])){
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
                 <div class="item active">
-                  <img class="img-responsive" src="../Ayuda/Clientes/registroCliente.png" alt="...">
+                  <img class="img-responsive" src="../Ayuda/Cli/Captura.jpg" alt="...">
                   <div class="carousel-caption">
                     <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
                   </div>
                 </div>
                 
                 <div class="item ">
-                  <img class="img-responsive" src="../Ayuda/Clientes/ayuda2.png" alt="...">
+                  <img class="img-responsive" src="../Ayuda/Cli/otro2.png" alt="...">
                   <div class="carousel-caption">
-                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                    
+                  </div>
+                </div>
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Cli/otro1.png" alt="...">
+                  <div class="carousel-caption">
+                    
                   </div>
                 </div>
                 

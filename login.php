@@ -276,7 +276,7 @@ if (isset($_REQUEST["bandera"])) {
             }else{
                   pg_query("commit");
                   echo "<script type='text/javascript'>";
-                  echo "alert('Datos Almacenados');";
+                  
                   $_SESSION["autenticado"]="yeah";
                   
                   echo "location.href='index.php';";
@@ -306,7 +306,7 @@ if (isset($_REQUEST["bandera"])) {
             }else{
                   pg_query("commit");
                   echo "<script type='text/javascript'>";
-                  echo "alert('Datos Almacenados');";
+                  
                   $_SESSION["autenticado"]="yeah";
                   echo "location.href='index2.php';";
                   echo "</script>"; 

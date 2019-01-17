@@ -209,25 +209,47 @@ if(isset($_REQUEST["id"])){
               <!-- Wrapper for slides -->
               <div class="carousel-inner">
                 <div class="item active">
-                  <img class="img-responsive" src="../Ayuda/Clientes/listaCliente.png" alt="...">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura1.jpg" alt="...">
                   <div class="carousel-caption">
-                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                    
                   </div>
 
                 </div>
 
                 <div class="item ">
-                  <img class="img-responsive" src="../Ayuda/Clientes/ayuda.png" alt="...">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura2.jpg" alt="...">
                   <div class="carousel-caption">
-                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                    
                   </div>
 
                 </div>
 
                 <div class="item ">
-                  <img class="img-responsive" src="../Ayuda/Clientes/ayudaextraP.png" alt="...">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura3.jpg" alt="...">
                   <div class="carousel-caption">
-                    <p style="color:black";> Hacemos clic en el boton Agregar Producto </p>
+                    
+                  </div>
+
+                </div>
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura4.jpg" alt="...">
+                  <div class="carousel-caption">
+                    
+                  </div>
+
+                </div>
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura5.jpg" alt="...">
+                  <div class="carousel-caption">
+                    
+                  </div>
+
+                </div>
+
+                <div class="item ">
+                  <img class="img-responsive" src="../Ayuda/Cli/captura6.jpg" alt="...">
+                  <div class="carousel-caption">
+                    
                   </div>
 
                 </div>

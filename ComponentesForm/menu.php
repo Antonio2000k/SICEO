@@ -122,7 +122,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       <li><a>Encomiendas<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                           <li><a href="../../Modulos/Encomiendas/encomiendas.php">Registrar</a></li>
-                          <li><a href="empleados.php">Listado de encomiendas</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -132,7 +131,6 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
                       <li><a href="../../Modulos/Pregunta/pregunta.php">Registrar Preguntas</a></li>
                       <li><a href="../../Modulos/Usuario/usuarios.php">Registrar usuario</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#impresion2">Bitacora</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#impresion3">Backup</a></li>
                       <li><a href="../../Modulos/Seguridad/respaldo.php">Respaldo </a></li>
                     </ul>
                   </li>

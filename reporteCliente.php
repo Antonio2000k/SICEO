@@ -86,20 +86,8 @@
 				$this->Cell(135,10, "De la edad de ". $edad ,0,1,'C');
 			}
 			if($diaIni != "" && $diaFini!="" && $mes !="" && $mesFini!= "" && $anio != "" && $aniofini!="" ){
-				if($diaIni == $diaFini && $mes == $mesFini && $anio == $aniofini  ){
-					$this->Cell(135,10, utf8_decode("Del día ". $diaIni." de " . $meses[$mes] . " del ".$anio) ,0,1,'C');
-				} else if($diaIni == 01 && $diaFini == 29 || $diaFini == 30 || $diaFini == 31 || $diaFini == date('d') && $mes == $mesFini && $anio == $aniofini){
-					$this->Cell(135,10, "Del Mes de " . $meses[$mes] . " del ".$anio ,0,1,'C');
-				} else if($diaIni == date('d')-6 && $diaFini == date('d') && $anio == $aniofini){
-					$this->Cell(135,10, utf8_decode("Del los ultimos 7 días ") ,0,1,'C');
-				}   if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == '2015' && $aniofini= date('Y')){
-					$this->Cell(135,10, "Todos los registros" ,0,1,'C');
-				} 
-				if($diaIni == '01' && $diaFini == date('d') && $mes == '01' && $mesFini == date('m') && $anio == date('Y') && $aniofini= date('Y')){
-					$this->Cell(135,10, utf8_decode("De este año ".$anio) ,0,1,'C');
-				} 
-				//$this->Cell(135,10, "Fecha Inicio ". $diaIni." de " . $meses[$mes] . " del ".$anio ." - " .  "Fecha Final ". $fechafini,0,1,'C');
-				//Del  echo $diaIni." de ".$meses[$mes]." del ".$aniofini;  al  echo $diaFini." de ".$meses[$mesFini]." del ".$anio; 
+				$this->Cell(135,10, utf8_decode("") ,0,1,'C');
+				
 			}
 			$y = $this->GetY();
 			$this->SetY($y+4);
@@ -113,12 +101,12 @@
 			$this->Line(7, $this->GetY()+7 , 209 , $this->GetY()+7);
 
 
-		    $this->Cell(22,6,'EXPEDIENTE',0,0,'C',1);
+		    $this->Cell(21,6,'EXPEDIENTE',0,0,'C',1);
 			$this->Cell(50,6,'NOMBRE',0,0,'C',1);
 			$this->Cell(10,6,'SEXO',0,0,'C',1);
-			$this->Cell(15,6,'EDAD',0,0,'C',1);
+			$this->Cell(13,6,'EDAD',0,0,'C',1);
 			$this->Cell(87,6,utf8_decode("DIRECCIÓN"),0,0,'C',1);
-			$this->Cell(18,6,utf8_decode("TELÉFONO"),0,1,'C',1);
+			$this->Cell(18,6,utf8_decode("FECHA REGISTRO"),0,1,'C',1);
 			
 			
 			$this->SetDrawColor(0, 0, 0);
@@ -191,17 +179,17 @@
 			$pdf->SetFillColor(255, 255, 255);
 			$pdf->SetTextColor(0,0,0);
 			//$pdf->Cell(22,8,date('d/m/Y', strtotime($row['ffechar'])), 0,0,'C',1);
-			$pdf->Cell(22,8,$row['cid_expediente'], 1,0,'C',1);
+			$pdf->Cell(21,8,$row['cid_expediente'], 1,0,'C',1);
 			$pdf->Cell(50,8,$row['cnombre'] ." ". $row['capellido'],1,0,'D',1);
 			$pdf->Cell(10,8,$row['csexo'],1,0,'C',1);
 			if($row['eedad']==1){
-				$pdf->Cell(15,8,utf8_decode($row['eedad']. " año"),1,0,'C',1);
+				$pdf->Cell(13,8,utf8_decode($row['eedad']. " año"),1,0,'C',1);
 			}
 			else{
-				$pdf->Cell(15,8,utf8_decode($row['eedad']. " años"),1,0,'C',1);
+				$pdf->Cell(13,8,utf8_decode($row['eedad']. " años"),1,0,'C',1);
 			}
-			$pdf->Cell(87,8,$row['cdireccion'], 1,0,'D',1);
-			$pdf->Cell(18,8,$row['ctelefonof'],1,1,'C',1);
+			$pdf->Cell(88,8,$row['cdireccion'], 1,0,'D',1);
+			$pdf->Cell(20,8,date('d/m/Y', strtotime($row['ffechar'])),1,1,'C',1);
 			
 	}
 	$pdf->Output();

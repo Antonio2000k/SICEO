@@ -1,6 +1,6 @@
 <?php
 	include 'Config/conexion.php';
-	include 'plantillaCliente.php';
+	include 'plantillaEncomiendas.php';
 
 	$id = $_REQUEST["id"];
 	//require 'conexion.php';

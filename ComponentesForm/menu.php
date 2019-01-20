@@ -9,7 +9,7 @@ if($_SESSION['autenticado']!="yeah" || $t!=1){
 ?>
 
 
-<script src="../Modulos/Bitacora/bitacora.js"></script>
+<script src="../../Modulos/Bitacora/bitacora.js"></script>
 
 <script type="text/javascript" class="init">
   function Salir(){

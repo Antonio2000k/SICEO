@@ -158,9 +158,9 @@ require '../../Config/conexion.php';
     $x_posicion=$pdf->getx();   
     $pdf->cell(21,6,$hora2 ,1,0,'C',1);
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(122,6,utf8_decode($row['accion']),1,0,'L',1);
+    $pdf->cell(125,6,utf8_decode($row['accion']),1,0,'L',1);
     $x_posicion=$pdf->getx(); 
-    $pdf->cell(28,6,utf8_decode($row['idmod']),1,1,'C',1);
+    $pdf->cell(25,6,utf8_decode($row['idmod']),1,1,'C',1);
     
           
   }

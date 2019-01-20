@@ -6,7 +6,7 @@ if( !empty($_POST['user']) ) ){
   require_once ("../../Config/conexion.php");
   
 
-  $sql = "SELECT * FROM usuarios WHERE cusuario = '$usuario'"
+  $sql = "SELECT * FROM pbusuarios WHERE cusuario = '$usuario'"
   $result = pg_query()($connection, $sql);
   $counter = pg_num_rows($result);
 

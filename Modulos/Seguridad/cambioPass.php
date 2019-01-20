@@ -3,7 +3,7 @@
 if(isset($_REQUEST["id"])){
     include("../../Config/conexion.php");
     $iddatos = $_REQUEST["id"];
-    $query_s = pg_query($conexion, "select * from usuarios WHERE cid_usuario = '$iddatos'");
+    $query_s = pg_query($conexion, "select * from pbusuarios WHERE cid_usuario = '$iddatos'");
     while ($fila = pg_fetch_array($query_s)) {
        $RidUsuario = $fila[0];
        $RPass = $fila[2];
@@ -142,7 +142,7 @@ if(isset($_REQUEST["id"])){
     
     if($bandera=='modificar'){
         pg_query("BEGIN");
-        $result=pg_query($conexion,"update usuarios set cpassword ='$pass' where cid_usuario ='$baccion'");      
+        $result=pg_query($conexion,"update pbusuarios set cpassword ='$pass' where cid_usuario ='$baccion'");      
         
         if(!$result){
           pg_query("rollback");

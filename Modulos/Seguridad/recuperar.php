@@ -127,7 +127,7 @@
       pg_query("BEGIN");
 
       include("../../Config/conexion.php");
-      $query_s=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario=trim('$usuariO')");
+      $query_s=pg_query($conexion,"SELECT * FROM pbusuarios WHERE cusuario=trim('$usuariO')");
       
       while ($fila=pg_fetch_array($query_s)){          
         $existe=$fila[1];
@@ -140,7 +140,7 @@
             echo "</script>";
         }else{
             include("../../Config/conexion.php");
-            $query_s=pg_query($conexion,"SELECT * FROM usuarios WHERE cusuario=trim('$usuariO') ");
+            $query_s=pg_query($conexion,"SELECT * FROM pbusuarios WHERE cusuario=trim('$usuariO') ");
               
               while ($fila=pg_fetch_array($query_s)){      
                   $idusu=$fila[0];         
